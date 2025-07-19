@@ -1,0 +1,1233 @@
+{
+"TopNav": {
+  "newsletter": "Nyhetsbrev",
+  "search": "Sök",
+  "newsletter-title": "Få de senaste padelnyheterna!",
+  "newsletter-description": "Håll dig steget före! Prenumerera på vårt nyhetsbrev för de senaste padelnyheterna, exklusiva erbjudanden och proffstips—levererade direkt till din inkorg!",
+  "newsletter-email-input": "Prenumerera med din e-post",
+  "newsletter-subscribe-button": "Håll dig uppdaterad",
+  "error-email": "Vänligen ange en giltig e-postadress.",
+  "success-title": "Framgång! Du är med!",
+  "success-description": "Vi är glada att välkomna dig till vår gemenskap! Genom att gå med i vårt nyhetsbrev har du tagit det första steget mot att hålla dig uppdaterad med de senaste nyheterna, exklusiva erbjudanden och värdefulla insikter som vi ser fram emot att dela med dig.",  
+  "success-description-1": "Din inkorg kommer snart att bli mycket mer spännande! Om du inte ser våra mejl, vänligen kolla din skräppostmapp och markera oss som 'Inte skräppost' för att säkerställa att du aldrig missar något.",
+  "security-msg": "* Din information är 100 % säker och kommer aldrig att delas."
+},
+"Menu":{
+  "blog":"blogg",
+  "man":"man",
+  "woman":"kvinna",
+  "rackets":"racketar",
+  "accessories":"tillbehör",
+  "bags":"väskor",
+  "random":"slumpmässig",
+  "dress":"klänning",
+  "visor":"skärm",
+  "top":"topp",
+  "padel shoes":"padelskor",
+  "T-shirt":"T-shirt",
+  "sweatshirt":"sweatshirt",
+  "sock":"strumpa",
+  "short":"shorts",
+  "polo shirt":"pikétröja",
+  "long pants":"långa byxor",
+  "legging":"leggings",
+  "jacket":"jacka",
+  "cap":"keps",
+  "beginner":"nybörjare",
+  "intermediate":"medelnivå",
+  "professional":"professionell",
+  "balls":"bollar",
+  "grip":"grepp",
+  "overgrip":"övergrepp",
+  "racket protector":"racketskydd",
+  "protective gear":"skyddsutrustning",
+  "sunglasses":"solglasögon",
+  "towel":"handduk",
+  "resistance bands":"motståndsband",
+  "water bottle":"vattenflaska",
+  "sweatbands":"svettband",
+  "follow us":"följ oss",
+  "logo":"padel",
+  "Junior":"Junior",
+   "home": "hem",
+  "menu": "meny"
+},
+"Hero": {
+  "title": "FÅ DIN GRATIS DIGITALA KOPIA AV PADEL MASTER THE GAME NU!",
+  "Hurry": "Skynda dig",
+  "t1": "Endast ett begränsat antal nedladdningar är tillgängliga!",
+  "t2": "Det här får du:",
+  "t3": "* En GRATIS digital kopia av Padel Master the Game ",
+  "t4": "* En omfattande guide som kommer att förändra hur du ser på, förstår och spelar padel.",
+  "t5": "Detta exklusiva erbjudande är endast tillgängligt under en begränsad tid och kanske aldrig kommer tillbaka. Missa inte chansen att revolutionera ditt padelspel –",
+  "button-title": "Hämta din gratis kopia idag!",
+  "valued": "(värd $19.99)!",
+  "for free": "gratis",
+  "dialog-title": "Vart ska vi skicka din GRATIS kopia?",
+  "dialog-t1": "Ange ditt namn och din e-postadress nedan för att få omedelbar åtkomst till Padel Master the Game!",
+  "dialog-t2": "Genom att registrera dig får du:",
+  "dialog-t3": "* Din gratis e-bok direkt i din inkorg.",
+  "dialog-t4": "* Exklusiva tips & uppdateringar från Padlev-nyhetsbrevet (avregistrera dig när som helst).",
+  "dialog-t5": "Hämta din gratis guide nu!",
+  "dialog-name-holder": "Vad heter du?",
+  "dialog-email-holder": "Vad är din e-postadress?",
+  "dialog-name-error": "Vänligen ange ditt namn.",
+  "dialog-email-error": "Vänligen ange en giltig e-postadress.",
+  "dialog-success-title": "Tack! Din GRATIS resurs är på väg",
+  "dialog-success-t1": "Vi har skickat din gratis guide till din e-postinkorg. För att säkerställa att du får den, kontrollera din inkorg och",
+  "dialog-success-t2": "bekräfta din e-postadress",
+  "dialog-success-t3": "genom att klicka på länken i bekräftelsemejlet.",
+  "dialog-success-t4": "Om du inte ser e-postmeddelandet inom några minuter, vänligen kontrollera din",
+  "dialog-success-t5": "skräppost",
+  "dialog-success-t6": "eller",
+  "dialog-success-t7": "kampanj",
+  "dialog-success-t8": "mapp.",
+  "dialog-success-t9": "Vi är glada att välkomna dig till Padlev-communityt!",
+  "security-msg": "* Din information är 100 % säker och kommer aldrig att delas.",
+  "dialog-button": "Hämta min gratis kopia nu",
+  "padel-image-alt": "sido-utsikt-av-en-nat-pa-en-padel-bana",
+  "padel-book-alt": "padel-mastera-spelet-bok"
+},
+"NewsSection": {
+  "News": "Nyheter",
+  "view": "Visa alla"
+},
+"ShopSection": {
+  "Shop": "Butik",
+  "view": "visa alla",
+  "title-0": "Padelväskor",
+  "description-0": "Utrusta dig med stil! Köp premium padelväskor nu!",
+  "tag-0": "flicka med en padelväska på banan",
+  "title-1": "Junior padelkläder",
+  "description-1": "Spela med stil! Köp junior padelkläder!",
+  "tag-1": "barn som håller ett padelracket på banan",
+  "title-2": "Padelracketar",
+  "description-2": "Kraft, kontroll, prestanda! Hitta ditt perfekta padelracket!",
+  "tag-2": "padelracket med bollar på banan",
+  "title-3": "Prestationsskor",
+  "description-3": "Höj ditt spel med de bästa padelskorna!",
+  "tag-3": "flicka som knyter sina sneakers",
+  "title-4": "Skydds- och sportglasögon",
+  "description-4": "Se klart, spela säkert! Skydda dina ögon på banan!",
+  "tag-4": "flicka som bär skyddsglasögon",
+  "title-5": "Herrkläder",
+  "description-5": "Stil möter prestanda! Köp herrkläder för padel!",
+  "tag-5": "padelspelare på banan",
+  "title-6": "Vattenflaskor",
+  "description-6": "Håll dig hydrerad, spela starkare! Köp padel vattenflaskor!",
+  "tag-6": "person som håller en vattenflaska",
+  "title-7": "Damkläder",
+  "description-7": "Elegans möter prestanda! Köp damkläder för padel!",
+  "tag-7": "två tjejer bredvid varandra som tittar upp mot himlen"
+},
+"BrandingStory": {
+  "title": "ADIDAS: SPORTKLÄDER, STIL OCH MÅNGA HISTORIER SEDAN 1949",
+  "text-1": "Vi inspireras av idrottare. Från de allra första spikskorna som Adi Dassler tillverkade i sin verkstad, har drivkraften att skapa den bästa utrustningen för idrottare fått oss att sträva efter tekniska genombrott och designinnovationer. Våra sneakers och kläder bärs av världsrekordinnehavare och medaljvinnare, men de är minst lika viktiga för löpare, helgvandrare, fotbollsspelare och träningsentusiaster. Från adidas Boost, den banbrytande stötdämpningstekniken, till den världsledande designen av Adizero Adios Pro löparskor, till Terrex outdoor-utrustning och fotbollsskor med oslagbar bollkänsla – vi utvecklar, innoverar och förbättrar alltid med idrottare i åtanke.",
+  "text-2": "De tre ränderna har synts på prispallar över hela världen, men deras inflytande sträcker sig långt bortom idrottsarenan. adidas-sneakers har burits av hiphopartister, skejtare, konstnärer och andra banbrytare som driver kulturen framåt med sin vision och kompromisslösa stil. Vi har satt vårt avtryck med ikoniska livsstilsskor som adidas Superstar, Stan Smith och Samba – skor som började som sportskor men sedan tog över gatorna och lämnade ett bestående avtryck i kulturen.",
+  "text-3": "adidas Originals-kläder är den perfekta stilen att kombinera med våra livsstilsskor. Våra streetwear-kollektioner hämtar inspiration från arkiven för att ge en modern twist på klassiker som Firebird-träningsoverallen och Tiro-byxan. Lyxiga material, sofistikerade silhuetter och oväntade detaljer lyfter vår streetwear och överskrider gränsen mellan sport och mode, samtidigt som vi aldrig förlorar vår historia ur sikte. För vår filosofi är – och har alltid varit – att vi genom sport har kraften att förändra liv."
+},
+"ShopLetter": {
+  "title": "Gå med nu och lås upp upp till 25 % rabatt!",
+  "button": "Gå med gratis",
+  "newsletter-title": "Gå med i vårt nyhetsbrev och få upp till 25 % rabatt!",
+  "newsletter-description": "Prenumerera på vårt nyhetsbrev och få exklusiv tillgång till kampanjer med upp till 25 % rabatt! Bli först med att få veta om nyheter, specialerbjudanden och mer.",
+  "newsletter-email-input": "Prenumerera med din e-post",
+  "newsletter-subscribe-button": "Kom igång gratis",
+  "error-email": "Vänligen ange en giltig e-postadress.",
+  "success-title": "Lyckat! Du är med!",
+  "success-description": "Tack för att du prenumererar! Ett bekräftelsemejl är på väg till din inkorg. Klicka på verifieringslänken för att slutföra din prenumeration och börja få de senaste uppdateringarna, exklusivt innehåll och spännande nyheter direkt från oss.",
+  "security-msg": "* Din information är 100 % säker och kommer aldrig att delas."
+},
+"Footer": {
+  "Contact Us": "Kontakta oss",
+  "Follow us": "Följ oss",
+  "Support & Info": "Support & Info",
+  "PRODUCTS": "PRODUKTER",
+  "Contact Us text": "Behöver du hjälp eller har du frågor?",
+  "Contact Us text 1": "Vi finns här för dig, kontakta oss när som helst!",
+  "Follow us text": "Håll dig uppdaterad med de senaste Padlev-nyheterna och exklusiva erbjudanden!",
+  "help": "Hjälp",
+  "about us": "Om oss",
+  "Charity": "Välgörenhet",
+  "Returns and Refunds": "Returer och återbetalningar",
+  "rackets": "Racketar",
+  "shoes": "Skor", 
+  "accessories": "Tillbehör",
+  "bags": "Väskor",
+  "man clothes": "Herrkläder",
+  "woman clothes": "Damkläder",
+  "Privacy Policy": "Integritetspolicy",
+  "Terms and Conditions": "Villkor och bestämmelser",
+  "Cookies Policy": "Cookiepolicy",
+  "All rights reserved": "Alla rättigheter förbehållna 2025."
+},
+"Blog": {
+  "title": "Välkommen till Padlev Blogg!",
+  "description": "Håll dig steget före med de senaste padelnyheterna, expertips, utrustningsrecensioner och exklusiva insikter. Oavsett om du är nybörjare eller erfaren spelare erbjuder vår blogg allt från träningstekniker till turneringshöjdpunkter. Gå med i vår gemenskap och lyft din padelupplevelse!",
+  "previous": "föregående",
+  "next": "nästa",
+  "tag": "tennisväska på banan",
+  "Latest News": "Senaste Nyheter"
+},
+"Blog-id": {
+  "Published": "Publicerad",
+  "Explore More from Padelv": "Utforska mer från Padlev",
+  "Loved this post": "Gillade du detta inlägg? Dela padel-kärleken! Sprid ordet och låt dina vänner ta del av spelet."
+},
+"Shop-id": {
+  "Percent": "rabatt",
+  "Vat": "Priserna på produkter på Padlev inkluderar moms. Den tillämpliga momssatsen kan variera beroende på din leveransadress och beräknas i kassan.",
+  "Charity": "När du handlar på Padlev får du inte bara något fantastiskt – du gör också skillnad. För varje köp går 10% av ditt totalbelopp direkt till välgörenhet. Tillsammans kan vi skapa en positiv påverkan medan du njuter av de produkter du älskar. Handla nu och bli en del av något större!",
+  "Color": "Färg",
+  "Size": "Storlek",
+  "free shipping link": "Fri frakt på alla beställningar",
+  "free shipping title": "Njut av fri frakt över hela världen på alla varor!",
+  "free shipping description 1": "På Padlev vill vi göra din shoppingupplevelse smidig och givande. Därför är vi glada att kunna erbjuda fri frakt på alla varor, oavsett var du befinner dig i världen! Oavsett om du handlar till dig själv eller skickar en present till en älskad, har vi dig täckt.",
+  "free shipping description 2": "Vänta inte – logga in på ditt Padlev-konto idag och börja utforska de bästa produkterna med oslagbara erbjudanden. Din nästa favoritprodukt är bara ett klick bort!",
+  "return link": "returer inom 90 dagar efter köp",
+  "return title": "Problemfri returpolicy inom 90 dagar",
+  "return description 1": "Returer accepteras inom 90 dagar från inköpsdatumet. Kunden ansvarar för returfraktkostnader. Se till att varorna är i sitt ursprungliga skick, eftersom återbetalningar kan justeras för använda, skadade eller ofullständiga returer.",
+  "return description 2": "Läs hela returpolicyn",
+  "secure link": "Säkra betalningsmetoder",
+  "secure title": "Säkra betalningsmetoder",
+  "secure description": "Vi erbjuder mycket säkra betalningsalternativ för att säkerställa din trygghet. Din integritet är vår prioritet – din personliga information är alltid skyddad och säljs aldrig. Vi använder dina uppgifter endast för att förbättra din shoppingupplevelse, i enlighet med våra strikta integritets- och cookie-policyer. Handla med förtroende på Padlev!", 
+  "Reviews": "Recensioner",
+  "Description": "Beskrivning",
+  "share description": "Älskar du den här produkten? Sprid ordet! Dela den med dina vänner och låt dem också upptäcka något fantastiskt. Din rekommendation betyder allt för oss!",
+  "suggestion title": "Utforska dina intressen",
+  "quantity": "Antal",
+"add to cart": "Lägg i varukorg",
+"see cart": "Se min varukorg",
+
+"size": "Storleksguide",
+"view-cart": "Visa varukorg",
+"select-size": "Vänligen välj en storlek innan du fortsätter",
+"select-color": "Vänligen välj en färg innan du fortsätter",
+"select-color-size": "Vänligen välj en färg och storlek innan du fortsätter",
+"title1": "Omvandlingstabell för klädstorlekar",
+"sub1-title1": "Herrkläder storlekar",
+"sub2-title1": "Damkläder storlekar",
+"sub3-title1": "Barnkläder storlekar",
+"title2": "Omvandlingstabell för skostorlekar",
+"sub1-title2": "Herrskostorlekar",
+"sub2-title2": "Damskostorlekar",
+"sub3-title2": "Barnskostorlekar",
+"China": "Kina",
+"Japan": "Japan",
+"Chesti": "Bröst (tum)",
+"Chestc": "Bröst (cm)",
+"Waisti": "Midja (tum)",
+"Waistc": "Midja (cm)",
+"Busti": "Byst (tum)",
+"Bustc": "Byst (cm)",
+"Hipsi": "Höfter (tum)",
+"Hipsc": "Höfter (cm)",
+"Heighti": "Längd (tum)",
+"Heightc": "Längd (cm)",
+"Foot-Length-i": "Fotlängd (tum)",
+"Foot-Length-c": "Fotlängd (cm)",
+"Age": "Ålder",
+
+"instock": "Tyvärr, denna produkt är slut i lager. Vänligen försök igen snart."
+
+
+}, 
+"Login": {
+  "text-1": "Lås upp exklusiva PadlevCLUB-förmåner idag!",
+  "text-2": "Gå med i PadlevCLUB och förbättra din upplevelse med förmåner designade just för dig. Njut av fri frakt på varje beställning, tillgång till exklusiva kampanjkoder för medlemmar och tidig åtkomst till unika produkter. Som PadlevCLUB-medlem är du alltid först med att få veta om specialerbjudanden, limiterade släpp och mer.",
+  "text-3": "Registrera dig eller logga in nu för att börja ta del av dina belöningar!",
+  "text-4": "Skapa ett starkt lösenord för att skydda ditt konto: minst 8 tecken, inklusive stora och små bokstäver, siffror och specialtecken. Undvik vanliga eller lättgissade lösenord.",
+  "text-5": "Här är ett föreslaget lösenord för din registrering:",
+  "text-6": "Har du redan ett konto och glömt ditt lösenord?",
+  "text-7": "Återställ det här.",
+  "text-8": "INTEGRITETSPOLICY",
+  "text-9": "Genom att slutföra din registrering kommer dina personuppgifter att delas med de personuppgiftsansvariga för PadlevCLUB (Padlev Inc. och dess anslutna enheter, hädanefter kallade 'Padlev') för att skapa och upprätthålla ditt PadlevCLUB-medlemskap. Ditt medlemskap kan inte upprätthållas utan dessa uppgifter. Som en del av dina PadlevCLUB-förmåner kan Padlev skicka dig personliga marknadsföringsmeddelanden. Du kan när som helst välja att avstå från dessa meddelanden. Genom att registrera dig bekräftar du att du har läst, förstått och godkänner vår Integritetspolicy.",
+  "text-10": "Vi värdesätter din integritet och dina val. Dina uppgifter är alltid krypterade och säkra.",
+  "Privacy Policy": "Integritetspolicy",
+  "sign in": "logga in",
+
+  "Email-is-required": "E-post krävs.",
+  "Invalid-email-format": "Ogiltigt e-postformat.",
+  "Disposable-emails": "Engångsmejl är inte tillåtna.",
+  "8-characters": "Lösenordet måste vara minst 8 tecken långt.",
+  "uppercase": "Lösenordet måste innehålla minst en versal (A-Z).",
+  "lowercase": "Lösenordet måste innehålla minst en gemen (a-z).",
+  "number": "Lösenordet måste innehålla minst en siffra (0-9).",
+  "character": "Lösenordet måste innehålla minst ett specialtecken (t.ex. !@#$%^&*).",
+  "Failed-to-copy-password": "Misslyckades med att kopiera lösenordet.",
+  "email": "e-post",
+  "password": "lösenord",
+  "Invalid-email": "Ogiltig e-post.",
+  "Please-verify-your-email-or-password": "Vänligen verifiera din e-post eller ditt lösenord.",
+  "An-error-occurred-during-sign-in": "Ett fel uppstod vid inloggning. Försök igen.",
+  "Sign-in-error:": "Inloggningsfel:",
+  "Copied": "Kopierat!",
+  "Subscription-failed": "Prenumeration-misslyckades",
+  "Error-during-subscription": "Fel under prenumeration",
+  "Network-error": "Nätverksfel",
+
+
+
+  "emailsend": "Vi har skickat en länk för att återställa ditt lösenord till din e-post. Vänligen kontrollera din inkorg och följ instruktionerna för att verifiera och återställa ditt lösenord.",  
+"emailsenderror": "Något gick fel. Vänta en stund och försök igen.",  
+"enteremail": "Vänligen ange din e-post i det angivna fältet.",
+
+"log-tit": "Logga in eller registrera dig",
+"log-des": "Logga in eller skapa ett konto med din e-postadress och lösenord för att få ditt spårningsnummer, följa din beställning i realtid, njuta av en snabbare kassa och låsa upp exklusiva erbjudanden och specialrabatter—registrera dig nu för en smidig shoppingupplevelse!"
+
+
+},
+"Shop": {
+  "title": "Stig in i padelvärlden hos Padlev Shop!",
+  "description": "Utforska vårt premiumutbud av padelutrustning, inklusive högpresterande racketar, bollar, kläder och tillbehör. Höj ditt spel med toppmärken och den senaste utrustningen. Handla nu och spela som ett proffs!",
+  "Latest": "Senaste produkter",
+  "Filter": "Filtrera efter",
+  "None": "Ingen",
+  "Lower": "Lägsta pris",
+  "Higher": "Högsta pris",
+  "Reductions": "Rabatter",
+  "tag": "padeltennisboll",
+  "previous": "Föregående",
+"next": "Nästa"
+
+},
+"Search": {
+  "Found": "Hittade",
+  "articles": "artiklar om",
+  "products": "produkter för"
+},
+"cart-c": {
+  "empty-title": "Din varukorg är tom",
+  "empty-description": "Lägg till din första vara i varukorgen och se den här. Börja handla nu!",
+  "empty-button": "Låt oss handla!",
+
+  "title-cart": "Din varukorg",
+  "description-cart": "Dessa varor är inte reserverade! Slutför din beställning innan de tar slut.",
+  "Color": "Färg",
+  "Size": "Storlek",
+  "Quantity": "Antal",
+
+  "Subtotal": "Delsumma",
+  "Shipping": "Frakt",
+  "Discount": "Rabatt",
+  "Total": "Totalt (inkl. moms)",
+  "copon": "Har du en rabattkod?",
+  "copon-palce-holder": "Ange rabattkod",
+  "copon-button": "Använd rabattkod",
+  "copon-error": "Oj! Den koden verkar inte fungera. Dubbelkolla den eller prova en annan!",
+  "checkout-button": "Gå till kassan",
+  "continu-button": "Fortsätt handla",
+  "payment-icon-description": "Säkra betalningsmetoder vi accepterar",
+
+  "Your-order": "Din beställning",
+  "Edite": "Redigera",
+  "payment-methods": "Betalningsmetoder",
+  "payment-methods-description": "Njut av en smidig och säker betalningsupplevelse! Välj den metod som passar dig bäst – PayPal eller betalkort – och slutför ditt köp med bara några klick. Snabbt, enkelt och 100% säkert. Klicka på knappen nu och handla med förtroende!",
+
+
+
+
+
+  "error": "Det gick inte att ladda varukorgens artiklar. Vänligen försök igen.",
+  "logincheckout": "Har du redan ett konto? Logga in för en snabbare checkout.",
+  "summary": "Ordersammanfattning",
+  "verifypassword": "Vänligen verifiera ditt lösenord",
+  "address-and-contact-title": "Adress och kontaktinformation",
+  "constactinfo": "Kontaktinformation",
+  "have-account-1": "Det verkar som att du redan har ett konto!",
+  "have-account-2": "Logga in nu för en snabbare checkout, spåra dina beställningar i realtid och få enkel åtkomst till din orderhistorik. Dessutom får du som värdefull medlem exklusiva erbjudanden och specialrabatter!",
+  "have-account-3": "Ange bara ditt lösenord för att slutföra ditt köp smidigt.",
+  "login": "Logga in",
+  "forgot-password": "Glömt ditt lösenord?",
+  "click-here": "Klicka här för att återställa det.",
+  "email-send": "Vi har skickat en länk för att återställa ditt lösenord till din e-post. Vänligen kontrollera din inkorg och följ instruktionerna för att verifiera och återställa ditt lösenord.",
+  "email-send-error": "Något gick fel. Vänta en stund och försök igen.",
+  "email": "E-post *",
+  "password": "Lösenord *",
+  "full-name": "Fullständigt namn",
+  "enter-name": "Vänligen ange ditt namn *",
+  "exp": "Ex: +1*",
+  "enter-code": "Ange din landskod.",
+  "phone": "Telefonnummer *",
+  "enter-phone": "Vänligen ange ett giltigt telefonnummer.",
+  "adress-1": "Gata, hus/lägenhet/enhet *",
+  "enter-address": "Vänligen ange din fullständiga adress.",
+  "adress-2": "Lägenhet, svit, enhet, etc. (valfritt)",
+  "city": "Stad *",
+  "enter-city": "Vänligen ange din stad",
+  "state": "Delstat/Provins *",
+  "enter-state": "Vänligen ange din delstat eller region.",
+  "country": "Land *",
+  "enter-country": "Vänligen ange ditt land",
+  "zip": "Postnummer *",
+  "enter-zip": "Vänligen ange ditt postnummer.",
+  "continue": "Fortsätt",
+  "someting-wrong": "Något gick fel. Vänligen försök igen.",
+  "login-or-try-with-new-email": "Du har redan ett konto. Logga in eller försök igen med en ny e-postadress.",
+  "payment-and-shipping": "Betalning och frakt",
+  "delivery-estimation": "Beräknad leveranstid",
+  "delivery-estimation-text-1": "Observera att den beräknade leveranstiden för standardfrakt från Kina vanligtvis är 10 till 15 arbetsdagar. Leveranstider kan variera något beroende på tullhantering och lokala posttjänster i din region.",
+  "delivery-estimation-text-2": "Vi kommer att tillhandahålla ett spårningsnummer så snart din beställning har skickats, så att du kan följa dess status. Om du har några frågor eller behöver ytterligare hjälp är du välkommen att kontakta oss.",
+
+
+  "use-my-address": "Använd min adress för paketleveransen",
+  "Card-Number": "Kortnummer",
+  "Expiration-Date": "Utgångsdatum",
+  "CVV": "CVV",
+  "Pay": "Betala",
+  "Secure-Payment-Processing": "Säker betalningshantering",
+  "Secure-Payment-Processing-description": "Dina betalningsuppgifter är fullt skyddade med branschledande säkerhetsåtgärder. Transaktioner är krypterade och behandlas säkert, vilket säkerställer att din kortinformation aldrig lagras eller exponeras.",
+
+  "shipping-address":"Leveransadress & Leveransinformation",
+"shipping-details":"Leveranstider & Uppdateringar om frakt",
+"shipping-details-text":"Din beställning skickas med standardfrakt från vårt lager i Kina, med en uppskattad leveranstid på 10–15 arbetsdagar. Leveranstiden kan variera något på grund av tull eller lokala postförseningar. Du får ett spårningsnummer när paketet har skickats. Tveka inte att kontakta oss vid frågor."
+
+
+
+
+},
+"orders": {
+  "in": "in",
+  "on": "på",
+  "purchased": "köpt",
+  "filed": "Misslyckades att kopiera lösenord",
+  "pending": "väntande",
+  "shipped": "skickad",
+  "completed": "fullföljd",
+  "no-order": "Inga beställningar på detta konto",
+  "status": "status",
+  "order-info": "orderinformation",
+  "address": "adress",
+  "order-ID": "order-ID",
+  "Order-placed-on": "Beställning gjordes den",
+  "Order-completed-on": "Beställningen slutfördes den",
+  "Payment-method": "Betalningsmetod",
+  "tracking-number": "spårningsnummer",
+  "copied": "kopierad",
+  "view-product": "visa produkt",
+  "Received": "Mottagen",
+  "Delete": "Radera",
+  "write-rating-error": "Vänligen välj ett betyg för att fortsätta.",
+  "write-review-error": "Vänligen lämna en recension.",
+  "Write-a-Review": "Skriv en recension",
+  "description-leave-feedback": "Lämna feedback på engelska eller ditt modersmål.",
+  "Rating": "Betyg",
+  "write-review-placeholder": "Skriv din recension här...",
+  "Submit-review": "Skicka recension",
+  "small-description": "Du kan redigera din recension när som helst. Hitta din recension på produktens sida och klicka på redigeringsikonen.",
+  "country-code-error": "Vänligen ange din landskod.",
+  "Edite-a-review": "Redigera en recension",
+  "country-code-palceholder": "Ange din landskod (t.ex. SE).",
+  "return": "återvända"
+},
+"user-dashboard": {
+  "My-Account": "Mitt konto",
+  "Account-information": "Kontoinformation",
+  "Orders": "Beställningar",
+  "address": "Adress",
+  "My-Information": "Min information",
+  "info-description": "Vänligen säkerställ att informationen nedan är korrekt och uppdaterad.",
+  "Full-Name": "Fullständigt namn",
+  "Login-details": "Inloggningsuppgifter",
+  "E-mail": "E-post",
+  "Edite": "Redigera",
+  "email-send": "Vi har skickat ett e-postmeddelande med instruktioner för att uppdatera din e-postadress.",
+  "Password": "Lösenord",
+  "logout-description": "Logga ut från alla enheter",
+  "logout-description-1": "Du kommer att loggas ut från alla enheter där du har åtkomst till Padlev-webbplatsen. För att logga in igen, ange ditt lösenord.",
+  "logout": "Logga ut",
+  "edite-full-name": "Redigera fullständigt namn",
+  "edite-address": "Redigera adress",
+  "phone-number": "Telefonnummer",
+  "percent-of-40": "40% RABATT på alla produkter",
+  "total-number": "TOTALT ANTAL POÄNG",
+  "percent-of-20": "20% RABATT på alla produkter",
+  "vip-title": "Tack, VIP!",
+  "vip-text-1": "Vi är otroligt tacksamma för att ha dig som en av våra mest värdefulla kunder.",
+  "vip-text-2": "Ditt fortsatta förtroende, lojalitet och stöd betyder världen för oss.",
+  "vip-text-3": "Som VIP-medlem är du inte bara en kund, du är en del av vår resa, och vi är hedrade att få servera dig med exklusiva förmåner och premiumerbjudanden.",
+  "vip-text-4": "Tack för att du är fantastisk. Vi ser fram emot att göra din upplevelse ännu mer belönande!",
+  "vip-text-5": "Med uppskattning,",
+  "vip-text-6": "Padlev-teamet",
+  "level-title": "Uppgradera ditt konto & lås upp större belöningar!",
+  "lev-1": "Du är för närvarande på ett",
+  "lev-2": "Guld",
+  "lev-3": "Standard",
+  "lev-4": "Konto med",
+  "lev-5": "Tjäna poäng med varje köp 1$ spenderat = 1 poäng! Ju mer du handlar, desto högre klättrar du och låser upp större besparingar och exklusiva förmåner.",
+  "lev-6": "Vill du ha fler förmåner? Så här kan du uppgradera:",
+  "lev-7": "Guldkonto",
+  "lev-8": "Tjäna",
+  "lev-9": "poäng",
+  "lev-10": "Platinumkonto",
+  "lev-11": "Tjäna",
+  "lev-12": "poäng",
+  "lev-13": "Exempel",
+  "lev-14": "Köp en produkt för 50$ → Få 50 poäng",
+  "lev-15": "Varför uppgradera? Belöningarna blir bättre!",
+  "lev-16": "Förmåner för Guldkonto",
+  "lev-17": "20% RABATT på alla produkter",
+  "lev-18": "Exklusiva bonuskuponger",
+  "lev-19": "Beställningar",
+  "lev-20": "Beställningar",
+  "lev-21": "Förmåner för Platinumkonto",
+  "lev-22": "40% RABATT på alla produkter (STORA besparingar!)",
+  "lev-23": "Exklusiva bonuskuponger",
+  "lev-24": "Börja tjäna poäng idag—varje köp tar dig närmare VIP-status! Kommer du att nå Guld eller gå hela vägen till Platinum?",
+  "reset-email": "Ange din nya e-postadress",
+  "reset-password": "Ange ditt nya lösenord",
+
+
+  "Feedback": "Feedback",
+  "return-refound": "retur / återbetalning",
+  "delivery-status": "leveransstatus *",
+  "choose": "Välj ett alternativ nedan...",
+  "items-received": "mottagna varor",
+  "package-not-received": "paket inte mottaget",
+  "application-type": "ansökningstyp *",
+  "Return-and-refund": "Retur och återbetalning",
+  "refund-only": "endast återbetalning",
+  "describe-issue": "beskriv problemet *",
+  "description": "Vårt team kommer noggrant att granska din ansökan, och du kommer att få ett e-postmeddelande från en av våra agenter om ytterligare information krävs, såsom bilder eller en video på varan. Vi kommer även att meddela dig när ett beslut har fattats om din återbetalning.",
+  "description-1": "Håll utkik i din inkorg för ytterligare uppdateringar. Vi uppskattar ditt tålamod och samarbete.",
+  "submit": "Skicka in",
+  "text-palceholder": "du kan lägga till mer textbeskrivning om ditt problem med varan",
+  "add-feddback-title": "Vänligen ge oss feedback",
+  "add-feedback-description": "Vi är dedikerade att leverera bästa service och användarupplevelse. Din feedback betyder mycket för oss, den hjälper oss att växa, förbättra och betjäna dig ännu bättre. Vi skulle verkligen uppskatta om du tog dig en stund för att dela dina tankar!",
+  "add-feddback-text-placeholder": "lämna din feedback här",
+  "feedback-title": "Tack så mycket för din feedback, vi uppskattar det verkligen!",
+  "Rating": "Betyg",
+  "edite-feedback-title": "Du kan redigera din feedback när som helst."
+},
+ "Not-found":{
+  "Page-not-found":"Sidan hittades inte",
+  "Page-not-found-description":"Sidan du letar efter finns inte"
+},
+
+
+
+"FAQPage": {
+        "title": "Vanliga frågor (FAQ)",
+        "1-question": "1. Hur kan jag spåra min beställning?",
+        "1-answer-p1": "När din beställning har skickats kan du enkelt spåra den via ditt Padlev-konto. Så här gör du:",
+        "1-list-1": "Logga in på ditt konto på vår webbplats.",
+        "1-list-2": "Gå till avsnittet \"Beställningar\" i din kontopanel.",
+        "1-list-3": "Välj den beställning du vill spåra. Du ser aktuell status, spårningsnummer och fraktbolag.",
+        "1-answer-p2": "Om du inte har ett konto skapas ett automatiskt efter din första beställning. Du får ett mejl med inloggningsuppgifter för att spåra beställningar.",
+        
+        "2-question": "2. Behöver jag ett konto för att beställa?",
+        "2-answer-p1": "Nej, du behöver inget konto för att handla hos Padlev. Men ett konto ger flera fördelar:",
+        "2-list-1": "Snabbare utcheckning med sparade leveransadresser och betalningsuppgifter.",
+        "2-list-2": "Beställningsspårning och statusuppdateringar.",
+        "2-list-3": "Exklusiva erbjudanden och kampanjer.",
+        "2-answer-p2": "Ett konto skapas automatiskt efter din första beställning, och du får inloggningsuppgifter via mejl.",
+        
+        "3-question": "3. Jag gjorde min första beställning, men mitt konto har inte skapats. Vad ska jag göra?",
+        "3-answer-p1": "Oroa dig inte – efter din första betalning skapas kontot automatiskt. Du får ett mejl med inloggningsuppgifter.",
+        "3-answer-p2": "Kontrollera skräpposten om du inte hittar mejlet.",
+        "3-answer-p3": "Behöver du hjälp? Kontakta oss på support@padlev.com.",
+        
+        "4-question": "4. Vilka leveransalternativ erbjuder ni?",
+        "4-answer-p1": "Vi erbjuder fri frakt på alla produkter för en bekväm och prisvärd upplevelse. Oavsett beställningsstorlek står vi för fraktkostnaden.",
+        "4-list-1": "Standardleverans: Levereras inom några arbetsdagar, beroende på plats.",
+        "4-list-2": "Internationell leverans: Tillgänglig utanför vårt hemland. Leveranstider varierar.",
+        "4-answer-p2": "Du får spårningsinformation när beställningen skickas.",
+        
+        "5-question": "5. Erbjuder ni internationell leverans?",
+        "5-answer-p1": "Ja, vi levererar till många länder. Kontrollera leveransalternativen vid utcheckning.",
+        "5-answer-p2": "Fraktkostnad och leveranstid beror på land. Du kan spåra din beställning efter att den skickats.",
+        
+        "6-question": "6. Vad är er retur- och återbetalningspolicy?",
+        "6-answer-p1": "Vi vill att du ska vara nöjd med ditt köp. Retur och återbetalning är möjlig inom 90 dagar efter betalning.",
+        "6-answer-p2": "Så här fungerar returen:",
+        "6-list-1": "Returformulär: Logga in på ditt konto, gå till \"Returer\" och fyll i formuläret.",
+        "6-list-2": "Granskning: Vi granskar din förfrågan och kontaktar dig vid behov.",
+        "6-list-3": "Godkännande: Vid godkänd retur återbetalar vi när varan nått vårt lager.",
+        "6-list-4": "Återbetalning: Pengarna återförs till originalbetalningsmetoden. Det kan ta några dagar.",
+        "6-answer-p3": "Villkor: Produkten måste vara oanvänd och i originaltillstånd. Retur inom 90 dagar.",
+        "6-answer-p4": "Frågor? Maila support@padlev.com.",
+        
+        "7-question": "7. Vad gör jag om jag får en skadad eller felaktig vara?",
+        "7-answer-p1": "Vi beklagar om din beställning anlänt skadad eller fel. Följ dessa steg:",
+        "7-list-1": "Kontakta oss inom 7 dagar på support@padlev.com.",
+        "7-list-2": "Bifoga tydliga foton på varan och förpackningen.",
+        "7-list-3": "Retur: Vi skickar en returetikett utan kostnad.",
+        "7-list-4": "Lösning: Vi ersätter varan eller återbetalar.",
+        "7-answer-p2": "Vi löser problem snabbt och effektivt.",
+        
+        "8-question": "8. Kan jag ändra eller avbeställa efter att jag lagt en order?",
+        "8-answer-p1": "Beställningar behandlas snabbt, men kontakta oss omedelbart på support@padlev.com för ändringar.",
+        "8-answer-p2": "Om beställningen inte skickats kan vi hjälpa dig. Annars gäller returpolicy.",
+        
+        "9-question": "9. Hur återställer jag mitt lösenord?",
+        "9-answer-p1": "Glömt lösenordet? Så här återställer du det:",
+        "9-list-1": "Gå till inloggningssidan.",
+        "9-list-2": "Klicka på \"Glömt ditt lösenord?\".",
+        "9-list-3": "Ange din e-postadress så skickar vi instruktioner.",
+        "9-list-4": "Följ mejlet för att skapa ett nytt lösenord.",
+        "9-answer-p2": "Behöver du hjälp? Kontakta oss.",
+        
+        "10-question": "10. Hur når jag kundsupport?",
+        "10-answer-p1": "Har du frågor? Vår kundsupport hjälper dig gärna!",
+        "10-list-1": "E-post: support@padlev.com",
+        "10-answer-p2": "Vi ser till att du får den bästa shoppingupplevelsen hos Padlev!"
+      },
+
+
+
+ "AboutPage": {
+  "title": "Om Oss – Padlev",
+  "section-1-p1": "I dagens snabbrörliga värld, där livets påfrestningar och distraktioner ständigt omger oss, är det lätt att tappa fokus på det som verkligen betyder något: vårt välbefinnande.",
+  "section-2-title": "Din Hälsa Är Viktig",
+  "section-2-p1": "På Padlev förstår vi de utmaningar du står inför. Vi tror att hälsa inte bara är frånvaron av sjukdom – det är ett tillstånd av full vitalitet, energi och glädje. Oavsett om du försöker återfå din kondition, fly vardagsstressen eller helt enkelt återknyta kontakten med en hälsosammare version av dig själv, så är din resa viktig.",
+  "section-3-title": "Upptäck Glädjen med Padel",
+  "section-3-p1": "Det är här vi kommer in. Padel är mer än bara en sport – det är ett roligt, dynamiskt och socialt sätt att bli vältränad, hålla sig aktiv och skapa meningsfulla relationer.",
+  "section-3-p2": "Till skillnad från andra träningsrutiner som känns som ett måste, är padel lätt att lära sig, starkt beroendeframkallande (på bästa sätt) och perfekt för spelare på alla nivåer. Den återför glädjen i rörelse – och det är det som gör den så kraftfull.",
+  "section-4-title": "Din Resa från Nybörjare till Proffs",
+  "section-4-p1": "På Padlev erbjuder vi mer än bara padelutrustning. Vi är din följeslagare på en förvandlande resa – från ditt allra första slag till att bli den spelare du drömmer om att vara.",
+  "section-4-p2": "Vi handplockar noggrant produkter som är utformade för att stödja varje steg i din padelutveckling: från nybörjarens grunder till avancerad utrustning, träningstips och prestationsvägledning. Du går aldrig ensam – vi finns med dig varje steg på vägen.",
+  "section-5-title": "Resultaten Talar för Sig Själva",
+  "section-5-p1": "När du satsar på din hälsoresa med padel blir resultaten tydliga: bättre kondition, skarpare fokus, starkare relationer och en förnyad livsglädje.",
+  "section-5-p2": "Tusentals har redan gjort padel till en del av sin hälsolivsstil – och deras framgångshistorier inspirerar allt vi gör. Med rätt utrustning, inställning och stöd kan du förändra ditt liv – både på och utanför banan.",
+  "section-6-title": "Padlev: Din Guide och Sponsor",
+  "section-6-p1": "Vi säljer inte bara produkter – vi sponsrar din livsstil. På Padlev ser vi dig som hjälten i din egen hälsoresa. Vår roll är att vägleda, utrusta och motivera dig. Oavsett om du tränar inför din första match eller pressar dina gränser på tävlingsnivå, finns Padlev här för att hjälpa dig att uppnå mer än du någonsin trodde var möjligt.",
+  "section-7-title": "Gå Med Oss Idag",
+  "section-7-p1": "Bli hjälten i din egen hälsohistoria. Låt Padlev vara din pålitliga guide till ett friskare, lyckligare och starkare liv – börja nu.",
+  "section-7-p2": "Låt oss tillsammans låsa upp din fulla potential – en match i taget.",
+  "tag": "Padelspelare som håller i en medalj och ett racket"
+}
+,
+
+
+ "CharityPage": {
+  "title": "Vår välgörenhetsinitiativ",
+  "intro": {
+    "p1": "På Padlev tror vi på sportens kraft att förändra liv.",
+    "p2": "Vi handlar inte bara om att sälja produkter av högsta kvalitet för padel – vi brinner för att ge tillbaka till vårt samhälle och stötta dem som behöver det mest. Därför avsätter vi 10 % av vår vinst till välgörenhet som fokuserar på hälsa, välmående och att ge individer möjlighet att leva hälsosammare och mer aktiva liv."
+  },
+  "section1": {
+    "title": "Göra skillnad – Tillsammans",
+    "p1": "När du handlar från Padlev investerar du inte bara i högkvalitativ sportutrustning, du gör också en skillnad. Varje köp du gör bidrar direkt till vår mission att hjälpa människor, särskilt barn och underprivilegierade samhällen, att uppleva sportens fördelar.",
+    "p2": "Vi vill se hälsosammare samhällen, där alla har möjlighet att spela, träna och blomstra. Från att ge tillgång till sportutrustning och anläggningar till att stödja sportprogram och hälsoinitiativ, är vi engagerade i att skapa en bättre framtid genom sport."
+  },
+  "section2": {
+    "title": "Våra välgörenhetspartners",
+    "p1": "Vi arbetar med pålitliga välgörenhetsorganisationer som fokuserar på att förbättra tillgången till sport för alla individer, oavsett deras bakgrund eller ekonomiska situation. Några av de sätt ditt stöd hjälper inkluderar:",
+    "list": {
+      "0": "Att tillhandahålla sportutrustning för barn och vuxna som kanske inte har råd med det.",
+      "1": "Insamling för lokala sportklubbar som främjar fysisk aktivitet och välmående i missgynnade områden.",
+      "2": "Stödja hälsoeducativa initiativ som lär ut vikten av träning och att upprätthålla en aktiv livsstil.",
+      "3": "Skapa möjligheter för ungdomar att delta i organiserade sportprogram, vilket hjälper dem att bygga disciplin, teamwork och självförtroende."
+    },
+    "p2": "Vi är stolta över att samarbeta med organisationer som fokuserar på dessa viktiga områden, och ser till att ditt bidrag gör en konkret och positiv inverkan."
+  },
+  "section3": {
+    "title": "10 % av varje köp går till välgörenhet",
+    "p1": "Vi är engagerade i att ge tillbaka, och därför går 10 % av vår vinst till välgörenhet. Oavsett om det handlar om att finansiera lokala sportprogram eller ge nödvändig utrustning till behövande samhällen, spelar ditt köp en avgörande roll i att förbättra liv.",
+    "howItWorks": {
+      "title": "Hur fungerar det?",
+      "list": {
+        "0": "Du köper en av våra högkvalitativa produkter från Padlev.",
+        "1": "Vi tilldelar 10 % av vinsten från ditt köp till välgörenhetsorganisationer som är dedikerade till att främja sport och hälsa.",
+        "2": "Du hjälper till att göra en skillnad och ger fler människor möjlighet att vara aktiva, hälsosamma och engagerade i sport."
+      }
+    },
+    "p2": "Varje gång du köper från oss får du inte bara det bästa inom padelutrustning – du hjälper till att göra världen till en hälsosammare och mer aktiv plats."
+  },
+  "section4": {
+    "title": "Varför vi bryr oss om hälsa och sport",
+    "p1": "Vi förstår att sport inte bara är ett roligt sätt att hålla sig i form, utan också en viktig aspekt för att bygga självförtroende, disciplin och teamwork. Genom vårt välgörenhetsinitiativ vill vi göra sport tillgänglig för alla, oavsett ekonomisk situation. Vi tror att hälsa är en universell rättighet, och vår mission är att skapa en inkluderande miljö där alla kan delta i fysiska aktiviteter som gynnar deras välbefinnande.",
+    "p2": "Sport spelar också en betydande roll i utvecklingen av barn och ungdomar. Genom att stödja sportprogram ger vi unga människor möjligheter att hålla sig aktiva, bygga positiva relationer och utveckla livsfärdigheter som hjälper dem att lyckas både på och utanför planen."
+  },
+  "section5": {
+    "title": "Gå med oss och gör en skillnad",
+    "p1": "Du är inte bara en kund – du är en partner i vårt uppdrag att förbättra liv genom sport. Genom att välja att handla från Padlev bidrar du till välbefinnandet hos individer och samhällen som behöver det mest.",
+    "howWeCan": {
+      "title": "Tillsammans kan vi:",
+      "list": {
+        "0": "Hjälpa barn att växa upp friska och aktiva.",
+        "1": "Tillhandahålla sportutrustning till samhällen i behov.",
+        "2": "Finansiera hälsoinitiativ som lär ut vikten av fysisk aktivitet."
+      }
+    },
+    "p2": "Vi inbjuder dig att vara en del av denna meningsfulla resa. Ditt stöd kommer att göra det möjligt för oss att utöka våra välgörenhetsinsatser och ha en ännu större påverkan på människors hälsa över hela världen."
+  },
+  "section6": {
+    "title": "Hur du kan engagera dig",
+    "p1": "Du kan hjälpa till på många sätt:",
+    "list": {
+      "0": "Gör ett köp: Varje gång du handlar hos oss stödjer du våra välgörenhetsändamål.",
+      "1": "Sprid ordet: Dela vår mission med dina vänner och familj och uppmuntra dem att stödja saken.",
+      "2": "Håll kontakten: Följ oss på sociala medier och håll dig uppdaterad om vårt framsteg.",
+      "3": "Stödja välgörenheter direkt: Om du vill bidra ytterligare, kommer vi att ge information om hur du kan donera till våra välgörenhetspartners."
+    }
+  },
+  "section7": {
+    "title": "Vårt engagemang för transparens",
+    "p1": "Vi tror på att vara transparenta gentemot våra kunder. Du kommer att kunna se exakt vart dina bidrag går och hur de gör skillnad. Vi kommer att ge regelbundna uppdateringar om de projekt vi stödjer och effekten av dina donationer.",
+    "p2": "Vi kommer också att dela berättelser, bilder och rapporter om våra välgörenhetsinitiativ så att du kan se på nära håll vilken skillnad ditt köp gör."
+  },
+  "closing": {
+    "title": "Låt oss bygga en hälsosammare framtid – tillsammans",
+    "p1": "Varje padelracket, varje boll, varje köp du gör har en positiv effekt. Tack för att du stödjer vårt uppdrag och hjälper oss att skapa en värld där alla har tillgång till sportens fördelar och en hälsosam livsstil. Låt oss arbeta tillsammans för att inspirera och stärka människor att leva bättre och hälsosammare liv.",
+    "p2": "Padlev – Spela för Hälsa, Spela för en Orsak."
+  }
+},
+
+
+
+
+
+
+
+
+
+"ReturnPolicy": {
+    "title": "Retur- & återbetalningspolicy",
+    "intro": "På Padlev är din tillfredsställelse vår prioritet. Om du inte är helt nöjd med ditt köp kan du begära en retur och återbetalning inom 90 dagar från betalningsdatumet, enligt villkoren nedan.",
+    "eligibility": {
+        "title": "1. Berättigande",
+        "list": [
+            "Din förfrågan görs inom 90 dagar från betalningens slutförande.",
+            "Varorna är oanvända, i originaltillstånd och inte skadade.",
+            "Du skickar in returförfrågan via returformuläret i ditt Padlev-konto.",
+            "Förfrågan godkänns efter vår intern granskning."
+        ]
+    },
+    "howToSubmit": {
+        "title": "2. Så här skickar du in en returförfrågan",
+        "steps": [
+            "Logga in på ditt konto på www.padlev.com",
+            "Gå till Beställningar och välj den aktuella beställningen.",
+            "Klicka på retur / återbetalning.",
+            "Fyll i returformuläret med orsak och bifoga eventuella bilder om det behövs."
+        ],
+        "note": "När du har skickat in förfrågan får du en bekräftelse via e-post, och vi börjar granska din ansökan."
+    },
+    "reviewAndApproval": {
+        "title": "3. Granskning & godkännande",
+        "content": "Vårt supportteam kommer att utvärdera din förfrågan inom 3–5 arbetsdagar. Vi kan kontakta dig för ytterligare uppgifter.",
+        "list": [
+            "Om din förfrågan godkänns får du instruktioner om hur du returnerar produkten.",
+            "Om den avslås meddelar vi dig via e-post med en motivering."
+        ]
+    },
+    "returnShipping": {
+        "title": "4. Returfrakt",
+        "content": "Om inget annat anges är kunden ansvarig för returfrakten. Vi rekommenderar att du använder en spårbar frakttjänst. Padlev ansvarar inte för förlorade eller obehandlade returer."
+    },
+    "refunds": {
+        "title": "5. Återbetalningar",
+        "content": "När din returnerade vara har mottagits och godkänts:",
+        "list": [
+            "Vi återbetalar beloppet till din ursprungliga betalningsmetod.",
+            "Återbetalningar tar vanligtvis 5–10 arbetsdagar att behandla, beroende på din betalningsleverantör.",
+            "Du får ett e-postmeddelande när din återbetalning har behandlats."
+        ]
+    },
+    "itemsNotEligible": {
+        "title": "6. Varor som inte går att returnera",
+        "list": [
+            "Varor som returneras efter 90 dagar",
+            "Använda eller skadade varor som inte beror på vårt fel",
+            "Slutförsäljningar eller icke återvändbara produkter",
+            "Anpassade eller personliga varor"
+        ]
+    },
+    "exchanges": {
+        "title": "7. Byte av varor",
+        "content": "Vi erbjuder för närvarande inte direkta byten. Om du vill ha en annan vara, vänligen begär en retur och gör en ny beställning separat."
+    },
+    "contactUs": {
+        "title": "8. Kontakta oss",
+        "content": "Om du behöver hjälp eller har frågor om din retur eller återbetalning, vänligen kontakta oss:",
+        "address": {
+            "company": "Padlev",
+            "email": "contact@padlev.com",
+            "supportHours": "Måndag–fredag, 9:00–18:00 (CET)"
+        }
+    },
+    "changes": {
+        "title": "9. Ändringar av denna policy",
+        "content": "Vi kan uppdatera denna policy vid behov. Ändringar kommer att visas här med uppdaterat giltighetsdatum. Vänligen granska den regelbundet."
+    }
+},
+
+
+
+
+  "PrivacyPolicy": {
+    "title": "Integritetspolicy",
+    "effectiveDate": "Giltigt från: 01-01-2025",
+    "lastUpdated": "Senast uppdaterad: 01-01-2025",
+    "intro": "På Padlev (\"vi\", \"oss\" eller \"vår\") värdesätter vi din integritet och är engagerade i att skydda dina personuppgifter. Denna integritetspolicy förklarar hur vi samlar in, använder, lagrar, avslöjar och skyddar din information när du besöker vår webbplats www.padlev.com, interagerar med vårt innehåll eller köper produkter. Genom att använda vår webbplats godkänner du insamling och användning av information enligt denna integritetspolicy.",
+    "informationWeCollect": {
+      "title": "1. Information vi samlar in",
+      "description": "Vi kan samla in och bearbeta följande kategorier av personlig information:",
+      "list": [
+        "Kontoinformation: Namn, e-postadress, telefonnummer, lösenord, fakturerings-/leveransadress",
+        "Köpinformation: Orderdetaljer, betalningsmetod (vi lagrar inte känslig finansiell information)",
+        "Kommunikation med kundtjänst: Meddelanden, recensioner eller förfrågningar",
+        "Enhetsinformation: IP-adress, webbläsartyp, operativsystem, skärmupplösning",
+        "Användardata: Besökta sidor, tid på webbplatsen, hänvisningskällor",
+        "Cookies: Sessionsspårning, analyser, annonsering"
+      ]
+    },
+    "howWeUse": {
+      "title": "2. Hur vi använder din information",
+      "list": [
+        "För att fullfölja beställningar och tillhandahålla kundtjänst",
+        "För att skapa och hantera ditt konto",
+        "För att skicka transaktions- eller marknadsförings-e-post (om du har valt att ta emot sådana)",
+        "För att förbättra webbplatsens prestanda och användarupplevelse",
+        "För att förhindra bedrägerier och säkerställa säkerhet",
+        "För att följa juridiska krav"
+      ]
+    },
+    "legalBasis": {
+      "title": "3. Juridisk grund för behandling (GDPR)",
+      "list": [
+        "Samtycke: När du uttryckligen godkänner",
+        "Avtal: För att fullgöra avtalsenliga skyldigheter",
+        "Juridisk skyldighet: För att följa lagar",
+        "Legitima intressen: För att förbättra våra tjänster, förhindra bedrägerier"
+      ]
+    },
+    "sharingInformation": {
+      "title": "4. Dela personlig information",
+      "description": "Vi säljer inte din personliga information. Vi kan dela uppgifter med:",
+      "list": [
+        "Betalningsprocessorer (t.ex. PayPal, Stripe)",
+        "Frakt- och logistikleverantörer",
+        "Analyser och molntjänster (t.ex. Google Analytics)",
+        "Rättsliga myndigheter när det krävs",
+        "Vid fusion eller förvärv"
+      ]
+    },
+    "dataRetention": {
+      "title": "5. Lagring av data",
+      "content": "Vi behåller personlig information så länge som det är nödvändigt för att uppfylla våra skyldigheter och följa juridiska krav. När informationen inte längre behövs tas den bort eller anonymiseras på ett säkert sätt."
+    },
+    "yourRights": {
+      "title": "6. Dina rättigheter",
+      "description": "Beroende på din plats kan du ha följande rättigheter:",
+      "list": [
+        "Få tillgång till, rätta eller radera dina personuppgifter",
+        "Begränsa eller invända mot behandlingen av dina uppgifter",
+        "Återkalla samtycke när som helst",
+        "Begära överföring av uppgifter"
+      ],
+      "contact": "För att utöva dina rättigheter, kontakta oss på: contact@padlev.com"
+    },
+    "dataSecurity": {
+      "title": "7. Dataskydd",
+      "content": "Vi använder säkra servrar, kryptering och åtkomstkontroller för att skydda din information. Trots att vi gör vårt bästa för att använda kommersiellt acceptabla metoder för att skydda din personliga information, är ingen metod för överföring över internet 100 % säker."
+    },
+    "internationalTransfers": {
+      "title": "8. Internationella överföringar",
+      "content": "Din data kan överföras och bearbetas i länder utanför ditt eget. Vi säkerställer att lämpliga skyddsåtgärder vidtas för att skydda din information över gränser."
+    },
+    "thirdPartyLinks": {
+      "title": "9. Länkar till tredjepartswebbplatser",
+      "content": "Vår webbplats kan innehålla länkar till externa webbplatser. Vi är inte ansvariga för deras integritetspolicy. Vänligen granska deras integritetspolicy innan du lämnar ut personlig information."
+    },
+    "cookies": {
+      "title": "10. Cookies och spårningstekniker",
+      "description": "Vi använder cookies för att förbättra din upplevelse. Du kan kontrollera eller inaktivera cookies via din webbläsarinställningar. Typer av cookies inkluderar:",
+      "list": [
+        "Nödvändiga: Krävs för webbplatsens funktionalitet",
+        "Analyserande: Mäter användning och prestanda",
+        "Marknadsföring: Personliga annonser och erbjudanden"
+      ]
+    },
+    "children": {
+      "title": "11. Barns integritet",
+      "content": "Vår webbplats är inte avsedd för barn under 13 år. Vi samlar inte medvetet in personuppgifter från barn. Om vi får reda på att vi har samlat in uppgifter om barn kommer vi omedelbart att ta bort dem."
+    },
+    "changes": {
+      "title": "12. Ändringar i denna policy",
+      "content": "Vi kan uppdatera denna policy från tid till annan. Ändringar kommer att publiceras här på denna sida. Fortsatt användning av webbplatsen innebär godkännande av den uppdaterade policyn."
+    },
+    "contactUs": {
+      "title": "13. Kontakta oss",
+      "description": "Om du har frågor om denna integritetspolicy, kontakta oss på:",
+      "address": {
+        "company": "Padlev",
+        "email": "contact@padlev.com",
+        "website": "https://www.padlev.com"
+      }
+    }
+  },
+
+
+ "CookiePolicy": {
+  "title": "Cookie Policy",
+  "intro": "Denna Cookie Policy förklarar hur Padlev ('vi', 'oss' eller 'vår') använder cookies och liknande teknologier när du besöker vår webbplats www.padlev.com (den 'Webbplatsen'). Den beskriver vad dessa teknologier är, varför vi använder dem och dina rättigheter att kontrollera deras användning.",
+  "effectiveDate": "01-01-2025",
+  "lastUpdated": "01-01-2025",
+  "sections": {
+    "0": {
+      "title": "1. Vad är cookies?",
+      "content": "Cookies är små textfiler som lagras i din webbläsare eller enhet av webbplatser du besöker. De hjälper till att känna igen din enhet och komma ihåg preferenser eller åtgärder över tid. Cookies kan vara:",
+      "list": [
+        "Första parts cookies: Sätts av webbplatsen du besöker.",
+        "Tredjeparts cookies: Sätts av tredje parter som analyspartner eller annonsörer."
+      ]
+    },
+    "1": {
+      "title": "2. Varför vi använder cookies",
+      "content": "Vi använder cookies för följande ändamål:",
+      "table": {
+        "headers": ["Typ", "Syfte"],
+        "rows": [
+          ["Nödvändiga cookies", "Krävs för grundläggande webbplatsfunktioner och säkerhet."],
+          ["Funktionella cookies", "Kommer ihåg preferenser som språk och region."],
+          ["Analytiska cookies", "Mäter trafik och användning för att förbättra prestanda."],
+          ["Marknadsföringscookies", "Spårar beteende över webbplatser för att ge riktad reklam."]
+        ]
+      }
+    },
+    "2": {
+      "title": "3. Cookies vi använder",
+      "list": [
+        "_ga, _gid: Google Analytics-cookies för att spåra besökarbeteende (går ut om 2 år).",
+        "_fbp: Facebook Pixel-cookie för retargeting (går ut om 3 månader).",
+        "session_id: Används för att upprätthålla användarsessioner under webbläsning."
+      ]
+    },
+    "3": {
+      "title": "4. Hantera dina cookieinställningar",
+      "content": "Du kan hantera eller inaktivera cookies genom att:",
+      "list": [
+        "Ändra inställningarna i din webbläsare (blockera eller ta bort cookies).",
+        "Använda vår cookie-banner (om tillgänglig) för att välja in eller ut från cookie-kategorier.",
+        "Besöka industrins avregistreringssidor, såsom:"
+      ],
+      "subList": [
+        {"name": "Your Online Choices", "url": "https://www.youronlinechoices.com/"},
+        {"name": "Network Advertising Initiative", "url": "https://optout.networkadvertising.org/"},
+        {"name": "Google Ads-inställningar", "url": "https://adssettings.google.com/"},
+        {"name": "Facebook Ad Preferences", "url": "https://www.facebook.com/adpreferences/"}
+      ]
+    },
+    "4": {
+      "title": "5. Tredjeparts cookies",
+      "content": "Vissa innehåll på vår webbplats kan levereras av tredje parter. Dessa tredje parter kan använda cookies som vi inte har kontroll över. Deras användning av cookies regleras av deras egna policies."
+    },
+    "5": {
+      "title": "6. Uppdateringar av denna policy",
+      "content": "Vi kan uppdatera denna Cookie Policy från tid till annan för att återspegla förändringar i vårt användande av cookies eller av juridiska skäl. Ändringar kommer att publiceras på denna sida."
+    },
+    "6": {
+      "title": "7. Kontakta oss",
+      "content": "Om du har några frågor om vårt användande av cookies eller denna Cookie Policy, kontakta oss på:",
+      "address": {
+        "company": "Padlev",
+        "email": "contact@padlev.com",
+        "website": "https://www.padlev.com"
+      }
+    }
+  }
+},
+
+
+  "TermsAndConditions": {
+    "title": "Villkor",
+    "intro": "Välkommen till Padlev, din pålitliga källa för padelprodukter, utrustning och expertinnehåll. Läs dessa Villkor noggrant innan du använder vår webbplats på www.padlev.com, som drivs av Padlev.",
+    "acceptance": {
+      "title": "1. Godkännande av villkor",
+      "content": "Genom att komma åt eller använda vår webbplats godkänner du att följa dessa Villkor. Om du inte accepterar alla villkor som anges på denna sida, får du inte använda vår webbplats eller våra tjänster."
+    },
+    "service": {
+      "title": "2. Tjänst",
+      "content": "Padlev är en digital plattform som erbjuder produkter, innehåll och communityengagemang relaterat till padel. Genom att använda vår tjänst godkänner du att följa dessa villkor och ytterligare hänvisade villkor."
+    },
+    "eligibility": {
+      "title": "3. Behörighet",
+      "content": "För att använda denna webbplats måste du vara minst 18 år gammal eller ha tillstånd från en förälder eller vårdnadshavare. Genom att använda vår webbplats intygar och garanterar du att du uppfyller detta krav."
+    },
+    "accountRegistration": {
+      "title": "4. Kontoregistrering",
+      "content": "För att komma åt vissa funktioner på webbplatsen eller göra köp kan du behöva registrera ett konto. Du är ansvarig för att hålla dina kontouppgifter och lösenord konfidentiella.",
+      "list": [
+        "Ge korrekt, aktuell och fullständig information.",
+        "Behåll konfidentialiteten för ditt konto och lösenord.",
+        "Acceptera ansvar för alla aktiviteter som sker under ditt konto."
+      ]
+    },
+    "productListingsAndOrders": {
+      "title": "5. Produktlistor och beställningar",
+      "content": "Alla produkter som visas på webbplatsen är beroende av tillgång. Vi gör vårt bästa för att säkerställa att produktbeskrivningar, bilder och priser är korrekta, men vi kan inte garantera att alla detaljer är felfria.",
+      "ordering": {
+        "title": "Beställning",
+        "list": [
+          "Beställningar anses vara ett erbjudande om köp och är föremål för vårt godkännande.",
+          "När din beställning har lagts får du ett e-postmeddelande med beställningsbekräftelse.",
+          "Vi förbehåller oss rätten att vägra eller avbryta en beställning när som helst av skäl som produktens tillgång, prisfel eller misstänkt bedrägeri."
+        ]
+      },
+      "pricing": {
+        "title": "Priser",
+        "content": "Alla priser anges i [infoga valuta] och är inklusive/exklusive moms där det är tillämpligt. Vi förbehåller oss rätten att ändra priser när som helst utan förvarning."
+      }
+    },
+    "payment": {
+      "title": "6. Betalning",
+      "content": "Vi accepterar betalningar via säkra och pålitliga betalningsportaler, inklusive kredit-/betalkort och kryptovalutor. Dina betalningsuppgifter behandlas säkert.",
+      "list": [
+        "Kredit-/Betalkort",
+        "Kryptovalutor"
+      ]
+    },
+    "shippingAndDelivery": {
+      "title": "7. Frakt och leverans",
+      "content": "Vi skickar till de flesta internationella destinationer. Leveranstider och fraktkostnader varierar beroende på din plats och vald fraktmetod.",
+      "list": [
+        "Beräknade leveransdatum ges för bekvämlighet och garanteras inte.",
+        "Förseningar orsakade av tullklarering eller lokala posttjänster är utanför vår kontroll.",
+        "När din beställning har skickats får du ett spårningsnummer via e-post."
+      ]
+    },
+    "returnsRefundsAndExchanges": {
+      "title": "8. Returer, återbetalningar och byten",
+      "returnEligibility": {
+        "title": "Returvillkor",
+        "list": [
+          "Varor måste returneras inom 90 dagar från leverans.",
+          "Varorna måste vara oanvända, oskadade och i originalförpackning.",
+          "Vissa produkter (t.ex. underkläder, personliga produkter) kanske inte är berättigade till retur."
+        ]
+      },
+      "howToSubmitReturn": {
+        "title": "Så här lämnar du en returförfrågan",
+        "steps": [
+          "Logga in på ditt konto på www.padlev.com",
+          "Gå till Beställningar och välj beställningen.",
+          "Klicka på retur / återbetalning.",
+          "Fyll i returformuläret med orsak och eventuella bilder om det behövs."
+        ],
+        "note": "När du har skickat in det får du ett e-postbekräftelse, och vi kommer att börja behandla din begäran."
+      },
+      "refunds": {
+        "title": "Återbetalningar",
+        "content": "När den returnerade varan har mottagits och godkänts kommer en återbetalning att behandlas till din ursprungliga betalningsmetod inom 5–10 arbetsdagar. Fraktkostnader återbetalas inte om inte varan var defekt eller felaktigt skickad."
+      }
+    },
+    "intellectualProperty": {
+      "title": "9. Immateriella rättigheter",
+      "content": "Allt innehåll på denna webbplats, inklusive logotyper, bilder, videor, artiklar, design, text, grafik och programvara, är immateriella rättigheter tillhörande Padlev eller licensierade till oss. Du får inte kopiera, reproducera, publicera, distribuera eller utnyttja något innehåll utan vårt skriftliga medgivande."
+    },
+    "userGeneratedContent": {
+      "title": "10. Blogginnehåll och användargenererat innehåll",
+      "content": "Vi kan tillåta användare att posta recensioner, kommentarer och annat innehåll. Genom att skicka in innehåll ger du Padlev en icke-exklusiv, royaltyfri licens att använda, reproducera och visa ditt innehåll på våra plattformar."
+    },
+    "thirdPartyLinks": {
+      "title": "11. Tredjeparts-länkar",
+      "content": "Vår webbplats kan innehålla länkar till tredjepartswebbplatser. Vi ansvarar inte för innehållet, policyerna eller praxis på dessa webbplatser och uppmanar dig att läsa deras villkor och sekretesspolicyer."
+    },
+    "disclaimerOfWarranties": {
+      "title": "12. Ansvarsfriskrivning",
+      "content": "Alla produkter och tjänster som tillhandahålls genom Padlev erbjuds 'i befintligt skick' och 'i tillgängligt skick' utan några garantier eller villkor, uttryckliga eller underförstådda."
+    },
+    "limitationOfLiability": {
+      "title": "13. Ansvarsbegränsning",
+      "content": "I den utsträckning som lagen tillåter ska Padlev inte hållas ansvarig för några direkta, indirekta, tillfälliga, straffande eller följdskador som uppstår från din användning av webbplatsen, produkter som köpts eller förlitan på något innehåll som tillhandahålls."
+    },
+    "indemnification": {
+      "title": "14. Skadeslös görande",
+      "content": "Du godkänner att ersätta, försvara och hålla Padlev, dess dotterbolag, partners och anställda skadeslösa från alla krav eller anspråk som uppstår från din överträdelse av dessa villkor."
+    },
+    "modificationsToTerms": {
+      "title": "15. Ändringar av villkor",
+      "content": "Vi förbehåller oss rätten att ändra eller uppdatera dessa villkor när som helst. När vi gör det kommer vi att revidera datumet för 'Senast uppdaterad' längst upp på denna sida."
+    },
+    "termination": {
+      "title": "16. Uppsägning",
+      "content": "Vi förbehåller oss rätten att avsluta eller suspenda åtkomst till vår webbplats eller tjänster när som helst för beteende som vi anser bryter mot dessa villkor."
+    },
+    "contactInformation": {
+      "title": "17. Kontaktinformation",
+      "content": "Om du har några frågor om dessa villkor, vänligen kontakta oss på:",
+      "address": {
+        "company": "Padlev",
+        "email": "contact@padlev.com",
+        "website": "https://www.padlev.com"
+      }
+    }
+  },
+
+
+
+
+"Layout": {
+  "keywords": "padel, padeltennis, bästa padelracket, padelbana, padelregler, padelsport",
+  "global-title": "Padlev | Padelutrustning och experthandböcker – Köp nu!",
+  "globale-description": "Padlev hjälper dig växa från nybörjare till proffs med utvald utrustning, guider och tips. Köp racketar, bollar och tillbehör idag!",
+  "global-og-title": "Padlev: Premium padelutrustning och experthandböcker ⚡ Köp nu!",
+  "global-og-description": "Från nybörjare till proffs 🔥 — förbättra ditt padelspel med premiumutrustning och expertråd. Köp nu och spela bättre!",
+  "global-name": "Padlev",
+  "global-name-description": "Padlev erbjuder högkvalitativa padelprodukter, utrustning och experthandböcker för att förbättra ditt spel.",
+
+  "terms-title": "Padlev Användarvillkor | Köp och garanti för utrustning",
+  "terms-description": "Läs igenom Padlevs användarvillkor för viktig information om onlineköp, returer, garantier, ansvarsbegränsning och uppdaterade villkor.",
+  "terms-og-title": "Padlev Användarvillkor",
+  "terms-og-description": "De juridiska villkoren för köp, garantier och returpolicy för padelutrustning från Padlev.",
+  "terms-name": "Padlev Användarvillkor",
+  "terms-name-description": "Läs de senaste användarvillkoren för Padlev för köp, returer och garantier.",
+
+  "search-title": "Sök padelutrustning på Padlev | Hitta racketar, bollar och tillbehör",
+  "search-description": "Sök bland all padelutrustning på Padlev. Hitta den perfekta racketen, bollar, väskor och tillbehör med vårt sökverktyg.",
+  "search-og-title": "Sök padelutrustning på Padlev",
+  "search-og-description": "Hitta den perfekta padelutrustningen med hjälp av vårt sökverktyg på Padlev.",
+  "search-name": "Padlev Produktsökning",
+  "search-name-description": "Utforska alla produkter på Padlev — racketar, bollar, väskor och mycket mer — med hjälp av vårt sökverktyg.",
+
+  "Return-title": "Padlev Retur- och Återbetalningspolicy | Enkla returer",
+  "Return-description": "Padlevs returpolicy: smidiga returer och byten av padelutrustning. Läs om villkor, tidsramar och hur du gör en enkel retur.",
+  "Return-og-title": "Padlev Retur- och Återbetalningspolicy | Enkla returer",
+  "Return-og-description": "Hur du returnerar produkter på Padlev: villkor, tidsramar och återbetalningsprocess.",
+  "Return-name": "Padlev Retur- och Återbetalningspolicy",
+  "Return-name-description": "Padlevs officiella returpolicy för padelutrustning.",
+
+  "Reset-password-title": "Återställ ditt Padlev-lösenord | Säkra alternativ för återställning",
+  "Reset-password-description": "Glömt ditt lösenord för Padlev? Återställ det säkert för att få åtkomst till ditt konto och orderhistorik.",
+  "Reset-password-og-title": "Återställ Padlev-lösenord",
+  "Reset-password-og-description": "Säker lösenordsåterställning för ditt Padlev-konto.",
+  "Reset-password-name": "Återställ lösenord",
+  "Reset-password-name-description": "Säker sida för att återställa ditt lösenord",
+
+  "update-title": "Vill du uppdatera din e-postadress på Padlev? Gör det här",
+  "update-description": "Uppdatera enkelt din e-postadress kopplad till ditt Padlev-konto. Håll din information uppdaterad för att få beställningar, aviseringar och exklusivt innehåll.",
+  "update-og-title": "Uppdatera din e-postadress på Padlev | Säker process",
+  "update-og-description": "Ändra din e-postadress för Padlev-kontot säkert för att säkerställa kontinuerlig åtkomst.",
+  "update-name": "Uppdatera e-postadress",
+  "update-name-description": "Säker process för att ändra din e-postadress",
+
+  "product-title": "Köp padelutrustning | Officiell Padlev-butik",
+  "product-description": "Utforska hela sortimentet av premium padelutrustning från Padlev – från racketar till kläder. Designat för spelare på alla nivåer.",
+  "product-og-title": "Padlev Padelutrustning | Racketar, väskor och fler produkter",
+  "product-og-description": "Upptäck vårt sortiment av padelutrustning och tillbehör från Padlev. Prestanda och stil.",
+  "product-og-title-twetter": "Padlev Padelutrustning | Köp padelprodukter",
+  "product-og-title-description": "Premium padelutrustning för spelare som vill förbättra sitt spel. Upptäck vårt sortiment.",
+  "name": "Padlev Produkter",
+  "description": "Köp de senaste padelracketarna, tillbehören och kläderna från Padlev.",
+
+  "Privacy-title": "Padlev Integritetspolicy | Insamling och användning av data",
+  "Privacy-description": "Läs om hur Padlev samlar in, använder och skyddar dina personuppgifter i vår integritetspolicy. Denna policy är senast uppdaterad.",
+  "Privacy-og-title": "Padlev Integritetspolicy",
+  "Privacy-og-description": "Hur Padlev hanterar dina uppgifter, cookies och integritetsrättigheter.",
+  "Privacy-name": "Padlev Integritetspolicy",
+  "Privacy-name-description": "Läs om hur Padlev hanterar dina personuppgifter. Uppdaterad.",
+
+  "p-title": "Köp padelutrustning online | Racketar, väskor och kläder – Padlev-butik",
+  "p-description": "Förbered dig med premium padelutrustning från Padlev – racketar, kläder och mycket mer som är designade för prestanda och komfort.",
+  "p-og-title": "Förbättra ditt spel | Upptäck Padlevs padelutrustning",
+  "p-og-description": "Upptäck vårt premiumutbud av padelutrustning och tillbehör från Padlev – designat för att maximera prestanda och stil.",
+  "p-og-title-twetter": "Padlev-butik | Upptäck premium padelprodukter",
+  "p-og-title-description": "Premium padelutrustning för spelare som vill ta sitt spel till nästa nivå. Upptäck vårt sortiment.",
+  "p-name": "Padlev Produkter",
+  "p-sec-description": "Upptäck de senaste racketarna, tillbehören och kläderna från Padlev.",
+
+  "Login-title": "Säker inloggning | Logga in på ditt Padlev-konto",
+  "Login-description": "Logga in säkert på ditt Padlev-konto för att hantera beställningar, garantier och inställningar.",
+  "Login-og-title": "Logga in på Padlev-konto",
+  "Login-og-description": "Logga in på ditt Padlev-konto för att hantera beställningar för padelutrustning.",
+  "Login-name": "Logga in på Padlev",
+  "Login-name-description": "Säker inloggningssida för Padlev-konto.",
+
+  "Help-title": "Padlev Hjälpcenter: Support, FAQ och lösningar",
+  "Help-description": "Få snabba lösningar för din Padlev-utrustning! Steg-för-steg guider, FAQ, garantiinformation och specialiserad support. Lös problem eller kontakta oss!",
+  "Help-og-title": "Padlev Hjälpcenter: Support, FAQ och lösningar",
+  "Help-og-description": "Snabba lösningar för din Padlev-utrustning! Steg-för-steg guider, FAQ och specialiserad support.",
+  "Help-name": "Padlev Hjälpcenter",
+  "Help-name-description": "Officiellt supportcenter för padelutrustning från Padlev",
+
+  "Cookie-title": "Cookie-policy | Hur Padlev använder cookies och dina alternativ",
+  "Cookie-description": "Detaljer om cookies och spårningsteknologier som används av Padlev. Hantera dina inställningar och lär dig om våra metoder.",
+  "Cookie-og-title": "Padlev Cookie-policy – Transparens och kontroll",
+  "Cookie-og-description": "Förstå och hantera hur vi använder cookies för att förbättra din upplevelse.",
+  "Cookie-name": "Padlev Cookie-policy",
+  "Cookie-name-description": "Juridisk information om användningen av cookies",
+
+  "charity-title": "Padlev Stöder | Padelgemenskaper världen över",
+  "charity-description": "Se hur Padlev riktar en del av vinsten till ungdomsprogram och välgörenhetsprojekt för utrustning. Gå med i vårt uppdrag.",
+  "charity-og-title": "Padlev Välgörenhetsinitiativ",
+  "charity-og-description": "Stöd gemenskaper genom padel. Donera eller delta idag.",
+  "charity-name": "Padlev Välgörenhet",
+  "charity-name-description": "Padlevs icke-vinstdrivande enhet som fokuserar på att utöka tillgången till padel.",
+
+  "Cart-title": "Din Padlev-kundvagn | Slutför köp av padelutrustning",
+  "Cart-description": "Granska dina valda padelprodukter. Slutför beställningen med säker betalning och snabb leverans.",
+  "Cart-og-title": "Din Padlev-kundvagn — Är du redo att slutföra?",
+  "Cart-og-description": "Din padelutrustning väntar! Slutför din beställning nu och få exklusiva fördelar.",
+  "Cart-og-title-twetter": "Dina produkter Padlev väntar!",
+  "Cart-og-title-description": "Premium padelutrustning för spelare som vill ta sitt spel till nästa nivå. Dina produkter är redo att köpas. Begränsad lager.",
+  "Cart-name": "Kundvagn",
+  "Cart-name-description": "Kundvagn med kvarvarande produkter",
+
+  "Checkout-title": "Säker betalning | Slutför din beställning på Padlev",
+  "Checkout-description": "Slutför ditt köp av padelutrustning med SSL-kryptering. Vi accepterar olika betalmetoder. Snabb leverans inom EU.",
+  "Checkout-og-title": "Säker betalning på Padlev",
+  "Checkout-og-description": "Din padelutrustning är snart hos dig! Slutför betalningen säkert.",
+  "Checkout-name": "Säker betalning",
+  "Checkout-name-description": "Betalnings- och beställningssida",
+
+  "payment-title": "Säkert och skyddat – Slutför ditt köp på Padlev",
+  "payment-description": "Slutför ditt köp av padelutrustning med SSL-kryptering. Vi accepterar olika betalmetoder.",
+  "payment-og-title": "Säker betalning på Padlev",
+  "payment-og-description": "Din padelutrustning är snart hos dig! Slutför betalningen säkert.",
+  "payment-name": "Säker betalning",
+  "payment-name-description": "Betalnings- och beställningssida",
+
+  "Blog-title": "Padlev Blogg | Padelråd, utrustningsguider och historier",
+  "Blog-description": "Upptäck Padlev-bloggen – få padelråd, guider om utrustning, spelarnas berättelser och de senaste nyheterna från padelvärlden!",
+  "Blog-og-title": "Padlev Blogg | Din källa för padel",
+  "Blog-og-description": "Håll dig uppdaterad med Padlev-bloggen: din källa för råd, produktrecensioner och padelgemenskapsnyheter.",
+  "Blog-og-title-tw": "Padlev Blogg | Råd och guider för utrustning",
+  "Blog-og-description-tw": "Få expert råd och insikter om padelvärlden direkt från Padlev-bloggen.",
+  "Blog-name": "Padlev Blogg",
+  "Blog-name-description": "Din källa för råd, recensioner och nyheter om padel.",
+
+  "Dashboard-title": "Mitt Padlev Dashboard | Hantera beställningar, utrustning och konto",
+  "Dashboard-description": "Ditt Padlev Dashboard. Spåra beställningar, hantera utrustningsinställningar och uppdatera uppgifter säkert.",
+  "Dashboard-og-title": "Padlev Dashboard",
+  "Dashboard-og-description": "Säkert tillgång till ditt Padlev-konto och orderhistorik.",
+  "Dashboard-name": "Padlev Dashboard",
+  "Dashboard-name-description": "Säker dashboard för att hantera ditt Padlev-konto och beställningar.",
+
+  "About-title": "Om oss Padlev: Vår passion för padel och innovationer",
+  "About-description":"Upptäck Padlev: född ur passion för padel, vi skapar premiumutrustning för ditt spel. Lär känna teamet bakom dina favoritprodukter!",
+  "About-og-title": "Om oss Padlev: Vår passion för padel och innovationer",
+  "About-og-description": "Lär känna historien, vår mission och teamet bakom dina favoritpadelprodukter.",
+  "About-name": "Om oss Padlev",
+  "About-name-description": "Historien, vår mission och vårt team bakom padelprodukterna från Padlev."
+},
+
+
+
+"tophero": {
+    "hero-title": "Stärk din hälsa med nöje",
+    "hero-title-1": "Utvecklas professionellt",
+    "hero-description": "Vi guidar padelspelare från nybörjare till proffs för att bli den bästa versionen av sig själva.",
+    "hero-tag-desktop": "En padelspelare håller en vattenflaska, två barn ler på banan och en annan spelare håller racket och bollar bredvid",
+    "hero-tag-mobile": "En padelspelare håller en vattenflaska med två barn som ler på banan",
+    "logo-padlev": "logo padlev",
+    "logo-padlev-yellow": "logo padlev standard",
+    "logo-padlev-gold": "logo padlev guld",
+    "logo-padlev-platinum": "logo padlev platina",
+    "login-tag": "padelspelare med boll och racket på banan"
+  },
+
+  "rss": {
+  "title-blog": "Padlev Blogg",
+  "description-blog": "Padlev hjälper padelspelare att gå från nybörjare till proffs med noggrant utvalda produkter, träningsguider och experttips.",
+  "title-product": "Padlev Produkter",
+  "description-product": "Utforska hela Padlevs sortiment av premium padelutrustning – från racketar till kläder. Designat för spelare på alla nivåer.",
+  "title-b-p": "Padlev – Blogg och Produkter",
+  "description-b-p": "Senaste innehållet från Padlev – Blogginlägg och produkter"
+}
+
+
+
+
+}

@@ -1,0 +1,45 @@
+User-Agent: *
+Disallow: /account/
+Disallow: /api/
+Disallow: /p/
+Disallow: /search/
+Disallow: /cart/
+
+# Sitemaps
+Sitemap: https://www.padlev.com/sitemap.xml
+
+# RSS Feeds - Main feeds for each language
+Sitemap: https://www.padlev.com/en/rss
+Sitemap: https://www.padlev.com/fr/rss
+Sitemap: https://www.padlev.com/ar/rss
+Sitemap: https://www.padlev.com/nl/rss
+Sitemap: https://www.padlev.com/de/rss
+Sitemap: https://www.padlev.com/pt/rss
+Sitemap: https://www.padlev.com/sv/rss
+Sitemap: https://www.padlev.com/ru/rss
+Sitemap: https://www.padlev.com/it/rss
+Sitemap: https://www.padlev.com/es/rss
+
+# RSS Feeds - Blog only feeds
+Sitemap: https://www.padlev.com/en/rss?type=blog
+Sitemap: https://www.padlev.com/fr/rss?type=blog
+Sitemap: https://www.padlev.com/ar/rss?type=blog
+Sitemap: https://www.padlev.com/nl/rss?type=blog
+Sitemap: https://www.padlev.com/de/rss?type=blog
+Sitemap: https://www.padlev.com/pt/rss?type=blog
+Sitemap: https://www.padlev.com/sv/rss?type=blog
+Sitemap: https://www.padlev.com/ru/rss?type=blog
+Sitemap: https://www.padlev.com/it/rss?type=blog
+Sitemap: https://www.padlev.com/es/rss?type=blog
+
+# RSS Feeds - Products only feeds
+Sitemap: https://www.padlev.com/en/rss?type=products
+Sitemap: https://www.padlev.com/fr/rss?type=products
+Sitemap: https://www.padlev.com/ar/rss?type=products
+Sitemap: https://www.padlev.com/nl/rss?type=products
+Sitemap: https://www.padlev.com/de/rss?type=products
+Sitemap: https://www.padlev.com/pt/rss?type=products
+Sitemap: https://www.padlev.com/sv/rss?type=products
+Sitemap: https://www.padlev.com/ru/rss?type=products
+Sitemap: https://www.padlev.com/it/rss?type=products
+Sitemap: https://www.padlev.com/es/rss?type=products
