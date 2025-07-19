@@ -8,14 +8,7 @@ import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { useLocale } from "next-intl";
 import { 
-  Home, 
-  Users, 
-  BarChart3, 
-  Settings, 
-  FileText, 
-  ShoppingCart, 
-  Calendar,
-  Bell,
+
   Search,
   Menu,
   X,
@@ -24,15 +17,8 @@ import {
   LogOut,
   User
 } from 'lucide-react';
-import ProfileCard from '../user-dashboard/profilePage';
-import { CgProfile } from "react-icons/cg";
 
 import { IoMdNotificationsOutline } from "react-icons/io";
-import { FaRegHeart } from "react-icons/fa";
-import { MdOutlineTravelExplore } from "react-icons/md";
-import { FaRegMessage } from "react-icons/fa6";
-import { IoSettingsOutline } from "react-icons/io5";
-import { LuCircleHelp } from "react-icons/lu";
 import { FiLogOut } from "react-icons/fi";
 import { IoHomeOutline } from "react-icons/io5";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
@@ -98,13 +84,13 @@ export default function EmailsAdmin() {
         <div className="flex items-center justify-between px-4 h-full">
           <button
             onClick={toggleMobileMenu}
-            className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-lg transition-colors"
           >
             <HiOutlineMenuAlt1 size={28} className="text-white" />
           </button>
         
           <div className="flex items-center space-x-2">
-            <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+            <button className="p-2 rounded-lg transition-colors">
              <IoMdNotificationsOutline size={28} className='text-white'/>
             </button>
           
@@ -120,7 +106,7 @@ export default function EmailsAdmin() {
       {/* Sidebar */}
       <aside
         className={`
-          fixed left-0 top-0 h-full bg-a border-r border-gray-200 z-50 transition-all duration-300 ease-in-out
+          fixed left-0 top-0 h-full bg-a border-r border-gray-200 z-50 transition-all duration-300 ease-in-out overflow-y-auto
           ${isCollapsed ? 'w-24' : 'w-64'}
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}

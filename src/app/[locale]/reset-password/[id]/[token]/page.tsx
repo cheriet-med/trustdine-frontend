@@ -101,7 +101,7 @@ export default function ResetPassword() {
 
   return (
      <div className="fixed inset-0 bg-[url('/02.webp')] bg-no-repeat bg-center bg-cover overflow-auto">
-      <div className="min-h-screen flex items-center justify-center p-4 font-montserrat">
+      <div className="min-h-screen flex items-center justify-center p-4 font-montserrat ">
     <div className=' bg-secondary p-6 rounded-2xl'>
         <h1 className=' mb-4 text-gray-100'>write your new password</h1>
         <div>

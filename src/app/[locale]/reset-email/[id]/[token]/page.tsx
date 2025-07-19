@@ -96,38 +96,49 @@ export default function ResetPassword() {
 
 
   return (
-    <div className='my-40 mx-6 md:mx-auto md:w-96'>
-        <h1 className='uppercase font-medium mb-4'>{te('reset-email')}</h1>
-                    <div>
+   
+
+
+  <div className="fixed inset-0 bg-[url('/02.webp')] bg-no-repeat bg-center bg-cover overflow-auto">
+      <div className="min-h-screen flex items-center justify-center p-4 font-montserrat ">
+    <div className=' bg-secondary p-6 rounded-2xl'>
+        <h1 className=' mb-4 text-gray-100'>write your new Email</h1>
+        <div>
+        <div className="relative ">
                     <input
-     type="text"
+      type="text"
      value={email}
      onChange={(e) => setEmail(e.target.value)}
      placeholder="New email"
-     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-yel"
+     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-yel bg-highlights placeholder:text-gray-200"
      required
    />
-    {error1 && <p className="text-bl text-sm mt-2">{error1}</p>}
+
+     
+             </div>
+      {error1 && <p className="text-bl text-sm mt-2">{error1}</p>}
                 </div>
 
                 <div className='mt-8'> 
                     {isLoadingg ? (
                                     <button
                                       onClick={handleSubscribe}
-                                      className="w-full hover:bg-secondary hover:text-yel py-2 rounded-lg bg-yel ext-black transition-colors uppercase flex gap-3 justify-center items-center"
+                                      className="w-full hover:bg-accent hover:text-yel py-2 rounded-lg bg-a text-white transition-colors uppercase flex gap-3 justify-center items-center"
                                     >
-                                      {te('Edite')}
+                                       {te('Edite')}
                                       <FaCircleNotch className="animate-spin w-5 h-5"/>
                                     </button>
                                   ) : (
                                     <button
                                       onClick={handleSubscribe}
-                                      className="w-full bg-secondary text-yel py-2 rounded-lg hover:bg-yel font-medium hover:text-black transition-colors uppercase"
+                                      className="w-full bg-a text-white py-2 rounded-lg hover:bg-accent font-medium transition-colors uppercase"
                                     >
-                                    {te('Edite')}
+                                     {te('Edite')}
                                     </button>
                                   )}
                 </div>
+    </div>
+    </div>
     </div>
   )
 }

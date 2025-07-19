@@ -96,13 +96,13 @@ export default function PartnerInfoDashboard() {
         <div className="flex items-center justify-between px-4 h-full">
           <button
             onClick={toggleMobileMenu}
-            className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="p-2 rounded-lg transition-colors"
           >
             <HiOutlineMenuAlt1 size={28} className="text-white" />
           </button>
         
           <div className="flex items-center space-x-2">
-            <button className="p-2 rounded-lg hover:bg-gray-100 transition-colors">
+            <button className="p-2 rounded-lg transition-colors">
              <IoMdNotificationsOutline size={28} className='text-white'/>
             </button>
           
@@ -118,7 +118,7 @@ export default function PartnerInfoDashboard() {
       {/* Sidebar */}
       <aside
         className={`
-          fixed left-0 top-0 h-full bg-highlights border-r border-gray-200 z-50 transition-all duration-300 ease-in-out
+          fixed left-0 top-0 h-full bg-highlights border-r border-gray-200 z-50 transition-all duration-300 ease-in-out overflow-y-auto
           ${isCollapsed ? 'w-24' : 'w-64'}
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}

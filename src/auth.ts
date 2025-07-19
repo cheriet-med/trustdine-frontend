@@ -33,7 +33,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       authorization: {
         params: {
           scope: "openid email profile",
-          redirect_uri: "https://trustdine-xi.vercel.app/api/auth/callback/google" // Add this
+          redirect_uri: "https://trustdine-frontend.vercel.app/api/auth/callback/google" // Add this
         }
       }
     }),
@@ -43,7 +43,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       authorization: {
         params: {
           scope: "email",
-          redirect_uri: "https://trustdine-xi.vercel.app/api/auth/callback/facebook"
+          redirect_uri: "https://trustdine-frontend.vercel.app/api/auth/callback/facebook"
         }
       }
     }),
