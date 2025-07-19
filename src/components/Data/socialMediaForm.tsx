@@ -124,9 +124,9 @@ export default function SocialMediaForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 p-4 font-montserrat">
+    <div className="p-4 font-montserrat">
       <div>
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-8">
+        <div className="bg-white  rounded-xl shadow-sm border border-1 p-8">
           <div className="text-center mb-8">
            
             <h1 className="text-3xl font-bold text-gray-800 mb-2 font-playfair">Add Social Media Links</h1>

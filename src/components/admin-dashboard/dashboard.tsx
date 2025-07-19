@@ -231,7 +231,7 @@ export default function DashboardUser() {
 </div>
 
   <div className="flex-1">
-                <p className=" font-medium text-gray-700 font-playfair text-white">Eliana Garcia</p>
+                <p className=" font-medium text-gray-700 font-playfair text-white">Admin</p>
                 
               </div>
               <div className='hover:bg-background p-1 rounded-lg' onClick={() => signOut({ callbackUrl: `/en/login` })}>
