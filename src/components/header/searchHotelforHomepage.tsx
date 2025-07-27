@@ -259,7 +259,7 @@ export default function HotelSearchHomepage() {
 
   if (!mounted) {
     return (
-      <div className="relative mx-2 lg:w-[900px]">
+      <div className="relative mx-4  lg:w-[900px]">
         <div className="relative flex justify-center items-center gap-2">
           <input
             type="text"
@@ -283,14 +283,14 @@ export default function HotelSearchHomepage() {
   }
 
   return (
-    <div className="relative mx-2 lg:w-[900px] font-montserrat">
+    <div className="relative mx-2  lg:w-[900px] font-montserrat">
       <div className="relative flex justify-center items-center gap-2 flex-wrap">
         {/* Search Input */}
         <div className="relative">
           <input
             ref={inputRef}
             type="text"
-            placeholder="Search Hotels, good places.."
+            placeholder="Search Hotels, cities..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setShowSuggestions(true)}

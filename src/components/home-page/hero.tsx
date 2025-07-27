@@ -8,6 +8,14 @@ import { MdOutlineHotel } from "react-icons/md";
 import { IoRestaurantOutline } from "react-icons/io5";
 import HotelSearchHomepage from '../header/searchHotelforHomepage';
 import RestaurantSearch from "../header/SearchRestaurant";
+import { FaCheckCircle, FaShieldAlt } from "react-icons/fa"; // Added icons for badges
+
+import { MdVerified } from "react-icons/md";
+import { VscWorkspaceTrusted } from "react-icons/vsc";
+import { MdVerifiedUser } from "react-icons/md";
+import { FaShieldHalved } from "react-icons/fa6";
+
+
 
 export default function CombatLanding() {
   // Refs
@@ -162,38 +170,46 @@ export default function CombatLanding() {
               height: '100%'
             }}
           >
-            <source src="/ve1.mp4" type="video/mp4" />
+            <source src="/vid.mp4" type="video/mp4" />
           </video>
         </div>
 
         {/* Main Content */}
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl px-4 flex flex-col justify-center items-center space-y-2 z-30">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full md:max-w-5xl px-4 flex flex-col justify-center items-center space-y-2 z-30">
           {/* Title */}
-          <h1 className="text-center uppercase text-4xl md:text-6xl custom:text-7xl leading-[0.85] tracking-[-0.25rem] text-white font-semibold font-playfair">
+          <h1 className="text-center uppercase text-4xl md:text-6xl lg:text-6.5xl leading-[0.85] tracking-[-0.25rem] text-white font-bold font-playfair pb-2">
             <span 
               ref={setHeaderSpanRef(0)} 
               className="block transform translate-y-full select-none"
               style={{ wordSpacing: '0.1em' }}
             >
-              {activeTab === "hotels" ? "Rewarding Hotels" : "Rewarding diners"}
+              {activeTab === "hotels" ? "Verified by Receipts" : "Trusted by Real Guests"}
             </span>
           </h1>
           
           {/* Subtitle */}
-          <h1 className="text-center text-3xl md:text-5xl custom:text-5xl leading-[0.85] tracking-[-0.25rem] text-white font-playfair">
+          <h1 className="text-center text-3xl md:text-4xl custom:text-5xl leading-[0.85] tracking-[-0.25rem] text-white font-playfair">
             <span 
               ref={setHeaderSpanRef(1)} 
               className="block transform translate-y-full select-none"
-              style={{ wordSpacing: '0.2em' }}
+              style={{ wordSpacing: '0.25em' }}
             >
-              Empowering trusted places
+            {activeTab === "hotels" ? "Skip the fake reviews, Discover restaurants and hotels that real people actually visited" 
+            : "This instantly communicates the platform's unique value, is clear, and builds trust"}
+           
+           
+            
             </span>
           </h1>
-          
+        
+
+
+
+
           {/* Tab Selector */}
           <div 
             ref={setHeaderSpanRef(2)} 
-            className="flex gap-6 mb-6 md:mb-8 pt-4 pb-4"
+            className="flex gap-6 mb-8 md:mb-8 pt-4 pb-4"
           >
             <div 
               className={`flex gap-2 cursor-pointer pb-2 transition-colors ${
@@ -215,10 +231,33 @@ export default function CombatLanding() {
               <p className="max-w-5xl text-white sm:text-lg">Restaurants</p>
             </div>
           </div>
-          
-          {/* Conditional Search Component */}
+          <div className='pt-10 md:pt-1'>
+              {/* Conditional Search Component */}
           {activeTab === "hotels" ? <HotelSearchHomepage /> : <RestaurantSearch />}
+          </div>
+          
+        
+
+
+
+   
         </div>
+
+ <div className="absolute bottom-8 md:bottom-12 left-1/2 transform -translate-x-1/2 flex gap-2 md:gap-6 z-30 justify-center md:justify-between w-full px-2 md:px-16 flex-wrap">
+        <div className="flex items-center  gap-2">
+          <MdVerified className="text-white h-5 w-5 md:h-6 md:w-6" />
+          <span className="text-white text:xs md:text-lg font-playfair md:font-bold">Verified by Receipt</span>
+        </div>
+         <div className="flex items-center  gap-2">
+          <MdVerifiedUser   className="text-white h-5 w-5 md:h-6 md:w-6" />
+          <span className="text-white text:xs md:text-lg font-playfair md:font-bold">Real Guest Trusted</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <FaShieldHalved    className="text-white h-5 w-5 md:h-6 md:w-6" />
+          <span className="text-white text:xs md:text-lg font-playfair md:font-bold">No Fake Reviews</span>
+        </div>
+      </div>
+
       </div>
     </div>
   );

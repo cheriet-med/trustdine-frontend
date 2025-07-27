@@ -5,8 +5,13 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/all';
 import { LiaStarSolid } from "react-icons/lia";
+import { VscWorkspaceTrusted } from "react-icons/vsc";
 
-
+import { RiShieldStarFill } from "react-icons/ri";
+import { TbFileCheck } from "react-icons/tb";
+import { IoRocket } from "react-icons/io5";
+import { LuMapPinCheck } from "react-icons/lu";
+import Image from 'next/image';
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -20,40 +25,37 @@ type CardProps = {
 const Card = ({ title, copy, index, imageUrl }: CardProps) => {
   const bgColors = [
     'bg-background',
-    'bg-highlights',
-    'bg-secondary text-white',
     'bg-a text-white',
+    'bg-secondary text-white',
+    'bg-highlights',
   ];
   const bgColor = bgColors[index % bgColors.length];
+
+const icons = [
+  <TbFileCheck key="file-check" className='h-28 w-28 md:h-48 md:w-48 custom:h-56 custom:w-56 text-white'/>,
+  <RiShieldStarFill key="shield-star" className='h-28 w-28 md:h-48 md:w-48 custom:h-56 custom:w-56 text-accent'/>,
+  <VscWorkspaceTrusted key="workspace-trusted" className='h-28 w-28 md:h-48 md:w-48 custom:h-56 custom:w-56 text-background'/>,
+  <IoRocket key="rocket" className='h-28 w-28 md:h-48 md:w-48 custom:h-56 custom:w-56 text-white'/>,
+];
+    const Icon = icons[index % icons.length];
 
   return (
     <div id={`card-${index + 1}`} className="relative card">
       <div
-        className={`relative w-full h-full p-8 flex flex-col md:flex-row gap-8 md:gap-16 ${bgColor} will-change-transform card-inner`}
-      >
-        <div className="flex-[1] md:flex-[2] custom:flex-[3] card-content ">
-          <h1 className="text-4xl md:text-6xl font-montserrat leading-none mb-10 md:mb-[2.5em] font-playfair font-bold">
+        className={`relative  h-full p-8 flex flex-col md:flex-row gap-8 md:gap-16 ${bgColor} will-change-transform card-inner`}
+      >          
+      <div className='flex justify-between  custom:gap-16'>
+       
+        <div className="flex-[3] md:flex-[2] custom:flex-[3] card-content ">
+          <h1 className="text-3xl md:text-6xl  leading-none mb-10 md:mb-[1.5em] font-playfair font-bold">
             {title}
           </h1>
-          <p className="text-base md:text-xl font-medium w-2/3 custom:w-1/2">{copy}</p>
+  <p className="text-xl md:text-4xl font-playfair mb-6">{copy}</p>
         </div>
-        <div className="flex-1 aspect-video rounded-lg overflow-hidden card-img">
-         <video 
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
-            className=" min-w-full min-h-full object-cover  rounded-3xl"
-            style={{ 
-            
-              width: '100%',
-              height: '100%'
-            }}
-          >
-            <source src={`/assets/videos/vi-${index + 1}.mp4`} type="video/mp4" />
-          
-          </video>
-        </div>
+
+        {Icon}
+          </div>
+        
       </div>
     </div>
   );
@@ -78,30 +80,58 @@ const RotatingCard = ({ index }: { index: number }) => {
     'Izabella Proctor'
   ];
 
+const HotelName = [
+  'Blue Horizon Hotel',
+  'The Olive Garden Bistro',
+  'Royal Mirage Inn',
+  'Cedar Grove Restaurant',
+  'Sunset Bay Resort',
+  'La Petite Cuisine'
+];
+
+const PlaceName = [
+  'Santorini, Greece',
+  'Florence, Italy',
+  'Marrakech, Morocco',
+  'Vancouver, Canada',
+  'Malibu, USA',
+  'Lyon, France'
+];
+
+
   return (
     <div 
-      className="rotating-card absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform w-64 custom:w-80 h-1/2 p-2 flex flex-col gap-2 bg-[#202020] text-white opacity-0 invisible rounded-xl"
+      className="rotating-card  absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 will-change-transform w-64 custom:w-80  p-2 flex flex-col gap-2 bg-[#202020] text-white opacity-0 invisible rounded-xl"
     >
-      <div className="flex-1 min-h-0 box-border">
-        <img 
+      <div className="   box-border">
+        <Image 
           src={`/asset/card-${index + 1}.avif`}
           alt={`Card ${index + 1}`}
           className="box-border h-full object-cover rounded-lg"
           loading="lazy"
+          height={900}
+          width={300}
         />
       </div>
-      <div className="flex-none flex flex-col flex-wrap">
-        <div className='flex gap-3 item-center py-3'>
+      <div className="flex-none flex flex-col flex-wrap space-y-2">
+        <div className='flex gap-3 item-center pt-1'>
 <p> {cardName[index]}</p>
-<div className='flex gap-1'>
-  <LiaStarSolid className='text-yellow-500'/>
-   <LiaStarSolid className='text-yellow-500'/>
-    <LiaStarSolid className='text-yellow-500'/>
-     <LiaStarSolid className='text-yellow-500'/>
-      <LiaStarSolid className='text-yellow-500'/>
+<div  className='flex gap-1 items-center'>
+ <LiaStarSolid key="star1" className='text-yellow-500'/>
+  <LiaStarSolid key="star2" className='text-yellow-500'/>
+  <LiaStarSolid key="star3" className='text-yellow-500'/>
+  <LiaStarSolid key="star4" className='text-yellow-500'/>
+  <LiaStarSolid key="star5" className='text-yellow-500'/>
 </div>
         </div>
-        
+        <p className='font-playfair font-bold text-xl'> {HotelName[index]}</p>
+
+<div className='flex gap-1 border border-1 rounded-3xl py-0.5 px-2 w-fit items-center'>
+  <LuMapPinCheck/> 
+  <p> {PlaceName[index]}</p>
+</div>
+ 
+
 
         <p className=" font-montserrat text-sm">
           {cardTexts[index]}
@@ -117,20 +147,20 @@ export default function CombinedScrollAnimation() {
   // Data for the first section (stacking cards)
   const stackingCards = [
     {
-      title: 'AI-Powered Receipt Verification',
-      copy: 'Advanced OCR technology validates every receipt in seconds, ensuring 100% authentic reviews from real diners.',
+      title: 'Verified by AI, Trusted by People',
+      copy: 'Every review on TrustDine is backed by proof — a real receipt or booking, No fake hype, Just honest, veri ed experiences you can count on.',
     },
     {
-      title: 'Trust Score System',
-      copy: 'Build your reputation with every verified review and completed booking. Higher trust scores unlock premium benefits.',
+      title: 'Your Trust Score, Your Superpower',
+      copy: 'The more you review and book, the more your Trust Score grows — unlocking hidden gems, top-tier restaurants, and perks just for trusted users.',
     },
     {
-      title: 'Smart Booking Priority',
-      copy: 'Trusted users get priority access to prime reservation slots and exclusive restaurant offers.',
+      title: 'Skip the Line. Book Smarter',
+      copy: 'As a trusted diner, you get priority access to hot spots, limited tables, and exclusive deals, Why wait, when you’ve earned it?',
     },
     {
-      title: 'AI Content Moderation',
-      copy: 'Automated content filtering ensures all reviews meet quality standards while maintaining authentic voices.',
+      title: 'Smart Filters. Real Voices',
+      copy: 'We use AI to block spam and fake reviews — without silencing real people. You see the truth, not the noise.',
     },
   ];
 
@@ -257,7 +287,7 @@ export default function CombinedScrollAnimation() {
   );
 
   return (
-    <div className="app font-montserrat" ref={container}>
+    <div className="font-montserrat" ref={container}>
       {/* Initial spacer */}
         <section className='h-32 md:h-96  bg-secondary '>
 
@@ -271,20 +301,21 @@ export default function CombinedScrollAnimation() {
       </section>
 
       {/* Transition Section */}
-      <section className="transition-section relative w-full h-32 p-8 bg-accent flex items-center">
+      <section className="transition-section relative  h-32 p-8 bg-accent flex items-center">
       
       </section>
 
       {/* Second Section: Rotating Cards */}
-      <section className="sticky-cards w-screen h-screen overflow-hidden bg-accent -pt-2">
+<section className="sticky-cards w-full h-screen  bg-accent relative">
        {/** <div >
           <h1 className='text-center text-6xl text-white font-playfair px-72 pt-20'>Get More Trust</h1>
         </div> */}
-        <h1 className='text-end  uppercase text-4xl md:text-6xl custom:text-7xl text-white font-playfair lg:px-72 px-6 pt-20 font-bold'>Build More Trust</h1>
+        <h1 className='text-end  uppercase text-3xl md:text-5xl custom:text-6xl text-white font-playfair lg:px-72 px-6 pt-20 font-bold'>Real Guests, Real Reviews, Real Trust</h1>
 
-      <div className="w-full flex justify-end lg:px-72 px-6">
-  <p className="text-white text-left pt-10 md:text-xl w-[500px] font-montserrat">
-    Boost your brand’s credibility and increase customer confidence by gathering more genuine reviews each one builds trust, enhances visibility, and drives more conversions.
+      <div className=" flex justify-end lg:px-72 px-6">
+  <p className="text-white text-left pt-10 text-xl md:text-3xl w-[650px] font-playfair">
+   These places are getting buzz — check out what real guests had to say. Veri ed reviews from
+receipt-backed visits, updated in real time.
   </p>
 </div>
         {[1, 2, 3, 4, 5, 6].map((card, index) => (
@@ -293,9 +324,30 @@ export default function CombinedScrollAnimation() {
       </section>
 
       {/* Final outro section */}
-      <section className="outro relative w-full h-32 p-8 bg-accent flex items-center">
+      <section className="outro relative  h-32 p-8 bg-accent flex items-center">
       
       </section>
     </div>
   );
 }
+
+
+/**
+ *  <div className="flex-1 aspect-video rounded-lg overflow-hidden card-img">
+         <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+            className=" min- min-h-full object-cover  rounded-3xl"
+            style={{ 
+            
+              width: '100%',
+              height: '100%'
+            }}
+          >
+            <source src={`/assets/videos/vi-${index + 1}.mp4`} type="video/mp4" />
+          
+          </video>
+        </div>
+ */
