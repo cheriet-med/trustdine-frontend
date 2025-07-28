@@ -19,7 +19,8 @@ import { TbGridDots } from "react-icons/tb";
 import LoginButtonWishlistSinglepage from '@/components/header/loginButtonWishlistSingle';
 import LoginButtonAddReview from '@/components/header/LoginButtonAddReview';
 import Index from '@/components/Data/singlePageData';
-
+import ReviewsPopup from './reviewspopup';
+import { Check, Clock, BarChart3 } from 'lucide-react';
 
 interface ImageData {
   src: string;
@@ -255,6 +256,15 @@ const Idcomponent: React.FC<PropertyCardProps> = ({
   return (
     <div className="max-w-7xl mx-auto px-2  font-montserrat ">
           <div className="space-y-2 mb-4 bg-white p-4 rounded-xl shadow-sm">
+           <div className='flex flex-wrap gap-4 items-center'>
+               <p className='py-1.5 px-16 bg-accent text-white font-playfair rounded-3xl w-fit font-bold'>Book Now</p>
+               <div className='flex gap-1 items-center'>
+                 <Check className="w-5 h-5 text-accent" />
+                  <p className='text-accent font-medium'>Guents aveskient service</p>
+               </div>
+          
+            </div>
+           
               <h1 className="text-3xl lg:text-4xl font-bold font-playfair text-gray-900">
                 Intercontinental New York Times Square, an IHG hotel
               </h1>
@@ -273,13 +283,15 @@ const Idcomponent: React.FC<PropertyCardProps> = ({
                   <span className="text-accent font-medium">Good</span>
                   <span className='underline'>(8,684 reviews)</span>
                 </div>
-                
+                <ReviewsPopup/>
               </div>
-
+              <p className='text-accent font-semibold font-playfair '>What guests love: Exceptional service, quiet rooms, and great location. Some noted the restaurant
+could improve pricing</p>
               <div className="flex items-center gap-2 text-gray-500">
                 <MapPin className="w-4 h-4" />
                 <span className='underline'>300 West 44th Street, New York City, NY 10036</span>
               </div>
+
 <div className='flex justify-between flex-wrap gap-4'>
               <div className="flex flex-wrap items-center gap-4 ">
                  <div className='flex items-center hover:underline'>

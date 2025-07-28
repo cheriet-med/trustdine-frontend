@@ -9,7 +9,15 @@ import { Link } from "@/i18n/routing";
 import NewsletterDialog from "../header/newsletters";
 import Image from "next/image";
 import { GoArrowRight } from "react-icons/go";
+import dynamic from "next/dynamic";
 
+const PartnerMenu = dynamic(
+  () => import("./partnerMenu"),
+  { 
+    ssr: false,
+  
+  }
+);
 
 
 
@@ -116,7 +124,8 @@ const Footer = () => {
             <h2 className="pb-4 font-semibold uppercase font-playfair">Diners & Restaurants</h2>
             <div className=" text-sm flex flex-col gap-3">
             <Link href="/booking"><p className=" hover:underline cursor-pointer ">Find Hotels & Restaurants</p></Link>
-            <Link href="/partner"> <p className=" hover:underline cursor-pointer ">Become a Partner </p></Link>
+            <PartnerMenu/>
+          
             <Link href="/pro"><p className=" hover:underline cursor-pointer">Pro Plan</p></Link>
             <Link href="/rewards"> <p className=" hover:underline cursor-pointer">Rewards Program</p></Link>
           </div>

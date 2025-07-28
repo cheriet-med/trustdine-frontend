@@ -350,6 +350,13 @@ const Index = () => {
 
               </CardHeader>
               <CardContent className="space-y-6">
+                <div className="flex gap-2 flex-wrap">
+                    <p className="py-1.5 px-4 bg-highlights text-white font-semibold w-fit rounded-xl">Great for Couples</p>
+                    <p className="py-1.5 px-4 bg-highlights text-white font-semibold w-fit rounded-xl">Business Trips</p>
+                    <p className="py-1.5 px-4 bg-highlights text-white font-semibold w-fit rounded-xl">Vegan Options</p>
+                    <p className="py-1.5 px-4 bg-highlights text-white font-semibold w-fit rounded-xl">Ocean View</p>
+                </div>
+              
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <h4 className="font-semibold mb-3 font-playfair">Property amenities</h4>
@@ -435,6 +442,7 @@ const Index = () => {
             </Card>
 
             {/* Rating Breakdown Section */}
+            <div className="lg:hidden">
             <Card>
               <CardHeader>
                 <CardTitle className="font-playfair">Rating Breakdown</CardTitle>
@@ -478,7 +486,7 @@ const Index = () => {
                 </div>
               </CardContent>
             </Card>
-
+</div>
             {/* Reviews Section */}
             <Card>
               <CardHeader>
@@ -683,6 +691,56 @@ const Index = () => {
                 </p>
               </CardContent>
             </Card>
+
+
+
+
+               {/* Rating Breakdown Section */}
+            <div className="mt-2 hidden lg:block">
+            <Card>
+              <CardHeader>
+                <CardTitle className="font-playfair">Rating Breakdown</CardTitle>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-2xl font-bold text-gray-900">4.2</span>
+                  <div className="flex">
+                    {[...Array(4)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-accent text-accent" />
+                    ))}
+                    <Star className="w-4 h-4 text-gray-300" />
+                  </div>
+                  <span className="text-accent font-medium">Good</span>
+                  <span className="text-sm text-gray-500">(8,684 reviews)</span>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="text-sm text-gray-500 mb-4">#165 of 509 hotels in New York City</div>
+                  
+                  <div className="grid gap-3 md:w-[400px]">
+                    {[
+                      { label: "Location", score: 4.8, color: "bg-accent" },
+                      { label: "Rooms", score: 4.4, color: "bg-accent" },
+                      { label: "Value", score: 4.0, color: "bg-accent" },
+                      { label: "Cleanliness", score: 4.6, color: "bg-accent" },
+                      { label: "Service", score: 4.2, color: "bg-accent" },
+                      { label: "Sleep Quality", score: 4.5, color: "bg-accent" }
+                    ].map((item) => (
+                      <div key={item.label} className="flex items-center gap-4">
+                        <div className="w-24 md:w-28  text-sm font-medium text-gray-500">{item.label}</div>
+                        <div className="flex-1 bg-gray-100 rounded-full h-4">
+                          <div 
+                            className={`h-4 rounded-full ${item.color}`}
+                            style={{ width: `${(item.score / 5) * 100}%` }}
+                          />
+                        </div>
+                        <div className="w-8 text-sm font-medium text-right">{item.score}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+</div>
           </div>
         </div>
       </div>

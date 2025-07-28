@@ -34,6 +34,10 @@ import {useLocale} from "next-intl";
 import { MdOutlineRateReview } from "react-icons/md";
 import { FaHeartCircleCheck } from "react-icons/fa6";
 import { MdOutlineTravelExplore } from "react-icons/md";
+import { TiBusinessCard } from "react-icons/ti";
+import { IoMdAnalytics } from "react-icons/io";
+import { FaHotel } from "react-icons/fa";
+import { MdLocalOffer } from "react-icons/md";
 
 
 
@@ -44,7 +48,7 @@ interface MenuItem {
   href: string ;
 }
 
-export default function VerticalMenu() {
+export default function PartnerMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuAnimating, setIsMenuAnimating] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -56,13 +60,10 @@ export default function VerticalMenu() {
   const { data: session, status } = useSession();
   
   const menuItems: MenuItem[] = [
-    { label: "Explore", icon: <MdOutlineTravelExplore />, href: "/en/booking" },
-    { label: "My Bookings", icon: <FaPeopleGroup />, href: status === "authenticated" ? "/en/account" :"/en/login" },
-    { label: status === "authenticated" ? "My Account" :"Sign in", icon: <FaUser />, href: status === "authenticated" ? "/en/account" :"/en/login" },
-    { label: "My Reviews", icon: <MdOutlineRateReview />, href: status === "authenticated" ? "/en/account" :"/en/login" },
-    { label: "Trust Score", icon: <MdOutlineCreditScore />, href: "/en/trust-score" },
-    { label: "Help Center", icon: <FaHandsHelping />, href: "/en/help-center" },
-    { label: "Wishlist", icon: <FaHeartCircleCheck />, href: status === "authenticated" ? "/en/account" :"/en/login" },
+    { label: "List Your Business", icon: <TiBusinessCard />, href: "/en/partner" },
+    { label: "Business Dashboard", icon: <IoMdAnalytics />, href: status === "authenticated" ? "/en/account" :"/en/login" },
+    { label: "Submit a Venue", icon: <FaHotel />, href: status === "authenticated" ? "/en/account" :"/en/login" },
+    { label: "Pricing for Ads", icon: <MdLocalOffer />, href: "/en/partner" },
   ];
 
   const menuRef = useRef<HTMLDivElement>(null);
@@ -300,13 +301,8 @@ export default function VerticalMenu() {
   return (
     <>
       {/* Menu Toggle Button */}
-      <button
-        className="cursor-pointer"
-        onClick={toggleMenu}
-      >
-        <RiMenu3Fill size={32} className="hover:text-secondary text-white"/>
-      </button>
 
+<p className=" hover:underline cursor-pointer" onClick={toggleMenu}>For Business Owners</p>
       {/* Menu Overlay */}
       <div
         ref={menuOverlayRef}
@@ -314,7 +310,7 @@ export default function VerticalMenu() {
       >
         {/* Background with menu.jpg */}
         <div 
-          className="absolute w-full h-full bg-[url('/01.webp')] bg-no-repeat bg-center bg-cover"
+          className="absolute w-full h-full bg-[url('/03.webp')] bg-no-repeat bg-center bg-cover"
         />
 
         {/* Menu Overlay Nav */}

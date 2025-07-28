@@ -4,6 +4,9 @@ import React, { useState } from 'react';
 import { ArrowLeft, Check, Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { RiSecurePaymentFill } from "react-icons/ri";
+import { TbCalendarCancel } from "react-icons/tb";
+import { GiBarbedStar } from "react-icons/gi";
 
 
 interface PaymentMethod {
@@ -111,7 +114,7 @@ const CheckoutPage: React.FC = () => {
       
               </div>
             </div>
-      <div className="max-w-7xl mx-auto mb-16">
+      <div className="max-w-7xl mx-1 md:mx-6 mb-16">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Section - Main Content */}
           <div className="lg:col-span-2">
@@ -131,7 +134,7 @@ const CheckoutPage: React.FC = () => {
               <h2 className="text-2xl font-semibold font-playfair  mb-6">Payment Method</h2>
               
 
-<div className='border border-1 shadow-sm p-6 grid grid-cols-2 gap-4 rounded-lg'>
+<div className='border border-1 shadow-sm p-6 grid grid-cols-1 md:grid-cols-2 gap-4 rounded-lg '>
 
 <div className='flex gap-2 items-center text-center justify-center border border-1 rounded-lg py-6 '>
      <img
@@ -139,7 +142,7 @@ const CheckoutPage: React.FC = () => {
                     alt="Place to stay"
                     className=" h-8 object-cover rounded-lg"
                   />
-                  <p className='text-bold text-lg font-playfair text-gray-800'>Pay White Paypal</p>
+                  <p className='text-bold text-lg font-playfair text-gray-800'>Pay with PayPal</p>
 </div>
 <div className='flex gap-2 items-center text-center justify-center border border-1 rounded-lg py-6 '>
      <img
@@ -147,44 +150,58 @@ const CheckoutPage: React.FC = () => {
                     alt="Place to stay"
                     className=" h-8 object-cover rounded-lg"
                   />
-                  <p className='text-bold text-lg font-playfair text-gray-800'>Pay White Credit Card</p>
+                  <p className='text-bold text-lg font-playfair text-gray-800'>Pay with Credit Card</p>
 </div>
 
 
+     
 </div>
-
-            
+ 
+<div className='items-center flex justify-around py-4 mt-2 border border-1 rounded-xl shadow-sm flex-wrap gap-2'>
+   <div className='flex gap-1  items-center text-secondary'>
+  <RiSecurePaymentFill size={32}/>
+  <p>Safe & Secure Checkout</p>
+</div>    
+   <div className='flex gap-1  items-center text-secondary'>
+  <TbCalendarCancel size={32}/>
+  <p>Risk-Free Cancellation</p>
+</div>    
+<p className='underline text-gray-700'>How we protect your payment</p>
+ </div>
             </div>
 <div className='border border-1 shadow-sm p-6  rounded-lg'>
             {/* Cancellation Policy */}
             <div className="mb-8">
               <h2 className="text-xl font-playfair font-semibold  mb-4">Cancellation policy</h2>
               <div className="space-y-2 text-gray-600">
-                <p >Free cancellation before Nov 30.</p>
-                <p >
-                  After that, the reservation is non-refundable.{' '}
-                  <button className="text-secondary underline text-semibold">Learn more</button>
-                </p>
+              <p>Free cancellation available until <span className='font-extrabold'>Nov 30 at 11:59 PM.</span>  After that, the reservation is non-
+refundable.</p>
               </div>
             </div>
 <hr />
             {/* Ground Rules */}
             <div>
-              <h2 className="text-xl font-playfair font-semibold  my-4">Ground rules</h2>
+              <h2 className="text-xl font-playfair font-semibold  my-4">Guest Guidelines</h2>
               <p className="text-gray-600 mb-4">
                 We ask every guest to remember a few simple things about what makes a great guest.
               </p>
-              <ul className="space-y-2 text-gray-600">
-                <li className="flex items-start gap-2 ">
-                  <span className="w-1 h-1 bg-foreground rounded-full mt-2 flex-shrink-0"></span>
-                  Follow the house rules
+              <ul className="space-y-2 text-gray-600 ">
+                <li className="flex items-center gap-2">
+                  <span className="w-1 h-1 bg-foreground rounded-full mt-2 flex-shrink-0 hidden lg:block"></span>
+                  <GiBarbedStar size={18}/>
+                  Follow the host’s house rules respectfully
                 </li>
-                <li className="flex items-start gap-2 ">
-                  <span className="w-1 h-1 bg-foreground rounded-full mt-2 flex-shrink-0"></span>
-                  Treat your Host's home like your own
+                <li className="flex items-center gap-2">
+                  <span className="w-1 h-1 bg-foreground rounded-full mt-2 flex-shrink-0 hidden lg:block"></span>
+                   <GiBarbedStar size={18}/>
+                  Leave the space as you found it
                 </li>
               </ul>
             </div>
+          </div>
+
+          <div className='border border-1 shadow-sm p-6  rounded-lg mt-2'>
+            <p className='text-secondary font-playfair font-medium'>Every booking is covered by our TrustDine Guarantee. <span className='underline'>Learn more.</span></p>
           </div>
 </div>
 
