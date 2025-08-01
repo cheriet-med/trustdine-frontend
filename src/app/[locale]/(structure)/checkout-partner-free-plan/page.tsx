@@ -398,8 +398,8 @@ const CustomSelect = ({
 
   const steps = [
     { id: 1, title: 'Account Setup', icon: User },
-    { id: 2, title: 'Business Information', icon: Building },
-    { id: 3, title: 'Payment Details', icon: CreditCard }
+    { id: 2, title: 'Business Information', icon: Building }
+  
   ];
   const router = useRouter();
   
@@ -667,8 +667,8 @@ const CustomSelect = ({
 
 
                 
-                    </div>
-                      <div className='flex gap-2 w-full'>
+                    </div> 
+                      <div className='md:flex  gap-2 w-full space-y-6 md:space-y-0'>
                     <div className="md:col-span-2 w-full">
                       <label className="block text-sm font-medium text-gray-700 mb-2">Business Name</label>
                       <div className="relative">
@@ -683,7 +683,7 @@ const CustomSelect = ({
                       </div>
                     </div>
                     
-                    <div className="md:col-span-2 w-full">
+                    <div className="md:col-span-2 w-full ">
                       <label className="block text-sm font-medium text-gray-700 mb-2">Contact Name</label>
                       <div className="relative">
                         <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
@@ -710,8 +710,8 @@ const CustomSelect = ({
                         />
                       </div>
                     </div>
-                    <div className='flex gap-2 w-full'>
-                    <div className='w-full'>
+                    <div className='md:flex gap-2 w-full space-y-6 md:space-y-0'>
+                    <div className='w-full mb:2'>
                       <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
                       <input
                         type="text"
@@ -752,7 +752,7 @@ const CustomSelect = ({
                     />
                     </div>
                     
-                    <div >
+                    <div className='pb-6'>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
                       <div className='flex gap-2'>
                           <div className="flex">
@@ -767,13 +767,13 @@ const CustomSelect = ({
                         />
                       </div>
                       <div className="flex-1">
-                        <div className="relative">
+                        <div >
                           
                           <input
                             type="tel"
                             value={formData.phoneNumber}
                             onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                            className="w-full pl-4 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                            className="w-full pl-4 pr-4 py-3 h-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
                             placeholder="(415) 123-4567"
                           />
                         </div>
@@ -785,90 +785,24 @@ const CustomSelect = ({
                
               )}
 
-              {/* Step 3: Payment Details */}
-              {currentStep === 3 && (
-                <div className="space-y-6">
-                  <div className="bg-black text-white p-4 rounded-lg">
-                    <h2 className="text-xl font-bold mb-2">3. Payment Details</h2>
-                    <p className="text-gray-200">Secure payment information</p>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Cardholder Name</label>
-                      <input
-                        type="text"
-                        value={formData.cardholderName}
-                        onChange={(e) => handleInputChange('cardholderName', e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
-                        placeholder="Name on card"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Card Number</label>
-                      <div className="relative">
-                        <CreditCard className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                        <input
-                          type="text"
-                          value={formData.cardNumber}
-                          onChange={(e) => handleInputChange('cardNumber', e.target.value)}
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
-                          placeholder="1234 5678 9012 3456"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Expiry Date</label>
-                        <div className="relative">
-                          <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                          <input
-                            type="text"
-                            value={formData.expiryDate}
-                            onChange={(e) => handleInputChange('expiryDate', e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
-                            placeholder="MM/YY"
-                          />
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">CVV</label>
-                        <div className="relative">
-                          <Shield className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                          <input
-                            type="text"
-                            value={formData.cvv}
-                            onChange={(e) => handleInputChange('cvv', e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
-                            placeholder="123"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
+            
               {/* Navigation Buttons */}
               <div className="flex justify-between pt-6 border-t">
                 {currentStep > 1 && (
                   <button
                     onClick={handlePrevStep}
-                    className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                    className="sm:px-6 py-1.5  px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                   >
                     Previous
                   </button>
                 )}
                 
                 <div className="ml-auto">
-                  {currentStep < 3 ? (
+                  {currentStep < 2 ? (
                     <button
                       onClick={handleSubmit}
                       disabled={!isStepValid(currentStep)}
-                      className="px-6 py-3 bg-black text-white rounded-lg hover:bg-accent disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                      className="sm:px-6 sm:py-2 text-sm sm:text-base py-2 px-2  bg-black text-white rounded-lg hover:bg-accent disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
                     >
                       Continue
                       <ChevronRight className="w-4 h-4" />
@@ -877,7 +811,7 @@ const CustomSelect = ({
                     <button
                       onClick={handleSubmit}
                       disabled={!isStepValid(currentStep) || isLoading}
-                      className="px-6 py-3 bg-black text-white rounded-lg hover:bg-accent disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center min-w-40"
+                      className="sm:px-6 sm:py-2 py-3 text-sm sm:text-base px-2 bg-black text-white rounded-lg hover:bg-accent disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center min-w-40"
                     >
                       {isLoading ? (
                         <>
@@ -904,7 +838,7 @@ const CustomSelect = ({
                 <div className="bg-white p-4 rounded-lg shadow-sm">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-medium text-gray-900 font-playfair">Partner Registration</span>
-                    <span className="text-sm font-semibold text-gray-900">$99.00</span>
+                    <span className="text-sm font-semibold text-gray-900">$0.00</span>
                   </div>
                   <p className="text-xs text-gray-600">One-time setup fee</p>
                 </div>
@@ -912,7 +846,7 @@ const CustomSelect = ({
                 <div className="bg-white p-4 rounded-lg shadow-sm">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-medium text-gray-900 font-playfair">Monthly Subscription</span>
-                    <span className="text-sm font-semibold text-gray-900">$29.99</span>
+                    <span className="text-sm font-semibold text-gray-900">$0.00</span>
                   </div>
                   <p className="text-xs text-gray-600">First month included</p>
                 </div>
@@ -920,7 +854,7 @@ const CustomSelect = ({
                 <div className="border-t pt-4">
                   <div className="flex justify-between items-center">
                     <span className="font-semibold text-gray-900">Total</span>
-                    <span className="font-bold text-lg text-gray-900">$99.00</span>
+                    <span className="font-bold text-lg text-gray-900">$0.00</span>
                   </div>
                 </div>
               </div>

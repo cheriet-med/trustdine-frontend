@@ -12,6 +12,7 @@ export const routing = defineRouting({
     "/profile":"/profile",
     "/profile-partner":"/profile-partner",
     "/checkout-partner": "/checkout-partner",
+    "/checkout-partner-free-plan": "/checkout-partner-free-plan",
     "/booking":"/booking",
     "/receipt-verification":"/receipt-verification",
     "/find-restaurants":"/find-restaurants",

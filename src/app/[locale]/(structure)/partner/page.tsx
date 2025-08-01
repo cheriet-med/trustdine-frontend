@@ -18,7 +18,7 @@ const plans: Plan[] = [
   {
     name: 'Free',
     id: 'tier-free',
-    href: '/en/checkout-partner',
+    href: '/en/checkout-partner-free-plan',
     priceMonthly: '$0',
     description: "Perfect for individuals getting started with basic booking needs.",
     features: [

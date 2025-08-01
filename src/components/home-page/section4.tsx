@@ -109,7 +109,7 @@ const PlaceName = [
           alt={`Card ${index + 1}`}
           className="box-border h-full object-cover rounded-lg"
           loading="lazy"
-          height={900}
+          height={300}
           width={300}
         />
       </div>
