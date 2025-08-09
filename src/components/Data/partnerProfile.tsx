@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import VerifiedBadge from '@/components/verified';
 import { MdOutlineTravelExplore } from "react-icons/md";
 import { CiLocationOn } from "react-icons/ci";
@@ -9,18 +9,16 @@ import { TbHistoryToggle } from "react-icons/tb";
 import { GoPencil } from "react-icons/go";
 import { CiPhone } from "react-icons/ci";
 import { MdAlternateEmail } from "react-icons/md";
-import {
-  Hotel,
-  Utensils,
-  Wine,
-  Briefcase,
-  ConciergeBell,
-  Bus,
-  PawPrint
-} from 'lucide-react';
+import { Camera, Upload } from "lucide-react";
+import Image from 'next/image';
+import { useSession } from 'next-auth/react';
+import { GoUnverified } from "react-icons/go";
 
 import dynamic from 'next/dynamic';
 import { ApexOptions } from 'apexcharts';
+import AmenitiesSelector from '@/components/requests/amenities';
+import useFetchUser from '@/components/requests/fetchUser';
+const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 
 const Chart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -29,8 +27,280 @@ const Chart = dynamic(() => import('react-apexcharts'), {
 </div>
 });
 
+import EditAboutPopup from '@/components/requests/editeAbout';
+import EditNameTitle from '@/components/requests/editeInfoProfile';
+import EditLocationPopup from '@/components/requests/editeLocation';
+
+
+
+interface ProfileData {
+  id?: number | string;
+  name?: string;
+  full_name?:string;
+  username?: string;
+  title?: string;
+  category?: string;
+  amenities?: string;
+  email?: string;
+  location?: string;
+  profile_image?: string;
+  identity_verified?: boolean;
+  about?: any;
+  website?: string;
+  joined?: string;
+  address_line_1?: string;
+  phoneNumber?: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
+  countryCode?: string;
+  latitude?: string;
+  longtitude?: string;
+}
+
 const PartnerProfile: React.FC = () => {
- const options: ApexOptions = {
+  const [profileImage, setProfileImage] = useState("/profile.webp");
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+   const { data: session, status } = useSession({ required: true });
+
+    const userId = session?.user?.id;
+  const { Users,  isLoading, mutate } = useFetchUser(userId);
+
+ // Replace with actual userId
+
+  // Use Users data directly instead of profileData state
+  // Users is now a single object, not an array
+  const profileData: ProfileData = Users || {};
+  // Calculate center position if hotels exist, otherwise use default
+  const centerPosition = 
+    [51.505, -0.09] as [number, number];
+
+const initialAmenities = [
+    // Internet & Connectivity
+    { id: 1, name: 'Free internet', category: 'Internet & Connectivity', selected: false },
+    
+    // Parking & Transportation
+    { id: 2, name: 'Valet parking', category: 'Parking & Transportation', selected: false },
+    { id: 6, name: 'Taxi service', category: 'Parking & Transportation', selected: false },
+    { id: 24, name: 'Elevator', category: 'Parking & Transportation', selected: false },
+    
+    // Fitness & Recreation
+    { id: 3, name: 'Gym / Workout Room', category: 'Fitness & Recreation', selected: false },
+    { id: 48, name: 'Yoga', category: 'Fitness & Recreation', selected: false },
+    { id: 21, name: 'Spa', category: 'Fitness & Recreation', selected: false },
+    
+    // Food & Dining
+    { id: 4, name: 'Bar / lounge', category: 'Food & Dining', selected: false },
+    { id: 8, name: 'Coffee / tea maker', category: 'Food & Dining', selected: false },
+    { id: 16, name: 'Outdoor seating', category: 'Food & Dining', selected: false },
+    { id: 17, name: 'Private dining', category: 'Food & Dining', selected: false },
+    { id: 20, name: 'Delivery', category: 'Food & Dining', selected: false },
+    { id: 26, name: 'Fine Dining', category: 'Food & Dining', selected: false },
+    { id: 27, name: 'Vegetarian', category: 'Food & Dining', selected: false },
+    { id: 28, name: 'Vegan', category: 'Food & Dining', selected: false },
+    { id: 29, name: 'Farm to Table', category: 'Food & Dining', selected: false },
+    { id: 30, name: 'Wine Tasting', category: 'Food & Dining', selected: false },
+    { id: 31, name: 'Seafood', category: 'Food & Dining', selected: false },
+    { id: 32, name: 'Cocktail Bars', category: 'Food & Dining', selected: false },
+    { id: 33, name: 'Dessert Spots', category: 'Food & Dining', selected: false },
+    { id: 34, name: 'Brunch', category: 'Food & Dining', selected: false },
+    { id: 35, name: 'Street Food', category: 'Food & Dining', selected: false },
+    
+    // Family & Children
+    { id: 5, name: 'Children Activities', category: 'Family & Children', selected: false },
+    { id: 7, name: 'Babysitting', category: 'Family & Children', selected: false },
+    
+    // Room Amenities
+    { id: 9, name: 'Bathrobes', category: 'Room Amenities', selected: false },
+    { id: 10, name: 'Air conditioning', category: 'Room Amenities', selected: false },
+    { id: 11, name: 'Desk', category: 'Room Amenities', selected: false },
+    { id: 13, name: 'Interconnected rooms available', category: 'Room Amenities', selected: false },
+    { id: 14, name: 'Flatscreen TV', category: 'Room Amenities', selected: false },
+    { id: 15, name: 'Bath / shower', category: 'Room Amenities', selected: false },
+    
+    // Services
+    { id: 12, name: 'Housekeeping', category: 'Services', selected: false },
+    { id: 22, name: 'Business center', category: 'Services', selected: false },
+    { id: 25, name: 'Laundry', category: 'Services', selected: false },
+    
+    // Accessibility
+    { id: 18, name: 'Wheelchair accessible', category: 'Accessibility', selected: false },
+    
+    // Entertainment
+    { id: 19, name: 'Live music', category: 'Entertainment', selected: false },
+    { id: 47, name: 'Live Music', category: 'Entertainment', selected: false },
+    
+    // Pets
+    { id: 23, name: 'Pet friendly', category: 'Pets', selected: false },
+    { id: 50, name: 'Pet-Friendly Places', category: 'Pets', selected: false },
+    
+    // Accommodation Types
+    { id: 36, name: 'Luxury Hotels', category: 'Accommodation Types', selected: false },
+    { id: 37, name: 'Boutique Stays', category: 'Accommodation Types', selected: false },
+    { id: 38, name: 'Beach Resorts', category: 'Accommodation Types', selected: false },
+    { id: 39, name: 'Ski Resorts', category: 'Accommodation Types', selected: false },
+    
+    // Travel & Tourism
+    { id: 40, name: 'Eco Tourism', category: 'Travel & Tourism', selected: false },
+    { id: 41, name: 'City Breaks', category: 'Travel & Tourism', selected: false },
+    { id: 42, name: 'Cultural Tours', category: 'Travel & Tourism', selected: false },
+    { id: 43, name: 'Adventure Travel', category: 'Travel & Tourism', selected: false },
+    
+    // Arts & Culture
+    { id: 44, name: 'Photography', category: 'Arts & Culture', selected: false },
+    { id: 46, name: 'Art Galleries', category: 'Arts & Culture', selected: false },
+    
+    // Technology
+    { id: 45, name: 'Web Design', category: 'Technology', selected: false },
+    
+    // Lifestyle
+    { id: 49, name: 'Sustainability', category: 'Lifestyle', selected: false }
+];
+
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setError('Please select a valid image file');
+      return;
+    }
+
+    // Validate file size (e.g., max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Image size should be less than 5MB');
+      return;
+    }
+
+    setIsUploading(true);
+    setError(null);
+    
+    try {
+      // Method 1: Upload as FormData (recommended for file uploads)
+      const formData = new FormData();
+      formData.append('profile_image', file);
+      
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}infoid/${userId}`, {
+        method: "PUT",
+        headers: {
+          "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          // Don't set Content-Type when sending FormData, let the browser set it
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(`Upload failed: ${response.status} - ${errorData}`);
+      }
+
+      const updatedData = await response.json();
+      
+      // Refetch data to get updated profile information using SWR mutate
+      if (mutate) {
+        await mutate();
+      }
+      
+      // Update profile image with the new URL from server or create object URL for immediate display
+      if (updatedData.profile_image) {
+        setProfileImage(updatedData.profile_image);
+      } else {
+        // Fallback: create temporary URL for immediate display
+        const tempUrl = URL.createObjectURL(file);
+        setProfileImage(tempUrl);
+      }
+      
+      
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      setError(error instanceof Error ? error.message : 'Failed to upload image');
+      
+      // Revert to previous image on error
+      if (profileData.profile_image) {
+        setProfileImage(profileData.profile_image);
+      } else {
+        setProfileImage("/ex.avif");
+      }
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  // Alternative method: Convert to base64 if your API expects it
+  const handleImageUploadBase64 = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    setError(null);
+    
+    try {
+      // Convert to base64
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const base64String = e.target?.result as string;
+        
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_URL}infoid/${userId}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+            },
+            body: JSON.stringify({
+              profile_image: base64String,
+            }),
+          });
+          
+          if (!response.ok) {
+            const errorData = await response.text();
+            throw new Error(`Upload failed: ${response.status} - ${errorData}`);
+          }
+          
+          const updatedData = await response.json();
+          
+          // Refetch data to get updated profile information using SWR mutate
+          if (mutate) {
+            await mutate();
+          }
+          
+          setProfileImage(base64String);
+          
+        
+        } catch (error) {
+          console.error('Error uploading image:', error);
+          setError('Failed to upload image');
+          // Revert image on error
+          setProfileImage(profileData.profile_image || "/ex.avif");
+        } finally {
+          setIsUploading(false);
+        }
+      };
+      
+      reader.onerror = () => {
+        setError('Failed to read file');
+        setIsUploading(false);
+      };
+      
+      reader.readAsDataURL(file);
+      
+    } catch (error) {
+      console.error('Error processing file:', error);
+      setError('Failed to process file');
+      setIsUploading(false);
+    }
+  };
+
+  const handleImageClick = () => {
+    if (!isUploading) {
+      fileInputRef.current?.click();
+    }
+  };
+
+  const options: ApexOptions = {
     chart: {
       height: 350,
       type: 'radialBar',
@@ -51,7 +321,6 @@ const PartnerProfile: React.FC = () => {
             show: true,
             label: 'TOTAL',
             formatter: function (w) {
-              // Calculate average of all series
               const sum = w.globals.series.reduce((a: number, b: number) => a + b, 0);
               const avg = sum / w.globals.series.length;
               return Math.round(avg) + '%';
@@ -62,267 +331,400 @@ const PartnerProfile: React.FC = () => {
     },
     series: [67, 84, 97, 61],
     labels: ['Clean Receipt', 'Blur Receipt', 'Verified Receipt', 'Fake Receipt'],
-    colors: ['#9ED0E6', '#B796AC', '#82A7A6', '#785964'], // Custom colors for each bar
+    colors: ['#9ED0E6', '#B796AC', '#82A7A6', '#785964'],
     stroke: {
       lineCap: 'round'
     }
   };
 
-
-  return (
-<div className="mx-2 lg:mx-6 my-6 grid  grid-cols-1 md:grid-cols-2 gap-6 font-montserrat"> 
-  <div>
-    <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative'>
-      <div className="absolute right-4 top-4 border border-1 px-3 py-0.5 rounded-3xl border-secondary shadow-sm text-sm flex gap-1">
- <GoPencil size={18}/>
-        <p >
-    Edit
-  </p> 
-      </div>
-     
-
-      {/* Profile */}
-
-      <div className="flex items-center gap-8 flex-wrap">
-        <div className="shrink-0">
-          <img
-            className="shrink-0 size-48 rounded-full"
-            src="/h.jpg"
-            alt="Avatar"
-          />
+  if (isLoading) {
+    return (
+      <>
+        {/* Map Skeleton */}
+        <div className="rounded-2xl m-1 sm:m-2 md:m-3 relative">
+          <div className="h-[300px] bg-gray-200 animate-pulse rounded-2xl"></div>
+          <div className="absolute right-4 top-4 bg-gray-200 animate-pulse px-3 py-0.5 rounded-3xl h-8 w-16"></div>
         </div>
 
-        <div className="grow">
-            <div className='flex gap-2 flex-wrap'>
-                 <h1 className="text-lg font-medium text-gray-800 dark:text-neutral-200 font-playfair">
-            Whispering Pines Resort
-          </h1>
-          <VerifiedBadge text='Account verified'/>
-          
+        <div className="mx-2 lg:mx-24 my-6 grid grid-cols-1 md:grid-cols-2 gap-6 font-montserrat">
+          <div>
+            {/* Profile Card Skeleton */}
+            <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative'>
+              <div className="absolute right-4 top-4 bg-gray-200 animate-pulse px-3 py-0.5 rounded-3xl h-8 w-16"></div>
+              
+              {/* Profile Section Skeleton */}
+              <div className="flex items-center gap-8 flex-wrap">
+                <div className="shrink-0">
+                  <div className="size-48 rounded-full bg-gray-200 animate-pulse"></div>
+                </div>
+                <div className="grow space-y-3">
+                  <div className="flex gap-2 items-center">
+                    <div className="h-8 bg-gray-200 animate-pulse rounded w-64"></div>
+                    <div className="h-6 bg-gray-200 animate-pulse rounded w-20"></div>
+                  </div>
+                  <div className="h-4 bg-gray-200 animate-pulse rounded w-32"></div>
+                  <div className="h-4 bg-gray-200 animate-pulse rounded w-28"></div>
+                </div>
+              </div>
+
+              <hr className='mt-8'/>
+
+              {/* Contact Info Skeleton */}
+              <div className="mt-5 grid grid-cols-1 lg:grid-cols-2 gap-2">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="flex items-center gap-x-2.5">
+                    <div className="w-6 h-6 bg-gray-200 animate-pulse rounded"></div>
+                    <div className="h-4 bg-gray-200 animate-pulse rounded flex-1"></div>
+                  </div>
+                ))}
+              </div>
             </div>
+
+            {/* Reviews Card Skeleton */}
+            <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative mt-4'>
+              <div className="h-6 bg-gray-200 animate-pulse rounded w-20 mb-4"></div>
+              
+              <div className='flex justify-between mb-4 flex-wrap'>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <div className="h-8 bg-gray-200 animate-pulse rounded w-12"></div>
+                  <div className="flex gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <div key={i} className="w-4 h-4 bg-gray-200 animate-pulse rounded"></div>
+                    ))}
+                  </div>
+                  <div className="h-4 bg-gray-200 animate-pulse rounded w-16"></div>
+                  <div className="h-4 bg-gray-200 animate-pulse rounded w-20"></div>
+                </div>
+                <div className="h-8 bg-gray-200 animate-pulse rounded-3xl w-24"></div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="grid gap-3 md:w-[400px]">
+                  {[...Array(6)].map((_, i) => (
+                    <div key={i} className="flex items-center gap-4">
+                      <div className="w-24 md:w-28 h-4 bg-gray-200 animate-pulse rounded"></div>
+                      <div className="flex-1 bg-gray-100 rounded-full h-3">
+                        <div className="h-3 rounded-full bg-gray-200 animate-pulse w-3/4"></div>
+                      </div>
+                      <div className="w-8 h-4 bg-gray-200 animate-pulse rounded"></div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className='flex gap-1 justify-center mt-8'>
+                <div className="w-6 h-6 bg-gray-200 animate-pulse rounded"></div>
+                <div className="h-4 bg-gray-200 animate-pulse rounded w-32"></div>
+              </div>
+            </div>
+          </div>
+
+          {/* About Us Card Skeleton */}
+          <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative'>
+            <div className="absolute right-4 top-4 bg-gray-200 animate-pulse px-3 py-0.5 rounded-3xl h-8 w-16"></div>
+            <div className="h-6 bg-gray-200 animate-pulse rounded w-20 mb-8"></div>
+
+            {/* About Text Skeleton */}
+            <div className="space-y-2">
+              <div className="h-4 bg-gray-200 animate-pulse rounded w-full"></div>
+              <div className="h-4 bg-gray-200 animate-pulse rounded w-full"></div>
+              <div className="h-4 bg-gray-200 animate-pulse rounded w-3/4"></div>
+              <div className="h-4 bg-gray-200 animate-pulse rounded w-full"></div>
+              <div className="h-4 bg-gray-200 animate-pulse rounded w-5/6"></div>
+              <div className="h-4 bg-gray-200 animate-pulse rounded w-full"></div>
+              <div className="h-4 bg-gray-200 animate-pulse rounded w-2/3"></div>
+            </div>
+
+            <hr className='mt-8'/>
+
+            <div className="h-6 bg-gray-200 animate-pulse rounded w-20 mt-4 mb-8"></div>
+            
+            {/* Amenities Skeleton */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              {[...Array(12)].map((_, i) => (
+                <div key={i} className="h-10 bg-gray-200 animate-pulse rounded-full"></div>
+              ))}
+            </div>
+
+            <hr className='mt-8'/>
+            
+            <div className="h-6 bg-gray-200 animate-pulse rounded w-20 mt-4 mb-4"></div>
+             <div className="h-4 bg-gray-200 animate-pulse rounded w-2/3 mb-2"></div>
+              <div className="h-10 bg-gray-200 animate-pulse rounded-full w-full"></div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <>  
+    <div className="rounded-2xl m-1 sm:m-2 md:m-3 relative">
+     <Map
+    center={
+      profileData.latitude && profileData.longtitude
+        ? [parseFloat(profileData.latitude), parseFloat(profileData.longtitude)]
+        : [51.505, -0.09] // Default fallback position
+    }
+    zoom={profileData.latitude && profileData.longtitude ? 15 : 9}
+    height="300px"
+    markers={
+      profileData.latitude && profileData.longtitude
+        ? [{
+            position: [parseFloat(profileData.latitude), parseFloat(profileData.longtitude)],
+            popup: profileData.location || profileData.address_line_1 || "Location"
+          }]
+        : [] // No markers if no coordinates
+    }
+  />
+   <EditLocationPopup 
+  initialLatitude={51.505} 
+  initialLongtitude={-0.09} 
+  infoId={userId}
+  onUpdateSuccess={(newLat, newLng) => {
+    console.log('Updated coordinates:', newLat, newLng);
+  
+  }}
+  mutate={mutate}
+/>
+        </div>
+<div className="mx-2 lg:mx-8 my-6 grid grid-cols-1 md:grid-cols-2 gap-6 font-montserrat"> 
+  
+  {/* Error Display */}
+  {error && (
+    <div className="col-span-full bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+      <p className="text-sm">{error}</p>
+      <button 
+        onClick={() => setError(null)}
+        className="text-red-500 hover:text-red-700 text-sm underline ml-2"
+      >
+        Dismiss
+      </button>
+    </div>
+  )}
+
+  <div>
+    <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative'>
+    
+<EditNameTitle
+  initialFullName={profileData.full_name}
+  initialTitle={profileData.title}
+  infoId={userId}
+  onUpdateSuccess={(newFullName, newTitle) => {
+    console.log('Updated:', newFullName, newTitle);
+  }}
+  mutate={mutate}
+/>
+      {/* Profile */}
+      <div className="flex items-center gap-8 flex-wrap">
+        <div className="shrink-0 relative group">
+          {/* Hidden file input */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload} // Use handleImageUploadBase64 if your API expects base64
+            className="hidden"
+            disabled={isUploading}
+          />
+          
+          {/* Profile Image Container */}
+          <div 
+            className={`relative ${!isUploading ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+            onClick={handleImageClick}
+          >
+            <Image
+              className={`shrink-0 size-48 rounded-full object-cover transition-all duration-300 ${
+                !isUploading ? 'group-hover:brightness-75' : 'opacity-75'
+              }`}
+              src={profileData.profile_image == null ? '/profile.webp':`${process.env.NEXT_PUBLIC_IMAGE}/${profileData.profile_image}`}
+              alt="Avatar"
+              height={150}
+              width={150}
+              onError={() => setProfileImage("/profile.webp")} // Fallback on image load error
+            />
+            
+            {/* Overlay with edit icon - shown on hover or when uploading */}
+            <div className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 rounded-full ${
+              isUploading ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+            }`}>
+              {isUploading ? (
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
+              ) : (
+                <div className="bg-black bg-opacity-50 rounded-full p-3">
+                  <Camera className="w-6 h-6 text-white" />
+                </div>
+              )}
+            </div>
+            
+            {/* Small edit indicator in corner */}
+            <div className={`absolute bottom-2 right-2 bg-white rounded-full p-2 shadow-lg border transition-opacity duration-300 ${
+              isUploading ? 'opacity-0' : 'opacity-0 group-hover:opacity-100'
+            }`}>
+              <Upload className="w-4 h-4 text-gray-600" />
+            </div>
+          </div>
+        </div>
+
+        <div className="grow mt-6">
+          <div className='flex gap-4 flex-wrap items-center'>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-neutral-200 font-playfair">
+              {profileData.full_name || " "}
+            </h1>
+            <div className='mt-2'>
+                          {profileData.identity_verified == true ?  <VerifiedBadge text='Account verified'/> : 
+            <div className='flex gap-1 items-center'>
+              <GoUnverified size={18} className='text-gray-400'/>
+              <p className='text-gray-400 text-lg font-medium'>Unverified</p>
+            </div> }
+            </div>
+
+           
+          </div>
          
-          <p className="text-sm text-gray-600 dark:text-neutral-400">
-           Hotel and Spa
+          <p className="text-lg text-gray-500 mt-2 font-medium">
+            {profileData.title || " "}
           </p>
-           <a
-              className="text-sm text-gray-500  hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
-              href="#"
-            >
-             Joined in Jun 2018
-            </a>
+          <a
+            className="text-sm text-gray-500 hover:text-gray-600 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
+            
+          >
+            Joined in {profileData.joined}
+          </a>
         </div>
       </div>
       {/* End Profile */}
 
       {/* About */}
-     
-       <hr className='mt-8'/>
-
-        <div className="mt-5 grid grid-cols-1 lg:grid-cols-2 gap-2">
-             <div className="flex items-center gap-x-2.5 text-gray-500">
-            <CiLocationOn size={24}/>
-                        <a
-              className="text-sm   hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
-              href="#"
-            >
-             Location: 123 Luxury Avenue, Downtown, Metropolis
-            </a>
-          </div>
-
-
-  <div className="flex items-center gap-x-2.5 text-gray-500">
-          <CiPhone size={24}/>
-            <a
-              className="text-sm   hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
-              href="#"
-            >
-            Phone: +1 (555) 123-4567
-            </a>
-          </div>
-
-
-          <div className="flex items-center gap-x-2.5 text-gray-500">
-         
-           <MdOutlineTravelExplore size={24}/>
-            <a
-              className="text-sm   hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
-              href="#"
-            >
-             Website: www.hotelgrandluxe.com
-            </a>
-          </div>
-
-          <div className="flex items-center gap-x-2.5 text-gray-500">
-           <MdAlternateEmail size={24}/>
-            <a
-              className="text-sm   hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
-              href="#"
-            >
-              Email: reservations@hotel.com
-            </a>
-          </div>
-
-        
-        </div>
-    
-      {/* End About */}
-    </div>
-
-
-
-
-
-{/* Reviews */ }
-
- <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative mt-4'>
-
-     <h1 className='font-medium font-playfair mb-4 text-lg'>Reviews</h1>
-
-       <div>
-                   <div className='flex justify-between mb-4 flex-wrap'>
-                   
-                     <div className="flex items-center gap-2 flex-wrap">
-                       <span className="text-2xl font-bold text-gray-900">4.2</span>
-                       <div className="flex">
-                         {[...Array(4)].map((_, i) => (
-                           <Star key={i} className="w-4 h-4 fill-background text-background" />
-                         ))}
-                         <Star className="w-4 h-4 text-background" />
-                       </div>
-                       <span className="text-background font-medium">Good</span>
-                       <span className="text-sm text-gray-500">(17 reviews)</span>
-                     </div>
-                      <div className="text-sm text-gray-500 mb-4 px-2 py-1 border border-1 bg-secondary text-white rounded-3xl font-bold w-fit mt-2">Top #59 Reviewer</div>
-                   </div>
-                   <div>
-                     <div className="space-y-4">
-                      
-                       
-                       <div className="grid gap-3 md:w-[400px]">
-                         {[
-                           { label: "Location", score: 4.8, color: "bg-background" },
-                           { label: "Rooms", score: 4.4, color: "bg-background" },
-                           { label: "Value", score: 4.0, color: "bg-background" },
-                           { label: "Cleanliness", score: 4.6, color: "bg-background" },
-                           { label: "Service", score: 4.2, color: "bg-background" },
-                           { label: "Sleep Quality", score: 4.5, color: "bg-background" }
-                         ].map((item) => (
-                           <div key={item.label} className="flex items-center gap-4">
-                             <div className="w-24 md:w-28  text-sm font-medium text-gray-500">{item.label}</div>
-                             <div className="flex-1 bg-gray-100 rounded-full h-3">
-                               <div 
-                                 className={`h-3 rounded-full ${item.color}`}
-                                 style={{ width: `${(item.score / 5) * 100}%` }}
-                               />
-                             </div>
-                             <div className="w-8 text-sm font-medium text-right">{item.score}</div>
-                           </div>
-                         ))}
-                       </div>
-                     </div>
-                   </div>
-                   <div className='flex gap-1 justify-center text-gray-600 mt-8'>
-                     <TbHistoryToggle size={24}/>
-                   <p className=' underline'>Reviews History</p>
-                   </div>
-                  
-                 </div>
-     
-      {/* End About */}
-    </div>
-
-</div>
-
-
-
- <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative'>
-           <div className="absolute right-4 top-4 border border-1 px-3 py-0.5 rounded-3xl border-secondary shadow-sm text-sm flex gap-1">
- <GoPencil size={18}/>
-        <p >
-    Edit
-  </p> 
-      </div>
-     <h1 className='font-medium font-playfair text-lg'>About Us</h1>
-
-      {/* About */}
-      <div className="mt-8 space-y-2">
-        <p className="text-sm text-gray-600 dark:text-neutral-400">
-          At Whispering Pines Resort, we believe every stay should be an unforgettable experience. Nestled in the heart of Downtown, Metropolis, our hotel combines modern elegance with warm hospitality, offering a sanctuary for both leisure and business travelers.
- </p>
- <p className="text-sm text-gray-600 dark:text-neutral-400">
-From our exquisitely designed rooms and suites to our world-class dining and rejuvenating spa, every detail is crafted to ensure your utmost comfort. Whether you're here to explore the vibrant surroundings or seeking a peaceful retreat, our dedicated team is committed to making your stay exceptional.
-</p>
- <p className="text-sm text-gray-600 dark:text-neutral-400">
-Discover the perfect blend of sophistication, convenience, and personalized service at Whispering Pines Resort – your home away from home.
-        </p>
-
-      
-
-       
-      </div>
       <hr className='mt-8'/>
 
-      <h1 className="mt-4 mb-8 font-medium font-playfair text-lg">Features</h1>
-    <div className="flex flex-col gap-6 text-gray-700 text-sm">
-  <div className="flex items-start gap-2">
-    <Hotel size={20} />
-    <p>
-      <span className="font-medium">Luxurious Rooms & Suites</span> – Elegantly designed with modern furnishings, plush bedding, and stunning city views.
-    </p>
-  </div>
-  <div className="flex items-start gap-2">
-    <Utensils size={20} />
-    <p>
-      <span className="font-medium">Fine Dining Restaurants</span> – Experience gourmet cuisine at our award-winning in-house restaurants.
-    </p>
-  </div>
-  <div className="flex items-start gap-2">
-    <Wine size={20} />
-    <p>
-      <span className="font-medium">Rooftop Bar & Lounge</span> – Sip cocktails while enjoying panoramic cityscapes.
-    </p>
-  </div>
-  <div className="flex items-start gap-2">
-    <Wine size={20} />
-    <p>
-      <span className="font-medium">Spa & Wellness Center</span> – Rejuvenate with massages, facials, and a fully equipped gym.
-    </p>
-  </div>
-  <div className="flex items-start gap-2">
-    <Wine size={20} />
-    <p>
-      <span className="font-medium">Swimming Pool</span> – Indoor and outdoor pools with a relaxing ambiance.
-    </p>
-  </div>
-  <div className="flex items-start gap-2">
-    <Briefcase size={20} />
-    <p>
-      <span className="font-medium">Business Center</span> – State-of-the-art meeting rooms and high-speed Wi-Fi for corporate guests.
-    </p>
-  </div>
-  <div className="flex items-start gap-2">
-    <ConciergeBell size={20} />
-    <p>
-      <span className="font-medium">24/7 Concierge Service</span> – Personalized assistance for all your needs.
-    </p>
-  </div>
-  <div className="flex items-start gap-2">
-    <Bus size={20} />
-    <p>
-      <span className="font-medium">Free Airport Shuttle</span> – Hassle-free transfers to and from the airport.
-    </p>
-  </div>
-  <div className="flex items-start gap-2">
-    <PawPrint size={20} />
-    <p>
-      <span className="font-medium">Pet-Friendly</span> – Special accommodations for your furry companions.
-    </p>
-  </div>
-</div>
+      <div className="mt-5 grid grid-cols-1 lg:grid-cols-2 gap-2">
+
+<div className="flex items-center gap-x-2.5 text-gray-500">
+          <MdAlternateEmail size={24}/>
+          <p
+            className="text-sm hover:text-gray-600 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
+           
+          >
+            Email: {profileData.email}
+          </p>
+        </div>
+     
+
+       
+        
+                <div className="flex items-center gap-x-2.5 text-gray-500">
+          <CiLocationOn size={24}/>
+          <p
+            className="text-sm hover:text-gray-600 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
+           
+          >
+            {profileData.address_line_1}, {profileData.city}, {profileData.state}, {profileData.postalCode}, {profileData.countryCode}
+          </p>
+        </div>
+   <div className="flex items-center gap-x-2.5 text-gray-500">
+          <CiPhone size={24}/>
+          <p
+            className="text-sm hover:text-gray-600 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
+         
+          >
+            Phone: {profileData.phoneNumber || "+1 (555) 123-4567"}
+          </p>
+        </div>
+
+{profileData.website &&
+         <div className="flex items-center gap-x-2.5 text-gray-500">
+          <MdOutlineTravelExplore size={24}/>
+          <p
+            className="text-sm hover:text-gray-600 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
+       
+          >
+            Website: {profileData.website}
+          </p>
+        </div>
+}
+      </div>
       {/* End About */}
     </div>
 
+    {/* Reviews */}
+    <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative mt-4'>
+      <h1 className='font-medium font-playfair mb-4 text-lg'>Reviews</h1>
+
+      <div>
+        <div className='flex justify-between mb-4 flex-wrap'>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-2xl font-bold text-gray-900">4.2</span>
+            <div className="flex">
+              {[...Array(4)].map((_, i) => (
+                <Star key={i} className="w-4 h-4 fill-background text-background" />
+              ))}
+              <Star className="w-4 h-4 text-background" />
+            </div>
+            <span className="text-background font-medium">Good</span>
+            <span className="text-sm text-gray-500">(17 reviews)</span>
+          </div>
+          <div className="text-sm text-gray-500 mb-4 px-2 py-1 border border-1 bg-secondary text-white rounded-3xl font-bold w-fit mt-2">Top #59 Reviewer</div>
+        </div>
+        <div>
+          <div className="space-y-4">
+            <div className="grid gap-3 md:w-[400px]">
+              {[
+                { label: "Location", score: 4.8, color: "bg-background" },
+                { label: "Rooms", score: 4.4, color: "bg-background" },
+                { label: "Value", score: 4.0, color: "bg-background" },
+                { label: "Cleanliness", score: 4.6, color: "bg-background" },
+                { label: "Service", score: 4.2, color: "bg-background" },
+                { label: "Sleep Quality", score: 4.5, color: "bg-background" }
+              ].map((item) => (
+                <div key={item.label} className="flex items-center gap-4">
+                  <div className="w-24 md:w-28 text-sm font-medium text-gray-500">{item.label}</div>
+                  <div className="flex-1 bg-gray-100 rounded-full h-3">
+                    <div 
+                      className={`h-3 rounded-full ${item.color}`}
+                      style={{ width: `${(item.score / 5) * 100}%` }}
+                    />
+                  </div>
+                  <div className="w-8 text-sm font-medium text-right">{item.score}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className='flex gap-1 justify-center text-gray-600 mt-8'>
+          <TbHistoryToggle size={24}/>
+          <p className='underline'>Reviews History</p>
+        </div>
+      </div>
     </div>
+  </div>
+
+  <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative'>
+   
+      <EditAboutPopup initialAbout={profileData.about} infoId={userId}  mutate={mutate}/>
+    <h1 className='font-medium font-playfair text-lg'>About Us</h1>
+
+    {/* About */}
+
+      <div 
+  className="text-sm text-gray-600 dark:text-neutral-400 mt-8 space-y-2"
+  dangerouslySetInnerHTML={{ __html: profileData?.about || '' }}
+/>
+     
+
+    <hr className='mt-8'/>
+
+    <h1 className="mt-4 mb-4 font-medium font-playfair text-lg">Features</h1>
+   
+    <AmenitiesSelector  initialAmenities={initialAmenities}
+      user={userId} 
+      mutate={mutate}
+  />
+  </div>
+
+
+</div>
+</>
   );
 };
 

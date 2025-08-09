@@ -18,8 +18,8 @@ import YandexMetrika from "@/components/YandexMetrika";
 import 'leaflet/dist/leaflet.css';
 import HomeNav from "@/components/header/Home-Nav";
 import { Playfair_Display } from 'next/font/google'
-
-
+import '@wojtekmaj/react-timerange-picker/dist/TimeRangePicker.css';
+import 'react-clock/dist/Clock.css';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],

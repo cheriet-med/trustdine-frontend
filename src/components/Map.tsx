@@ -1,5 +1,3 @@
-
-
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
@@ -52,27 +50,41 @@ const Map = ({
   useEffect(() => {
     if (!isMounted || !mapRef.current) return;
 
-    // Initialize map
-    mapInstance.current = L.map(mapRef.current, {
-      center,
-      zoom,
-      zoomControl: true,
-      preferCanvas: true,
-    });
+    // Initialize map only if not already initialized
+    if (!mapInstance.current) {
+      mapInstance.current = L.map(mapRef.current, {
+        center,
+        zoom,
+        zoomControl: true,
+        preferCanvas: true,
+      });
 
-    // Add tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      detectRetina: true,
-    }).addTo(mapInstance.current);
+      // Add tile layer
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        detectRetina: true,
+      }).addTo(mapInstance.current);
+    } else {
+      // Update map view if center or zoom changes
+      mapInstance.current.setView(center, zoom);
+    }
 
-    // Add markers
-    markers.forEach(marker => {
-      const m = L.marker(marker.position).addTo(mapInstance.current!);
-      if (marker.popup) {
-        m.bindPopup(marker.popup);
-      }
-    });
+    // Clear existing markers
+    if (mapInstance.current) {
+      mapInstance.current.eachLayer(layer => {
+        if (layer instanceof L.Marker) {
+          mapInstance.current?.removeLayer(layer);
+        }
+      });
+
+      // Add new markers
+      markers.forEach(marker => {
+        const m = L.marker(marker.position).addTo(mapInstance.current!);
+        if (marker.popup) {
+          m.bindPopup(marker.popup);
+        }
+      });
+    }
 
     // Handle map resize
     const handleResize = () => {
@@ -82,10 +94,6 @@ const Map = ({
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      if (mapInstance.current) {
-        mapInstance.current.remove();
-        mapInstance.current = null;
-      }
     };
   }, [isMounted, center, zoom, markers]);
 
@@ -113,4 +121,3 @@ const Map = ({
 };
 
 export default Map;
-

@@ -3,6 +3,10 @@ import React, { useState,useRef, useEffect } from 'react';
 import { ChevronRight, Check, Mail, Lock, User, MapPin, Phone, Building, CreditCard, Calendar, Shield, Eye, EyeOff, ArrowDown , ChevronDown, Check as CheckIcon} from 'lucide-react';
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import moment from 'moment';
+import MailChecker from "mailchecker";
+import validator from "validator";
+
 
 // Country data with phone codes
 const countries = [
@@ -273,6 +277,7 @@ interface FormData {
 }
 
 const PartnerRegistrationCheckout: React.FC = () => {
+
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     email: '',
@@ -283,10 +288,10 @@ const PartnerRegistrationCheckout: React.FC = () => {
     address: '',
     city: '',
     zipCode: '',
-    country: 'United States',
+    country: '',
     phoneNumber: '',
-    phoneCode: '+1',
-    businessType: 'hotel',
+    phoneCode: '',
+    businessType: '',
     cardNumber: '',
     expiryDate: '',
     cvv: '',
@@ -295,7 +300,122 @@ const PartnerRegistrationCheckout: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null); // Error state
+  const [error1, setError1] = useState(""); // Email validation error state
+  const [error2, setError2] = useState(""); // Password validation error state
 
+  // Debounce for real-time validation
+  const [emailDebounce, setEmailDebounce] = useState<NodeJS.Timeout | null>(null);
+
+  const isValidEmail = async (email: string): Promise<{ valid: boolean; message?: string }> => {
+    // Step 1: Check if the email is empty or null
+    if (!email || email.trim() === "") {
+      return { valid: false, message: 'Email is required' };
+    }
+
+    // Step 2: Validate email format using regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return { valid: false, message: 'Invalid email format' };
+    }
+
+    // Step 3: Validate email format using validator library
+    if (!validator.isEmail(email)) {
+      return { valid: false, message: 'Invalid email format'};
+    }
+
+    // Step 4: Check if the email is disposable using mailchecker
+    if (!MailChecker.isValid(email)) {
+      return { valid: false, message: 'Disposable emails are not allowed' };
+    }
+
+    // If all checks pass, the email is valid
+    return { valid: true };
+  };
+
+  const validatePassword = (password: string): string | null => {
+    if (!password) {
+      return 'Password is required';
+    }
+
+    // Check if password is at least 8 characters long
+    if (password.length < 8) {
+      return 'Password must be at least 8 characters long';
+    }
+
+    // Check if password contains at least one uppercase letter
+    if (!/[A-Z]/.test(password)) {
+      return 'Password must contain at least one uppercase letter';
+    }
+
+    // Check if password contains at least one lowercase letter
+    if (!/[a-z]/.test(password)) {
+      return 'Password must contain at least one lowercase letter';
+    }
+
+    // Check if password contains at least one digit
+    if (!/[0-9]/.test(password)) {
+      return 'Password must contain at least one digit';
+    }
+
+    // Check if password contains at least one special character
+    if (!/[!@#$%^&*]/.test(password)) {
+      return 'Password must contain at least one special character (!@#$%^&*)';
+    }
+
+    // If all conditions are met, return null (no error)
+    return null;
+  };
+
+  // Real-time email validation with debounce
+  const handleEmailChange = (email: string) => {
+    handleInputChange('email', email);
+    
+    // Clear previous debounce
+    if (emailDebounce) {
+      clearTimeout(emailDebounce);
+    }
+
+    // Clear error if email is empty
+    if (!email.trim()) {
+      setError1("");
+      return;
+    }
+
+    // Set new debounce for email validation
+    const timeout = setTimeout(async () => {
+      const validation = await isValidEmail(email);
+      if (!validation.valid) {
+        setError1(validation.message || 'Invalid email');
+      } else {
+        setError1("");
+      }
+    }, 500); // 500ms delay
+
+    setEmailDebounce(timeout);
+  };
+
+  // Real-time password validation
+  const handlePasswordChange = (password: string) => {
+    handleInputChange('password', password);
+    
+    if (!password) {
+      setError2("");
+      return;
+    }
+
+    const passwordError = validatePassword(password);
+    setError2(passwordError || "");
+  };
+
+  // Clear validation errors when component unmounts
+  useEffect(() => {
+    return () => {
+      if (emailDebounce) {
+        clearTimeout(emailDebounce);
+      }
+    };
+  }, [emailDebounce]);
 
 const CustomSelect = ({ 
   value, 
@@ -431,12 +551,32 @@ const CustomSelect = ({
   };
 
   const handleSubmit = async () => {
-    if (currentStep < 3) {
+    if (currentStep < 2) {
       handleNextStep(); // Just move to next step if not on final step
       return;
     }
 
     setIsLoading(true);
+    setError(null); // Reset error state
+
+    const email = formData.email;
+    const password = formData.password
+
+    // Final validation before submission
+    const emailValidation = await isValidEmail(email);
+    if (!emailValidation.valid) {
+      setError1(emailValidation.message || 'Invalid email');
+      setIsLoading(false);
+      return;
+    }
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      setError2(passwordError);
+      setIsLoading(false);
+      return;
+    }
+
     try {
       // Final submission logic only runs on step 3
       const userResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}auth/users/`, {
@@ -446,8 +586,8 @@ const CustomSelect = ({
           "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
         },
         body: JSON.stringify({ 
-          email: formData.email, 
-          password: formData.password, 
+          email: email, 
+          password: password, 
           register_as: 'partner'
         }),
       });
@@ -483,7 +623,7 @@ const CustomSelect = ({
           countryCode: formData.country,
           phoneNumber: `${formData.phoneCode}${formData.phoneNumber}`,
           plan: "free",
-          joined: "Aug 2025"
+          joined: moment().format('ll')
           // ... other fields
         }),
       });
@@ -493,9 +633,10 @@ const CustomSelect = ({
       }
 
       // Registration successful
-      router.push('/en/account/profile'); // Uncomment to redirect after success
+      router.push('/en/account/profile');  
       
     } catch (err) {
+      setError('Registration error please verify your data')
       console.error('Registration error:', err);
     } finally {
       setIsLoading(false);
@@ -505,11 +646,9 @@ const CustomSelect = ({
   const isStepValid = (step: number): boolean => {
     switch (step) {
       case 1:
-        return !!(formData.email && formData.password && formData.confirmPassword && formData.password === formData.confirmPassword);
+        return !!(formData.email && formData.password && formData.confirmPassword && formData.password === formData.confirmPassword && !error1 && !error2);
       case 2:
         return !!(formData.businessName && formData.contactName && formData.address && formData.city && formData.phoneNumber);
-      case 3:
-        return !!(formData.cardNumber && formData.expiryDate && formData.cvv && formData.cardholderName);
       default:
         return false;
     }
@@ -539,17 +678,17 @@ const CustomSelect = ({
               return (
                 <div key={step.id} className="flex items-center">
                   <div className="flex flex-col items-center">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all ${
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all ${
                       isCompleted 
                         ? 'bg-accent border-accent text-white' 
                         : isActive 
                         ? 'bg-black border-black text-white' 
                         : 'bg-white border-gray-300 text-gray-400'
                     }`}>
-                      {isCompleted ? <Check className="w-6 h-6" /> : <Icon className="w-6 h-6" />}
+                      {isCompleted ? <Check className="w-4 h-4" /> : <Icon className="w-4 h-4" />}
                     </div>
                     <div className="mt-2 text-center">
-                      <p className={`text-sm font-medium ${isActive ? 'text-black' : 'text-gray-500'}`}>
+                      <p className={`text-xs font-medium ${isActive ? 'text-black' : 'text-gray-500'}`}>
                         {step.title}
                       </p>
                     </div>
@@ -584,11 +723,14 @@ const CustomSelect = ({
                         <input
                           type="email"
                           value={formData.email}
-                          onChange={(e) => handleInputChange('email', e.target.value)}
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                          onChange={(e) => handleEmailChange(e.target.value)}
+                          className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition ${
+                            error1 ? 'border-secondary' : 'border-gray-300'
+                          }`}
                           placeholder="Enter your email"
                         />
                       </div>
+                      {error1 && <p className="text-secondary text-sm mt-1">{error1}</p>}
                     </div>
                     
                     <div>
@@ -598,8 +740,10 @@ const CustomSelect = ({
                         <input
                           type={showPassword ? "text" : "password"}
                           value={formData.password}
-                          onChange={(e) => handleInputChange('password', e.target.value)}
-                          className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                          onChange={(e) => handlePasswordChange(e.target.value)}
+                          className={`w-full pl-10 pr-10 py-3 border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition ${
+                            error2 ? 'border-secondary' : 'border-gray-300'
+                          }`}
                           placeholder="Create a password"
                         />
                         <button
@@ -610,6 +754,7 @@ const CustomSelect = ({
                           {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                         </button>
                       </div>
+                      {error2 && <p className="text-secondary text-sm mt-1">{error2}</p>}
                     </div>
                     
                     <div>
@@ -620,7 +765,11 @@ const CustomSelect = ({
                           type={showConfirmPassword ? "text" : "password"}
                           value={formData.confirmPassword}
                           onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                          className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                          className={`w-full pl-10 pr-10 py-3 border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition ${
+                            formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword 
+                              ? 'border-secondary' 
+                              : 'border-gray-300'
+                          }`}
                           placeholder="Confirm your password"
                         />
                         <button
@@ -632,7 +781,7 @@ const CustomSelect = ({
                         </button>
                       </div>
                       {formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword && (
-                        <p className="mt-1 text-sm text-red-600">Passwords do not match</p>
+                        <p className="mt-1 mb-2 text-sm text-secondary">Passwords do not match</p>
                       )}
                     </div>
                   </div>
@@ -780,7 +929,9 @@ const CustomSelect = ({
                       </div>
                     
                       </div>
+
                     </div>
+                     {error && <p className="text-secondary text-sm mb-4">{error}</p>}
                   </div>
                
               )}

@@ -15,7 +15,7 @@ reactStrictMode: true,
       {
         protocol: 'https',
         hostname: 'res.cloudinary.com',
-        pathname: '/ds9qj3exf/**',
+        pathname: '/dhnn7xish/**',
       },
     ],
      

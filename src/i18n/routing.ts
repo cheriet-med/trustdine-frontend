@@ -44,6 +44,10 @@ export const routing = defineRouting({
     "/account/emails":"/account/emails",
     "/account/pages":"/account/pages",
     "/account/social":"/account/social",
+    "/account/add-hotel-listing":"/account/add-hotel-listing",
+    "/account/edit-hotel-listing":"/account/edit-hotel-listing",
+     "/account/add-restaurant-listing":"/account/add-restaurant-listing",
+    "/account/edit-restaurant-listing":"/account/edit-restaurant-listing",
     "/test":"/test",
     "/account": {
       en: "/account",

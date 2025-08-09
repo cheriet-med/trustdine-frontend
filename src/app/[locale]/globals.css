@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 body {
   background: white;
   font-family: var(--font-montserrat), sans-serif;
@@ -16,7 +18,7 @@ body {
   min-height: 200px;
   outline: none;
   background-color: white;
-  height: 500px;
+  height: 250px;
   overflow-y: scroll;
 }
 
@@ -108,9 +110,6 @@ ol {
 .leaflet-default-icon-path {
   background-image: url('https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png');
 }
-
-
-
 
 
 

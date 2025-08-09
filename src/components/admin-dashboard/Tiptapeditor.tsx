@@ -410,28 +410,7 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({ content, onChange }) => {
           <RiParagraph size={22}/>
         </button>
        
-        {/* Link */}
-        <button
-          type="button"
-          onClick={() => {
-            const url = prompt('Enter the URL');
-            if (url) editor.chain().focus().setLink({ href: url }).run();
-          }}
-          className={`p-1 rounded ${editor.isActive('link') ? 'bg-gray-200' : ''}`}
-          title="Insert Link"
-        >
-          <FaLink size={18}/>
-        </button>
-
-        {/* Image */}
-        <button
-          type="button"
-          onClick={insertImage} 
-          className="p-1 rounded"
-          title="Insert Image"
-        >
-          <FaImage size={20}/>
-        </button>
+  
 
         {/* Text alignment */}
         <button 
@@ -476,58 +455,13 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({ content, onChange }) => {
         >
           <MdFormatListNumbered size={22}/>
         </button> 
-         {/* Table */}
-        <button 
-          type="button"
-          onClick={insertTable}
-          className="p-1 rounded"
-          title="Insert Table"
-        >
-          <TbTable size={22}/>
-        </button>
+     
        
-   {/* color */}
-   <div className="flex space-x-1">
-  {['#000000', '#e11d48', '#0ea5e9', '#16a34a', '#f59e0b', '#121212'].map((color) => (
-    <button
-      key={color}
-      type="button"
-      onClick={() => editor.chain().focus().setColor(color).run()}
-      className="w-6 h-6 rounded-full border border-gray-300"
-      style={{ backgroundColor: color }}
-      title={`Text color: ${color}`}
-    />
-  ))}
-  <button
-    type="button"
-    onClick={() => editor.chain().focus().unsetColor().run()}
-    className="w-6 h-6 rounded-full border"
-  >
-C
-  </button>
-</div>
-
+ 
       
       </div>
 
-      {/* Table Controls - only visible when a table is selected */}
-      {editor.isActive('table') && (
-        <div className="bg-gray-100 p-2 rounded mb-2 flex flex-wrap gap-2">
-          <button type="button" onClick={addColumnBefore} className="bg-white py-1 px-2 rounded text-sm">Add Column Before</button>
-          <button type="button" onClick={addColumnAfter} className="bg-white py-1 px-2 rounded text-sm">Add Column After</button>
-          <button type="button" onClick={deleteColumn} className="bg-white py-1 px-2 rounded text-sm">Delete Column</button>
-          <button type="button" onClick={addRowBefore} className="bg-white py-1 px-2 rounded text-sm">Add Row Before</button>
-          <button type="button" onClick={addRowAfter} className="bg-white py-1 px-2 rounded text-sm">Add Row After</button>
-          <button type="button" onClick={deleteRow} className="bg-white py-1 px-2 rounded text-sm">Delete Row</button>
-          <button type="button" onClick={deleteTable} className="bg-white py-1 px-2 rounded text-sm">Delete Table</button>
-          <button type="button" onClick={mergeCells} className="bg-white py-1 px-2 rounded text-sm">Merge Cells</button>
-          <button type="button" onClick={splitCell} className="bg-white py-1 px-2 rounded text-sm">Split Cell</button>
-          <button type="button" onClick={toggleHeaderColumn} className="bg-white py-1 px-2 rounded text-sm">Toggle Header Column</button>
-          <button type="button" onClick={toggleHeaderRow} className="bg-white py-1 px-2 rounded text-sm">Toggle Header Row</button>
-          <button type="button" onClick={toggleHeaderCell} className="bg-white py-1 px-2 rounded text-sm">Toggle Header Cell</button>
-        </div>
-      )}
-
+   
       <EditorContent 
         editor={editor} 
         className="border p-2 min-h-[200px] tiptap-editor" 

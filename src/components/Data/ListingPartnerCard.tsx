@@ -1,26 +1,18 @@
 'use client'
 
-import { Restaurants } from '@/components/Data/restaurants';
+
 import { useState, useEffect } from "react";
 import React from 'react';
-import { CiCircleChevRight } from "react-icons/ci";
-import StarRating from '@/components/starsComponent';
-import { FaRegHeart, FaHeart } from "react-icons/fa";
-import { CiForkAndKnife } from "react-icons/ci";
 import { useWishlist } from '@/components/cart';
 import { useSession} from "next-auth/react";
-import LoginButton from '@/components/header/loginButton';
-import { Hotels } from '@/components/Data/hotels';
-import Link from "next/link";
-import { FaChevronRight } from "react-icons/fa6";
+import Image from "next/image";
 import { LiaHotelSolid } from "react-icons/lia";
 import { IoRestaurantOutline } from "react-icons/io5";
-import { TbMapPinCancel } from "react-icons/tb";
-import { MdOutlineRateReview } from "react-icons/md";
+import Link from "next/link";
 import { FaCircleChevronRight } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
 import { GoPencil } from "react-icons/go";
-
+import useFetchListing from '@/components/requests/fetchListings';
 
 
 interface PropertyCardProps {
@@ -94,16 +86,18 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
        
 
 
-     <Link href="/en/id">
-     <img
+    
+     <Image
           alt="Property"
           src={imageUrl}
+          height={500}
+          width={500}
           className="h-80 lg:h-60  lg:w-96  rounded-md object-cover"
         />
-     </Link>
+  
         
       </div>
- <Link href="/en/id">
+
       <div className="mt-2 flex flex-col gap-1 ">
        
             
@@ -120,94 +114,109 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         <div>
           <dd className="font-medium font-playfair ">{address}</dd>
         </div>  
-       
-     
-         
-        
         <hr className='my-2 text-secondary'/>
 <div className='text-sm text-gray-500 space-y-2'>
-  <p><span className='font-bold'>Listing ID:</span> #BK20250716-5A8F</p>
+  <p><span className='font-bold'>listin ID:</span> {id}</p>
   <p><span className='font-bold'>Service Booked:</span> Deluxe Double Room (2 Nights)</p>
-  <p><span className='font-bold'>Total Price:</span> $350.00 (incl. taxes & fees)</p>
+  <p><span className='font-bold'>Total Price:</span> ${price} (incl. taxes & fees)</p>
   <p><span className='font-bold'>Payment Method:</span> Credit Card </p>
   <p><span className='font-bold'>Status:</span> Active</p>
 </div>      
-<p className='underline my-2 '>Cancellation Policy Summary</p>
-      </div>
-      </Link>
+</div>
     </div>
   );
 };
-
-export default function ListingPartnerCard() {
-
-
+export default function ListinPartnerCard() {
+   const { listings, isLoading, error } = useFetchListing(); 
+  
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 6;
 
-  const totalPages = Math.ceil(Hotels.length / itemsPerPage);
+  // Use the fetched listins instead of Hotels
+  const totalPages = Math.ceil((listings?.length || 0) / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentItems = Hotels.slice(startIndex, endIndex);
+  const currentItems = listings?.slice(startIndex, endIndex) || [];
 
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleNext = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
   const handlePrevious = () => currentPage > 1 && setCurrentPage(currentPage - 1);
 
+  if (isLoading) {
+    return <div className="flex justify-center items-center h-64">Loading listins...</div>;
+  }
+
+  if (error) {
+    return <div className="flex justify-center items-center h-64 text-red-500">Error loading listins: {error.message}</div>;
+  }
+
+  if (!listings || listings.length === 0) {
+    return <div className="flex justify-center items-center h-64">No listins found</div>;
+  }
+
   return (
     <div className="flex flex-col gap-4 mx-2 custom:mx-6 mt-6">
-
-      <div className='grid grid-cols-1 sm:grid-cols-2   gap-4'>
- <div className='h-16 border border-1 rounded-xl shaddow-sm bg-highlights flex justify-around items-center text-white cursor-pointer'>
-  <div className='flex gap-4 items-center'>
-  <LiaHotelSolid size={20}/>
-       <h1 className="text-xl font-playfair font-semibold">
-        Add Service Hotel
-      </h1></div>
-      <FaPlus size={18}/>
-     </div>
- <div className='h-16 border border-1 rounded-xl shaddow-sm bg-highlights flex justify-around items-center text-white cursor-pointer'>
-  <div className='flex gap-4 items-center'>
-  <IoRestaurantOutline size={20}/>
-       <h1 className="text-xl font-playfair font-semibold">
-      Add Service  Restaurant
-      </h1></div>
-      <FaPlus size={18}/>
-     </div>
-
-
+      <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+        <Link href="/en/account/add-hotel-listing">
+        <div className='h-16 border border-1 rounded-xl shaddow-sm bg-highlights flex justify-around items-center text-white cursor-pointer hover:bg-secondary'>
+          <div className='flex gap-4 items-center'>
+            <LiaHotelSolid size={20}/>
+            <h1 className="text-xl font-playfair font-semibold">
+              Add Service Hotel
+            </h1>
+          </div>
+          <FaPlus size={18}/>
+        </div>
+        </Link>
+         <Link href="/en/account/add-restaurant-listing">
+        <div className='h-16 border border-1 rounded-xl shaddow-sm bg-highlights flex justify-around items-center text-white cursor-pointer hover:bg-secondary'>
+          <div className='flex gap-4 items-center'>
+            <IoRestaurantOutline size={20}/>
+            <h1 className="text-xl font-playfair font-semibold">
+              Add Service Restaurant
+            </h1>
+          </div>
+          <FaPlus size={18}/>
+        </div>
+        </Link>
       </div>
-    
-     
-        
-      <div className="grid grid-cols-1 sm:grid-cols-2  gap-5 ">
-        {currentItems.map((res, index) => (
-          <div key={index}>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        {currentItems.map((listin, index) => (
+          <div key={listin.id || index}>
             <PropertyCard
-              id={res.id+"hotel" || `restaurant-${index}`} // Use restaurant ID or fallback
-              location={res.city+ ", "+ res.country}
-              price={"From $"+res.price_per_night + " per night"}
-              address={res.name}
-              imageUrl={res.images[0]}
-              averageRating={res.rating}
-              lengtReviews={"170"}
+              id={listin.id}
+              location={listin.location || "Unknown location"}
+              price={listin.price_per_night ? `${listin.price_per_night} ${listin.currency || ''}` : "Price not available"}
+              address={listin.name || "Unnamed listin"}
+              imageUrl={`${process.env.NEXT_PUBLIC_IMAGE}/${listin.image}`}
+              averageRating={listin.rating ? parseFloat(listin.rating) : 0}
+              lengtReviews={"0"} // You might want to add this to your API
             />
           </div>
         ))}
       </div>
       
       {/* Pagination */}
-      {Restaurants.length > itemsPerPage && (
+      {listings.length > itemsPerPage && (
         <div className="flex justify-end items-center gap-1 flex-wrap">
-          <button disabled={currentPage === 1} onClick={handlePrevious} className="text-highlights hover:text-accent flex items-center ">
-            <FaCircleChevronRight size={40} className="rotate-180 "/>
+          <button 
+            disabled={currentPage === 1} 
+            onClick={handlePrevious} 
+            className="text-highlights hover:text-accent flex items-center"
+          >
+            <FaCircleChevronRight size={40} className="rotate-180"/>
           </button>
 
-          <button disabled={currentPage === totalPages} onClick={handleNext} className="text-highlights hover:text-accent flex items-center">
+          <button 
+            disabled={currentPage === totalPages} 
+            onClick={handleNext} 
+            className="text-highlights hover:text-accent flex items-center"
+          >
             <FaCircleChevronRight size={40}/>
           </button>
         </div>
       )}
     </div>
-  )
+  );
 }

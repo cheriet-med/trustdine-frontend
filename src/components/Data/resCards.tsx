@@ -11,11 +11,11 @@ import { useWishlist } from "../cart";
 import { useSession} from "next-auth/react";
 import LoginButton from "../header/loginButton";
 import Link from "next/link";
-
+import useFetchListing from "../requests/fetchListings";
 interface PropertyCardProps {
   id: string | number | any;
-  price: string | number;
-  address: string;
+  price: string  ;
+  address: string  ;
   imageUrl: string;
   averageRating: number;
   lengtReviews: string;
@@ -137,15 +137,15 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 };
 
 export default function ResCards() {
-
+ const { listings, isLoading, error } = useFetchListing();
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  const totalPages = Math.ceil(Restaurants.length / itemsPerPage);
+  const totalPages = Math.ceil((listings?.length || 0)/ itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentItems = Restaurants.slice(startIndex, endIndex);
+  const currentItems = listings?.slice(startIndex, endIndex) || [];
 
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleNext = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
@@ -162,10 +162,10 @@ export default function ResCards() {
           <div key={index}>
             <PropertyCard
               id={res.id || `restaurant-${index}`} // Use restaurant ID or fallback
-              price={res.cuisine + ", " + res.category + " - " + res.price_range}
-              address={res.name}
-              imageUrl={res.images[0]}
-              averageRating={res.rating}
+              price={res.average_cost || ''}
+              address={res.location || ''}
+              imageUrl={`${process.env.NEXT_PUBLIC_IMAGE}/${res.image}`}
+              averageRating={4}
               lengtReviews={"170"}
             />
           </div>
