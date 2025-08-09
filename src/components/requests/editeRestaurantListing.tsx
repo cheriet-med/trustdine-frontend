@@ -7,8 +7,8 @@ import { LuImagePlus } from "react-icons/lu";
 import { AiOutlineFieldNumber } from "react-icons/ai";
 import Image from 'next/image';
 import TimeRangePicker from '@wojtekmaj/react-timerange-picker';
-
-
+import Link from 'next/link';
+import { useRouter } from "next/navigation";
 // TypeScript interfaces
 interface Product {
   name: string;
@@ -99,11 +99,11 @@ interface ListingData {
   sustainable_seafood: boolean;
 }
 
-export default function EditRestaurantForm() {
+export default function EditRestaurantForm(listingID:any) {
   const [listingData, setListingData] = useState<ListingData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+  const router = useRouter();
   const [product, setProduct] = useState<Product>({
     user:'',
     name: '',
@@ -653,7 +653,7 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
           }
         })
       ]);
-
+      router.push('/en/account/listings'); 
       setSuccessMessage('Listing created successfully!');
       
       // Reset form
@@ -1323,17 +1323,15 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
               </div>  
 
                 <div className="flex justify-center pt-6 mb-6">
+                    <Link href="/en/account/listings">
                 <button
                   type="submit"
-                 
                   className="px-4 py-2 bg-white w-full text-gray-600 border border-1 font-semibold rounded-xl hover:bg-highlights hover:text-white"  
                 >
-                
-                   
                   Cancel
-                 
-                  
+
                 </button>
+                </Link>
               </div>  
               </div>
                  </div>

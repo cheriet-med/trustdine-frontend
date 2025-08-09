@@ -23,6 +23,7 @@ interface PropertyCardProps {
   averageRating: number;
   lengtReviews: string;
   location:string;
+  category:string | null,
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({
@@ -33,6 +34,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   imageUrl,
   lengtReviews,
   location,
+  category,
 }) => {
 
   const roundFirstDecimalDigit = (num: number) => {
@@ -192,6 +194,7 @@ export default function ListinPartnerCard() {
               imageUrl={`${process.env.NEXT_PUBLIC_IMAGE}/${listin.image}`}
               averageRating={listin.rating ? parseFloat(listin.rating) : 0}
               lengtReviews={"0"} // You might want to add this to your API
+              category={listin.category}
             />
           </div>
         ))}

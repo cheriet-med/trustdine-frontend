@@ -7,6 +7,8 @@ import { LuImagePlus } from "react-icons/lu";
 import { AiOutlineFieldNumber } from "react-icons/ai";
 import Image from 'next/image';
 import TimeRangePicker from '@wojtekmaj/react-timerange-picker';
+import Link from 'next/link';
+import { useRouter } from "next/navigation";
 
 
 // TypeScript interfaces
@@ -99,11 +101,12 @@ interface ListingData {
   sustainable_seafood: boolean;
 }
 
-export default function EditeHotelForm() {
+export default function EditeHotelForm(listingID:any) {
   const [listingData, setListingData] = useState<ListingData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  
+  const router = useRouter();
+  console.log(listingID)
   const [product, setProduct] = useState<Product>({
     user:'',
     name: '',
@@ -237,7 +240,10 @@ useEffect(() => {
       product: item.product || '',
     }))
 );
-      setNearbyAttractions(nearbyData.map((item: NearbyAttraction) => ({
+      setNearbyAttractions(
+        nearbyData
+        .filter((item: NearbyAttraction) => item.product === data.id) // Filter first
+        .map((item: NearbyAttraction) => ({
         id: item.id || '',
         name: item.name || '',
         distance: item.distance || '',
@@ -651,6 +657,7 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
         })
       ]);
 
+      router.push('/en/account/listings'); 
       setSuccessMessage('Listing created successfully!');
       
       // Reset form
@@ -876,21 +883,7 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
                            
                         </div> 
                         
-                        <div className='w-1/2'>
-                          <label className="block text-sm font-semibold text-gray-500 mb-2">Head Chef</label>
-                          <div className="relative">
-                            <ChefHat className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                            <input
-                              type="text"
-                              name="chef"
-                              value={product.chef}
-                              onChange={handleProductChange}
-                              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-3 focus:ring-highlights focus:border-highlights transition-all"
-                              placeholder="Chef's name"
-                            />
-                          </div> 
-                        </div>
-
+                
                 </div>
                 
 </div>
@@ -925,37 +918,7 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
                            {errorlongtitude && <p className="text-sm mt-2 text-accent">{errorlongtitude}</p>}
                         </div>
                       </div>
-                                {/* Restaurant Features */}
-                      <div className="mt-6">
-                        <label className="block text-sm font-semibold text-gray-500 mb-4">Restaurant Features</label>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div className="flex items-center">
-                            <input
-                              type="checkbox"
-                              name="organic_ingredients"
-                              checked={product.organic_ingredients}
-                              onChange={handleCheckboxChange}
-                              className="h-5 w-5 text-highlights rounded focus:ring-highlights border-gray-300"
-                            />
-                            <label className="ml-3 text-sm font-medium text-gray-700">
-                              Organic Ingredients
-                            </label>
-                          </div>
-
-                          <div className="flex items-center">
-                            <input
-                              type="checkbox"
-                              name="sustainable_seafood"
-                              checked={product.sustainable_seafood}
-                              onChange={handleCheckboxChange}
-                              className="h-5 w-5 text-highlights rounded focus:ring-highlights border-gray-300"
-                            />
-                            <label className="ml-3 text-sm font-medium text-gray-700">
-                              Sustainable Seafood
-                            </label>
-                          </div>
-                        </div>
-                      </div>
+                  
                 <div className="mt-6">
                   <label className="block text-sm font-semibold text-gray-500 mb-2">Cancellation Policy *</label>
                   <TiptapEditor
@@ -1101,46 +1064,6 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
 
               </div>
 <div className='my-2'></div>
-
-
-
-
-
- {/* Opening Hours Section */}
-              <div className="bg-gray-50 rounded-xl p-6 ">
-                <div className="flex items-center gap-2 mb-6">
-                  <Clock className="w-5 h-5 text-gray-500" />
-                  <h2 className="font-semibold text-gray-800 font-playfair">Opening Hours</h2>
-                </div>
-                
-                <div className="flex gap-4 flex-wrap">
-                  {dayNames.map(({ key, label }) => (
-                    <div key={key} >
-                      <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
-                      <div className="flex items-center gap-2 bg-white w-fit rounded-lg p-4 border border-gray-200">
- 
-                         <TimeRangePicker 
-                          onChange={(value:any) => handleTimeRangeChange(key, value)}
-                          value={product[key as keyof Product] as string || null}
-                          clockIcon={null}
-                        clearIcon={null}
-                        />
-                      </div>
-                     
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="mt-4 p-3 ">
-                  <p className="text-sm text-accent">
-                    <strong>Tip:</strong> Leave time fields empty for closed days.
-                  </p>
-                </div>
-              </div>
-
-              <div className='my-2'></div>
-
-
 
 
 
@@ -1320,17 +1243,14 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
               </div>  
 
                 <div className="flex justify-center pt-6 mb-6">
+                   <Link href="/en/account/listings">
                 <button
                   type="submit"
-                 
                   className="px-4 py-2 bg-white w-full text-gray-600 border border-1 font-semibold rounded-xl hover:bg-highlights hover:text-white"  
                 >
-                
-                   
                   Cancel
-                 
-                  
                 </button>
+                </Link>
               </div>  
               </div>
                  </div>
