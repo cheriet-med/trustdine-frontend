@@ -85,10 +85,6 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   return (
     <div className="block rounded-lg p-2 shadow-xs shadow-black border border-1  font-montserrat text-secondary bg-white lg:flex lg:gap-8 ">
       <div className="relative">
-       
-
-
-    
      <Image
           alt="Property"
           src={imageUrl}
@@ -96,20 +92,13 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           width={500}
           className="h-80 lg:h-60  lg:w-96  rounded-md object-cover"
         />
-  
-        
       </div>
-
       <div className="mt-2 flex flex-col gap-1 ">
-       
-            
      <div className="flex justify-end">
       <div className="text-sm bg-wite rounded-xl font-medium py-1 px-4 w-fit border border-1 mt-1 flex gap-1">
-          
           <GoPencil size={16}/>
           <p >Edit</p>
       </div>
-
 </div>
 
        
@@ -129,16 +118,19 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   );
 };
 export default function ListinPartnerCard() {
-   const { listings, isLoading, error } = useFetchListing(); 
+     const { data: session, status } = useSession({ required: true });
   
+      const userId = session?.user?.id;
+   const { listings, isLoading, error } = useFetchListing(); 
+  const userListing = listings?.filter(post => post.user === userId?.toString);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
   // Use the fetched listins instead of Hotels
-  const totalPages = Math.ceil((listings?.length || 0) / itemsPerPage);
+  const totalPages = Math.ceil((userListing?.length || 0) / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentItems = listings?.slice(startIndex, endIndex) || [];
+  const currentItems = userListing?.slice(startIndex, endIndex) || [];
 
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleNext = () => currentPage < totalPages && setCurrentPage(currentPage + 1);

@@ -8,6 +8,8 @@ import { AiOutlineFieldNumber } from "react-icons/ai";
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from "next/navigation";
+
 
 // TypeScript interfaces
 interface Product {
@@ -48,7 +50,7 @@ interface ImagePreview {
 
 
 export default function HotelForm() {
-
+const router = useRouter();
    const { data: session, status } = useSession({ required: true });
   const [product, setProduct] = useState<Product>({
     name: '',
@@ -326,7 +328,7 @@ export default function HotelForm() {
           }
         })
       ]);
-
+      router.push('/en/account/listings');  
       setSuccessMessage('Listing created successfully!');
       
       // Reset form
@@ -827,18 +829,14 @@ export default function HotelForm() {
               </div>  
 
                 <div className="flex justify-center pt-6 mb-6">
-                  <Link href="/en/account/listings">
+                 
                 <button
                   type="submit"
-                 
                   className="px-4 py-2 bg-white w-full text-gray-600 border border-1 font-semibold rounded-xl hover:bg-highlights hover:text-white"  
+                  onClick={()=>router.push('/en/account/listings')}
                 >
-                
-                   
                   Cancel
-                 
-                  
-                </button></Link>
+                </button>
               </div>  
               </div>
                  </div>

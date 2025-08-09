@@ -28,7 +28,7 @@ const timeoutId = setTimeout(() => controller.abort(), 20000); // 20-second time
 };
 interface Listing {
   id: number;
-  user: number; // ForeignKey typically translates to the ID of the related model
+  user: any; // ForeignKey typically translates to the ID of the related model
   name: string | null;
   description: string | null;
   category: string | null;

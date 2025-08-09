@@ -1243,14 +1243,13 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
               </div>  
 
                 <div className="flex justify-center pt-6 mb-6">
-                   <Link href="/en/account/listings">
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-white w-full text-gray-600 border border-1 font-semibold rounded-xl hover:bg-highlights hover:text-white"  
+                  className="px-4 py-2 bg-white w-full text-gray-600 border border-1 font-semibold rounded-xl hover:bg-highlights hover:text-white" 
+                  onClick={()=>router.push('/en/account/listings')} 
                 >
                   Cancel
                 </button>
-                </Link>
               </div>  
               </div>
                  </div>
