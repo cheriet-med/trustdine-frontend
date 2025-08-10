@@ -8,7 +8,9 @@ import { AiOutlineFieldNumber } from "react-icons/ai";
 import Image from 'next/image';
 import TimeRangePicker from '@wojtekmaj/react-timerange-picker';
 import Link from 'next/link';
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+
 // TypeScript interfaces
 interface Product {
   name: string;
@@ -104,6 +106,10 @@ export default function EditRestaurantForm(listingID:any) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+    const query = searchParams.get('q'); 
+
   const [product, setProduct] = useState<Product>({
     user:'',
     name: '',
@@ -154,7 +160,7 @@ useEffect(() => {
   const fetchAllData = async () => {
     try {
       // Fetch main product data
-      const productResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}productid/15`, {
+      const productResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}productid/${query}`, {
         method: 'GET',
         headers: {
           "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
@@ -199,19 +205,19 @@ useEffect(() => {
 
       // Fetch related data in parallel
       const [awardsRes, nearbyRes, imagesRes] = await Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_URL}awards/`, {
+        fetch(`${process.env.NEXT_PUBLIC_URL}awards/?product=${query}`, {
           method: 'GET',
           headers: {
             "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
           },
         }),
-        fetch(`${process.env.NEXT_PUBLIC_URL}nearbyattractions/`, {
+        fetch(`${process.env.NEXT_PUBLIC_URL}nearbyattractions/?product=${query}`, {
           method: 'GET',
           headers: {
             "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
           },
         }),
-        fetch(`${process.env.NEXT_PUBLIC_URL}productimage/`, {
+        fetch(`${process.env.NEXT_PUBLIC_URL}productimage/?product=${query}`, {
           method: 'GET',
           headers: {
             "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
@@ -300,7 +306,7 @@ const handleDeleteAward = async (awardId: any, index: number) => {
 useEffect(() => {
   const fetchimages = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}productimage/`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}productimage/?product=${query}`, {
         method: 'GET',
         headers: {
           "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
@@ -579,7 +585,7 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
         productFormData.append('image', product.image);
       }
 
-      const productResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}productid/15`, {
+      const productResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}productid/${query}`, {
         method: 'PUT',
         headers: {
           "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,

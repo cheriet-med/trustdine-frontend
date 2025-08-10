@@ -584,7 +584,7 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
         productFormData.append('image', product.image);
       }
 
-      const productResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}productid/15`, {
+      const productResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}productid/${query}`, {
         method: 'PUT',
         headers: {
           "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
