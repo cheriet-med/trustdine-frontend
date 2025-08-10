@@ -705,9 +705,10 @@ const initialAmenities = [
     <h1 className='font-medium font-playfair text-lg'>About Us</h1>
 
     {/* About */}
-{profileData?.about == null ? <div className="flex items-center justify-center h-60">
-          <p className=" text-3xl md:text-5xl text-gray-300 uppercase font-playfair font-extrabold">add amenities</p> 
-        </div> :
+{profileData?.about == null || '<p class="paragraph"></p>' ? <div className="flex items-center justify-center h-60">
+          <p className=" text-3xl md:text-5xl text-gray-300 uppercase font-playfair font-extrabold">add Description</p> 
+        </div> 
+        :
       <div 
   className="text-sm text-gray-600 dark:text-neutral-400 mt-8 space-y-2"
   dangerouslySetInnerHTML={{ __html: profileData?.about || '' }}

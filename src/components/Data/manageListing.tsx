@@ -160,7 +160,7 @@ const ManageListing = ({ id, category, mutate }: { id: string; category: string 
   const dropdownItems: DropdownItem[] = [
     { 
       label: 'Edit', 
-      href: category == 'Hotel'? `/en/account/edit-hotel-listing/?q=${id}` : `/en/account/edit-restaurant-listing/?q=${id}`, 
+      href: category == 'Hotel'? `/en/account/edit-hotel-listing?q=${id}` : `/en/account/edit-restaurant-listing?q=${id}`, 
       type: 'link',
       icon: <IoCreateOutline className="h-4 w-4" />
     },

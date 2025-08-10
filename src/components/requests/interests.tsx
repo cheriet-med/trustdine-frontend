@@ -109,7 +109,7 @@ const Interests: React.FC<AmenitiesSelectorProps> = ({ initialAmenities, user })
   const router = useRouter();
   
   // Use the custom hook
-  const { Amenitie, isLoading, error: amenitiesError } = useFetchAmenities();
+  const { Amenitie, isLoading, error: amenitiesError } = useFetchAmenities(user);
 
   // Update state when Amenitie data changes
   useEffect(() => {

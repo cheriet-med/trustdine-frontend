@@ -8,7 +8,6 @@ import useFetchAmenities from './fetchAmenities';
 import { useRouter } from 'next/navigation'; 
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { KeyedMutator } from 'swr';
-
 import LanguageKeywords from './Languagues';
 
 
@@ -163,9 +162,9 @@ const AmenitiesSelector: React.FC<AmenitiesSelectorProps> = ({ initialAmenities,
   const [userAmenities, setUserAmenities] = useState<UserAmenity[]>([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const router = useRouter();
-  
+
   // Use the custom hook
-  const { Amenitie, isLoading, error: amenitiesError } = useFetchAmenities();
+  const { Amenitie, isLoading, error: amenitiesError } = useFetchAmenities(user);
 
   // Update state when Amenitie data changes
   useEffect(() => {

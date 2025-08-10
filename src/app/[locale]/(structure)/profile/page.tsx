@@ -81,7 +81,7 @@ const Profile: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
     const userId = 24;
   const { Users,  isLoading, mutate } = useFetchUser(userId);
-  const { Amenitie, error: amenitiesError } = useFetchAmenities();
+  const { Amenitie, error: amenitiesError } = useFetchAmenities(userId);
  // Replace with actual userId
 
   // Use Users data directly instead of profileData state

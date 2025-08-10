@@ -24,7 +24,7 @@ export default function LanguageKeywords({user}:any) {
   useEffect(() => {
     const fetchKeywords = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}languages/`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}languages/?user=${user}`, {
           headers: {
             Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
           },
@@ -72,7 +72,7 @@ export default function LanguageKeywords({user}:any) {
         }
 
         // Refresh the list after successful submission
-        const refreshRes = await fetch(`${process.env.NEXT_PUBLIC_URL}languages/`, {
+        const refreshRes = await fetch(`${process.env.NEXT_PUBLIC_URL}languages/?user=${user}`, {
           headers: {
             Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
           },

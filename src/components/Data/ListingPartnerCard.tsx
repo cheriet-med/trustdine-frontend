@@ -165,10 +165,10 @@ export default function ListinPartnerCard() {
   const itemsPerPage = 6;
 
   // Use the fetched listins instead of Hotels
-  const totalPages = Math.ceil((listings?.length || 0) / itemsPerPage);
+  const totalPages = Math.ceil((userListing?.length || 0) / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentItems = listings?.slice(startIndex, endIndex) || [];
+  const currentItems = userListing?.slice(startIndex, endIndex) || [];
 
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleNext = () => currentPage < totalPages && setCurrentPage(currentPage + 1);

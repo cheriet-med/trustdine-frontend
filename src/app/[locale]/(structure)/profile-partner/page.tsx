@@ -172,7 +172,7 @@ const PartnerProfile: React.FC = () => {
   
   const userId = 24;
   const { Users, isLoading, mutate } = useFetchUser(userId);
-  const { Amenitie, error: amenitiesError } = useFetchAmenities();
+  const { Amenitie, error: amenitiesError } = useFetchAmenities(userId);
   const { languages } = useFetchLanguages();
 
   // Use Users data directly instead of profileData state

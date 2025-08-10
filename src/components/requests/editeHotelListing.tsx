@@ -153,7 +153,8 @@ export default function EditeHotelForm() {
   const [errorlongtitude, setErrorlongtitude] = useState('');
 
   const searchParams = useSearchParams();
-  const query = searchParams.get('q'); //
+  const query = searchParams.get('q'); 
+
 useEffect(() => {
   const fetchAllData = async () => {
     try {
@@ -203,19 +204,19 @@ useEffect(() => {
 
       // Fetch related data in parallel
       const [awardsRes, nearbyRes, imagesRes] = await Promise.all([
-        fetch(`${process.env.NEXT_PUBLIC_URL}awards/`, {
+        fetch(`${process.env.NEXT_PUBLIC_URL}awards/?product=${query}`, {
           method: 'GET',
           headers: {
             "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
           },
         }),
-        fetch(`${process.env.NEXT_PUBLIC_URL}nearbyattractions/`, {
+        fetch(`${process.env.NEXT_PUBLIC_URL}nearbyattractions/?product=${query}`, {
           method: 'GET',
           headers: {
             "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
           },
         }),
-        fetch(`${process.env.NEXT_PUBLIC_URL}productimage/`, {
+        fetch(`${process.env.NEXT_PUBLIC_URL}productimage/?product=${query}`, {
           method: 'GET',
           headers: {
             "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
