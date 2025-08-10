@@ -9,7 +9,7 @@ import Image from 'next/image';
 import TimeRangePicker from '@wojtekmaj/react-timerange-picker';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
-
+import { useSearchParams } from "next/navigation";
 
 // TypeScript interfaces
 interface Product {
@@ -101,12 +101,12 @@ interface ListingData {
   sustainable_seafood: boolean;
 }
 
-export default function EditeHotelForm(listingID:any) {
+export default function EditeHotelForm() {
   const [listingData, setListingData] = useState<ListingData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  console.log(listingID)
+ 
   const [product, setProduct] = useState<Product>({
     user:'',
     name: '',
@@ -152,12 +152,13 @@ export default function EditeHotelForm(listingID:any) {
   const [errorlatitude, setErrorlatitude] = useState('');
   const [errorlongtitude, setErrorlongtitude] = useState('');
 
-console.log(nearbyAttractions)
+  const searchParams = useSearchParams();
+  const query = searchParams.get('q'); //
 useEffect(() => {
   const fetchAllData = async () => {
     try {
       // Fetch main product data
-      const productResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}productid/15`, {
+      const productResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}productid/${query}`, {
         method: 'GET',
         headers: {
           "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,

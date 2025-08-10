@@ -328,8 +328,7 @@ const router = useRouter();
           }
         })
       ]);
-      router.push('/en/account/listings');  
-      setSuccessMessage('Listing created successfully!');
+      
       
       // Reset form
       setProduct({
@@ -347,6 +346,9 @@ const router = useRouter();
         location: '',
         user:session?.user?.id,
       });
+
+
+
       images.forEach(img => URL.revokeObjectURL(img.url));
       setImages([]);
       if (mainImagePreview) {
@@ -355,7 +357,7 @@ const router = useRouter();
       }
       setNearbyAttractions([{ name: '', distance: '' }]);
       setAwards([{ name: '', year: '' }]);
-      
+
     } catch (error) {
       console.error('Submission error:', error);
       setErrorMessage(
@@ -363,6 +365,7 @@ const router = useRouter();
       );
     } finally {
       setIsSubmitting(false);
+      router.push('/en/account/listings');  
     }
   };
 
@@ -377,26 +380,6 @@ const router = useRouter();
           </div>
 
           <div className="p-1">
-            {/* Status Messages */}
-            {successMessage && (
-              <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl flex items-center gap-3">
-                <div className="w-6 h-6 bg-highlights rounded-full flex items-center justify-center">
-                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <span className="text-green-800 font-medium">{successMessage}</span>
-              </div>
-            )}
-            
-            {errorMessage && (
-              <div className="mb-6 p-4 bg-gray-50 border border-red-200 rounded-xl flex items-center gap-3">
-                <div className="w-6 h-6 bg-gray-500 rounded-full flex items-center justify-center">
-                  <X className="w-4 h-4 text-white" />
-                </div>
-                <span className="text-red-800 font-medium">{errorMessage}</span>
-              </div>
-            )}
 
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Basic Information */}
