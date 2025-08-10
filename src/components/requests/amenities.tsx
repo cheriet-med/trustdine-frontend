@@ -392,8 +392,8 @@ const AmenitiesSelector: React.FC<AmenitiesSelectorProps> = ({ initialAmenities,
 
       {/* Display user amenities */}
       {userAmenities.length === 0 ? (
-        <div className="flex items-center justify-center h-60">
-          <p className=" text-3xl md:text-5xl text-gray-300 uppercase font-playfair font-extrabold">add amenities</p> 
+        <div className="flex items-center justify-center h-48">
+          <p className=" text-2xl md:text-4xl text-gray-300 uppercase font-playfair font-extrabold">add amenities</p> 
         </div>
       ) : (
         <div className='flex gap-2 flex-wrap mt-8 '>

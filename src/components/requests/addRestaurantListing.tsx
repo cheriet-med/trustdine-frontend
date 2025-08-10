@@ -366,44 +366,7 @@ export default function RestaurantForm() {
           }
         })
       ]);
-      router.push('/en/account/listings');  
-      setSuccessMessage('Listing created successfully!');
-
-      // Reset form
-      setProduct({
-        name: '',
-        description: '',
-        price_per_night: '',
-        capacity: '',
-        type: '',
-        size: '',
-        cancellation_policy: '',
-        established: '',
-        image: null,
-        latitude: '',
-        longitude: '',
-        location: '',
-        chef: '',
-        opening_hours_monday: '',
-        opening_hours_tuesday: '',
-        opening_hours_wednesday: '',
-        opening_hours_thursday: '',
-        opening_hours_friday: '',
-        opening_hours_saturday: '',
-        opening_hours_sunday: '',
-        organic_ingredients: false,
-        sustainable_seafood: false,
-        user: session?.user?.id,
-      });
-      images.forEach(img => URL.revokeObjectURL(img.url));
-      setImages([]);
-      if (mainImagePreview) {
-        URL.revokeObjectURL(mainImagePreview);
-        setMainImagePreview(null);
-      }
-      setNearbyAttractions([{ name: '', distance: '' }]);
-      setAwards([{ name: '', year: '' }]);
-
+      
     } catch (error) {
       console.error('Submission error:', error);
       setErrorMessage(
@@ -411,6 +374,7 @@ export default function RestaurantForm() {
       );
     } finally {
       setIsSubmitting(false);
+       router.push('/en/account/listings');  
     }
   };
 

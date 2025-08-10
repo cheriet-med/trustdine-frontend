@@ -11,9 +11,7 @@ import { IoRestaurantOutline } from "react-icons/io5";
 import Link from "next/link";
 import { FaCircleChevronRight } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
-import { GoPencil } from "react-icons/go";
 import useFetchListing from '@/components/requests/fetchListings';
-import { Search } from 'lucide-react';
 import { FaBuildingCircleArrowRight } from "react-icons/fa6";
 import ManageListing from "@/components/Data/manageListing";
 
@@ -161,16 +159,20 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 export default function ListinPartnerCard() {
   const { data: session, status } = useSession({ required: true });
   const userId = session?.user?.id;
+  console.log('user id is :', userId)
+
   const { listings, isLoading, error, mutate } = useFetchListing(); 
-  const userListing = listings?.filter(post => post.user === userId?.toString);
+  console.log(listings)
+  const userListing = listings?.filter(post => post.user == userId);
+  console.log(userListing)
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
   // Use the fetched listins instead of Hotels
-  const totalPages = Math.ceil((listings?.length || 0) / itemsPerPage);
+  const totalPages = Math.ceil((userListing?.length || 0) / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentItems = listings?.slice(startIndex, endIndex) || [];
+  const currentItems = userListing?.slice(startIndex, endIndex) || [];
 
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleNext = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
@@ -193,7 +195,7 @@ export default function ListinPartnerCard() {
     return <div className="flex justify-center items-center h-64 text-red-500">Error loading listins: {error.message}</div>;
   }
 
-  if (!listings || listings.length === 0) {
+  if (!userListing || userListing.length === 0) {
     return <div className="flex justify-center items-center h-64 font-playfair">No listins found</div>;
   }
 
@@ -253,7 +255,7 @@ export default function ListinPartnerCard() {
        }
       {/* Pagination */}
         {currentItems.length == 0 ? "" :
-      listings.length > itemsPerPage && (
+      userListing.length > itemsPerPage && (
         <div className="flex justify-end items-center gap-1 flex-wrap">
           <button 
             disabled={currentPage === 1} 
