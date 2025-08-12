@@ -50,6 +50,7 @@ interface Users {
   countryCode?: string;
   latitude?: string;
   longtitude?: string;
+  is_staff?:boolean
 }
 
 const useFetchUser = (id: any) => {

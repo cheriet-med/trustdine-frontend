@@ -16,16 +16,16 @@ import useFetchListing from "../requests/fetchListings";
 
 interface PropertyCardProps {
   id: string | number | any;
-  price: string | number;
-  address: string | null;
+  price: string  ;
+  address: string  ;
   imageUrl: string;
   averageRating: number;
   lengtReviews: string;
-  location:string | null;
+  name:string | null
 }
 
-// Skeleton component for individual property card
-const PropertyCardSkeleton: React.FC = () => {
+// Skeleton component for restaurant search cards
+const RestaurantSearchCardSkeleton: React.FC = () => {
   return (
     <div className="block rounded-lg p-2 shadow-xs shadow-black border border-1 font-montserrat text-secondary bg-white animate-pulse">
       <div className="relative">
@@ -38,12 +38,7 @@ const PropertyCardSkeleton: React.FC = () => {
       </div>
       
       <div className="mt-2 flex flex-col gap-1">
-        {/* Location tag skeleton */}
-        <div className="flex">
-          <div className="h-6 bg-gray-300 rounded-xl w-20"></div>
-        </div>
-        
-        {/* Address skeleton */}
+        {/* Restaurant name skeleton */}
         <div className="h-5 bg-gray-300 rounded w-3/4"></div>
         
         {/* Rating skeleton */}
@@ -57,8 +52,11 @@ const PropertyCardSkeleton: React.FC = () => {
           <div className="h-4 bg-gray-300 rounded w-12"></div>
         </div>
         
-        {/* Price skeleton */}
-        <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+        {/* Location and price skeleton */}
+        <div className="flex gap-1 items-center">
+          <div className="w-3.5 h-3.5 bg-gray-300 rounded"></div>
+          <div className="h-4 bg-gray-300 rounded w-2/3"></div>
+        </div>
       </div>
     </div>
   );
@@ -71,7 +69,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   averageRating,
   imageUrl,
   lengtReviews,
-  location,
+  name,
 }) => {
 
   const roundFirstDecimalDigit = (num: number) => {
@@ -103,16 +101,16 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
       const wishlistItem = {
         id: id,
         image: imageUrl,
-        title: address || 'no title',
+        title: name || 'no title',
         dateAdded: "",
         category:"",
         cuisine:"",
         price_range:"",
         rating:averageRating,
-        name:address || 'no name',
-        price:price,
-        location:location || 'no location',
-        lengtReviews:lengtReviews
+        name:address,
+        price: price,
+        location:address,
+        lengtReviews:lengtReviews,
         // Add other required fields if needed for your wishlist context
       };
       addItemToWishlist(wishlistItem);
@@ -123,9 +121,9 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
     <div className="block rounded-lg p-2 shadow-xs shadow-black border border-1  font-montserrat text-secondary bg-white">
       <div className="relative">
           {
-            status === "authenticated" ?    
- (
-              isInWishlist ?   <button 
+            status === "authenticated" ?         
+ (isInWishlist ?   
+ <button 
           onClick={handleWishlistToggle}
           className="absolute right-4 top-4 z-10 p-1 rounded-full bg-white/80 hover:bg-white transition-colors group"
         >
@@ -135,89 +133,94 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           onClick={handleWishlistToggle}
           className="absolute right-4 top-4 z-10 p-1 rounded-full bg-white/80 hover:bg-white transition-colors group"
         >
-                <FaRegHeart size={24} className="text-gray-600 group-hover:text-accent transition-colors" />
-           </button>
-          )   
+        <FaRegHeart size={24} className="text-gray-600 group-hover:text-accent transition-colors" />
+           </button>)   
          :
            (
             <LoginButton />
           )}
-     <Link href="/en/id">
-     <img
+      <Link href="/en/id">
+        <img
           alt="Property"
           src={imageUrl}
           className="h-80 w-full rounded-md object-cover"
         />
-     </Link>
+        </Link>
       </div>
  <Link href="/en/id">
-      <div className="mt-2 flex flex-col gap-1">   
-     <div className="flex">
-  <p className="text-sm bg-gray-100 rounded-xl font-medium py-1 px-2 w-fit">{location}</p>
-</div>
+      <div className="mt-2 flex flex-col gap-1">
         <div>
-          <dd className="font-medium font-playfair">{address}</dd>
+          <dd className="font-medium font-playfair">{name}</dd>
         </div>  
         <div className='flex gap-1'>
           <p className="text-sm">{averageRating}</p>
           <StarRating rating={averageRating} />      
           <p className=' text-sm'>{"("}{lengtReviews}{")"}</p>   
         </div>
-          <dd className="text-sm text-gray-500">{price}</dd>
+        <div className="flex gap-1 text-sm items-center">
+          <CiForkAndKnife size={14}/>
+          <dd className="text-sm text-gray-500">{address} -$$</dd>
+        </div>
       </div>
       </Link>
     </div>
   );
 };
 
-export default function HotelCards() {
+export default function RestaurantSearchCards() {
 
   const { listings, isLoading, error } = useFetchListing();
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
-  const userListing = listings?.filter(post => post.category == 'Hotel');
+  const itemsPerPage = 10;
+ const userListing = listings?.filter(post => post.category == 'Restaurant');
   const totalPages = Math.ceil((userListing?.length || 0)/ itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentItems = userListing?.slice(startIndex, endIndex) || [];
 
   const handlePageChange = (page: number) => setCurrentPage(page);
-  const handleNext = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
-  const handlePrevious = () => currentPage > 1 && setCurrentPage(currentPage - 1);
+const handleNext = () => {
+  if (currentPage < totalPages) {
+    setCurrentPage(currentPage + 1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+};
+
+const handlePrevious = () => {
+  if (currentPage > 1) {
+    setCurrentPage(currentPage - 1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+};
 
   // Show error state
   if (error) {
     return (
-      <div className="flex flex-col gap-4 mx-2 custom:mx-40">
-        <h1 className="text-4xl font-playfair">Hotels</h1>
+      <div className="flex flex-col gap-4">
         <div className="text-center py-8">
-          <p className="text-red-500">Error loading hotels. Please try again later.</p>
+          <p className="text-red-500">Error loading restaurants. Please try again later.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-4 mx-2 custom:mx-40">
-      <h1 className="text-4xl font-playfair">
-        Hotels
-      </h1>
-        
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 ">
+    <div className="flex flex-col gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 ">
         {isLoading ? (
           // Show skeleton loading cards
           [...Array(itemsPerPage)].map((_, index) => (
-            <PropertyCardSkeleton key={index} />
+            <RestaurantSearchCardSkeleton key={index} />
           ))
         ) : (
           // Show actual data
           currentItems.map((res, index) => (
             <div key={index}>
-              <PropertyCard
-                id={res.id+"hotel" || `restaurant-${index}`} // Use restaurant ID or fallback
-                location={res.location}
-                price={"From $"+res.price_per_night + " per night"}
-                address={res.name}
+             <PropertyCard
+                id={res.id || `restaurant-${index}`} // Use restaurant ID or fallback
+                name={res.name}
+                price={res.average_cost || ''}
+                address={res.location || ''}
                 imageUrl={`${process.env.NEXT_PUBLIC_IMAGE}/${res.image}`}
                 averageRating={4}
                 lengtReviews={"170"}

@@ -705,7 +705,7 @@ const initialAmenities = [
     <h1 className='font-medium font-playfair text-lg'>About Us</h1>
 
     {/* About */}
-{profileData?.about == null || '<p class="paragraph"></p>' ? <div className="flex items-center justify-center h-40">
+{profileData?.about == null  ? <div className="flex items-center justify-center h-40">
           <p className=" text-2xl md:text-4xl text-gray-300 uppercase font-playfair font-extrabold">add Description</p> 
         </div> 
         :

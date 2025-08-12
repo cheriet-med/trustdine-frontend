@@ -24,8 +24,8 @@ interface Product {
   image: File | null;
   type: string;
   longitude: string;
-  location: string;
-  latitude: string;
+  location: any;
+  latitude: any;
   category:string;
   chef: string;
   opening_hours_monday: string;
@@ -622,10 +622,26 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
       }
 
       // Submit nearby attractions and awards (same as before)
-      await Promise.all([
-        ...nearbyAttractions.map(async (attraction) => {
-          if (attraction.name.trim() && attraction.distance.trim()) {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URL}nearbyattractions/`, {
+ await Promise.all(
+      nearbyAttractions.map(async (attraction) => {
+        if (attraction.name.trim() && attraction.distance.trim()) {
+          if (attraction.id) {
+            // Update existing
+            await fetch(`${process.env.NEXT_PUBLIC_URL}nearbyattractionsid/${attraction.id}/`, {
+              method: 'PUT',
+              headers: {
+                "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                product: productId,
+                name: attraction.name,
+                distance: attraction.distance,
+              }),
+            });
+          } else {
+            // Add new
+            await fetch(`${process.env.NEXT_PUBLIC_URL}nearbyattractions/`, {
               method: 'POST',
               headers: {
                 "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
@@ -637,12 +653,31 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
                 distance: attraction.distance,
               }),
             });
-            if (!response.ok) throw new Error('Failed to add nearby attractions');
           }
-        }),
-        ...awards.map(async (award) => {
-          if (award.name.trim()) {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URL}awards/`, {
+        }
+      })
+    );
+
+  await Promise.all(
+      awards.map(async (award) => {
+        if (award.name.trim()) {
+          if (award.id) {
+            // Update existing
+            await fetch(`${process.env.NEXT_PUBLIC_URL}awardsid/${award.id}/`, {
+              method: 'PUT',
+              headers: {
+                "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                product: productId,
+                name: award.name,
+                year: award.year,
+              }),
+            });
+          } else {
+            // Add new
+            await fetch(`${process.env.NEXT_PUBLIC_URL}awards/`, {
               method: 'POST',
               headers: {
                 "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
@@ -654,10 +689,12 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
                 year: award.year,
               }),
             });
-            if (!response.ok) throw new Error('Failed to add awards');
           }
-        })
-      ]);
+        }
+      })
+    );
+
+
 
       router.push('/en/account/listings'); 
       setSuccessMessage('Listing created successfully!');

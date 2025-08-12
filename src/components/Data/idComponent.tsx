@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Gallery, Item } from 'react-photoswipe-gallery';
 import 'photoswipe/dist/photoswipe.css';
-import { ChevronLeft, ChevronRight, Camera, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Camera, X, User } from 'lucide-react';
 import Link from 'next/link';
 import { Calendar, MapPin, Phone, Mail, Star, Users, Bed, Wifi, Car, Coffee, Dumbbell, Utensils, Shield, Thermometer, Bath, Plus, Minus, ThumbsUp, Flag } from "lucide-react";
 import { RiGlobalLine } from "react-icons/ri";
@@ -21,7 +21,12 @@ import LoginButtonAddReview from '@/components/header/LoginButtonAddReview';
 import Index from '@/components/Data/singlePageData';
 import ReviewsPopup from './reviewspopup';
 import { Check, Clock, BarChart3 } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import useFetchUser from '../requests/fetchUser';
+import useFetchListingImages from '../requests/fetchListingImages';
 
+
+const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 interface ImageData {
   src: string;
   width: number;
@@ -32,7 +37,7 @@ interface ImageData {
 }
 
 interface PropertyCardProps {
-   id: string | number | any;
+  id: string | number | any;
   price: string | number;
   address: string;
   imageUrl: string;
@@ -43,7 +48,7 @@ interface PropertyCardProps {
 }
 
 
-const ImageGalleryModal = ({ images, onClose }: { images: ImageData[], onClose: () => void }) => {
+const ImageGalleryModal = ({ images, onClose }: { images: any[], onClose: () => void }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-90 z-50 overflow-y-auto">
       <div className="relative w-full h-full p-4">
@@ -59,10 +64,10 @@ const ImageGalleryModal = ({ images, onClose }: { images: ImageData[], onClose: 
             {images.map((image, index) => (
               <Item
                 key={index}
-                original={image.src}
-                thumbnail={image.src}
-                width={image.width}
-                height={image.height}
+                original={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}
+                thumbnail={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}
+                width={800}
+                height={600}
               >
                 {({ ref, open }) => (
                   <div
@@ -71,15 +76,10 @@ const ImageGalleryModal = ({ images, onClose }: { images: ImageData[], onClose: 
                     className="relative aspect-square bg-gray-800 rounded-lg overflow-hidden cursor-pointer group"
                   >
                     <img
-                      src={image.src}
-                      alt={image.alt}
+                      src={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}
+                      alt="Property image"
                       className="w-full h-full object-cover group-hover:opacity-80 transition-opacity"
                     />
-                    {image.category && (
-                      <div className="absolute bottom-2 left-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-sm">
-                        {image.category}
-                      </div>
-                    )}
                   </div>
                 )}
               </Item>
@@ -91,24 +91,28 @@ const ImageGalleryModal = ({ images, onClose }: { images: ImageData[], onClose: 
   );
 };
 
-const Idcomponent: React.FC<PropertyCardProps> = ({
-  id,
-  
-  address,
- 
-  imageUrl,
-
-}) => {
+const Idcomponent = (dat:any) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const userid = dat.data.user
+  const { Users, isLoading, mutate } = useFetchUser(userid);
+   const {productimage} = useFetchListingImages(dat.data.id)
+
+
+const hotelMarkers = [{
+  position: [dat.data.latitude || 51.505, dat.data.longtitude || -0.09] as [number, number],
+  //popup: listing.name // using the listing name as popup text
+}];
+  // Calculate center position if hotels exist, otherwise use default
+  const centerPosition = 
+    [dat.data.latitude || 51.505, dat.data.longtitude || -0.09] as [number, number];
 
 
   const { wishlist, addItemToWishlist, removeItemFromWishlist, isItemInWishlist } = useWishlist();
   const { data: session, status } = useSession();
+
   // Check if current item is in wishlist
-  const isInWishlist = isItemInWishlist(id);
-
-
+  const isInWishlist = isItemInWishlist(dat.data.id);
   const [showGalleryModal, setShowGalleryModal] = useState(false);
 
 
@@ -130,19 +134,19 @@ const Idcomponent: React.FC<PropertyCardProps> = ({
     e.stopPropagation(); // Stop event bubbling
     
     if (isInWishlist) {
-      removeItemFromWishlist(id);
+      removeItemFromWishlist(dat.data.id);
     } else {
       // Create wishlist item with simplified structure
       const wishlistItem = {
-       id: id+"htl",
-        image: imageUrl,
-        title: address,
+       id: dat.data.id,
+        image: dat.data.image,
+        title: dat.data.title,
         dateAdded: "",
         category:"string",
         cuisine:"string",
         price_range:"string",
         rating:4.5,
-        name:address,
+        name:dat.data.name,
         price:"price",
         location:"location",
         lengtReviews:"lengtReviews"
@@ -152,68 +156,6 @@ const Idcomponent: React.FC<PropertyCardProps> = ({
   };
 
 
-  // Sample restaurant images data
-  const images: ImageData[] = [
-    {
-      src: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800&h=600&fit=crop',
-      width: 800,
-      height: 600,
-      alt: 'Grilled steak with garnish',
-      category: 'Food',
-      count: 156
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=600&fit=crop',
-      width: 800,
-      height: 600,
-      alt: 'Restaurant interior',
-      category: 'Interior',
-      count: 50
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=600&fit=crop',
-      width: 800,
-      height: 600,
-      alt: 'Restaurant menu',
-      category: 'Menu',
-      count: 7
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&h=600&fit=crop',
-      width: 800,
-      height: 600,
-      alt: 'Gourmet pizza',
-      category: 'Food'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&h=600&fit=crop',
-      width: 800,
-      height: 600,
-      alt: 'Fine dining setup',
-      category: 'Interior'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&h=600&fit=crop',
-      width: 800,
-      height: 600,
-      alt: 'Pasta dish',
-      category: 'Food'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800&h=600&fit=crop',
-      width: 800,
-      height: 600,
-      alt: 'Bar area',
-      category: 'Interior'
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&h=600&fit=crop',
-      width: 800,
-      height: 600,
-      alt: 'Dessert plating',
-      category: 'Food'
-    }
-  ];
 
   // Check if screen is mobile
   useEffect(() => {
@@ -228,11 +170,11 @@ const Idcomponent: React.FC<PropertyCardProps> = ({
   }, []);
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % images.length);
+    setCurrentSlide((prev) => (prev + 1) % productimage.length);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + images.length) % images.length);
+    setCurrentSlide((prev) => (prev - 1 + productimage.length) % productimage.length);
   };
 
   const goToSlide = (index: number) => {
@@ -254,6 +196,18 @@ const Idcomponent: React.FC<PropertyCardProps> = ({
 
 
   return (
+     <div className="flex flex-col gap-4">
+     
+      
+      
+        <div className="rounded-2xl m-1 sm:m-2 md:m-3 relative">
+          <Map
+            center={centerPosition}
+            zoom={9}
+            height="400px"
+            markers={hotelMarkers}
+          />
+        </div>
     <div className="max-w-7xl mx-auto px-2  font-montserrat ">
           <div className="space-y-2 mb-4 bg-white p-4 rounded-xl shadow-sm">
            <div className='flex flex-wrap gap-4 items-center'>
@@ -266,7 +220,7 @@ const Idcomponent: React.FC<PropertyCardProps> = ({
             </div>
            
               <h1 className="text-3xl lg:text-4xl font-bold font-playfair text-gray-900">
-                Intercontinental New York Times Square, an IHG hotel
+               {dat.data.name} 
               </h1>
               
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
@@ -289,7 +243,7 @@ const Idcomponent: React.FC<PropertyCardProps> = ({
 could improve pricing</p>
               <div className="flex items-center gap-2 text-gray-500">
                 <MapPin className="w-4 h-4" />
-                <span className='underline'>300 West 44th Street, New York City, NY 10036</span>
+                <span className='underline'>{Users?.address_line_1}, {Users?.city}, {Users?.state} {Users?.countryCode}, {Users?.postalCode} </span>
               </div>
 
 <div className='flex justify-between flex-wrap gap-4'>
@@ -303,8 +257,8 @@ could improve pricing</p>
                 <div className='flex items-center'>
                <Phone className="w-4 h-4 mr-2" /> 
                <p >
+                  {Users?.phoneNumber}
                   
-                  001 877-859-5095
                 </p></div>
                 <div className='flex  items-center'>
                   <Mail className="w-4 h-4 mr-2" />
@@ -314,17 +268,7 @@ could improve pricing</p>
                  
                 </div>
 
- {
-                          status === "authenticated" ?   <Link href="/en/account/receipt-validation">
-                <div className='flex items-center hover:underline'>
-                <GoPencil className="w-4 h-4 mr-2"/>
-                 <p >
-                  Write a review
-                </p></div>
-                </Link> :
-                <LoginButtonAddReview/>
-                            
-            }
+
               
                
               </div>
@@ -367,10 +311,10 @@ could improve pricing</p>
           {/* Main large image */}
           <div className="md:col-span-2 md:row-span-2">
             <Item
-              original={images[0].src}
-              thumbnail={images[0].src}
-              width={images[0].width}
-              height={images[0].height}
+              original={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.image}`}
+              thumbnail={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.name}`}
+              width={800}
+              height={600}
             >
               {({ ref, open }) => (
                 <div
@@ -379,8 +323,8 @@ could improve pricing</p>
                   className="relative w-full h-[500px] bg-gray-200 rounded-lg overflow-hidden cursor-pointer group"
                 >
                   <img
-                    src={images[0].src}
-                    alt={images[0].alt}
+                    src={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.image}`}
+                    alt={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.name}`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300" />
@@ -390,13 +334,13 @@ could improve pricing</p>
           </div>
 
           {/* Side images */}
-          {images.slice(1, 5).map((image, index) => (
+          {productimage?.map((image, index) => (
             <Item
               key={index + 1}
-              original={image.src}
-              thumbnail={image.src}
-              width={image.width}
-              height={image.height}
+              original={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}
+              thumbnail={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}
+              width={800}
+              height={600}
             >
               {({ ref, open }) => (
                 <div
@@ -405,21 +349,15 @@ could improve pricing</p>
                   className="relative w-full h-45 bg-gray-200 rounded-lg overflow-hidden cursor-pointer group"
                 >
                   <img
-                    src={image.src}
-                    alt={image.alt}
+                    src={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}
+                    alt="images"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300" />
                   
                 
                   
-                  {/* Count badge for last image */}
-                  {index === 2 && image.count && (
-                    <div className="absolute bottom-2 right-2 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
-                      <Camera size={14} />
-                      {image.count}
-                    </div>
-                  )}
+           
                 </div>
               )}
             </Item>
@@ -443,38 +381,30 @@ could improve pricing</p>
                 className="flex transition-transform duration-300 ease-in-out"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
-                {images.map((image, index) => (
+                {productimage?.map((image, index) => (
                   <Item
                     key={index}
-                    original={image.src}
-                    thumbnail={image.src}
-                    width={image.width}
-                    height={image.height}
+                    original={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}
+                    thumbnail={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}
+                    width={800}
+                    height={600}
                   >
                     {({ ref, open }) => (
                       <div
                         ref={ref}
                         onClick={open}
-                        className="relative w-full h-64 bg-gray-200 flex-shrink-0 cursor-pointer"
+                        className="relative w-full h-96 bg-gray-200 flex-shrink-0 cursor-pointer"
                       >
                         <img
-                          src={image.src}
-                          alt={image.alt}
+                          src={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}
+                          alt="images"
                           className="w-full h-full object-cover"
                         />
                         
                         {/* Category badge */}
-                        <div className="absolute top-2 left-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-sm">
-                          {image.category}
-                        </div>
+                      
                         
-                        {/* Count badge */}
-                        {image.count && (
-                          <div className="absolute bottom-2 right-2 bg-accent text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
-                            <Camera size={14} />
-                            {image.count}
-                          </div>
-                        )}
+                       
                       </div>
                     )}
                   </Item>
@@ -500,7 +430,7 @@ could improve pricing</p>
 
           {/* Slide indicators */}
           <div className="flex justify-center mt-4 space-x-2">
-            {images.map((_, index) => (
+            {productimage?.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
@@ -517,16 +447,33 @@ could improve pricing</p>
       </Gallery>
 
  {showGalleryModal && (
-        <ImageGalleryModal 
-          images={images} 
-          onClose={() => setShowGalleryModal(false)} 
-        />
-      )}
+  <ImageGalleryModal 
+    images={productimage} 
+    onClose={() => setShowGalleryModal(false)} 
+  />
+)}
 
 
-    <Index/>
+    <Index info={dat.data}/>
+    </div>
     </div>
   );
 };
 
 export default Idcomponent;
+
+
+
+
+
+/** {
+                          status === "authenticated" ?   <Link href="/en/account/receipt-validation">
+                <div className='flex items-center hover:underline'>
+                <GoPencil className="w-4 h-4 mr-2"/>
+                 <p >
+                  Write a review
+                </p></div>
+                </Link> :
+                <LoginButtonAddReview/>
+                            
+            } */

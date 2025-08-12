@@ -23,8 +23,8 @@ interface Product {
   image: File | null;
   type:string;
   longitude: string;
-  location: string;
-  latitude: string;
+  location: any;
+  latitude: any;
   user: any ;
 }
 

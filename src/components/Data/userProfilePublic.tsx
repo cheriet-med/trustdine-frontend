@@ -1,31 +1,25 @@
 'use client'
 
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import VerifiedBadge from '@/components/verified';
-
-import { IoFastFoodOutline } from "react-icons/io5";
-import { MdOutlinePhotoCamera } from "react-icons/md";
-import { LiaHikingSolid } from "react-icons/lia";
-import { LuCookingPot } from "react-icons/lu";
-import { IoBarbellOutline } from "react-icons/io5";
-import { VscCoffee } from "react-icons/vsc";
 import { MdOutlineTravelExplore } from "react-icons/md";
-import { IoLanguage } from "react-icons/io5";
 import { CiLocationOn } from "react-icons/ci";
+import { Star } from "lucide-react";
+import { TbHistoryToggle } from "react-icons/tb";
+import Image from 'next/image';
+import { IoLanguage } from "react-icons/io5";
 import { MdAccessTime } from "react-icons/md";
 import { LiaBirthdayCakeSolid } from "react-icons/lia";
 import { MdOutlinePets } from "react-icons/md";
-import { Star } from "lucide-react";
-import { TbHistoryToggle } from "react-icons/tb";
 import { FaRegQuestionCircle } from "react-icons/fa";
-import { GoPencil } from "react-icons/go";
-import { MdOutlineRateReview } from "react-icons/md";
-import Link from 'next/link';
 import { LuMessageCircleMore } from "react-icons/lu";
-
-
+import useFetchAmenities from '@/components/requests/fetchAmenities';
+import { GoUnverified } from "react-icons/go";
 import dynamic from 'next/dynamic';
 import { ApexOptions } from 'apexcharts';
+import AmenitiesSelector from '@/components/requests/amenities';
+import useFetchUser from '@/components/requests/fetchUser';
+const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 
 const Chart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
@@ -34,8 +28,155 @@ const Chart = dynamic(() => import('react-apexcharts'), {
 </div>
 });
 
-const UeserProfile: React.FC = () => {
- const options: ApexOptions = {
+import { 
+  FaWifi, FaParking, FaDumbbell, FaGlassMartiniAlt, FaChild, FaTaxi, 
+  FaBaby, FaCoffee, FaBath, FaSnowflake, FaDesktop, FaBroom, 
+  FaTv, FaShower, FaChair, FaWheelchair, FaMusic, FaMotorcycle, 
+  FaSpa, FaBriefcase, FaDog, FaTshirt, FaUtensils, 
+  FaLeaf, FaSeedling, FaWineGlassAlt, FaFish, FaCocktail, FaIceCream, 
+  FaEgg, FaStreetView, FaHotel, FaUmbrellaBeach, FaSkiing, FaTree, 
+  FaCity, FaMonument, FaMountain, FaCamera, FaLaptop, FaPalette, 
+  FaYinYang, FaRecycle, FaPaw, FaSwimmingPool, FaBicycle, FaPlane, 
+  FaBook, FaGamepad, FaBowlingBall, FaCampground, FaHiking, FaCar
+} from 'react-icons/fa';
+import { PiElevatorFill } from "react-icons/pi";
+import { FaHandsAslInterpreting } from "react-icons/fa6";
+
+interface ProfileData {
+  id?: number;
+  name?: string;
+  full_name?: string;
+  username?: string;
+  title?: string;
+  category?: string;
+  amenities?: string;
+  email?: string;
+  location?: string;
+  profile_image?: string;
+  identity_verified?: boolean;
+  about?: any;
+  website?: string;
+  joined?: string;
+  address_line_1?: string;
+  phoneNumber?: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
+  countryCode?: string;
+  latitude?: string;
+  longtitude?: string;
+  // New fields added below
+  want_to_go?: string;
+  time_spend?: string;
+  born?: string;
+  pets?: string;
+  obsessed?: string;
+  language?: string;
+}
+interface PartnerProfileProps {
+  idu: any; // you can replace `any` with the actual type of `userData`
+}
+const UserProfilePublic: React.FC<PartnerProfileProps> = ({ idu }) => {
+  const [profileImage, setProfileImage] = useState("/profile.webp");
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const userId = idu.id;
+  //const { Users, isLoading, mutate } = useFetchUser(userId);
+  const { Amenitie, isLoading, error: amenitiesError } = useFetchAmenities(userId);
+ 
+ // Replace with actual userId
+
+
+
+const initialAmenities = [
+    // Fitness & Recreation
+    { id: 3, name: 'Gym / Workout Room', category: 'Fitness & Recreation', selected: false },
+    { id: 48, name: 'Yoga', category: 'Fitness & Recreation', selected: false },
+    { id: 21, name: 'Spa', category: 'Fitness & Recreation', selected: false },
+    
+    // Arts & Culture
+    { id: 44, name: 'Photography', category: 'Arts & Culture', selected: false },
+    { id: 46, name: 'Art Galleries', category: 'Arts & Culture', selected: false },
+    
+    // Travel & Tourism
+    { id: 40, name: 'Eco Tourism', category: 'Travel & Tourism', selected: false },
+    { id: 41, name: 'City Breaks', category: 'Travel & Tourism', selected: false },
+    { id: 42, name: 'Cultural Tours', category: 'Travel & Tourism', selected: false },
+    { id: 43, name: 'Adventure Travel', category: 'Travel & Tourism', selected: false },
+    
+    // Technology
+    { id: 45, name: 'Web Design', category: 'Technology', selected: false },
+    
+    // Lifestyle
+    { id: 49, name: 'Sustainability', category: 'Lifestyle', selected: false },
+    
+    // Pets
+    { id: 50, name: 'Pet-Friendly Places', category: 'Pets', selected: false },
+    
+    // Added general interests that might have been missing
+    { id: 51, name: 'Music', category: 'Arts & Culture', selected: false },
+    { id: 52, name: 'Reading', category: 'Arts & Culture', selected: false },
+    { id: 53, name: 'Gaming', category: 'Entertainment', selected: false },
+    { id: 54, name: 'Travel', category: 'Travel & Tourism', selected: false },
+    { id: 55, name: 'Cycling', category: 'Sports & Activities', selected: false },
+    { id: 56, name: 'Cars', category: 'Lifestyle', selected: false },
+    { id: 57, name: 'Hiking', category: 'Sports & Activities', selected: false },
+    { id: 58, name: 'Camping', category: 'Sports & Activities', selected: false },
+    { id: 59, name: 'Bowling', category: 'Sports & Activities', selected: false }
+];
+
+
+
+const amenityIcons: any = {
+  // Fitness & Recreation
+  'Gym / Workout Room': <FaDumbbell className="text-lg text-gray-400" />,
+  'Yoga': <FaYinYang className="text-lg text-gray-400" />,
+  'Spa': <FaSpa className="text-lg text-gray-400" />,
+  'Swimming': <FaSwimmingPool className="text-lg text-gray-400" />,
+  
+  // Arts & Culture
+  'Photography': <FaCamera className="text-lg text-gray-400" />,
+  'Art Galleries': <FaPalette className="text-lg text-gray-400" />,
+  'Music': <FaMusic className="text-lg text-gray-400" />,
+  'Reading': <FaBook className="text-lg text-gray-400" />,
+  
+  // Sports & Activities
+  'Bowling': <FaBowlingBall className="text-lg text-gray-400" />,
+  'Camping': <FaCampground className="text-lg text-gray-400" />,
+  'Hiking': <FaHiking className="text-lg text-gray-400" />,
+  'Cycling': <FaBicycle className="text-lg text-gray-400" />,
+  'Gaming': <FaGamepad className="text-lg text-gray-400" />,
+  
+  // Travel & Tourism
+  'Travel': <FaPlane className="text-lg text-gray-400" />,
+  'Eco Tourism': <FaTree className="text-lg text-gray-400" />,
+  'City Breaks': <FaCity className="text-lg text-gray-400" />,
+  'Cultural Tours': <FaMonument className="text-lg text-gray-400" />,
+  'Adventure Travel': <FaMountain className="text-lg text-gray-400" />,
+  
+  // Technology
+  'Web Design': <FaLaptop className="text-lg text-gray-400" />,
+  
+  // Lifestyle
+  'Sustainability': <FaRecycle className="text-lg text-gray-400" />,
+  'Cars': <FaCar className="text-lg text-gray-400" />,
+  
+  // Pets
+  'Pet-Friendly Places': <FaPaw className="text-lg text-gray-400" />
+};
+
+
+
+
+
+  const handleImageClick = () => {
+    if (!isUploading) {
+      fileInputRef.current?.click();
+    }
+  };
+
+  const options: ApexOptions = {
     chart: {
       height: 350,
       type: 'radialBar',
@@ -56,7 +197,6 @@ const UeserProfile: React.FC = () => {
             show: true,
             label: 'TOTAL',
             formatter: function (w) {
-              // Calculate average of all series
               const sum = w.globals.series.reduce((a: number, b: number) => a + b, 0);
               const avg = sum / w.globals.series.length;
               return Math.round(avg) + '%';
@@ -67,282 +207,438 @@ const UeserProfile: React.FC = () => {
     },
     series: [67, 84, 97, 61],
     labels: ['Clean Receipt', 'Blur Receipt', 'Verified Receipt', 'Fake Receipt'],
-    colors: ['#9ED0E6', '#B796AC', '#82A7A6', '#785964'], // Custom colors for each bar
+    colors: ['#9ED0E6', '#B796AC', '#82A7A6', '#785964'],
     stroke: {
       lineCap: 'round'
     }
   };
 
 
+const hotelMarkers = [{
+  position: [idu.latitude || 51.505, idu.longtitude || -0.09] as [number, number],
+  //popup: listing.name // using the listing name as popup text
+}];
+  // Calculate center position if hotels exist, otherwise use default
+  const centerPosition = 
+    [idu.latitude || 51.505, idu.longtitude || -0.09] as [number, number];
+
+
+  if (isLoading) {
+    return (
+       <>
+      {/* Map Skeleton */}
+      <div className="rounded-2xl m-1 sm:m-2 md:m-3 relative">
+        <div className="h-[300px] bg-gray-200 animate-pulse rounded-2xl relative overflow-hidden">
+          {/* Map controls skeleton */}
+          <div className="absolute right-4 top-4 bg-gray-300 animate-pulse px-3 py-1 rounded-lg h-8 w-20"></div>
+          <div className="absolute left-4 top-4 bg-gray-300 animate-pulse rounded h-10 w-10"></div>
+          <div className="absolute left-4 top-16 bg-gray-300 animate-pulse rounded h-10 w-10"></div>
+          
+          {/* Simulated map marker */}
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="w-6 h-6 bg-red-300 animate-pulse rounded-full"></div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-2 lg:mx-24 my-8 grid grid-cols-1 custom:grid-cols-2 gap-6 font-montserrat">
+        <div className="space-y-4">
+          {/* Profile Card Skeleton */}
+          <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative'>
+            {/* Edit button skeleton */}
+            <div className="absolute right-4 top-4 bg-gray-200 animate-pulse px-3 py-1 rounded-full h-8 w-16"></div>
+            
+            {/* Profile Section Skeleton */}
+            <div className="flex items-center gap-8 flex-wrap">
+              <div className="shrink-0 relative">
+                {/* Profile image skeleton with overlay */}
+                <div className="size-48 rounded-full bg-gray-200 animate-pulse relative">
+                  {/* Camera icon overlay */}
+                  <div className="absolute inset-0 rounded-full bg-black bg-opacity-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="w-8 h-8 bg-gray-400 rounded"></div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="grow mt-6 space-y-3">
+                <div className="flex gap-4 flex-wrap items-center">
+                  <div className="h-9 bg-gray-200 animate-pulse rounded w-48"></div>
+                  <div className="flex gap-1 items-center mt-2">
+                    <div className="w-5 h-5 bg-gray-200 animate-pulse rounded"></div>
+                    <div className="h-5 bg-gray-200 animate-pulse rounded w-24"></div>
+                  </div>
+                </div>
+                <div className="h-5 bg-gray-200 animate-pulse rounded w-40"></div>
+                <div className="h-4 bg-gray-200 animate-pulse rounded w-32"></div>
+                <div className="border border-1 px-5 py-3 w-48 rounded-3xl bg-gray-100 animate-pulse h-10"></div>
+              </div>
+            </div>
+
+            <hr className='mt-8'/>
+
+            {/* Contact Info Skeleton */}
+            <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-2">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="flex items-center gap-x-2.5">
+                  <div className="w-6 h-6 bg-gray-200 animate-pulse rounded"></div>
+                  <div className="h-4 bg-gray-200 animate-pulse rounded flex-1 max-w-48"></div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Reviews Card Skeleton */}
+          <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative'>
+            <div className="h-6 bg-gray-200 animate-pulse rounded w-20 mb-4"></div>
+            
+            <div className='flex justify-between mb-4 flex-wrap'>
+              <div className="flex items-center gap-2 flex-wrap">
+                <div className="h-8 bg-gray-200 animate-pulse rounded w-12"></div>
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <div key={i} className="w-4 h-4 bg-gray-200 animate-pulse rounded"></div>
+                  ))}
+                </div>
+                <div className="h-4 bg-gray-200 animate-pulse rounded w-16"></div>
+                <div className="h-4 bg-gray-200 animate-pulse rounded w-24"></div>
+              </div>
+              <div className="h-8 bg-gray-200 animate-pulse rounded-3xl w-32 px-2 py-1"></div>
+            </div>
+
+            {/* Rating bars skeleton */}
+            <div className="space-y-4">
+              <div className="grid gap-3 md:w-[400px]">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="flex items-center gap-4">
+                    <div className="w-24 md:w-28 h-4 bg-gray-200 animate-pulse rounded"></div>
+                    <div className="flex-1 bg-gray-100 rounded-full h-3 relative overflow-hidden">
+                      <div className="h-3 rounded-full bg-gray-200 animate-pulse absolute inset-0"></div>
+                    </div>
+                    <div className="w-8 h-4 bg-gray-200 animate-pulse rounded"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className='flex gap-1 justify-center mt-8'>
+              <div className="w-6 h-6 bg-gray-200 animate-pulse rounded"></div>
+              <div className="h-4 bg-gray-200 animate-pulse rounded w-32"></div>
+            </div>
+          </div>
+
+          {/* Trust Score Card Skeleton */}
+          <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white'>
+            <div className="h-6 bg-gray-200 animate-pulse rounded w-24 mb-8"></div>
+
+            <div className='flex sm:justify-around flex-wrap items-center'>
+              <div className='flex flex-col gap-3'>
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className='flex gap-2 items-center'>
+                    <div className='h-3 w-4 bg-gray-200 animate-pulse rounded-xl'></div>
+                    <div className='h-4 bg-gray-200 animate-pulse rounded w-20'></div>
+                  </div>
+                ))}
+              </div>
+              
+              {/* Radial chart skeleton */}
+              <div className="w-80 h-80 bg-gray-200 animate-pulse rounded-full flex items-center justify-center">
+                <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center">
+                  <div className="w-16 h-16 bg-gray-200 animate-pulse rounded-full"></div>
+                </div>
+              </div>
+            </div>
+
+            <div className='flex items-center gap-x-2.5 text-gray-500 mt-4'>
+              <div className="w-6 h-6 bg-gray-200 animate-pulse rounded"></div>
+              <div className="h-4 bg-gray-200 animate-pulse rounded w-48"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* About Us Card Skeleton */}
+        <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative'>
+          {/* Edit button skeleton */}
+          <div className="absolute right-4 top-4 bg-gray-200 animate-pulse px-3 py-1 rounded-full h-8 w-16"></div>
+          <div className="h-6 bg-gray-200 animate-pulse rounded w-24 mb-8"></div>
+
+          {/* About Text Skeleton - More realistic text blocks */}
+          <div className="space-y-3">
+            <div className="h-4 bg-gray-200 animate-pulse rounded w-full"></div>
+            <div className="h-4 bg-gray-200 animate-pulse rounded w-full"></div>
+            <div className="h-4 bg-gray-200 animate-pulse rounded w-3/4"></div>
+            <div className="h-4 bg-gray-200 animate-pulse rounded w-full"></div>
+            <div className="h-4 bg-gray-200 animate-pulse rounded w-5/6"></div>
+            <div className="h-4 bg-gray-200 animate-pulse rounded w-full"></div>
+            <div className="h-4 bg-gray-200 animate-pulse rounded w-2/3"></div>
+            <div className="h-4 bg-gray-200 animate-pulse rounded w-4/5"></div>
+          </div>
+
+          <hr className='mt-8'/>
+
+          <div className="h-6 bg-gray-200 animate-pulse rounded w-20 mt-4 mb-4"></div>
+          
+          {/* Interests/Amenities Skeleton */}
+          <div className="flex flex-wrap gap-2">
+            {[...Array(12)].map((_, i) => (
+              <div key={i} className="flex gap-2 items-center py-2 px-3 border border-gray-200 rounded-3xl h-10 animate-pulse">
+                <div className="w-4 h-4 bg-gray-200 rounded"></div>
+                <div className="h-3 bg-gray-200 rounded w-16"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </>
+    );
+  }
+
   return (
-    <>
-<div className="mx-2 lg:mx-24 my-8 grid  grid-cols-1 md:grid-cols-2 gap-6 font-montserrat"> 
-  
-    <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative'>
-
-     
-
-      {/* Profile */}
-
-      <div className="flex items-center gap-8 flex-wrap">
-        
-        <div className="shrink-0">
-          <img
-            className="shrink-0 size-48 rounded-full"
-            src="/ex.avif"
-            alt="Avatar"
+    <>  
+     <div className="rounded-2xl m-1 sm:m-2 md:m-3 relative">
+          <Map
+            center={centerPosition}
+            zoom={9}
+            height="400px"
+            markers={hotelMarkers}
           />
         </div>
+  
+     
+<div className="mx-2 lg:mx-24 my-8 grid  grid-cols-1 custom:grid-cols-2 gap-6 font-montserrat"> 
+  
+  {/* Error Display */}
+  {error && (
+    <div className="col-span-full bg-red-50 border border-red-200 rounded-lg p-4 text-red-700">
+      <p className="text-sm">{error}</p>
+      <button 
+        onClick={() => setError(null)}
+        className="text-red-500 hover:text-red-700 text-sm underline ml-2"
+      >
+        Dismiss
+      </button>
+    </div>
+  )}
 
-        <div className="grow">
-            <div className='flex gap-2 flex-wrap'>
-                 <h1 className="text-lg font-medium text-gray-800 dark:text-neutral-200 font-playfair">
-            Eliana Garcia
-          </h1>
-          <VerifiedBadge text='Identity verified'/>
+
+
+    <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative'>
+    
+      {/* Profile */}
+      <div className="flex items-center gap-8 flex-wrap">
+        <div className="shrink-0 relative group">
+       
           
+          {/* Profile Image Container */}
+          <div 
+            className={`relative ${!isUploading ? 'cursor-pointer' : 'cursor-not-allowed'}`}
+            onClick={handleImageClick}
+          >
+            <Image
+              className={`shrink-0 size-48 rounded-full object-cover transition-all duration-300 ${
+                !isUploading ? 'group-hover:brightness-75' : 'opacity-75'
+              }`}
+              src={idu.profile_image == null ? '/ex.avif':`${process.env.NEXT_PUBLIC_IMAGE}/${idu.profile_image}`}
+              alt="Avatar"
+              height={150}
+              width={150}
+              onError={() => setProfileImage("/ex.avif")} // Fallback on image load error
+            />
+            
+
+            
+          </div>
+        </div>
+
+        <div className="grow mt-6">
+          <div className='flex gap-4 flex-wrap items-center'>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-neutral-200 font-playfair">
+              {idu.full_name || " "}
+            </h1>
+            <div className='mt-2'>
+                          {idu.identity_verified == true ?  <VerifiedBadge text='Account verified'/> : 
+            <div className='flex gap-1 items-center'>
+              <GoUnverified size={18} className='text-gray-400'/>
+              <p className='text-gray-400 text-lg font-medium'>Unverified</p>
+            </div> }
             </div>
+
+           
+          </div>
          
-          <p className="text-sm text-gray-600 dark:text-neutral-400">
-            Graphic Designer, Web designer/developer
+          <p className="text-lg text-gray-500 mt-2 font-medium">
+            {idu.title || " "}
           </p>
-           <a
-              className="text-sm text-gray-500  hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
-              href="#"
-            >
-             Joined in Jun 2018
-            </a>
-                  <div className=" border border-1 px-5 py-3 w-48 rounded-3xl border-gray-500 shadow-sm text-sm flex gap-1 mt-4 justify-center">
- <LuMessageCircleMore size={18}/>
-        <p >
-    Send Message
-  </p> 
-      </div>
+          <a
+            className="text-sm text-gray-500 hover:text-gray-600 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
+            
+          >
+            Joined in {idu.joined}
+          </a>
+            <div className="border border-1 px-5 py-3 w-48 rounded-3xl border-gray-500 shadow-sm text-sm flex gap-1 mt-4 justify-center">
+                            <LuMessageCircleMore size={18}/>
+                            <p>Send Message</p> 
+                          </div> 
         </div>
       </div>
+       <hr className='mt-8'/>
       {/* End Profile */}
 
-      {/* About */}
-     
-       <hr className='mt-8'/>
-
-        <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-2">
-             <div className="flex items-center gap-x-2.5 text-gray-500">
-            <MdOutlineTravelExplore size={24}/>
-                        <a
-              className="text-sm   hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
-              href="#"
-            >
-             I've wanted to go: L'rgentine
-            </a>
-          </div>
-
-
-  <div className="flex items-center gap-x-2.5 text-gray-500">
-          <IoLanguage size={24}/>
-            <a
-              className="text-sm   hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
-              href="#"
-            >
-            Speaks English and Italian
-            </a>
-          </div>
-
-
-          <div className="flex items-center gap-x-2.5 text-gray-500">
-          <CiLocationOn size={24}/>
-            <a
-              className="text-sm   hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
-              href="#"
-            >
-             Lives in Lovere, Italy
-            </a>
-          </div>
-
-          <div className="flex items-center gap-x-2.5 text-gray-500">
-           <MdAccessTime size={24}/>
-            <a
-              className="text-sm   hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
-              href="#"
-            >
-              I spend too much time: The lecture
-            </a>
-          </div>
-
-          <div className="flex items-center gap-x-2.5 text-gray-500">
-        <LiaBirthdayCakeSolid size={24}/>
-            <a
-              className="text-sm   hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
-              href="#"
-            >
-             Born in the 80s
-            </a>
-          </div>
-          <div className="flex items-center gap-x-2.5 text-gray-500">
-        <MdOutlinePets size={24}/>
-            <a
-              className="text-sm   hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
-              href="#"
-            >
-            Pets: 2 cats
-            </a>
-          </div>
-        </div>
+     <div className="mt-5 grid grid-cols-1 md:grid-cols-2 gap-2">
+      {idu.want_to_go &&
+                 <div className="flex items-center gap-x-2.5 text-gray-500">
+                <MdOutlineTravelExplore size={24}/>
+                            <p
+                  className="text-sm   hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
+                  
+                >
+                 I've wanted to go: {idu.want_to_go}
+                </p>
+              </div>}
     
-      {/* End About */}
-    </div>
+       {idu.language &&
+      <div className="flex items-center gap-x-2.5 text-gray-500">
+              <IoLanguage size={24}/>
+                <p
+                  className="text-sm   hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
+                  
+                >
+                Speaks {idu.language}
+                </p>
+              </div>}
 
+      {idu.location &&
+              <div className="flex items-center gap-x-2.5 text-gray-500">
+              <CiLocationOn size={24}/>
+                <p
+                  className="text-sm   hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
+                  
+                >
+                 Lives in {idu.location}
+                </p>
+              </div>}
+      {idu.time_spend &&
+              <div className="flex items-center gap-x-2.5 text-gray-500">
+               <MdAccessTime size={24}/>
+                <p
+                  className="text-sm   hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
+                  
+                >
+                  I spend too much time: {idu.time_spend}
+                </p>
+              </div>}
 
-
-
-
-
-
-
-
-
- <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative'>
-
-     <h1 className='font-medium font-playfair text-lg'>About Me</h1>
-
-      {/* About */}
-      <div className="mt-8">
-        <p className="text-sm text-gray-600 dark:text-neutral-400">
-          I am a seasoned graphic designer with over 14 years of experience in creating visually
-          appealing and user-centric designs. My expertise spans across UI design, design systems,
-          and custom illustrations, helping clients bring their digital visions to life.
-        </p>
-
-      
-
-       
-      </div>
-      <hr className='mt-8'/>
-
-      <h1 className="mt-4 mb-8 font-medium font-playfair text-lg">My interests</h1>
-      <div className='flex gap-2 flex-wrap'>
-        <div className='flex gap-2 items-center py-1 px-2 border border-1 border-gray-500 rounded-3xl text-gray-600 text-sm'>
-            <IoFastFoodOutline size={22}/>
-            <p>Foodie</p>
+      {idu.born &&
+              <div className="flex items-center gap-x-2.5 text-gray-500">
+            <LiaBirthdayCakeSolid size={24}/>
+                <p
+                  className="text-sm   hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
+                  
+                >
+                 Born in the {idu.born}
+                </p>
+              </div>
+}
+              {idu.pets &&
+              <div className="flex items-center gap-x-2.5 text-gray-500">
+            <MdOutlinePets size={24}/>
+                <p
+                  className="text-sm   hover:text-gray-800 hover:decoration-2 focus:outline-hidden focus:decoration-2 dark:text-neutral-500 dark:hover:text-neutral-400"
+                  
+                >
+                Pets: {idu.pets}
+                </p>
+              </div>}
+            </div>
+        
+          {/* End About */}
         </div>
-       
-       <div className='flex gap-2 items-center py-1 px-2 border border-1 border-gray-500 rounded-3xl text-gray-600 text-sm'>
-            <LiaHikingSolid size={22}/>
-            <p>Hiking</p>
-        </div>
-
-         <div className='flex gap-2 items-center py-1 px-2 border border-1 border-gray-500 rounded-3xl text-gray-600 text-sm'>
-            <MdOutlinePhotoCamera size={22}/>
-            <p>Photography</p>
-        </div>
-
-
-         <div className='flex gap-2 items-center py-1 px-2 border border-1 border-gray-500 rounded-3xl text-gray-600 text-sm'>
-            <LuCookingPot size={22}/>
-            <p>Cooking</p>
-        </div>
-
-         <div className='flex gap-2 items-center py-1 px-2 border border-1 border-gray-500 rounded-3xl text-gray-600 text-sm'>
-            <IoBarbellOutline size={22}/>
-            <p>Weight lifting</p>
-        </div>
-         <div className='flex gap-2 items-center py-1 px-2 border border-1 border-gray-500 rounded-3xl text-gray-600 text-sm'>
-            <VscCoffee size={22}/>
-            <p>Coffe</p>
-        </div>
-      </div>
-      {/* End About */}
-    </div>
 
 
 
 
 
+  <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative'>
+   
+   
+    <h1 className='font-medium font-playfair text-lg'>About Us</h1>
 
+    {/* About */}
 
-
-
-
-
-
-
-
-
-
-
-{/* Reviews */ }
-
- <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative'>
-     <h1 className='font-medium font-playfair mb-4 text-lg'>Reviews</h1>
-
-       <div>
-                   <div className='flex justify-between mb-8 flex-wrap'>
-                   
-                     <div className="flex items-center gap-2 flex-wrap">
-                       <span className="text-2xl font-bold text-gray-900">4.2</span>
-                       <div className="flex">
-                         {[...Array(4)].map((_, i) => (
-                           <Star key={i} className="w-4 h-4 fill-background text-background" />
-                         ))}
-                         <Star className="w-4 h-4 text-background" />
-                       </div>
-                       <span className="text-background font-medium">Good</span>
-                       <span className="text-sm text-gray-500">(17 reviews)</span>
-                     </div>
-                      <div className="text-sm text-gray-500 mb-4 px-2 py-1 border border-1 bg-secondary text-white rounded-3xl font-bold w-fit mt-2">Top #59 Reviewer</div>
-                   </div>
-                   <div>
-                     <div className="space-y-4">
-                      
-                       
-                       <div className="grid gap-3 md:w-[400px]">
-                         {[
-                           { label: "Location", score: 4.8, color: "bg-background" },
-                           { label: "Rooms", score: 4.4, color: "bg-background" },
-                           { label: "Value", score: 4.0, color: "bg-background" },
-                           { label: "Cleanliness", score: 4.6, color: "bg-background" },
-                           { label: "Service", score: 4.2, color: "bg-background" },
-                           { label: "Sleep Quality", score: 4.5, color: "bg-background" }
-                         ].map((item) => (
-                           <div key={item.label} className="flex items-center gap-4">
-                             <div className="w-24 md:w-28  text-sm font-medium text-gray-500">{item.label}</div>
-                             <div className="flex-1 bg-gray-100 rounded-full h-3">
-                               <div 
-                                 className={`h-3 rounded-full ${item.color}`}
-                                 style={{ width: `${(item.score / 5) * 100}%` }}
-                               />
-                             </div>
-                             <div className="w-8 text-sm font-medium text-right">{item.score}</div>
-                           </div>
-                         ))}
-                       </div>
-                     </div>
-                   </div>
-              
-                 </div>
+      <div 
+  className="text-sm text-gray-600 dark:text-neutral-400 mt-8 space-y-2"
+  dangerouslySetInnerHTML={{ __html: idu?.about || '' }}
+/>
      
-      {/* End About */}
+
+    <hr className='mt-8'/>
+
+    <h1 className="mt-4 mb-4 font-medium font-playfair text-lg">Interests</h1>
+   
+     <div className="flex flex-wrap gap-2">
+                 {Amenitie.map((amenity) => (
+                   <div key={amenity.id} className="flex gap-2 items-center py-2 px-3 border border-1 border-gray-500 rounded-3xl text-gray-600 text-sm w-fit">
+                     {amenityIcons[amenity.name] || <FaCampground className="text-lg" />}
+                     <p>{amenity.name}</p>
+                   </div>
+                 ))}
+               </div>
+  </div>
+
+
+
+
+
+
+    {/* Reviews */}
+    <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative '>
+      <h1 className='font-medium font-playfair mb-4 text-lg'>Reviews</h1>
+
+      <div>
+        <div className='flex justify-between mb-4 flex-wrap'>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-2xl font-bold text-gray-900">4.2</span>
+            <div className="flex">
+              {[...Array(4)].map((_, i) => (
+                <Star key={i} className="w-4 h-4 fill-background text-background" />
+              ))}
+              <Star className="w-4 h-4 text-background" />
+            </div>
+            <span className="text-background font-medium">Good</span>
+            <span className="text-sm text-gray-500">(17 reviews)</span>
+          </div>
+          <div className="text-sm text-gray-500 mb-4 px-2 py-1 border border-1 bg-secondary text-white rounded-3xl font-bold w-fit mt-2">Top #59 Reviewer</div>
+        </div>
+        <div>
+          <div className="space-y-4">
+            <div className="grid gap-3 md:w-[400px]">
+              {[
+                { label: "Location", score: 4.8, color: "bg-background" },
+                { label: "Rooms", score: 4.4, color: "bg-background" },
+                { label: "Value", score: 4.0, color: "bg-background" },
+                { label: "Cleanliness", score: 4.6, color: "bg-background" },
+                { label: "Service", score: 4.2, color: "bg-background" },
+                { label: "Sleep Quality", score: 4.5, color: "bg-background" }
+              ].map((item) => (
+                <div key={item.label} className="flex items-center gap-4">
+                  <div className="w-24 md:w-28 text-sm font-medium text-gray-500">{item.label}</div>
+                  <div className="flex-1 bg-gray-100 rounded-full h-3">
+                    <div 
+                      className={`h-3 rounded-full ${item.color}`}
+                      style={{ width: `${(item.score / 5) * 100}%` }}
+                    />
+                  </div>
+                  <div className="w-8 text-sm font-medium text-right">{item.score}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className='flex gap-1 justify-center text-gray-600 mt-8'>
+          <TbHistoryToggle size={24}/>
+          <p className='underline'>Reviews History</p>
+        </div>
+      </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -350,8 +646,7 @@ const UeserProfile: React.FC = () => {
 
 
  <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white'>
-     
-     <h1 className='font-medium font-playfair mb-8 text-lg'>Trust Score</h1>
+<h1 className='font-medium font-playfair mb-8 text-lg'>Trust Score</h1>
 
 <div className='flex sm:justify-around flex-wrap'>
      <div className='flex flex-col gap-1'>
@@ -394,8 +689,9 @@ const UeserProfile: React.FC = () => {
 
 </div>
 
-    </div></>
+</div>
+</>
   );
 };
 
-export default UeserProfile;
+export default  UserProfilePublic;

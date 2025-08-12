@@ -52,8 +52,8 @@ interface Listing {
   organic_ingredients: boolean;
   sustainable_seafood: boolean;
   latitude: string | null;
-  longtitude: string | null; // Note: typo in original (should be longitude)
-  location: string | null;
+  longtitude: any; // Note: typo in original (should be longitude)
+  location: any;
   created_at_meta: string | null;
   updated_at_meta: string | null;
 }

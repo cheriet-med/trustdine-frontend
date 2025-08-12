@@ -23,9 +23,9 @@ interface Product {
   established: string;
   image: File | null;
   type: string;
-  longitude: string;
+  longitude: any;
   location: string;
-  latitude: string;
+  latitude: any;
   category:string;
   chef: string;
   opening_hours_monday: string;

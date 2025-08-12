@@ -29,16 +29,20 @@ const fetcher = async <T,>(url: string): Promise<T> => {
   }
 };
 
-interface languages {
+interface productimage {
   id: number;
-  language: string;                    
+  product: any;                   
+  image: any;               
+
 }
 
-const useFetchLanguages = (id: any): { languages: languages[]; error: any; isLoading: boolean } => {
-  const { data, error, isLoading } = useSWR<languages[]>(
-    `${process.env.NEXT_PUBLIC_URL}languages/?user=${id}`,
-    fetcher
+const useFetchListingImages = (id:any) => {
+  const { data, error, isLoading } = useSWR<productimage[]>(
+    `${process.env.NEXT_PUBLIC_URL}productimage/?product=${id}`,
+    fetcher // No need to explicitly pass generic here
   );
-  return { languages: data || [], error, isLoading };
+
+  return { productimage: data || [], error, isLoading };
 };
-export default useFetchLanguages;
+
+export default useFetchListingImages;
