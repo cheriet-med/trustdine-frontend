@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import Image from "next/image";
 import { 
   FaQrcode,
   FaLayerGroup,
@@ -35,9 +36,6 @@ import { MdOutlineRateReview } from "react-icons/md";
 import { FaHeartCircleCheck } from "react-icons/fa6";
 import { MdOutlineTravelExplore } from "react-icons/md";
 
-
-
-
 interface MenuItem {
   label: string;
   icon: any,
@@ -48,6 +46,7 @@ export default function VerticalMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuAnimating, setIsMenuAnimating] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   // Audio refs
   const menuOpenSound = useRef<HTMLAudioElement | null>(null);
@@ -76,10 +75,19 @@ export default function VerticalMenu() {
   const targetYRef = useRef(0);
 
   useEffect(() => {
-    // Initialize audio elements
-    menuOpenSound.current = new Audio('/menu-open.mp3');
-    menuCloseSound.current = new Audio('/menu-close.mp3');
-    menuSelectSound.current = new Audio('/menu-select.mp3');
+    // Initialize audio elements with error handling
+    try {
+      menuOpenSound.current = new Audio('/menu-open.mp3');
+      menuCloseSound.current = new Audio('/menu-close.mp3');
+      menuSelectSound.current = new Audio('/menu-select.mp3');
+      
+      // Preload audio files
+      menuOpenSound.current.preload = 'auto';
+      menuCloseSound.current.preload = 'auto';
+      menuSelectSound.current.preload = 'auto';
+    } catch (error) {
+      console.warn('Audio files could not be loaded:', error);
+    }
   }, []);
 
   useEffect(() => {
@@ -257,7 +265,7 @@ export default function VerticalMenu() {
     };
 
     if (joystickRef.current) {
-      joystickRef.current.addEventListener("mousedown", (e) => {
+      const handleMouseDown = (e: MouseEvent) => {
         isDraggingRef.current = true;
         const rect = joystickRef.current?.getBoundingClientRect();
         if (!rect) return;
@@ -291,9 +299,15 @@ export default function VerticalMenu() {
         document.addEventListener("mousemove", drag);
         document.addEventListener("mouseup", endDrag);
         e.preventDefault();
-      });
+      };
 
+      joystickRef.current.addEventListener("mousedown", handleMouseDown);
       animate();
+      
+      // Cleanup function
+      return () => {
+        joystickRef.current?.removeEventListener("mousedown", handleMouseDown);
+      };
     }
   };
 
@@ -303,6 +317,7 @@ export default function VerticalMenu() {
       <button
         className="cursor-pointer"
         onClick={toggleMenu}
+        aria-label="Toggle menu"
       >
         <RiMenu3Fill size={32} className="hover:text-secondary text-white"/>
       </button>
@@ -312,32 +327,49 @@ export default function VerticalMenu() {
         ref={menuOverlayRef}
         className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center overflow-hidden z-[100] opacity-0 pointer-events-none font-montserrat"
       >
-        {/* Background with menu.jpg */}
-        <div 
-          className="absolute w-full h-full bg-[url('/01.webp')] bg-no-repeat bg-center bg-cover"
-        />
+        {/* Optimized Background with Next.js Image */}
+        <div className="absolute inset-0 w-full h-full">
+          <Image
+            src="/01.webp"
+            alt="Menu background"
+            fill
+            className="object-cover"
+            priority={isOpen} // Only prioritize when menu is open
+            quality={85}
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R4hBA=="
+            onLoad={() => setImageLoaded(true)}
+            sizes="100vw"
+          />
+          {/* Optional overlay for better text readability */}
+          <div className="absolute inset-0 bg-black/20" />
+        </div>
 
         {/* Menu Overlay Nav */}
         <div
           ref={menuOverlayNavRef}
-          className="absolute top-0 w-screen px-6 flex justify-between items-center p-10"
+          className="absolute top-0 w-screen px-6 flex justify-between items-center p-10 z-10"
         >
           <div className="flex gap-4">
-            <a href="#"><AiFillFacebook size={24} className="text-white" /></a>
-            <a href="#"><RiTwitterXFill size={24} className="text-white" /></a>
-            <a href="#"><LuInstagram size={24} className="text-white" /></a>
-            <a href="#"><IoLogoYoutube size={24} className="text-white" /></a>
-            <a href="#"><FaTiktok size={24} className="text-white" /></a>
+            <a href="#" aria-label="Facebook"><AiFillFacebook size={24} className="text-white hover:text-primary transition-colors" /></a>
+            <a href="#" aria-label="Twitter"><RiTwitterXFill size={24} className="text-white hover:text-primary transition-colors" /></a>
+            <a href="#" aria-label="Instagram"><LuInstagram size={24} className="text-white hover:text-primary transition-colors" /></a>
+            <a href="#" aria-label="YouTube"><IoLogoYoutube size={24} className="text-white hover:text-primary transition-colors" /></a>
+            <a href="#" aria-label="TikTok"><FaTiktok size={24} className="text-white hover:text-primary transition-colors" /></a>
           </div>
 
-          <button className="relative w-6 h-6 cursor-pointer" onClick={toggleMenu}>
+          <button 
+            className="relative w-6 h-6 cursor-pointer z-10" 
+            onClick={toggleMenu}
+            aria-label="Close menu"
+          >
             <div className="absolute top-1/2 w-6 h-0.5 bg-white transform rotate-45"></div>
             <div className="absolute top-1/2 w-6 h-0.5 bg-white transform -rotate-45"></div>
           </button>
         </div>
 
         {/* Vertical Menu Container */}
-        <div className="flex items-center justify-center gap-12">
+        <div className="flex items-center justify-center gap-12 z-10">
           {/* Menu Items */}
           <div
             ref={menuRef}
@@ -345,7 +377,7 @@ export default function VerticalMenu() {
           >
             {menuItems.map((item, index) => (
               <Link
-                key={index}
+                key={`${item.href}-${index}`}
                 ref={(el) => {
                   if (el) {
                     menuItemsRef.current[index] = el;
@@ -380,14 +412,12 @@ export default function VerticalMenu() {
               </Link>
             ))}
           </div>
-
-
         </div>
 
         {/* Menu Overlay Footer */}
         <div
           ref={menuOverlayFooterRef}
-          className="absolute bottom-0 w-screen px-6 flex justify-between items-center pb-2"
+          className="absolute bottom-0 w-screen px-6 flex justify-between items-center pb-2 z-10"
         >
           <p className="text-white uppercase font-montserrat text-xs">
             Copyright &copy; 2025 All Rights Reserved

@@ -1,8 +1,27 @@
+'use client'
 
-import CombatLanding from "@/components/home-page/hero"
-import ScrollAnimationGallery from "@/components/home-page/section3"
-import CombinedScrollAnimation from "@/components/home-page/section4"
-import ScrollAnimation from "@/components/home-page/section1"
+
+//import CombatLanding from "@/components/home-page/hero"
+//import ScrollAnimationGallery from "@/components/home-page/section3"
+//import CombinedScrollAnimation from "@/components/home-page/section4"
+//import ScrollAnimation from "@/components/home-page/section1"
+import dynamic from 'next/dynamic';
+const CombatLanding = dynamic(() => import("@/components/home-page/hero"), {
+  ssr: false,
+});
+
+const ScrollAnimation = dynamic(() => import("@/components/home-page/section1"), {
+  ssr: false,
+});
+
+const CombinedScrollAnimation = dynamic(() => import("@/components/home-page/section4"), {
+  ssr: false,
+});
+
+const ScrollAnimationGallery = dynamic(() => import("@/components/home-page/section3"), {
+  ssr: false,
+});
+
 
 
 export default function Home () {

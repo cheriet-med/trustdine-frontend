@@ -9,6 +9,7 @@ import Footer from '@/components/footer/footer';
 import End from '@/components/footer/end';
 import ScrollToTopButton from '@/components/home-page/TopButton';
 
+
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const lenis = new Lenis({

@@ -621,14 +621,16 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
         }
       }
 
-      // Submit nearby attractions and awards (same as before)
- await Promise.all(
-      nearbyAttractions.map(async (attraction) => {
-        if (attraction.name.trim() && attraction.distance.trim()) {
-          if (attraction.id) {
-            // Update existing
-            await fetch(`${process.env.NEXT_PUBLIC_URL}nearbyattractionsid/${attraction.id}/`, {
-              method: 'PUT',
+await Promise.all(
+  nearbyAttractions.map(async (attraction) => {
+    if (attraction.name.trim() && attraction.distance.trim()) {
+      try {
+        if (attraction.id) {
+          // Update existing
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_URL}nearbyattractionsid/${attraction.id}`, 
+            {
+              method: 'PATCH', // Try PATCH if PUT doesn't work
               headers: {
                 "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
                 "Content-Type": "application/json",
@@ -638,10 +640,19 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
                 name: attraction.name,
                 distance: attraction.distance,
               }),
-            });
-          } else {
-            // Add new
-            await fetch(`${process.env.NEXT_PUBLIC_URL}nearbyattractions/`, {
+            }
+          );
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Failed to update attraction:', errorData);
+            throw new Error('Failed to update attraction');
+          }
+        } else {
+          // Add new
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_URL}nearbyattractions/`, 
+            {
               method: 'POST',
               headers: {
                 "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
@@ -652,18 +663,31 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
                 name: attraction.name,
                 distance: attraction.distance,
               }),
-            });
+            }
+          );
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Failed to create attraction:', errorData);
+            throw new Error('Failed to create attraction');
           }
         }
-      })
-    );
+      } catch (error) {
+        console.error('Error in attraction operation:', error);
+        throw error;
+      }
+    }
+  })
+);
+
+
 
   await Promise.all(
       awards.map(async (award) => {
         if (award.name.trim()) {
           if (award.id) {
             // Update existing
-            await fetch(`${process.env.NEXT_PUBLIC_URL}awardsid/${award.id}/`, {
+            await fetch(`${process.env.NEXT_PUBLIC_URL}awardsid/${award.id}`, {
               method: 'PUT',
               headers: {
                 "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
