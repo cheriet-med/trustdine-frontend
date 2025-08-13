@@ -159,12 +159,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 export default function ListinPartnerCard() {
   const { data: session, status } = useSession({ required: true });
   const userId = session?.user?.id;
-  console.log('user id is :', userId)
-
   const { listings, isLoading, error, mutate } = useFetchListing(); 
-  console.log(listings)
   const userListing = listings?.filter(post => post.user == userId);
-  console.log(userListing)
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
 
@@ -195,9 +191,6 @@ export default function ListinPartnerCard() {
     return <div className="flex justify-center items-center h-64 text-red-500">Error loading listins: {error.message}</div>;
   }
 
-  if (!userListing || userListing.length === 0) {
-    return <div className="flex justify-center items-center h-64 font-playfair">No listins found</div>;
-  }
 
   return (
     <div className="flex flex-col gap-4 mx-2 custom:mx-6 mt-6">
@@ -254,8 +247,7 @@ export default function ListinPartnerCard() {
       </div>
        }
       {/* Pagination */}
-        {currentItems.length == 0 ? "" :
-      userListing.length > itemsPerPage && (
+        {!isLoading && currentItems.length > 0 && totalPages > 1 && (
         <div className="flex justify-end items-center gap-1 flex-wrap">
           <button 
             disabled={currentPage === 1} 
