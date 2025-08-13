@@ -189,7 +189,7 @@ export default function WishlistView() {
               location={res.location}
               price={res.price || ''}
               address={res.name}
-              imageUrl={`${process.env.NEXT_PUBLIC_IMAGE}/${res.image}`}
+              imageUrl={res.image}
               averageRating={res.rating}
               lengtReviews={85}
             />
