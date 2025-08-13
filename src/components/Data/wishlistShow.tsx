@@ -114,7 +114,7 @@ console.log(wishlist)
            (
             <LoginButton />
           )}
-     <Link href="/en/id">
+     <Link href={`/en/booking/${id}`}>
      <img
           alt="Property"
           src={imageUrl}
@@ -123,7 +123,7 @@ console.log(wishlist)
      </Link>
         
       </div>
- <Link href="/en/id">
+ <Link href={`/en/booking/${id}`}>
       <div className="mt-2 flex flex-col gap-1">  
         <div>
           <dd className="font-medium font-playfair">{address}</dd>
@@ -185,13 +185,13 @@ export default function WishlistView() {
         {currentItems.map((res, index) => (
           <div key={index}>
             <PropertyCard
-              id={res.id || `restaurant-${index}`} // Use restaurant ID or fallback
+              id={res.id || `${index}`} // Use restaurant ID or fallback
               location={res.location}
-              price={res.price}
+              price={res.price || ''}
               address={res.name}
-              imageUrl={res.image}
+              imageUrl={`${process.env.NEXT_PUBLIC_IMAGE}/${res.image}`}
               averageRating={res.rating}
-              lengtReviews={res.lengtReviews}
+              lengtReviews={85}
             />
           </div>
         ))}
