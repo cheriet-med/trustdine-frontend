@@ -138,7 +138,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
            (
             <LoginButton />
           )}
-      <Link href="/en/id">
+      <Link href={`/en/booking/${id}`}>
         <img
           alt="Property"
           src={imageUrl}
@@ -146,7 +146,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         />
         </Link>
       </div>
- <Link href="/en/id">
+ <Link href={`/en/booking/${id}`}>
       <div className="mt-2 flex flex-col gap-1">
         <div>
           <dd className="font-medium font-playfair">{name}</dd>

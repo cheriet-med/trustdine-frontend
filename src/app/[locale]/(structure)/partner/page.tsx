@@ -2,6 +2,8 @@
 
 import { FaCheck } from "react-icons/fa6";
 import Link from "next/link";
+import Image from "next/image";
+
 interface Plan {
   name: string;
   id: string;
@@ -12,7 +14,6 @@ interface Plan {
   featured: boolean;
   mostPopular?: boolean;
 }
-
 
 const plans: Plan[] = [
   {
@@ -64,8 +65,16 @@ function classNames(...classes: (string | boolean | undefined)[]): string {
 
 export default function Pricing() {
   return (
-   
-      <div className="relative isolate bg-[url('/bg/4.jpg')] bg-no-repeat bg-center bg-cover overflow-auto  px-6 py-24 sm:py-32 lg:px-8 font-montserrat">
+    <div className="relative isolate overflow-auto px-6 py-24 sm:py-32 lg:px-8 font-montserrat">
+      {/* Background Image using Next.js Image */}
+      <Image
+        src="/bg/4.jpg"
+        alt="Pricing background"
+        fill
+        className="object-cover object-center -z-10"
+        priority
+        quality={85}
+      />
       
       <div className="mx-auto max-w-4xl text-center">
         <h2 className="text-base font-semibold leading-7 text-accent pt-16">Pricing</h2>
@@ -140,7 +149,7 @@ export default function Pricing() {
               className={classNames(
                 tier.featured
                   ? 'bg-accent text-white shadow-sm hover:bg-secondary focus-visible:outline-indigo-500'
-                  : 'text-accent ring-1 ring-inset ring-accent shadow-sm cursor-pointer hover:bg-secondary hover:text-white  focus-visible:outline-accent',
+                  : 'text-accent ring-1 ring-inset ring-accent shadow-sm cursor-pointer hover:bg-secondary hover:text-white focus-visible:outline-accent',
                 'mt-8 block rounded-md px-3.5 py-3 text-center text-sm font-semibold focus-visible:outline-2 focus-visible:outline-offset-2 sm:mt-10 ',
               )}
             >

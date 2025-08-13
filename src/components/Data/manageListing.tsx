@@ -172,7 +172,7 @@ const ManageListing = ({ id, category, mutate }: { id: string; category: string 
     },
     { 
       label: 'View', 
-      href: `/en/${id}`, 
+      href: `/en/booking/${id}`, 
       type: 'link',
       icon: <IoEyeOutline className="h-4 w-4" />
     },

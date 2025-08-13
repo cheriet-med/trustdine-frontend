@@ -2,7 +2,7 @@
 
 
 //import CombatLanding from "@/components/home-page/hero"
-import ScrollAnimationGallery from "@/components/home-page/section3"
+//import ScrollAnimationGallery from "@/components/home-page/section3"
 //import CombinedScrollAnimation from "@/components/home-page/section4"
 import ScrollAnimation from "@/components/home-page/section1"
 import dynamic from 'next/dynamic';
@@ -18,9 +18,9 @@ const CombinedScrollAnimation = dynamic(() => import("@/components/home-page/sec
   ssr: false,
 });
 
-//const ScrollAnimationGallery = dynamic(() => import("@/components/home-page/section3"), {
- // ssr: false,
-//});
+const ScrollAnimationGallery = dynamic(() => import("@/components/home-page/section3"), {
+ ssr: false,
+});
 
 
 

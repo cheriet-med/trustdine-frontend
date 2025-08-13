@@ -622,11 +622,39 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
         }
       }
 
-      // Submit nearby attractions and awards (same as before)
-      await Promise.all([
-        ...nearbyAttractions.map(async (attraction) => {
-          if (attraction.name.trim() && attraction.distance.trim()) {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URL}nearbyattractions/`, {
+     
+await Promise.all(
+  nearbyAttractions.map(async (attraction) => {
+    if (attraction.name.trim() && attraction.distance.trim()) {
+      try {
+        if (attraction.id) {
+          // Update existing
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_URL}nearbyattractionsid/${attraction.id}`, 
+            {
+              method: 'PUT', // Try PATCH if PUT doesn't work
+              headers: {
+                "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                product: productId,
+                name: attraction.name,
+                distance: attraction.distance,
+              }),
+            }
+          );
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Failed to update attraction:', errorData);
+            throw new Error('Failed to update attraction');
+          }
+        } else {
+          // Add new
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_URL}nearbyattractions/`, 
+            {
               method: 'POST',
               headers: {
                 "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
@@ -637,13 +665,45 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
                 name: attraction.name,
                 distance: attraction.distance,
               }),
-            });
-            if (!response.ok) throw new Error('Failed to add nearby attractions');
+            }
+          );
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Failed to create attraction:', errorData);
+            throw new Error('Failed to create attraction');
           }
-        }),
-        ...awards.map(async (award) => {
-          if (award.name.trim()) {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URL}awards/`, {
+        }
+      } catch (error) {
+        console.error('Error in attraction operation:', error);
+        throw error;
+      }
+    }
+  })
+);
+
+
+
+  await Promise.all(
+      awards.map(async (award) => {
+        if (award.name.trim()) {
+          if (award.id) {
+            // Update existing
+            await fetch(`${process.env.NEXT_PUBLIC_URL}awardsid/${award.id}`, {
+              method: 'PUT',
+              headers: {
+                "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                product: productId,
+                name: award.name,
+                year: award.year,
+              }),
+            });
+          } else {
+            // Add new
+            await fetch(`${process.env.NEXT_PUBLIC_URL}awards/`, {
               method: 'POST',
               headers: {
                 "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
@@ -655,12 +715,13 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
                 year: award.year,
               }),
             });
-            if (!response.ok) throw new Error('Failed to add awards');
           }
-        })
-      ]);
+        }
+      })
+    );
+
       router.push('/en/account/listings'); 
-      setSuccessMessage('Listing created successfully!');
+      setSuccessMessage('Listing update successfully!');
       
       // Reset form
       setProduct({

@@ -7,6 +7,7 @@ import { signOut } from "next-auth/react";
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { useLocale } from "next-intl";
+
 import { 
   Search,
   X,
@@ -30,9 +31,8 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 import { FaRegAddressBook } from "react-icons/fa";
 import { MdOutlineInsights } from "react-icons/md";
 import { PiMoneyWavyThin } from "react-icons/pi";
-import ReservationChart from '../Data/reservationsChart';
 import PartnerProfile from '../Data/partnerProfile';
-
+import { useSession } from 'next-auth/react';
 
 interface MenuItem {
   id: string;
@@ -62,6 +62,7 @@ export default function EarninPartnerProfileDashboard() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
+    const { data: session, status } = useSession({ required: true });
   const locale = useLocale(); // Get the current locale
   useEffect(() => {
     setMounted(true);
@@ -238,7 +239,7 @@ export default function EarninPartnerProfileDashboard() {
             <div className="flex items-center space-x-3 px-2">
             <div className="w-10 h-10 relative rounded-full overflow-hidden">
   <Image
-    src="/h.jpg" 
+    src="/profile.webp" 
     alt="Facebook"
     fill // This makes the image fill the container
     style={{ 
@@ -248,7 +249,7 @@ export default function EarninPartnerProfileDashboard() {
 </div>
 
   <div className="flex-1">
-                <p className=" font-medium text-gray-700 font-playfair text-white">Whispering Pines Resort</p>
+                <p className=" font-medium text-gray-700 font-playfair text-white">{session?.user?.full_name}</p>
                 
               </div>
               <div className='hover:bg-accent p-1 rounded-lg' onClick={() => signOut({ callbackUrl: `/en/login` })}>
@@ -262,7 +263,7 @@ export default function EarninPartnerProfileDashboard() {
             <div className="flex flex-col items-center space-y-4">
                <div className="w-10 h-10 relative rounded-full overflow-hidden">
   <Image
-    src="/h.jpg" 
+    src="/profile.webp" 
     alt="Facebook"
     fill // This makes the image fill the container
     style={{ 

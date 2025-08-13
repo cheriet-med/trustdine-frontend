@@ -630,7 +630,7 @@ await Promise.all(
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_URL}nearbyattractionsid/${attraction.id}`, 
             {
-              method: 'PATCH', // Try PATCH if PUT doesn't work
+              method: 'PUT', // Try PATCH if PUT doesn't work
               headers: {
                 "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
                 "Content-Type": "application/json",
@@ -721,7 +721,7 @@ await Promise.all(
 
 
       router.push('/en/account/listings'); 
-      setSuccessMessage('Listing created successfully!');
+      setSuccessMessage('Listing update successfully!');
       
       // Reset form
       setProduct({

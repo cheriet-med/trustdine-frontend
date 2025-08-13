@@ -92,7 +92,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
        
 
 
-     <Link href="/en/id">
+     <Link href={`/en/booking/${id}`}>
      <img
           alt="Property"
           src={imageUrl}
@@ -101,7 +101,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
      </Link>
         
       </div>
- <Link href="/en/id">
+ <Link href={`/en/booking/${id}`}>
       <div className="mt-2 flex flex-col gap-1">
        
             
@@ -197,7 +197,7 @@ export default function TripsCards() {
         {currentItems.map((res, index) => (
           <div key={index}>
             <PropertyCard
-              id={res.id+"hotel" || `restaurant-${index}`} // Use restaurant ID or fallback
+              id={res.id || `restaurant-${index}`} // Use restaurant ID or fallback
               location={res.city+ ", "+ res.country}
               price={"From $"+res.price_per_night + " per night"}
               address={res.name}

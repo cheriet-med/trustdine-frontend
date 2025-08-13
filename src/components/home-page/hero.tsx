@@ -7,7 +7,7 @@ import { MdVerified } from "react-icons/md";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
 import { MdVerifiedUser } from "react-icons/md";
 import { FaShieldHalved } from "react-icons/fa6";
-
+import Image from 'next/image';
 // Lazy load heavy components
 const HotelSearchHomepage = lazy(() => import('../header/searchHotelforHomepage'));
 const RestaurantSearch = lazy(() => import("../header/SearchRestaurant"));
@@ -237,11 +237,17 @@ export default function CombatLanding() {
           </video>
           
           {/* Video Loading Placeholder */}
-          {!videoLoaded && (
-            <div className="absolute inset-0 bg-secondary rounded-2xl flex items-center justify-center">
-              <div className="text-white opacity-50">Loading video...</div>
-            </div>
-          )}
+        {!videoLoaded && (
+  <div className="absolute inset-0 bg-secondary rounded-2xl">
+    <Image
+      src="/loading.webp"
+      alt="Loading placeholder"
+      fill
+      className="object-cover rounded-2xl"
+    />
+    
+  </div>
+)}
         </div>
 
         {/* Main Content */}

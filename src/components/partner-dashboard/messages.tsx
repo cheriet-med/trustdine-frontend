@@ -237,7 +237,7 @@ export default function MessagesPartnerDashboard() {
             <div className="flex items-center space-x-3 px-2">
             <div className="w-10 h-10 relative rounded-full overflow-hidden">
   <Image
-    src="/h.jpg" 
+    src="/profile.webp" 
     alt="Facebook"
     fill // This makes the image fill the container
     style={{ 
@@ -254,14 +254,11 @@ export default function MessagesPartnerDashboard() {
                 <FiLogOut size={24} className='text-white' />
             </div>
             </div>
- 
-
-            
           ) : (
             <div className="flex flex-col items-center space-y-4">
                <div className="w-10 h-10 relative rounded-full overflow-hidden">
   <Image
-    src="/h.jpg" 
+    src="/profile.webp" 
     alt="Facebook"
     fill // This makes the image fill the container
     style={{ 

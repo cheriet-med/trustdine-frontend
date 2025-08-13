@@ -143,14 +143,14 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
            (
             <LoginButton />
           )}
-      <Link href="/en/id">
+      <Link href={`/en/booking/${id}`}>
         <img
           alt="Property"
           src={imageUrl}
           className="h-80 sm:h-40 md:h-55 custom:h-80 w-full rounded-md object-cover"
         /></Link>
       </div>
- <Link href="/en/id">
+ <Link href={`/en/booking/${id}`}>
       <div className="mt-2 flex flex-col gap-1">   
      <div className="flex">
   <p className="text-sm bg-gray-100 rounded-xl font-medium py-1 px-2 w-fit">{location}</p>
@@ -220,7 +220,7 @@ const handlePrevious = () => {
           currentItems.map((res, index) => (
             <div key={index}>
              <PropertyCard
-                id={res.id+"hotel" || `restaurant-${index}`} // Use restaurant ID or fallback
+                id={res.id|| `restaurant-${index}`} // Use restaurant ID or fallback
                 location={res.location}
                 price={"From $"+res.price_per_night + " per night"}
                 address={res.name}
