@@ -4,7 +4,7 @@ import { useSession} from "next-auth/react";
 import DashboardAdmin from "@/components/admin-dashboard/dashboard";
 import DashboardUser from "@/components/user-dashboard/dashboarduser";
 import DashboardPartner from "@/components/partner-dashboard/partner-dashboard";
-
+import { signOut } from "next-auth/react";
 
 export default function ProtectedPage() {
   const { data: session, status } = useSession({ required: true });
@@ -22,5 +22,12 @@ console.log(session?.user)
     </div>  
     </div>);
   }
-  return session?.user?.is_superuser? <DashboardAdmin/> :  ( session?.user?.is_staff? <DashboardPartner/>:(session?.user?.full_name == "" ? "Comming soon ..." : <DashboardUser/> ))
+  return session?.user?.is_superuser? <DashboardAdmin/> :  ( session?.user?.is_staff? <DashboardPartner/>:(session?.user?.full_name == "" ? 
+    
+    
+    <div>
+<p>Commig Soon ...</p>
+<p onClick={() => signOut({ callbackUrl: `/en/login` })}>Log out</p>
+    </div>
+    : <DashboardUser/> ))
 }

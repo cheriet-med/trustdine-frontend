@@ -29,16 +29,21 @@ const fetcher = async <T,>(url: string): Promise<T> => {
   }
 };
 
-interface languages {
+interface Nearby {
   id: number;
-  language: string;                    
+  product: string;                   
+  name: string;               
+  distance: string;            
+ 
 }
 
-const useFetchLanguages = (id: any): { Languages: languages[]; error: any; isLoading: boolean } => {
-  const { data, error, isLoading } = useSWR<languages[]>(
-    `${process.env.NEXT_PUBLIC_URL}languages/?user=${id}`,
-    fetcher
+const useFetchNearby = (id:any) => {
+  const { data, error, isLoading } = useSWR<Nearby[]>(
+    `${process.env.NEXT_PUBLIC_URL}nearbyattractions/?product=${id}`,
+    fetcher // No need to explicitly pass generic here
   );
-  return { Languages: data || [], error, isLoading };
+
+  return { Nearbies: data || [], error, isLoading };
 };
-export default useFetchLanguages;
+
+export default useFetchNearby;

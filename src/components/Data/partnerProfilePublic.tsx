@@ -177,7 +177,7 @@ const PartnerProfilePublic: React.FC<PartnerProfileProps> = ({ idu }) => {
   const userId = idu.id;
   //const { Users, isLoading, mutate } = useFetchUser(userId);
   const { Amenitie, isLoading, error: amenitiesError } = useFetchAmenities(idu.id);
-  const { languages } = useFetchLanguages(idu.id);
+  const { Languages } = useFetchLanguages(idu.id);
 
 const hotelMarkers = [{
   position: [idu.latitude || 51.505, idu.longtitude || -0.09] as [number, number],
@@ -497,7 +497,7 @@ const hotelMarkers = [{
 
           <h1 className="mt-4 mb-4 font-medium font-playfair text-lg">Languages</h1>
           <div className="flex flex-wrap gap-2">
-            {languages.map((amenity) => (
+            {Languages.map((amenity) => (
               <div key={amenity.id} className="flex gap-2 items-center py-2 px-3 border border-1 border-gray-500 rounded-3xl text-gray-600 text-sm w-fit">
                 <IoLanguage className="text-lg text-gray-400" />
                 <p>{amenity.language}</p>

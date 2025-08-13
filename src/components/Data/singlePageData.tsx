@@ -15,6 +15,8 @@ import useFetchLanguages from '../requests/fetchLanguage';
 import DOMPurify from 'dompurify';
 import { LuUsersRound } from "react-icons/lu";
 import { FaClock } from "react-icons/fa";
+import useFetchAwards from "../requests/fetchAwards";
+import useFetchNearby from "../requests/fetchNearby";
 
 
 import { 
@@ -273,8 +275,12 @@ const Index = ({info}:any) => {
   // const { Users, isLoading, mutate } = useFetchUser(info.user);
     const { Amenitie, error: amenitiesError } = useFetchAmenities(info.user);
     const { Users, isLoading, mutate } = useFetchUser(info.user);
-    const { languages } = useFetchLanguages(info.user);
-  console.log(Users)
+    const { Languages } = useFetchLanguages(info.user);
+
+     const { Nearbies } = useFetchNearby(userid);
+      const { Awards } = useFetchAwards(userid);
+console.log(Nearbies)
+
   const [checkInDate, setCheckInDate] = useState("Thu, Jul 17");
   const [checkOutDate, setCheckOutDate] = useState("Tue, Aug 12");
   const [guests, setGuests] = useState({ rooms: 1, adults: 2, children: 0 });
@@ -550,13 +556,14 @@ const [partner, setPartner] = useState(false);
 
                 <div className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
+                    {info.types == "Restaurant" ? "" :
                   <div>
                     <h4 className="font-semibold mb-2 font-playfair">Room types</h4>
                     <div className="flex gap-4 text-sm">
                       <p className="py-2 px-4 bg-gray-100 rounded-3xl capitalize">{info.types}</p>
                     </div>
                   </div>
-
+}
 
 
                                    <Link href={`/en/profile/${Users?.id}`}>
@@ -591,7 +598,7 @@ const [partner, setPartner] = useState(false);
                     <div> 
                       <h4 className="font-semibold mb-2 font-playfair">Languages Spoken</h4>
                      <div className="flex gap-2">
-                                    {languages.map((feature, index) => (
+                                    {Languages.map((feature, index) => (
 
                       <p className="text-sm text-gray-500 bg-gray-50 py-1 px-3 rounded-3xl capitalize" key={index}>{feature.language}</p>
                        ))}  
@@ -599,6 +606,32 @@ const [partner, setPartner] = useState(false);
 
                     </div>
                   </div>
+
+ <div className="grid md:grid-cols-2 gap-4">
+                   {Nearbies.length == 0 ? "" :
+                    <div>
+                      <h4 className="font-semibold mb-2 font-playfair">Nearby</h4>
+                      <div className="flex">
+                        {Nearbies.map((feature, index) => (
+                           <p className="text-sm text-white bg-secondary py-1 px-4 rounded-3xl capitalize font-bold " key={index}>{feature.name}  - {feature.distance}</p>
+                        ))}
+                      </div>
+                    </div>
+                    } 
+                       {Awards.length == 0 ? "" :
+                    <div> 
+                      <h4 className="font-semibold mb-2 font-playfair">Awards</h4>
+                     <div className="flex gap-2">
+                                    {Awards.map((feature, index) => (
+
+                      <p className="text-sm text-white bg-secondary py-1 px-4 rounded-3xl capitalize font-bold" key={index}>{feature.name}  - {feature.year}</p>
+                       ))}  
+                      </div> 
+
+                    </div>
+                     } 
+                  </div>
+
                 </div>
               </CardContent>
             </Card>
