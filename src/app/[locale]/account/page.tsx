@@ -5,10 +5,16 @@ import DashboardAdmin from "@/components/admin-dashboard/dashboard";
 import DashboardUser from "@/components/user-dashboard/dashboarduser";
 import DashboardPartner from "@/components/partner-dashboard/partner-dashboard";
 import { signOut } from "next-auth/react";
+import useFetchUser from "@/components/requests/fetchUser";
+
 
 export default function ProtectedPage() {
   const { data: session, status } = useSession({ required: true });
 console.log(session?.user)
+//const {Users} =useFetchUser(+session?.user?.id)
+
+//console.log("users data is", Users)
+
   if (status === "loading") {
     return ( <div className="h-screen">
       <div className="grid lg:grid-cols-4 gap-10 mt-6">
@@ -22,12 +28,17 @@ console.log(session?.user)
     </div>  
     </div>);
   }
-  return session?.user?.is_superuser? <DashboardAdmin/> :  ( session?.user?.is_staff? <DashboardPartner/>:(session?.user?.phoneNumber == "" ? 
+
+
+
+  return (
     
-    
+    session?.user?.is_superuser? <DashboardAdmin/> :  ( session?.user?.is_staff? <DashboardPartner/>:(session?.user?.state === "" ? 
     <div>
 <p>Commig Soon ...</p>
 <p onClick={() => signOut({ callbackUrl: `/en/login` })}>Log out</p>
     </div>
     : <DashboardUser/> ))
+  
+  )
 }
