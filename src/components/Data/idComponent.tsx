@@ -5,7 +5,7 @@ import { Gallery, Item } from 'react-photoswipe-gallery';
 import 'photoswipe/dist/photoswipe.css';
 import { ChevronLeft, ChevronRight, Camera, X, User } from 'lucide-react';
 import Link from 'next/link';
-import { Calendar, MapPin, Phone, Mail, Star, Users, Bed, Wifi, Car, Coffee, Dumbbell, Utensils, Shield, Thermometer, Bath, Plus, Minus, ThumbsUp, Flag } from "lucide-react";
+import { Calendar, MapPin, Phone, Mail, Star } from "lucide-react";
 import { RiGlobalLine } from "react-icons/ri";
 import { GoPencil } from "react-icons/go";
 import { LuShare } from "react-icons/lu";

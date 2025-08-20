@@ -155,7 +155,7 @@ export default function EditRestaurantForm(listingID:any) {
   const [errorlatitude, setErrorlatitude] = useState('');
   const [errorlongtitude, setErrorlongtitude] = useState('');
 
-console.log(nearbyAttractions)
+
 useEffect(() => {
   const fetchAllData = async () => {
     try {

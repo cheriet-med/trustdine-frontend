@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from "react";
-import { Calendar, ChevronLeft, ChevronRight, MapPin, Phone, Mail, Star,  Bed, Wifi, Car, Coffee, Dumbbell, Utensils, Shield, Thermometer, Bath, Plus, Minus, ThumbsUp, Flag, User } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight, MapPin, Phone, Mail, Star,  Bed, Wifi, Car, Coffee, ChefHat, Dumbbell, Utensils, Shield, Thermometer, Bath, Plus, Minus, ThumbsUp, Flag, User } from "lucide-react";
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
@@ -279,7 +279,7 @@ const Index = ({info}:any) => {
 
      const { Nearbies } = useFetchNearby(userid);
       const { Awards } = useFetchAwards(userid);
-console.log(Nearbies)
+console.log(info)
 
   const [checkInDate, setCheckInDate] = useState("Thu, Jul 17");
   const [checkOutDate, setCheckOutDate] = useState("Tue, Aug 12");
@@ -517,37 +517,37 @@ const [partner, setPartner] = useState(false);
 
                      <div className="flex gap-2">
                       <FaClock className="text-lg text-gray-400" />
-                        <p className="text-gray-500"><span className="font-medium font-playfair text-gray-800">Saturday :</span> {info.opening_hours_saturday == "null" ? "Close" : info.opening_hours_saturday}</p>
+                        <p className="text-gray-500"><span className="font-medium font-playfair text-gray-800">Saturday :</span> {info.opening_hours_saturday == "" ? "Close" : info.opening_hours_saturday}</p>
                      </div>
                       <div className="flex gap-2">
                       <FaClock className="text-lg text-gray-400" />
-                      <p className="text-gray-500"><span className="font-medium font-playfair text-gray-800">Sunday :</span> {info.opening_hours_sunday == "null" ? "Close" : info.opening_hours_saturday}</p>
+                      <p className="text-gray-500"><span className="font-medium font-playfair text-gray-800">Sunday :</span> {info.opening_hours_sunday == "" ? "Close" : info.opening_hours_sunday}</p>
                      </div>
                        </div>
  <div className="space-y-2">
    <div className="flex gap-2">
                       <FaClock className="text-lg text-gray-400" />
-                       <p className="text-gray-500"><span className="font-medium font-playfair text-gray-800">Thursday :</span> {info.opening_hours_thursday == "null" ? "Close" : info.opening_hours_saturday}</p>
+                       <p className="text-gray-500"><span className="font-medium font-playfair text-gray-800">Thursday :</span> {info.opening_hours_thursday == "" ? "Close" : info.opening_hours_thursday}</p>
                      </div>
  <div className="flex gap-2">
                       <FaClock className="text-lg text-gray-400" />
-                      <p className="text-gray-500"><span className="font-medium font-playfair text-gray-800">Tuesday :</span> {info.opening_hours_tuesday == "null" ? "Close" : info.opening_hours_saturday}</p>
+                      <p className="text-gray-500"><span className="font-medium font-playfair text-gray-800">Tuesday :</span> {info.opening_hours_tuesday == "" ? "Close" : info.opening_hours_tuesday}</p>
  </div> </div>
 
  <div className="space-y-2">
     <div className="flex gap-2">
                       <FaClock className="text-lg text-gray-400" />
-                       <p className="text-gray-500"><span className="font-medium font-playfair text-gray-800">Wednesday :</span> {info.opening_hours_wednesday == "null" ? "Close" : info.opening_hours_saturday}</p>
+                       <p className="text-gray-500"><span className="font-medium font-playfair text-gray-800">Wednesday :</span> {info.opening_hours_wednesday == "" ? "Close" : info.opening_hours_wednesday}</p>
                       </div>
 
                        <div className="flex gap-2">
                       <FaClock className="text-lg text-gray-400" />
-                      <p className="text-gray-500"><span className="font-medium font-playfair text-gray-800">Friday :</span> {info.opening_hours_friday == "null" ? "Close" : info.opening_hours_saturday}</p>
+                      <p className="text-gray-500"><span className="font-medium font-playfair text-gray-800">Friday :</span> {info.opening_hours_friday == "" ? "Close" : info.opening_hours_friday}</p>
  </div> </div>
 
    <div className="flex gap-2">
                       <FaClock className="text-lg text-gray-400" />
-                       <p className="text-gray-500"><span className="font-medium font-playfair text-gray-800">Monday :</span> {info.opening_hours_monday == "null" ? "Close" : info.opening_hours_saturday}</p>
+                       <p className="text-gray-500"><span className="font-medium font-playfair text-gray-800">Monday :</span> {info.opening_hours_monday == "" ? "Close" : info.opening_hours_monday}</p>
                     </div> 
                     </div>
 
@@ -556,18 +556,22 @@ const [partner, setPartner] = useState(false);
 
                 <div className="space-y-4">
                     <div className="grid md:grid-cols-2 gap-4">
-                    {info.types == "Restaurant" ? "" :
+                
                   <div>
-                    <h4 className="font-semibold mb-2 font-playfair">Room types</h4>
+                    {info.category == "Restaurant" ?  <h4 className="font-semibold mb-2 font-playfair">Restaurant type</h4> : <h4 className="font-semibold mb-2 font-playfair">Room type</h4> }
+                   
                     <div className="flex gap-4 text-sm">
                       <p className="py-2 px-4 bg-gray-100 rounded-3xl capitalize">{info.types}</p>
                     </div>
+                   {info.category == "Restaurant" ? 
+                   <div className="text-sm text-white bg-highlights w-fit py-1 px-4 rounded-3xl capitalize font-bold mt-4 flex gap-2 items-center" >
+                    <ChefHat className="w-5 h-5"/>
+                    <p>Chef - {info.chef}</p>
+                   </div>
+                    :""}
                   </div>
-}
-
-
-                                   <Link href={`/en/profile/${Users?.id}`}>
-                                  <div className="flex items-center gap-3 ">
+                  <Link href={`/en/profile/${Users?.id}`}>
+                  <div className="flex items-center gap-3 ">
                         <div className="w-24 h-24 relative rounded-full overflow-hidden">
                           <Image
                             src={Users?.profile_image == null ? '/profile.webp':`${process.env.NEXT_PUBLIC_IMAGE}/${Users?.profile_image}`}
@@ -585,7 +589,7 @@ const [partner, setPartner] = useState(false);
                         </div>
                       </div>
                       </Link>
-</div>
+                  </div>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
                       <h4 className="font-semibold mb-2 font-playfair">Hotel Class</h4>
@@ -607,11 +611,11 @@ const [partner, setPartner] = useState(false);
                     </div>
                   </div>
 
- <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid md:grid-cols-2 gap-4">
                    {Nearbies.length == 0 ? "" :
                     <div>
                       <h4 className="font-semibold mb-2 font-playfair">Nearby</h4>
-                      <div className="flex">
+                      <div className="flex gap-2 flex-wrap">
                         {Nearbies.map((feature, index) => (
                            <p className="text-sm text-white bg-secondary py-1 px-4 rounded-3xl capitalize font-bold " key={index}>{feature.name}  - {feature.distance}</p>
                         ))}
@@ -621,7 +625,7 @@ const [partner, setPartner] = useState(false);
                        {Awards.length == 0 ? "" :
                     <div> 
                       <h4 className="font-semibold mb-2 font-playfair">Awards</h4>
-                     <div className="flex gap-2">
+                     <div className="flex gap-2 flex-wrap">
                                     {Awards.map((feature, index) => (
 
                       <p className="text-sm text-white bg-secondary py-1 px-4 rounded-3xl capitalize font-bold" key={index}>{feature.name}  - {feature.year}</p>
@@ -681,7 +685,7 @@ const [partner, setPartner] = useState(false);
                 </div>
               </CardContent>
             </Card>
-</div>
+          </div>
             {/* Reviews Section */}
             <Card>
               <CardHeader>

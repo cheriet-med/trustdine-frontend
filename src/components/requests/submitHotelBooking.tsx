@@ -3,9 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, Plus, Minus } from 'lucide-react';
 import { LuUsersRound } from 'react-icons/lu';
+import useFetchBooking from '@/components/requests/fetchBooking';
 
 const BookingComponent = () => {
   // Date picker state
+  const { Booking, isLoading, } = useFetchBooking(18);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [checkInDate, setCheckInDate] = useState('Select date');
   const [checkOutDate, setCheckOutDate] = useState('Select date');
@@ -14,48 +16,41 @@ const BookingComponent = () => {
   const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
   const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
 
+  console.log(Booking)
+
   // Guest selector state
   const [guests, setGuests] = useState({ rooms: 1, adults: 2, children: 0 });
   const [showGuestSelector, setShowGuestSelector] = useState(false);
 
-  // Room availability state
-  const [totalRooms] = useState(23); // Total available rooms
-  const [bookingData, setBookingData] = useState([
-    {
-      "id": 4,
-      "user": 26,
-      "product": 18,
-      "status": null,
-      "created_at": null,
-      "updated_at": null,
-      "image": null,
-      "check_in_date": "2025-08-19T23:00:00.000Z",
-      "check_out_date": "2025-08-29T23:00:00.000Z",
-      "total_guests": null,
-      "adults": "2",
-      "children": "2",
-      "room_quantity": "1",
-      "base_price": null,
-      "tax_amount": null,
-      "service_fee": null,
-      "discount_amount": null,
-      "total_price": null,
-      "payment_method": null,
-      "cancellation_date": null,
-      "refund_amount": null,
-      "restaurat_check_in_date": null,
-      "restaurat_check_in_time": null
-    },
-    // Add more test bookings to simulate full capacity
-    {
-      "id": 5,
-      "user": 27,
-      "product": 18,
-      "check_in_date": "2025-08-20T00:00:00.000Z",
-      "check_out_date": "2025-08-25T00:00:00.000Z",
-      "room_quantity": "22"
+  // Function to get available rooms for selected dates
+  const getAvailableRooms = (): number => {
+    if (!selectedStartDate || !selectedEndDate || !Booking || !Array.isArray(Booking)) return 8;
+    
+    let maxRoomsBooked = 0;
+    
+    // Check each day in the selected range
+    const currentDate = new Date(selectedStartDate);
+    while (currentDate < selectedEndDate) {
+      const totalRooms = Booking.reduce((sum, booking) => {
+        if (!booking.check_in_date || !booking.check_out_date || !booking.room_quantity) return sum;
+        
+        const checkIn = new Date(booking.check_in_date);
+        const checkOut = new Date(booking.check_out_date);
+        
+        // Check if the current date falls within the booking period
+        if (currentDate >= checkIn && currentDate < checkOut) {
+          return sum + parseInt(booking.room_quantity);
+        }
+        
+        return sum;
+      }, 0);
+      
+      maxRoomsBooked = Math.max(maxRoomsBooked, totalRooms);
+      currentDate.setDate(currentDate.getDate() + 1);
     }
-  ]);
+    
+    return 8 - maxRoomsBooked;
+  };
 
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -64,63 +59,27 @@ const BookingComponent = () => {
 
   const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  // Function to check room availability for a specific date
-  const checkRoomAvailability = (date: Date): { available: number; isFullyBooked: boolean } => {
-    let bookedRooms = 0;
+  // Function to check if a date is unavailable due to booking conflicts
+  const isDateUnavailable = (date: Date): boolean => {
+    if (!Booking || !Array.isArray(Booking)) return false;
     
-    bookingData.forEach(booking => {
-      if (!booking.check_in_date || !booking.check_out_date || !booking.room_quantity) {
-        return;
+    // Get bookings that overlap with this date and sum their room quantities
+    const totalRooms = Booking.reduce((sum, booking) => {
+      if (!booking.check_in_date || !booking.check_out_date || !booking.room_quantity) return sum;
+      
+      const checkIn = new Date(booking.check_in_date);
+      const checkOut = new Date(booking.check_out_date);
+      
+      // Check if the date falls within the booking period
+      if (date >= checkIn && date < checkOut) {
+        return sum + parseInt(booking.room_quantity);
       }
+      
+      return sum;
+    }, 0);
 
-      let checkIn: Date;
-      let checkOut: Date;
-
-      // Handle different date formats
-      if (booking.check_in_date === 'today') {
-        checkIn = new Date();
-        checkIn.setHours(0, 0, 0, 0);
-      } else if (booking.check_in_date === 'tomorrow') {
-        checkIn = new Date();
-        checkIn.setDate(checkIn.getDate() + 1);
-        checkIn.setHours(0, 0, 0, 0);
-      } else {
-        checkIn = new Date(booking.check_in_date);
-        checkIn.setHours(0, 0, 0, 0);
-      }
-
-      if (booking.check_out_date === 'today') {
-        checkOut = new Date();
-        checkOut.setHours(0, 0, 0, 0);
-      } else if (booking.check_out_date === 'tomorrow') {
-        checkOut = new Date();
-        checkOut.setDate(checkOut.getDate() + 1);
-        checkOut.setHours(0, 0, 0, 0);
-      } else {
-        checkOut = new Date(booking.check_out_date);
-        checkOut.setHours(0, 0, 0, 0);
-      }
-
-      // Check if the date falls within the booking range (inclusive of check-in, exclusive of check-out)
-      const targetDate = new Date(date);
-      targetDate.setHours(0, 0, 0, 0);
-
-      if (targetDate >= checkIn && targetDate < checkOut) {
-        bookedRooms += parseInt(booking.room_quantity);
-      }
-    });
-
-    const availableRooms = Math.max(0, totalRooms - bookedRooms);
-    return {
-      available: availableRooms,
-      isFullyBooked: availableRooms === 0
-    };
-  };
-
-  // Function to check if enough rooms are available for the selected guest requirements
-  const hasEnoughRoomsAvailable = (date: Date): boolean => {
-    const availability = checkRoomAvailability(date);
-    return availability.available >= guests.rooms;
+    // If total room quantity is greater than 8, the date is unavailable
+    return totalRooms > 8;
   };
 
   const getDaysInMonth = (date: Date): (Date | null)[] => {
@@ -176,26 +135,7 @@ const BookingComponent = () => {
            (selectedEndDate ? date.getTime() === selectedEndDate.getTime() : false);
   };
 
-  // Function to check if a date range is valid (all dates in range have enough rooms)
-  const isDateRangeValid = (startDate: Date, endDate: Date): boolean => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    
-    // Check each date in the range (inclusive of start, exclusive of end for hotel bookings)
-    for (let date = new Date(start); date < end; date.setDate(date.getDate() + 1)) {
-      if (!hasEnoughRoomsAvailable(date)) {
-        return false;
-      }
-    }
-    return true;
-  };
-
   const handleDateClick = (date: Date): void => {
-    // Check if there are enough rooms available
-    if (!hasEnoughRoomsAvailable(date)) {
-      return; // Don't allow selection of dates without enough rooms
-    }
-
     if (!selectedStartDate || (selectedStartDate && selectedEndDate)) {
       // Start new selection
       setSelectedStartDate(date);
@@ -210,32 +150,17 @@ const BookingComponent = () => {
         return;
       }
       
-      let startDate: Date, endDate: Date;
-      
       if (date > selectedStartDate) {
-        startDate = selectedStartDate;
-        endDate = date;
+        setSelectedEndDate(date);
+        setCheckOutDate(formatDate(date));
       } else {
         // If selected date is before start date, swap them
-        startDate = date;
-        endDate = selectedStartDate;
-      }
-
-      // Check if the entire range is valid
-      if (isDateRangeValid(startDate, endDate)) {
-        setSelectedStartDate(startDate);
-        setSelectedEndDate(endDate);
-        setCheckInDate(formatDate(startDate));
-        setCheckOutDate(formatDate(endDate));
-        setHoveredDate(null);
-      } else {
-        // If range is not valid, start new selection with the clicked date
+        setSelectedEndDate(selectedStartDate);
         setSelectedStartDate(date);
-        setSelectedEndDate(null);
         setCheckInDate(formatDate(date));
-        setCheckOutDate('Select date');
-        setHoveredDate(null);
+        setCheckOutDate(formatDate(selectedStartDate));
       }
+      setHoveredDate(null);
     }
   };
 
@@ -266,10 +191,21 @@ const BookingComponent = () => {
   };
 
   const updateGuests = (type: keyof typeof guests, increment: boolean): void => {
-    setGuests(prev => ({
-      ...prev,
-      [type]: Math.max(type === 'rooms' ? 1 : 0, prev[type] + (increment ? 1 : -1))
-    }));
+    const availableRooms = getAvailableRooms();
+    
+    setGuests(prev => {
+      if (type === 'rooms') {
+        const newValue = prev[type] + (increment ? 1 : -1);
+        return {
+          ...prev,
+          [type]: Math.max(1, Math.min(availableRooms, newValue))
+        };
+      }
+      return {
+        ...prev,
+        [type]: Math.max(0, prev[type] + (increment ? 1 : -1))
+      };
+    });
   };
 
   const handleReserve = () => {
@@ -364,29 +300,22 @@ const BookingComponent = () => {
             const isInRange = isDateInRange(date);
             const isToday = date.toDateString() === new Date().toDateString();
             const isPast = date.getTime() < new Date().setHours(0, 0, 0, 0);
-            const roomAvailability = checkRoomAvailability(date);
-            const hasEnoughRooms = hasEnoughRoomsAvailable(date);
-            const isUnavailable = !hasEnoughRooms || roomAvailability.isFullyBooked;
-            
-            // Hide unavailable dates (show empty space)
-            if (isUnavailable && !isPast) {
-              return <div key={index} className="h-10 md:h-10" />;
-            }
-            
-            // Hide past dates (show empty space)
-            if (isPast) {
-              return <div key={index} className="h-10 md:h-10" />;
-            }
+            const isUnavailable = isDateUnavailable(date);
+            const isDisabled = isPast || isUnavailable;
             
             return (
               <button
                 key={index}
-                onClick={() => handleDateClick(date)}
-                onMouseEnter={() => selectedStartDate && !selectedEndDate && setHoveredDate(date)}
+                onClick={() => !isDisabled && handleDateClick(date)}
+                onMouseEnter={() => !isDisabled && selectedStartDate && !selectedEndDate && setHoveredDate(date)}
                 onMouseLeave={() => setHoveredDate(null)}
+                disabled={isDisabled}
                 className={`
-                  h-10 md:h-10 text-sm rounded-lg transition-all duration-200 touch-manipulation
-                  hover:bg-gray-50 cursor-pointer active:bg-gray-100
+                  h-10 md:h-10 text-sm rounded-lg transition-all duration-200 touch-manipulation relative
+                  ${isDisabled
+                    ? 'text-gray-300 cursor-not-allowed' 
+                    : 'hover:bg-gray-50 cursor-pointer active:bg-gray-100'
+                  }
                   ${isSelected 
                     ? 'bg-blue-600 text-white hover:bg-blue-700' 
                     : ''
@@ -399,21 +328,22 @@ const BookingComponent = () => {
                     ? 'border-2 border-blue-600' 
                     : ''
                   }
+                  ${isUnavailable && !isPast
+                    ? 'bg-red-100 text-red-400 cursor-not-allowed' 
+                    : ''
+                  }
                 `}
+                title={isUnavailable ? 'No rooms available on this date' : ''}
               >
                 {date.getDate()}
+                {isUnavailable && !isPast && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-0.5 h-6 bg-red-400 rotate-45"></div>
+                  </div>
+                )}
               </button>
             );
           })}
-        </div>
-        
-        {/* Room availability legend */}
-        <div className="mt-4 text-xs text-gray-500 space-y-1">
-          <div className="flex items-center gap-2">
-            <div className="w-3 h-3 bg-blue-600 rounded"></div>
-            <span>Selected dates</span>
-          </div>
-          <p className="text-xs text-gray-400">Unavailable dates are hidden</p>
         </div>
       </div>
     );
@@ -427,8 +357,7 @@ const BookingComponent = () => {
             <h2 className="text-2xl font-bold text-gray-900 mb-1">$357 
               <span className="text-base font-medium text-gray-600"> For Night</span>
             </h2>
-            <p className="text-sm text-gray-500 mb-2">Lowest prices for your stay</p>
-            <p className="text-xs text-blue-600 mb-4">Total rooms: {totalRooms}</p>
+            <p className="text-sm text-gray-500 mb-6">Lowest prices for your stay</p>
 
             <div className="space-y-4">
               {/* Date Picker */}
@@ -513,7 +442,14 @@ const BookingComponent = () => {
                   <div className="absolute top-full left-0 right-0 z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
                     <div className="p-4 space-y-4">
                       <div className="flex items-center justify-between">
-                        <span className="font-semibold">Rooms</span>
+                        <div>
+                          <span className="font-semibold">Rooms</span>
+                          {selectedStartDate && selectedEndDate && (
+                            <div className="text-xs text-gray-500">
+                              {getAvailableRooms()} available
+                            </div>
+                          )}
+                        </div>
                         <div className="flex items-center gap-2">
                           <button 
                             className="p-2 rounded-full border border-2 hover:bg-blue-600 hover:text-white"
@@ -526,7 +462,7 @@ const BookingComponent = () => {
                           <button 
                             className="p-2 rounded-full border border-2 hover:bg-blue-600 hover:text-white"
                             onClick={() => updateGuests('rooms', true)}
-                            disabled={guests.rooms >= totalRooms}
+                            disabled={guests.rooms >= getAvailableRooms()}
                           >
                             <Plus className="w-4 h-4" />
                           </button>

@@ -57,7 +57,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         try {
           // Step 1: Fetch JWT token
           const tokenResponse = await fetch(
-            "https://trustdine-backend.vercel.app/auth/jwt/create/",
+            "https://trustdine-backend.onrender.com/auth/jwt/create/",
             {
               method: "POST",
               headers: {
@@ -80,7 +80,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           // Step 2: Fetch user data using the token
           const userResponse = await fetch(
-            "https://trustdine-backend.vercel.app/api/user/",
+            "https://trustdine-backend.onrender.com/api/user/",
             {
               method: "GET",
               headers: {
@@ -129,7 +129,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         try {
           // Check if user exists in Django backend
           const response = await fetch(
-            "https://trustdine-backend.vercel.app/auth/o/google-oauth2/",
+            "https://trustdine-backend.onrender.com/auth/o/google-oauth2/",
             {
               method: "POST",
               headers: {
@@ -146,7 +146,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             
             // Fetch user details from Django
             const userResponse = await fetch(
-              "https://trustdine-backend.vercel.app/api/user/",
+              "https://trustdine-backend.onrender.com/api/user/",
               {
                 method: "GET",
                 headers: {
@@ -183,7 +183,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         try {
           // Check if user exists in Django backend
           const response = await fetch(
-            "https://trustdine-backend.vercel.app/auth/o/facebook/",
+            "https://trustdine-backend.onrender.com/auth/o/facebook/",
             {
               method: "POST",
               headers: {
@@ -200,7 +200,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             
             // Fetch user details from Django
             const userResponse = await fetch(
-              "https://trustdine-backend.vercel.app/api/user/",
+              "https://trustdine-backend.onrender.com/api/user/",
               {
                 method: "GET",
                 headers: {

@@ -22,7 +22,7 @@ console.log(session?.user)
     </div>  
     </div>);
   }
-  return session?.user?.is_superuser? <DashboardAdmin/> :  ( session?.user?.is_staff? <DashboardPartner/>:(session?.user?.full_name == "" ? 
+  return session?.user?.is_superuser? <DashboardAdmin/> :  ( session?.user?.is_staff? <DashboardPartner/>:(session?.user?.phoneNumber == "" ? 
     
     
     <div>
