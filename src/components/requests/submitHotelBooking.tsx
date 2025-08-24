@@ -4,10 +4,15 @@ import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, Plus, Minus } from 'lucide-react';
 import { LuUsersRound } from 'react-icons/lu';
 import useFetchBooking from '@/components/requests/fetchBooking';
+import { useSession } from 'next-auth/react';
+import LoginButtonBookinHotel from '../header/loginButtonBookingHotel';
+import { useRouter } from "next/navigation";
+import moment from 'moment';
 
-const BookingComponent = () => {
-  // Date picker state
-  const { Booking, isLoading, } = useFetchBooking(18);
+const HotelBookingComponent = ({bookdata}:any) => {
+  const now = moment();
+  const router = useRouter();
+  const { Booking, isLoading, } = useFetchBooking(bookdata.id);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [checkInDate, setCheckInDate] = useState('Select date');
   const [checkOutDate, setCheckOutDate] = useState('Select date');
@@ -15,8 +20,8 @@ const BookingComponent = () => {
   const [selectedStartDate, setSelectedStartDate] = useState<Date | null>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
   const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
-
-  console.log(Booking)
+  const [partner, setPartner] = useState(false);
+  const { data: session, status } = useSession( );
 
   // Guest selector state
   const [guests, setGuests] = useState({ rooms: 1, adults: 2, children: 0 });
@@ -24,7 +29,7 @@ const BookingComponent = () => {
 
   // Function to get available rooms for selected dates
   const getAvailableRooms = (): number => {
-    if (!selectedStartDate || !selectedEndDate || !Booking || !Array.isArray(Booking)) return 8;
+    if (!selectedStartDate || !selectedEndDate || !Booking || !Array.isArray(Booking)) return bookdata.rooms_number || 0;
     
     let maxRoomsBooked = 0;
     
@@ -217,13 +222,23 @@ const BookingComponent = () => {
 
   const handleSubmit = async () => {
     const productData = {
-      product: 18,
-      user: 26,
+      product: bookdata.id,
+      user: session?.user?.id,
       check_in_date: selectedStartDate,
       check_out_date: selectedEndDate,
       adults: guests.adults,
       children: guests.children,
       room_quantity: guests.rooms,
+      created_at: now.format('MMMM Do YYYY'),
+      status:"Completed",
+      image:bookdata.image,
+      total_guests:guests.adults+guests.children,
+      total_price:bookdata.price_per_night,
+      payment_method:"Cash, Credit Card",
+      name:bookdata.name,
+      category:'Hotel',
+      cancellation_policy:bookdata.cancellation_policy,
+      location:bookdata.location
     };
 
     try {
@@ -244,7 +259,7 @@ const BookingComponent = () => {
         throw new Error(errorData.message || 'Failed to create product');
       }
 
-      console.log('Reservation submitted successfully!');
+      router.push('/en/test');  
     } catch (error) {
       console.error('Submission error:', error);
     }
@@ -317,19 +332,19 @@ const BookingComponent = () => {
                     : 'hover:bg-gray-50 cursor-pointer active:bg-gray-100'
                   }
                   ${isSelected 
-                    ? 'bg-blue-600 text-white hover:bg-blue-700' 
+                    ? 'bg-secondary text-white hover:bg-background' 
                     : ''
                   }
                   ${isInRange && !isSelected 
-                    ? 'bg-blue-100 text-blue-800' 
+                    ? 'bg-highlights text-white ' 
                     : ''
                   }
                   ${isToday && !isSelected 
-                    ? 'border-2 border-blue-600' 
+                    ? 'border-2 border-secondary' 
                     : ''
                   }
                   ${isUnavailable && !isPast
-                    ? 'bg-red-100 text-red-400 cursor-not-allowed' 
+                    ? 'bg-black text-white cursor-not-allowed' 
                     : ''
                   }
                 `}
@@ -338,7 +353,7 @@ const BookingComponent = () => {
                 {date.getDate()}
                 {isUnavailable && !isPast && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-0.5 h-6 bg-red-400 rotate-45"></div>
+                    <div className="w-0.5 h-6 bg-gray-400 rotate-45"></div>
                   </div>
                 )}
               </button>
@@ -350,12 +365,12 @@ const BookingComponent = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-md mx-auto">
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200">
+
+      
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 sticky top-6">
           <div className="p-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-1">$357 
-              <span className="text-base font-medium text-gray-600"> For Night</span>
+            <h2 className="text-2xl font-bold text-secondary mb-1">${bookdata.price_per_night}
+              <span className="text-base font-medium text-secondary"> For Night</span>
             </h2>
             <p className="text-sm text-gray-500 mb-6">Lowest prices for your stay</p>
 
@@ -364,7 +379,7 @@ const BookingComponent = () => {
               <div className="relative">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <button
-                    className="h-auto p-3 justify-center text-center flex-col border border-2 rounded-3xl hover:border-blue-600 transition-colors touch-manipulation"
+                    className="h-auto p-3 justify-center text-center flex-col border border-2 rounded-3xl hover:border-secondary transition-colors touch-manipulation"
                     onClick={() => setShowDatePicker(!showDatePicker)}
                   >
                     <div className="text-xs text-gray-500 flex items-center justify-center gap-1">
@@ -374,7 +389,7 @@ const BookingComponent = () => {
                     <div className="font-medium text-sm md:text-base">{checkInDate}</div>
                   </button>
                   <button
-                    className="h-auto p-3 justify-center text-center flex-col border border-2 rounded-3xl hover:border-blue-600 transition-colors touch-manipulation"
+                    className="h-auto p-3 justify-center text-center flex-col border border-2 rounded-3xl hover:border-secondary transition-colors touch-manipulation"
                     onClick={() => setShowDatePicker(!showDatePicker)}
                   >
                     <div className="text-xs text-gray-500 flex items-center justify-center gap-1">
@@ -417,7 +432,7 @@ const BookingComponent = () => {
                           <button
                             onClick={applyDates}
                             disabled={!selectedStartDate || !selectedEndDate}
-                            className="sm:flex-none px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 text-white transition-colors touch-manipulation rounded-3xl"
+                            className="sm:flex-none px-6 py-2 bg-secondary hover:bg-accent disabled:bg-gray-300 text-white transition-colors touch-manipulation rounded-3xl"
                           >
                             Apply Dates
                           </button>
@@ -431,7 +446,7 @@ const BookingComponent = () => {
               {/* Guest Selector */}
               <div className="relative">
                 <button 
-                  className="w-full flex justify-center items-center rounded-3xl border border-2 py-3 hover:border-blue-600"
+                  className="w-full flex justify-center items-center rounded-3xl border border-2 py-3 hover:border-secondary"
                   onClick={() => setShowGuestSelector(!showGuestSelector)}
                 >
                   <LuUsersRound className="w-4 h-4 mr-2" />
@@ -452,7 +467,7 @@ const BookingComponent = () => {
                         </div>
                         <div className="flex items-center gap-2">
                           <button 
-                            className="p-2 rounded-full border border-2 hover:bg-blue-600 hover:text-white"
+                            className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
                             onClick={() => updateGuests('rooms', false)}
                             disabled={guests.rooms <= 1}
                           >
@@ -460,7 +475,7 @@ const BookingComponent = () => {
                           </button>
                           <span className="w-8 text-center select-none">{guests.rooms}</span>
                           <button 
-                            className="p-2 rounded-full border border-2 hover:bg-blue-600 hover:text-white"
+                            className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
                             onClick={() => updateGuests('rooms', true)}
                             disabled={guests.rooms >= getAvailableRooms()}
                           >
@@ -473,7 +488,7 @@ const BookingComponent = () => {
                         <span className="font-semibold">Adults</span>
                         <div className="flex items-center gap-2">
                           <button
-                            className="p-2 rounded-full border border-2 hover:bg-blue-600 hover:text-white"
+                            className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
                             onClick={() => updateGuests('adults', false)}
                             disabled={guests.adults <= 1}
                           >
@@ -481,7 +496,7 @@ const BookingComponent = () => {
                           </button>
                           <span className="w-8 text-center select-none">{guests.adults}</span>
                           <button 
-                            className="p-2 rounded-full border border-2 hover:bg-blue-600 hover:text-white"
+                            className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
                             onClick={() => updateGuests('adults', true)}
                           >
                             <Plus className="w-4 h-4" />
@@ -493,7 +508,7 @@ const BookingComponent = () => {
                         <span className="font-semibold">Children</span>
                         <div className="flex items-center gap-2">
                           <button 
-                            className="p-2 rounded-full border border-2 hover:bg-blue-600 hover:text-white"
+                            className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
                             onClick={() => updateGuests('children', false)}
                             disabled={guests.children <= 0}
                           >
@@ -501,7 +516,7 @@ const BookingComponent = () => {
                           </button>
                           <span className="w-8 text-center select-none">{guests.children}</span>
                           <button 
-                            className="p-2 rounded-full border border-2 hover:bg-blue-600 hover:text-white"
+                            className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
                             onClick={() => updateGuests('children', true)}
                           >
                             <Plus className="w-4 h-4" />
@@ -510,7 +525,7 @@ const BookingComponent = () => {
                       </div>
                       
                       <button 
-                        className="w-full bg-blue-600 hover:bg-blue-700 py-2 text-white rounded-3xl"
+                        className="w-full bg-secondary hover:bg-accent py-2 text-white rounded-3xl"
                         onClick={() => setShowGuestSelector(false)}
                       >
                         Update
@@ -521,23 +536,32 @@ const BookingComponent = () => {
               </div>
 
               <div className="border-t border-gray-200 pt-4">
+
+            {status === "authenticated" ?         
+                  (session?.user?.is_staff?    <button className="w-full bg-secondary hover:bg-accent text-white font-medium py-2 rounded-3xl" onClick={()=> setPartner(true)}>
+            Reserve Now
+          </button>:
                 <button 
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-3xl"
+                  className="w-full bg-secondary hover:bg-accent text-white font-medium py-2 rounded-3xl"
                   onClick={handleSubmit} 
                 >
-                  Reserve
-                </button>
+                  Reserve Now
+                </button>):<LoginButtonBookinHotel/>}
               </div>
-
+ {partner &&
+          <div className="flex justify-center items-center">
+             <p className="text-accent font-semibold ">Please swich to user Account</p>
+          </div>
+         
+          }
               <p className="text-xs text-gray-500 text-center">
                 Prices are provided by our partners, and reflect nightly room rates.
               </p>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+
   );
 };
 
-export default BookingComponent;
+export default HotelBookingComponent;

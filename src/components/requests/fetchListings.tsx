@@ -36,6 +36,7 @@ interface Listing {
   types: string | null;
   capacity: string | null;
   size: string | null;
+  rooms_number:string;
   cancellation_policy: string | null;
   price_range: string | null;
   average_cost: string | null;

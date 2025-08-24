@@ -24,7 +24,8 @@ import { Check, Clock, BarChart3 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import useFetchUser from '../requests/fetchUser';
 import useFetchListingImages from '../requests/fetchListingImages';
-
+import StarRating from '../starsComponent';
+import useFetchReviews from '../requests/fetchReviews';
 
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 interface ImageData {
@@ -98,7 +99,11 @@ const Idcomponent = (dat:any) => {
   const { Users, isLoading, mutate } = useFetchUser(userid);
    const {productimage} = useFetchListingImages(dat.data.id)
 
+const {Review} = useFetchReviews(dat.data.id)
 
+ const averageRating = Review && Review.length > 0
+  ? Review.reduce((sum, r) => sum + +r.rating_global, 0) / Review.length
+  : 0;
 const hotelMarkers = [{
   position: [dat.data.latitude || 51.505, dat.data.longtitude || -0.09] as [number, number],
   //popup: listing.name // using the listing name as popup text
@@ -224,18 +229,11 @@ const hotelMarkers = [{
               </h1>
               
               <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1">
-                    <span className="text-2xl font-bold text-gray-900">4.2</span>
-                    <div className="flex">
-                      {[...Array(4)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-accent text-accent" />
-                      ))}
-                      <Star className="w-4 h-4 text-gray-300" />
-                    </div>
-                  </div>
-                  <span className="text-accent font-medium">Good</span>
-                  <span className='underline'>(8,684 reviews)</span>
+                 <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-2xl font-bold text-gray-900">{averageRating}</span>
+                  <StarRating rating={averageRating} size={16}/>
+                  <span className="text-accent font-medium">{averageRating == 5? "Excellent": (averageRating == 4? "Very Good" :(averageRating == 3? "Good":(averageRating == 2? 	"Poor" : "")))}</span>
+                  <span className="text-sm text-gray-500">({Review.length} reviews)</span>
                 </div>
                 <ReviewsPopup/>
               </div>
@@ -260,15 +258,16 @@ could improve pricing</p>
                   {Users?.phoneNumber}
                   
                 </p></div>
-                <div className='flex  items-center'>
-                  <Mail className="w-4 h-4 mr-2" />
-                  <p className='underline'>
-                     E-mail hotel
-                  </p>
-                 
-                </div>
-
-
+             
+  { status === "authenticated" ?
+   <div className='flex items-center hover:underline cursor-pointer' >
+                  <GoPencil className="w-4 h-4 mr-2"/>
+                   <p >
+                    Write a review
+                  </p></div>
+       
+                :  <LoginButtonAddReview/>}
+              
               
                
               </div>
@@ -475,5 +474,15 @@ export default Idcomponent;
                 </p></div>
                 </Link> :
                 <LoginButtonAddReview/>
-                            
+                           
+                
+
+
+                  <div className='flex  items-center'>
+                  <Mail className="w-4 h-4 mr-2" />
+                  <p className='underline'>
+                     E-mail hotel
+                  </p>
+                 
+                </div>
             } */

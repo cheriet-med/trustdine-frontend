@@ -17,6 +17,15 @@ import { LuUsersRound } from "react-icons/lu";
 import { FaClock } from "react-icons/fa";
 import useFetchAwards from "../requests/fetchAwards";
 import useFetchNearby from "../requests/fetchNearby";
+import useFetchReviews from '../requests/fetchReviews';
+import ReviewsCart from "./reviewsCart";
+import StarRating from "../starsComponent";
+import HotelBookingComponent from "../requests/submitHotelBooking";
+import RestaurantBookingComponent from "../requests/submitRestaurantReservations";
+import { SiMyspace } from "react-icons/si";
+import { SlSizeFullscreen } from "react-icons/sl";
+import { GiCalendarHalfYear } from "react-icons/gi";
+
 
 
 import { 
@@ -31,7 +40,6 @@ import {
   FaBook, FaGamepad, FaBowlingBall, FaCampground, FaHiking, FaCar
 } from 'react-icons/fa';
 import { PiElevatorFill } from "react-icons/pi";
-import { FaHandsAslInterpreting } from "react-icons/fa6";
 
 
 // Theme Configuration
@@ -279,21 +287,16 @@ const Index = ({info}:any) => {
 
      const { Nearbies } = useFetchNearby(userid);
       const { Awards } = useFetchAwards(userid);
-console.log(info)
+//console.log(info)
 
-  const [checkInDate, setCheckInDate] = useState("Thu, Jul 17");
-  const [checkOutDate, setCheckOutDate] = useState("Tue, Aug 12");
+const {Review} = useFetchReviews(info.id)
+
+ const averageRating = Review && Review.length > 0
+  ? Review.reduce((sum, r) => sum + +r.rating_global, 0) / Review.length
+  : 0;
   const [guests, setGuests] = useState({ rooms: 1, adults: 2, children: 0 });
   const [showGuestSelector, setShowGuestSelector] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [dateRange, setDateRange] = useState([
-    {
-      startDate: new Date(),
-      endDate: new Date(new Date().getTime() + 24 * 60 * 60 * 1000 * 7),
-      key: 'selection'
-    }
-  ]);
-const [partner, setPartner] = useState(false);
+  const [partner, setPartner] = useState(false);
 
   const updateGuests = (type: keyof typeof guests, increment: boolean) => {
     setGuests(prev => ({
@@ -396,53 +399,6 @@ const [partner, setPartner] = useState(false);
     'Cars': <FaCar className="text-lg text-gray-400" />
   };
   
-  const reviews = [
-    {
-      id: 1,
-      author: "Mary Jo T",
-      date: "Jul 8",
-      rating: 5,
-      title: "Fantastic",
-      content: "Great hotel, friendly staff that always goes above and beyond our expectations! Room was larger than most NYC hotels, quiet and the beds luxurious. I've stayed here many times and it just keeps getting better. The restaurant is lovely but a bit overpriced, still found it enjoyable.",
-      contributions: 2,
-      helpful: 12,
-      avatar: "/asset/card-1.avif"
-    },
-    {
-      id: 2,
-      author: "David B",
-      date: "Jun 2025",
-      rating: 5,
-      title: "Top-notch Accommodations in a Great Location!",
-      content: "We're locals who stayed for one night at this hotel in order to attend a nearby Broadway show and not have to ride the subway back home immediately after. A mini luxury staycation, if you will—which is rather nice to do in your own hometown once in a while. Especially if that hometown is New York City! The Intercontinental is actually only two blocks away from my office during the...",
-      contributions: 290,
-      helpful: 16,
-      favorite: true,
-      avatar: "/asset/card-2.avif"
-    },
-    {
-      id: 3,
-      author: "Jennifer K",
-      date: "May 2025",
-      rating: 4,
-      title: "Great stay in Times Square",
-      content: "Perfect location for Broadway shows. The room was clean and comfortable. Staff was very helpful with recommendations. Only downside was the noise from the street, but that's expected in Times Square.",
-      contributions: 45,
-      helpful: 8,
-      avatar: "/asset/card-3.avif"
-    },
-    {
-      id: 4,
-      author: "Robert M",
-      date: "Apr 2025",
-      rating: 5,
-      title: "Exceeded expectations",
-      content: "Business trip turned into a wonderful experience. The concierge service was outstanding, room service was prompt, and the fitness center was well-equipped. Will definitely stay here again.",
-      contributions: 127,
-      helpful: 22,
-      avatar: "/asset/card-4.avif"
-    }
-  ];
 
   return (
     <div className="min-h-screen font-montserrat">
@@ -555,7 +511,7 @@ const [partner, setPartner] = useState(false);
 :""}
 
                 <div className="space-y-4">
-                    <div className="grid md:grid-cols-2 gap-4">
+                    <div className="grid md:grid-cols-2 gap-4 ">
                 
                   <div>
                     {info.category == "Restaurant" ?  <h4 className="font-semibold mb-2 font-playfair">Restaurant type</h4> : <h4 className="font-semibold mb-2 font-playfair">Room type</h4> }
@@ -564,11 +520,47 @@ const [partner, setPartner] = useState(false);
                       <p className="py-2 px-4 bg-gray-100 rounded-3xl capitalize">{info.types}</p>
                     </div>
                    {info.category == "Restaurant" ? 
-                   <div className="text-sm text-white bg-highlights w-fit py-1 px-4 rounded-3xl capitalize font-bold mt-4 flex gap-2 items-center" >
+                   <div className="flex gap-2 flex-wrap  mt-4">
+
+                    <div className="text-sm text-white bg-highlights w-fit py-1 px-4 rounded-3xl capitalize font-bold  flex gap-2 items-center" >
+                    <GiCalendarHalfYear className="w-5 h-5"/>
+                    <p>Established - {info.established}</p>
+                   </div>
+
+                  <div className="text-sm text-white bg-highlights w-fit py-1 px-4 rounded-3xl capitalize font-bold  flex gap-2 items-center" >
+                    <SlSizeFullscreen className="w-5 h-5"/>
+                    <p>Space - {info.size}</p>
+                   </div>
+
+                  <div className="text-sm text-white bg-highlights w-fit py-1 px-4 rounded-3xl capitalize font-bold  flex gap-2 items-center" >
+                    <SiMyspace className="w-5 h-5"/>
+                    <p>Capacity - {info.capacity} person</p>
+                   </div>
+
+                    <div className="text-sm text-white bg-highlights w-fit py-1 px-4 rounded-3xl capitalize font-bold flex gap-2 items-center" >
                     <ChefHat className="w-5 h-5"/>
                     <p>Chef - {info.chef}</p>
                    </div>
-                    :""}
+                   </div>
+                   
+                    :<div className="flex gap-2 flex-wrap  mt-4">
+
+                    <div className="text-sm text-white bg-highlights w-fit py-1 px-4 rounded-3xl capitalize font-bold  flex gap-2 items-center" >
+                    <GiCalendarHalfYear className="w-5 h-5"/>
+                    <p>Established - {info.established}</p>
+                   </div>
+
+                  <div className="text-sm text-white bg-highlights w-fit py-1 px-4 rounded-3xl capitalize font-bold  flex gap-2 items-center" >
+                    <SlSizeFullscreen className="w-5 h-5"/>
+                    <p>Space - {info.size}</p>
+                   </div>
+
+                  <div className="text-sm text-white bg-highlights w-fit py-1 px-4 rounded-3xl capitalize font-bold  flex gap-2 items-center" >
+                    <SiMyspace className="w-5 h-5"/>
+                    <p>Capacity - {info.capacity} person</p>
+                   </div>
+
+                   </div>}
                   </div>
                   <Link href={`/en/profile/${Users?.id}`}>
                   <div className="flex items-center gap-3 ">
@@ -642,33 +634,28 @@ const [partner, setPartner] = useState(false);
 
             {/* Rating Breakdown Section */}
             <div className="lg:hidden">
-            <Card>
+  <Card>
               <CardHeader>
                 <CardTitle className="font-playfair">Rating Breakdown</CardTitle>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-2xl font-bold text-gray-900">4.2</span>
-                  <div className="flex">
-                    {[...Array(4)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-accent text-accent" />
-                    ))}
-                    <Star className="w-4 h-4 text-gray-300" />
-                  </div>
-                  <span className="text-accent font-medium">Good</span>
-                  <span className="text-sm text-gray-500">(8,684 reviews)</span>
+                  <span className="text-2xl font-bold text-gray-900">{averageRating}</span>
+                  <StarRating rating={averageRating} size={16}/>
+                   <span className="text-accent font-medium">{averageRating == 5? "Excellent": (averageRating == 4? "Very Good" :(averageRating == 3? "Good":(averageRating == 2? 	"Poor" : "")))}</span>
+                  <span className="text-sm text-gray-500">({Review.length} reviews)</span>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="text-sm text-gray-500 mb-4">#165 of 509 hotels in New York City</div>
+                    <div className="text-sm text-gray-500 mb-4">#165 of 509 {info.category == "Restaurant" ? "Restaurants" : "Hotels"} in {info.location}</div>
                   
                   <div className="grid gap-3 md:w-[400px]">
                     {[
-                      { label: "Location", score: 4.8, color: "bg-accent" },
-                      { label: "Rooms", score: 4.4, color: "bg-accent" },
-                      { label: "Value", score: 4.0, color: "bg-accent" },
-                      { label: "Cleanliness", score: 4.6, color: "bg-accent" },
-                      { label: "Service", score: 4.2, color: "bg-accent" },
-                      { label: "Sleep Quality", score: 4.5, color: "bg-accent" }
+                      { label: "Location", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.location, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Rooms", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.room, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Value", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.value, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Cleanliness", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.clearliness, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Service", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.service, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Spcae", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.restaurant_space, 0) / Review.length: 0, color: "bg-accent" }
                     ].map((item) => (
                       <div key={item.label} className="flex items-center gap-4">
                         <div className="w-24 md:w-28  text-sm font-medium text-gray-500">{item.label}</div>
@@ -687,159 +674,34 @@ const [partner, setPartner] = useState(false);
             </Card>
           </div>
             {/* Reviews Section */}
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-xl font-semibold font-playfair">Reviews</CardTitle>
-                 
-                </div>
-                
-              </CardHeader>
-              <CardContent className="space-y-6">
-                {reviews.map((review) => (
-                  <div key={review.id} className="space-y-3 pb-6 border-b border-gray-200 last:border-b-0">
-                    <div className="flex items-start justify-between flex-wrap gap-3">
-                      <Link href="/en/profile">
-                                  <div className="flex items-start gap-3">
-                        <div className="w-10 h-10 relative rounded-full overflow-hidden">
-                          <Image
-                            src={review.avatar}
-                            alt="Facebook"
-                            fill // This makes the image fill the container
-                            style={{ 
-                              objectFit: 'cover', // This ensures the image covers the area while maintaining aspect ratio
-                            }}
-                          />
-                        </div>
-                        <div>
-                          <p className="font-semibold text-secondary hover:underline">{review.author}</p>
-                          <p className="text-sm text-gray-500">{review.contributions} contributions</p>
-                        </div>
-                      </div>
-                      </Link>
-          
-                      {review.favorite && (
-                        <Badge className="bg-secondary text-white text-xs">Hotel's Favorite</Badge>
-                      )}
-                    </div>
-
-                    <div className="flex items-center flex-wrap gap-2 ml-15">
-                      <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star 
-                            key={i} 
-                            className={`w-4 h-4 ${i < review.rating ? 'fill-accent text-accent' : 'text-gray-300'}`} 
-                          />
-                        ))}
-                      </div>
-                      <span className="font-semibold text-secondary">{review.title}</span>
-                      <span className="text-sm text-gray-500">• {review.date}</span>
-                    </div>
-
-                    <p className="text-gray-500 leading-relaxed ml-15">{review.content}</p>
-
-
-
-<div className="flex flex-wrap gap-2">
-   <div className="w-24 h-24 rounded-xl relative overflow-hidden">
-                          <Image
-                            src={review.avatar}
-                            alt="Facebook"
-                            fill // This makes the image fill the container
-                            style={{ 
-                              objectFit: 'cover', // This ensures the image covers the area while maintaining aspect ratio
-                            }}
-                          />
-                        </div>
-
- <div className="w-24 h-24 rounded-xl relative overflow-hidden">
-                          <Image
-                            src="/assets/image-4.avif"
-                            alt="Facebook"
-                            fill // This makes the image fill the container
-                            style={{ 
-                              objectFit: 'cover', // This ensures the image covers the area while maintaining aspect ratio
-                            }}
-                          />
-                        </div>
-                         <div className="w-24 h-24 rounded-xl relative overflow-hidden">
-                          <Image
-                            src="/assets/image-5.avif"
-                            alt="Facebook"
-                            fill // This makes the image fill the container
-                            style={{ 
-                              objectFit: 'cover', // This ensures the image covers the area while maintaining aspect ratio
-                            }}
-                          />
-                        </div>
-</div>
-
-
-
-                    <div className="flex items-center justify-between ml-15 flex-wrap">
-                      <div className="flex items-center flex-wrap gap-4 text-sm text-gray-500">
-                        <span>Date of stay: {review.date}</span>
-                        <span>• Trip type: Business</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-900">
-                          <ThumbsUp className="w-4 h-4 mr-1" />
-                          Helpful ({review.helpful})
-                        </Button>
-                        <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-900">
-                          <Flag className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-                
-                <div className="text-center pt-4 text-secondary">
-                  <Button variant="outline" className="w-full sm:w-auto">
-                    View all 8,684 reviews
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+           <ReviewsCart productID={info.id}/>
           </div>
-
-
-
-
-
           {/* Booking Sidebar */}
           <div >
-
-
                {/* Rating Breakdown Section */}
             <div className="mb-2 hidden lg:block">
             <Card>
               <CardHeader>
                 <CardTitle className="font-playfair">Rating Breakdown</CardTitle>
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-2xl font-bold text-gray-900">4.2</span>
-                  <div className="flex">
-                    {[...Array(4)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-accent text-accent" />
-                    ))}
-                    <Star className="w-4 h-4 text-gray-300" />
-                  </div>
-                  <span className="text-accent font-medium">Good</span>
-                  <span className="text-sm text-gray-500">(8,684 reviews)</span>
+                  <span className="text-2xl font-bold text-gray-900">{averageRating}</span>
+                  <StarRating rating={averageRating} size={16}/>
+                   <span className="text-accent font-medium">{averageRating == 5? "Excellent": (averageRating == 4? "Very Good" :(averageRating == 3? "Good":(averageRating == 2? 	"Poor" : "")))}</span>
+                  <span className="text-sm text-gray-500">({Review.length} reviews)</span>
                 </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="text-sm text-gray-500 mb-4">#165 of 509 hotels in New York City</div>
+                  <div className="text-sm text-gray-500 mb-4">#165 of 509 {info.category == "Restaurant" ? "Restaurants" : "Hotels"} in {info.location}</div>
                   
                   <div className="grid gap-3 md:w-[400px]">
                     {[
-                      { label: "Location", score: 4.8, color: "bg-accent" },
-                      { label: "Rooms", score: 4.4, color: "bg-accent" },
-                      { label: "Value", score: 4.0, color: "bg-accent" },
-                      { label: "Cleanliness", score: 4.6, color: "bg-accent" },
-                      { label: "Service", score: 4.2, color: "bg-accent" },
-                      { label: "Sleep Quality", score: 4.5, color: "bg-accent" }
+                      { label: "Location", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.location, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Rooms", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.room, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Value", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.value, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Cleanliness", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.clearliness, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Service", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.service, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Spcae", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.restaurant_space, 0) / Review.length: 0, color: "bg-accent" }
                     ].map((item) => (
                       <div key={item.label} className="flex items-center gap-4">
                         <div className="w-24 md:w-28  text-sm font-medium text-gray-500">{item.label}</div>
@@ -860,140 +722,7 @@ const [partner, setPartner] = useState(false);
 
 
 {/**Booking Form */}
-
-            <Card className="sticky top-6">
-              <CardHeader>
-              
-                 
-                    <CardTitle className="text-2xl font-bold text-secondary">$357 <span className="text-base font-medium">For Night</span></CardTitle>
-                   
-                
-                 
-             
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div >
-                  <Label className="text-sm font-medium mb-3 block">Lowest prices for your stay</Label>
-                
-
-                 <ModernDateRangePicker/>  
-          
-                </div>
- 
-                <div className="relative">
-                  <button 
-                   
-                    className="w-full flex justify-center items-center rounded-3xl border border-2 py-3 hover:border-secondary"
-                    onClick={() => setShowGuestSelector(!showGuestSelector)}
-                  >
-                    <LuUsersRound className="w-4 h-4 mr-2" />
-                    {guests.rooms} room, {guests.adults} adults, {guests.children} children
-                  </button>
-                  
-                  {showGuestSelector && (
-                    <Card className="absolute top-full left-0 right-0 z-10 mt-2  sm:pb-1">
-                      <div className="p-4 space-y-4 ">
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold">Rooms</span>
-                          <div className="flex items-center gap-2">
-                            <button 
-                              
-                              className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
-                              onClick={() => updateGuests('rooms', false)}
-                              disabled={guests.rooms <= 1}
-                            >
-                              <Minus className="w-4 h-4 " />
-                            </button>
-                            <span className="w-8 text-center select-none">{guests.rooms}</span>
-                            <button 
-                              className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
-                              onClick={() => updateGuests('rooms', true)}
-                            >
-                              <Plus className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold">Adults</span>
-                          <div className="flex items-center gap-2">
-                            <button
-                              className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
-                              onClick={() => updateGuests('adults', false)}
-                              disabled={guests.adults <= 1}
-                            >
-                              <Minus className="w-4 h-4" />
-                            </button>
-                            <span className="w-8 text-center select-none">{guests.adults}</span>
-                            <button 
-                               className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
-                              onClick={() => updateGuests('adults', true)}
-                            >
-                              <Plus className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold">Children</span>
-                          <div className="flex items-center gap-2">
-                            <button 
-                              className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
-                              onClick={() => updateGuests('children', false)}
-                              disabled={guests.children <= 0}
-                            >
-                              <Minus className="w-4 h-4" />
-                            </button>
-                            <span className="w-8 text-center select-none">{guests.children}</span>
-                            <button 
-                              className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
-                              onClick={() => updateGuests('children', true)}
-                            >
-                              <Plus className="w-4 h-4" />
-                            </button>
-                          </div>
-                        </div>
-                        
-                        <button 
-                          className="w-full bg-secondary hover:bg-accent py-2 text-white rounded-3xl"
-                          onClick={() => setShowGuestSelector(false)}
-                        >
-                          Update
-                        </button>
-                      </div>
-                    </Card>
-                  )}
-                </div>
-
-               
-                <Separator />
-
-
-              
-   {Users?.is_staff ?    <button className="w-full bg-secondary hover:bg-accent text-white px-8 rounded-3xl py-2" onClick={()=> setPartner(true)}>
-            Reserve Now
-          </button> : 
-          <Link href="/en/checkout-booking">
-                <button className="w-full bg-secondary hover:bg-accent text-white font-medium py-3 rounded-3xl">
-                  Reserve
-                </button>
-              </Link>}
-
-
-          {partner &&
-          <div className="flex justify-center items-center">
-             <p className="text-accent font-semibold ">Please swich to user Account</p>
-          </div>
-         
-          }
-                <p className="text-xs text-gray-500 text-center">
-                  Prices are provided by our partners, and reflect nightly room rates.
-                </p>
-              </CardContent>
-            </Card>
-
-
-
+        {info.category == "Restaurant" ? <RestaurantBookingComponent bookdata={info}/> : <HotelBookingComponent bookdata={info}/>}
 
           </div>
         </div>

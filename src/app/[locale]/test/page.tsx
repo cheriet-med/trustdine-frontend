@@ -1,567 +1,224 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Calendar, Plus, Minus, Clock } from 'lucide-react';
-import { LuUsersRound } from 'react-icons/lu';
-import useFetchBooking from '@/components/requests/fetchBooking';
+import { Restaurants } from '@/components/Data/restaurants';
+import { useState, useEffect } from "react";
+import React from 'react';
+import Link from "next/link";
+import { FaChevronRight } from "react-icons/fa6";
+import { LiaHotelSolid } from "react-icons/lia";
+import { IoRestaurantOutline } from "react-icons/io5";
+import { FaCircleChevronRight } from "react-icons/fa6";
+import useFetchAllBookings from '@/components/requests/fetchAllBookings';
 
-const RestaurantBookingComponent = () => {
-  // Fetch existing reservations using your hook
-  const { Booking, isLoading } = useFetchBooking(18);
+interface PropertyCardProps {
+  id: string | number | any;
+  price: string | number;
+  imageUrl: string;
+  location:string;
+  name:string
+  created_at:string;
+  check_in_date:string;
+  check_out_date:string;
+  total_guests:string;
+  room_quantity:string;
+  payment_method:string;
+  category:string;
+  restaurat_check_in_date:string;
+  restaurat_check_in_time:string;
+  cancellation_policy:string;
+status:string;
+
+}
+
+const PropertyCard: React.FC<PropertyCardProps> = ({
+  id,
+  price,
+  imageUrl,
+  location,
+  name,
+  created_at,
+  check_in_date,
+  check_out_date,
+  total_guests,
+  room_quantity,
+  payment_method,
+  category,
+  restaurat_check_in_date,
+  restaurat_check_in_time,
+  cancellation_policy,
+  status
+}) => {
+
+  const roundFirstDecimalDigit = (num: number) => {
+    const intPart = Math.floor(num);
+    const decimal = num - intPart;
   
-  // Date picker state
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [selectedDate, setSelectedDate] = useState('Select date');
-  const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [selectedDateObj, setSelectedDateObj] = useState<Date | null>(null);
+    // Shift decimal left to isolate the first two digits
+    const shifted = decimal * 10;
+    const roundedFirst = Math.round(shifted);
+  
+    // Recombine with integer part
+    return intPart + roundedFirst / 10;
+  }
 
-  // Time picker state
-  const [showTimePicker, setShowTimePicker] = useState(false);
-  const [selectedTime, setSelectedTime] = useState('Select time');
-  const [selectedTimeSlot, setSelectedTimeSlot] = useState<string | null>(null);
 
-  // Guest selector state
-  const [guests, setGuests] = useState({ adults: 2, children: 0 });
-  const [showGuestSelector, setShowGuestSelector] = useState(false);
 
-  // Generate time slots from 6:00 AM to 11:30 PM (30-minute intervals)
-  const generateTimeSlots = (): string[] => {
-    const slots = [];
-    for (let hour = 6; hour < 24; hour++) {
-      for (let minute = 0; minute < 60; minute += 30) {
-        const time = new Date();
-        time.setHours(hour, minute, 0, 0);
-        const timeString = time.toLocaleTimeString('en-US', {
-          hour: 'numeric',
-          minute: '2-digit',
-          hour12: true
-        });
-        slots.push(timeString);
-      }
-    }
-    return slots;
-  };
-
-  const timeSlots = generateTimeSlots();
-
-  console.log('Booking data:', Booking);
-
-  // Helper function to safely parse dates
-  const parseDate = (dateValue: any): string | null => {
-    if (!dateValue) return null;
-    
-    // Skip invalid string values
-    if (typeof dateValue === 'string') {
-      const trimmedValue = dateValue.trim().toLowerCase();
-      if (trimmedValue === 'today' || trimmedValue === 'tomorrow' || trimmedValue === '' || trimmedValue === 'null') {
-        console.warn('Skipping invalid date string:', dateValue);
-        return null;
-      }
-    }
-    
-    try {
-      let dateObj;
-      
-      if (typeof dateValue === 'string') {
-        // Handle ISO date strings like "2025-08-18T23:00:00.000Z"
-        dateObj = new Date(dateValue);
-      } else if (dateValue instanceof Date) {
-        dateObj = dateValue;
-      } else {
-        console.warn('Unexpected date type:', typeof dateValue, dateValue);
-        return null;
-      }
-      
-      // Check if the date is valid
-      if (isNaN(dateObj.getTime())) {
-        console.warn('Invalid date value:', dateValue);
-        return null;
-      }
-      
-      return dateObj.toISOString().split('T')[0];
-    } catch (error) {
-      console.warn('Error parsing date:', dateValue, error);
-      return null;
-    }
-  };
-
-  // Count reservations for a specific date
-  const getReservationCountForDate = (date: Date): number => {
-    if (!Booking || !Array.isArray(Booking)) return 0;
-    
-    const dateString = date.toISOString().split('T')[0]; // YYYY-MM-DD format
-    
-    return Booking.filter(reservation => {
-      // Only count reservations that have valid restaurant data
-      if (!reservation.restaurat_check_in_date || !reservation.restaurat_check_in_time) return false;
-      
-      const parsedDate = parseDate(reservation.restaurat_check_in_date);
-      return parsedDate === dateString;
-    }).length;
-  };
-
-  // Check if a specific time slot is reserved for a date
-  const isTimeSlotReserved = (date: Date, timeSlot: string): boolean => {
-    if (!Booking || !Array.isArray(Booking)) return false;
-    
-    const dateString = date.toISOString().split('T')[0]; // YYYY-MM-DD format
-    
-    return Booking.some(reservation => {
-      // Check if this is a restaurant reservation with valid time
-      if (!reservation.restaurat_check_in_time || !reservation.restaurat_check_in_date) return false;
-      
-      const parsedDate = parseDate(reservation.restaurat_check_in_date);
-      return parsedDate === dateString && reservation.restaurat_check_in_time === timeSlot;
-    });
-  };
-
-  // Get available time slots for the selected date
-  const getAvailableTimeSlots = (): string[] => {
-    if (!selectedDateObj) return timeSlots;
-    
-    return timeSlots.filter(timeSlot => !isTimeSlotReserved(selectedDateObj, timeSlot));
-  };
-
-  const months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
-
-  const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-  // Function to check if a date is unavailable (you can modify this based on your reservation data)
-  const isDateUnavailable = (date: Date): boolean => {
-    // Check if restaurant is closed on Mondays
-    //const isClosedDay = date.getDay() === 1;
-     //const isClosedDay1 = date.getDay() === 2;
-     console.log(date.getDay())
-    // Check if date has 5 or more reservations
-    const reservationCount = getReservationCountForDate(date);
-    const isFullyBooked = reservationCount >= 5;
-    // isClosedDay || isClosedDay1 || 
-    return isFullyBooked;
-  };
-
-  const getDaysInMonth = (date: Date): (Date | null)[] => {
-    const year = date.getFullYear();
-    const month = date.getMonth();
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const daysInMonth = lastDay.getDate();
-    const startingDayOfWeek = firstDay.getDay();
-
-    const days = [];
-    
-    // Add empty cells for days before the first day of the month
-    for (let i = 0; i < startingDayOfWeek; i++) {
-      days.push(null);
-    }
-    
-    // Add all days of the month
-    for (let day = 1; day <= daysInMonth; day++) {
-      days.push(new Date(year, month, day));
-    }
-    
-    return days;
-  };
-
-  const formatDate = (date: Date): string => {
-    return date.toLocaleDateString('en-US', {
-      weekday: 'short',
-      month: 'short',
-      day: 'numeric'
-    });
-  };
-
-  const isDateSelected = (date: Date | null): boolean => {
-    if (!date || !selectedDateObj) return false;
-    return date.getTime() === selectedDateObj.getTime();
-  };
-
-  const handleDateClick = (date: Date): void => {
-    setSelectedDateObj(date);
-    setSelectedDate(formatDate(date));
-    setShowDatePicker(false);
-    // Reset time selection when date changes
-    setSelectedTimeSlot(null);
-    setSelectedTime('Select time');
-  };
-
-  const navigateMonth = (direction: number): void => {
-    setCurrentMonth(prev => {
-      const newMonth = new Date(prev);
-      newMonth.setMonth(prev.getMonth() + direction);
-      return newMonth;
-    });
-  };
-
-  const resetDate = () => {
-    setSelectedDateObj(null);
-    setSelectedDate('Select date');
-    // Also reset time when date is cleared
-    setSelectedTimeSlot(null);
-    setSelectedTime('Select time');
-  };
-
-  const resetTime = () => {
-    setSelectedTimeSlot(null);
-    setSelectedTime('Select time');
-  };
-
-  const handleTimeSelect = (time: string) => {
-    setSelectedTimeSlot(time);
-    setSelectedTime(time);
-    setShowTimePicker(false);
-  };
-
-  const updateGuests = (type: keyof typeof guests, increment: boolean): void => {
-    setGuests(prev => ({
-      ...prev,
-      [type]: Math.max(0, prev[type] + (increment ? 1 : -1))
-    }));
-  };
-
-  const handleSubmit = async () => {
-    const reservationData = {
-      product: 18, // Restaurant ID
-      user: 26,
-      reservation_date: selectedDateObj,
-      reservation_time: selectedTimeSlot,
-      adults: guests.adults,
-      children: guests.children,
-    };
-
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_URL}order/`,
-        {
-          method: 'POST',
-          headers: {
-            "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(reservationData),
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to create reservation');
-      }
-
-      console.log('Reservation submitted successfully!');
-      
-      // Reset form after successful submission
-      setSelectedDateObj(null);
-      setSelectedDate('Select date');
-      setSelectedTimeSlot(null);
-      setSelectedTime('Select time');
-      
-      // Note: The useFetchBooking hook should automatically refetch data
-      // if it's set up to do so, or you might need to trigger a refetch
-      
-    } catch (error) {
-      console.error('Submission error:', error);
-    }
-  };
-
-  const renderCalendar = () => {
-    const days = getDaysInMonth(currentMonth);
-    
-    return (
-      <div className="w-full">
-        <div className="flex items-center justify-between mb-4">
-          <button
-            onClick={() => navigateMonth(-1)}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors touch-manipulation"
-          >
-            <ChevronLeft size={20} className="md:w-4 md:h-4" />
-          </button>
-          <h3 className="font-semibold text-base md:text-lg">
-            {months[currentMonth.getMonth()]} {currentMonth.getFullYear()}
-          </h3>
-          <button
-            onClick={() => navigateMonth(1)}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors touch-manipulation"
-          >
-            <ChevronRight size={20} className="md:w-4 md:h-4" />
-          </button>
-        </div>
-        
-        <div className="grid grid-cols-7 gap-1 mb-2">
-          {weekdays.map(day => (
-            <div key={day} className="text-center text-xs md:text-sm text-gray-500 py-2">
-              {day}
-            </div>
-          ))}
-        </div>
-        
-        <div className="grid grid-cols-7 gap-1">
-          {days.map((date, index) => {
-            if (!date) {
-              return <div key={index} className="h-10 md:h-10" />;
-            }
-            
-            const isSelected = isDateSelected(date);
-            const isToday = date.toDateString() === new Date().toDateString();
-            const isPast = date.getTime() < new Date().setHours(0, 0, 0, 0);
-            const isUnavailable = isDateUnavailable(date);
-            const isDisabled = isPast || isUnavailable;
-            const reservationCount = getReservationCountForDate(date);
-            const isFullyBooked = reservationCount >= 5;
-            
-            return (
-              <button
-                key={index}
-                onClick={() => !isDisabled && handleDateClick(date)}
-                disabled={isDisabled}
-                className={`
-                  h-10 md:h-10 text-sm rounded-lg transition-all duration-200 touch-manipulation relative
-                  ${isDisabled
-                    ? 'text-gray-300 cursor-not-allowed' 
-                    : 'hover:bg-gray-50 cursor-pointer active:bg-gray-100'
-                  }
-                  ${isSelected 
-                    ? 'bg-blue-600 text-white hover:bg-blue-700' 
-                    : ''
-                  }
-                  ${isToday && !isSelected 
-                    ? 'border-2 border-blue-600' 
-                    : ''
-                  }
-                  ${isUnavailable && !isPast
-                    ? 'bg-red-100 text-red-400 cursor-not-allowed' 
-                    : ''
-                  }
-                  ${isFullyBooked && !isPast && !isUnavailable
-                    ? 'bg-orange-100 text-orange-600 cursor-not-allowed'
-                    : ''
-                  }
-                `}
-                title={
-                  isFullyBooked ? 'Fully booked (5/5 reservations)' :
-                  isUnavailable ? 'Restaurant closed on this date' : 
-                  reservationCount > 0 ? `${reservationCount}/5 reservations` : ''
-                }
-              >
-                {date.getDate()}
-                {reservationCount > 0 && !isSelected && (
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 text-white text-xs rounded-full flex items-center justify-center">
-                    {reservationCount}
-                  </div>
-                )}
-                {(isUnavailable || isFullyBooked) && !isPast && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-0.5 h-6 bg-red-400 rotate-45"></div>
-                  </div>
-                )}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-    );
-  };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
-      <div className="max-w-md mx-auto">
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200">
-          <div className="p-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-1">Reserve Table
-              <span className="text-base font-medium text-gray-600"> - Fine Dining</span>
-            </h2>
-            <p className="text-sm text-gray-500 mb-6">Book your perfect dining experience</p>
-
-            <div className="space-y-4">
-              {/* Date Picker */}
-              <div className="relative">
-                <button
-                  className="w-full h-auto p-3 justify-center text-center flex-col border border-2 rounded-3xl hover:border-blue-600 transition-colors touch-manipulation"
-                  onClick={() => setShowDatePicker(!showDatePicker)}
-                >
-                  <div className="text-xs text-gray-500 flex items-center justify-center gap-1">
-                    <Calendar size={12} />
-                    Reservation Date
-                  </div>
-                  <div className="font-medium text-sm md:text-base">{selectedDate}</div>
-                </button>
-                
-                {showDatePicker && (
-                  <div className="absolute top-full left-0 right-0 z-20 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden w-full max-w-[400px] mx-auto">
-                    <div className="p-3 md:p-6">
-                      {renderCalendar()}
-                      
-                      <div className="flex flex-col sm:flex-row sm:items-center flex-wrap justify-between pt-4 border-t border-gray-200 gap-3">
-                        <button
-                          onClick={resetDate}
-                          className="text-gray-500 hover:text-gray-700 text-sm transition-colors order-2 sm:order-1 touch-manipulation underline"
-                        >
-                          Clear date
-                        </button>
-                        
-                        <button
-                          onClick={() => setShowDatePicker(false)}
-                          className="flex-1 sm:flex-none px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors touch-manipulation border border-1 rounded-3xl order-1 sm:order-2"
-                        >
-                          Close
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Time Picker */}
-              <div className="relative">
-                <button
-                  className="w-full h-auto p-3 justify-center text-center flex-col border border-2 rounded-3xl hover:border-blue-600 transition-colors touch-manipulation"
-                  onClick={() => setShowTimePicker(!showTimePicker)}
-                >
-                  <div className="text-xs text-gray-500 flex items-center justify-center gap-1">
-                    <Clock size={12} />
-                    Reservation Time
-                  </div>
-                  <div className="font-medium text-sm md:text-base">{selectedTime}</div>
-                </button>
-                
-                {showTimePicker && (
-                  <div className="absolute top-full left-0 right-0 z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-64 overflow-y-auto">
-                    <div className="p-2">
-                      {!selectedDateObj ? (
-                        <div className="p-4 text-center text-gray-500">
-                          Please select a date first
-                        </div>
-                      ) : getAvailableTimeSlots().length === 0 ? (
-                        <div className="p-4 text-center text-gray-500">
-                          No available time slots for this date
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-2 gap-2">
-                          {timeSlots.map((time) => {
-                            const isReserved = selectedDateObj && isTimeSlotReserved(selectedDateObj, time);
-                            return (
-                              <button
-                                key={time}
-                                onClick={() => !isReserved && handleTimeSelect(time)}
-                                disabled={isReserved}
-                                className={`p-2 text-sm rounded-lg transition-colors ${
-                                  isReserved
-                                    ? 'bg-red-100 text-red-400 cursor-not-allowed line-through'
-                                    : selectedTimeSlot === time
-                                    ? 'bg-blue-600 text-white'
-                                    : 'hover:bg-gray-100'
-                                }`}
-                                title={isReserved ? 'This time slot is already reserved' : ''}
-                              >
-                                {time}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
-                      <div className="flex justify-between pt-3 border-t border-gray-200 mt-3">
-                        <button
-                          onClick={resetTime}
-                          className="text-gray-500 hover:text-gray-700 text-sm transition-colors underline"
-                        >
-                          Clear time
-                        </button>
-                        <button
-                          onClick={() => setShowTimePicker(false)}
-                          className="px-4 py-1 text-gray-600 hover:text-gray-800 transition-colors border border-1 rounded-lg text-sm"
-                        >
-                          Close
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Guest Selector */}
-              <div className="relative">
-                <button 
-                  className="w-full flex justify-center items-center rounded-3xl border border-2 py-3 hover:border-blue-600"
-                  onClick={() => setShowGuestSelector(!showGuestSelector)}
-                >
-                  <LuUsersRound className="w-4 h-4 mr-2" />
-                  {guests.adults} adults{guests.children > 0 ? `, ${guests.children} children` : ''}
-                </button>
-                
-                {showGuestSelector && (
-                  <div className="absolute top-full left-0 right-0 z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
-                    <div className="p-4 space-y-4">
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold">Adults</span>
-                        <div className="flex items-center gap-2">
-                          <button
-                            className="p-2 rounded-full border border-2 hover:bg-blue-600 hover:text-white"
-                            onClick={() => updateGuests('adults', false)}
-                            disabled={guests.adults <= 1}
-                          >
-                            <Minus className="w-4 h-4" />
-                          </button>
-                          <span className="w-8 text-center select-none">{guests.adults}</span>
-                          <button 
-                            className="p-2 rounded-full border border-2 hover:bg-blue-600 hover:text-white"
-                            onClick={() => updateGuests('adults', true)}
-                          >
-                            <Plus className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold">Children</span>
-                        <div className="flex items-center gap-2">
-                          <button 
-                            className="p-2 rounded-full border border-2 hover:bg-blue-600 hover:text-white"
-                            onClick={() => updateGuests('children', false)}
-                            disabled={guests.children <= 0}
-                          >
-                            <Minus className="w-4 h-4" />
-                          </button>
-                          <span className="w-8 text-center select-none">{guests.children}</span>
-                          <button 
-                            className="p-2 rounded-full border border-2 hover:bg-blue-600 hover:text-white"
-                            onClick={() => updateGuests('children', true)}
-                          >
-                            <Plus className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-                      
-                      <button 
-                        className="w-full bg-blue-600 hover:bg-blue-700 py-2 text-white rounded-3xl"
-                        onClick={() => setShowGuestSelector(false)}
-                      >
-                        Update
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              <div className="border-t border-gray-200 pt-4">
-                <button 
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-3xl disabled:bg-gray-400"
-                  onClick={handleSubmit}
-                  disabled={!selectedDateObj || !selectedTimeSlot}
-                >
-                  Make Reservation
-                </button>
-              </div>
-
-              <p className="text-xs text-gray-500 text-center">
-                Reservations are subject to availability and restaurant policies.
-              </p>
-            </div>
-          </div>
-        </div>
+    <div className="block rounded-lg p-2 shadow-xs shadow-black border border-1  font-montserrat text-secondary bg-accent lg:flex lg:gap-8">
+      <div className="relative">
+     <Link href={`/en/booking/${id}`}>
+     <img
+          alt="Property"
+          src={imageUrl}
+          className="h-80 lg:h-80 w-full lg:w-96  rounded-md object-cover"
+        />
+     </Link>
       </div>
+ <Link href={`/en/booking/${id}`}>
+      <div className="mt-2 flex flex-col gap-1">   
+     <div className="flex">
+  <p className="text-sm bg-background rounded-xl font-medium py-1 px-2 w-fit">{location}</p>
+</div>
+        <div>
+          <dd className="font-medium font-playfair text-white">{name}</dd>
+        </div>  
+<hr className='my-2 text-secondary'/>
+<div className='text-sm text-gray-50 space-y-2'>
+  <p><span className='font-bold'>Booking ID:</span>{id}</p>
+  <p><span className='font-bold'>Service Booked:</span>{name}</p>
+  {category == "Hotel"?  <p><span className='font-bold'>Check-In Date:</span> {check_in_date}</p>: "" }
+  {category == "Hotel"?<p><span className='font-bold'>Check-Out Date:</span> {check_out_date}</p>: "" }
+  {category == "Restaurant"?  <p><span className='font-bold'>Check-In Date:</span> {restaurat_check_in_date}</p>: "" }
+  {category == "Restaurant"?<p><span className='font-bold'>Check-In Time:</span> {restaurat_check_in_time}</p>: "" }
+  <p><span className='font-bold'>Total Price:</span> ${price} (incl. taxes & fees)</p>
+  <p><span className='font-bold'>Payment Method:</span>{payment_method} </p>
+  <p><span className='font-bold'>Status:</span> {status}</p>
+</div>      
+<p className='underline my-2 text-white'>Cancellation Policy Summary</p>
+      </div>
+      </Link>
     </div>
   );
 };
 
-export default RestaurantBookingComponent;
+export default function TripsCards() {
+
+  const {AllBookings} = useFetchAllBookings()
+  console.log(AllBookings)
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
+  const [currentCategory, setCurrentCategory] = useState("Hotel");
+  const toggle = AllBookings.filter(r => r.category === currentCategory)
+  const totalPages = Math.ceil(toggle?.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = toggle?.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => setCurrentPage(page);
+  const handleNext = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
+  const handlePrevious = () => currentPage > 1 && setCurrentPage(currentPage - 1);
+
+  return (
+    <div className="flex flex-col gap-4 mx-2 custom:mx-6 mt-6">
+
+      <div className='grid grid-cols-1 sm:grid-cols-2  gap-4'>
+ <div className='h-16 border border-1 rounded-xl shaddow-sm bg-accent flex justify-around items-center text-white' onClick={()=>setCurrentCategory("Hotel")}>
+  <div className='flex gap-4 items-center cursor-pointer'>
+  <LiaHotelSolid size={22}/>
+       <h1 className="text-xl font-playfair font-semibold">
+        Hotels
+      </h1></div>
+      <FaChevronRight size={18}/>
+     </div>
+ <div className='h-16 border border-1 rounded-xl shaddow-sm bg-background flex justify-around items-center text-secondary' onClick={()=>setCurrentCategory("Restaurant")}>
+  <div className='flex gap-4 items-center cursor-pointer'>
+  <IoRestaurantOutline size={22}/>
+       <h1 className="text-xl font-playfair font-semibold">
+        Restaurants
+      </h1></div>
+      <FaChevronRight size={18}/>
+     </div>
+      </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2  gap-5 ">
+        {currentItems.map((res, index) => (
+          <div key={index}>
+            <PropertyCard
+              id={res.id} // Use restaurant ID or fallback
+              location={res.location}
+              price={res.total_price}
+              name={res.name}
+              status={res.status}
+              imageUrl={`${process.env.NEXT_PUBLIC_IMAGE}/${res.image}`}
+              created_at={res.created_at}
+              check_in_date={res.check_in_date}
+              check_out_date={res.check_out_date}
+              total_guests={res.total_guests}
+              room_quantity={res.room_quantity}
+              payment_method={res.payment_method}
+              category={res.category}
+              restaurat_check_in_date={res.restaurat_check_in_date}
+              restaurat_check_in_time={res.restaurat_check_in_time}
+              cancellation_policy={res.cancellation_policy}
+            />
+          </div>
+        ))}
+      </div>
+      
+      {/* Pagination */}
+      {Restaurants.length > itemsPerPage && (
+        <div className="flex justify-end items-center gap-1 flex-wrap">
+          <button disabled={currentPage === 1} onClick={handlePrevious} className="text-background hover:text-accent flex items-center ">
+            <FaCircleChevronRight size={40} className="rotate-180 "/>
+          </button>
+
+          <button disabled={currentPage === totalPages} onClick={handleNext} className="text-background hover:text-accent flex items-center">
+            <FaCircleChevronRight size={40}/>
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}
+
+
+
+
+/**
+ * 
+ *  <div className='h-16 border border-1 rounded-xl shaddow-sm bg-background flex justify-around items-center text-secondary'>
+  <div className='flex gap-4 items-center'>
+  <TbMapPinCancel size={20}/>
+       <h1 className="text-xl font-playfair font-semibold">
+        Canceled
+      </h1></div>
+      <FaChevronRight size={18}/>
+     </div>
+
+
+
+
+
+      <div className='h-16 border border-1 rounded-xl shaddow-sm bg-background flex justify-around items-center text-secondary'>
+  <div className='flex gap-4 items-center'>
+  <MdOutlineRateReview size={20}/>
+       <h1 className="text-xl font-playfair font-semibold">
+        Reviewd
+      </h1></div>
+      <FaChevronRight size={18}/>
+     </div>
+
+
+
+
+
+
+
+
+
+
+
+     <p><span className='font-bold'>Time of Arrival:</span> 3:00 PM</p>
+
+ */

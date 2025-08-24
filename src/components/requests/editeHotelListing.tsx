@@ -10,6 +10,7 @@ import TimeRangePicker from '@wojtekmaj/react-timerange-picker';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
+import { MdOutlineBedroomChild } from "react-icons/md";
 
 // TypeScript interfaces
 interface Product {
@@ -28,6 +29,7 @@ interface Product {
   latitude: any;
   category:string;
   chef: string;
+  rooms_number:string;
   opening_hours_monday: string;
   opening_hours_tuesday: string;
   opening_hours_wednesday: string;
@@ -82,6 +84,7 @@ interface ListingData {
   cancellation_policy: string;
   established: string;
   image: string;
+  rooms_number:string;
   latitude: string;
   longtitude: string;
   category:string;
@@ -123,6 +126,7 @@ export default function EditeHotelForm() {
     location: '',
     category:'',
     chef: '',
+    rooms_number:'',
     opening_hours_monday: '',
     opening_hours_tuesday: '',
     opening_hours_wednesday: '',
@@ -186,6 +190,7 @@ useEffect(() => {
         location: data.location || '',
         category:data.category || '',
         chef: data.chef,
+        rooms_number:data.rooms_number,
         opening_hours_monday: data.opening_hours_monday,
         opening_hours_tuesday: data.opening_hours_tuesday,
         opening_hours_wednesday: data.opening_hours_wednesday,
@@ -566,9 +571,7 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
       productFormData.append('latitude', product.latitude);
       productFormData.append('longtitude', product.longitude);
       productFormData.append('location', product.location);
-
-
-      productFormData.append('chef', product.chef);
+      productFormData.append('rooms_number', product.rooms_number);
       productFormData.append('opening_hours_monday', product.opening_hours_monday);
       productFormData.append('opening_hours_tuesday', product.opening_hours_tuesday);
       productFormData.append('opening_hours_wednesday', product.opening_hours_wednesday);
@@ -740,6 +743,7 @@ await Promise.all(
         location: '',
         category:'',
         chef: '',
+        rooms_number:'',
         opening_hours_monday: '',
         opening_hours_tuesday: '',
         opening_hours_wednesday: '',
@@ -911,7 +915,7 @@ await Promise.all(
 
 </div>
 
-<div className="flex gap-4 w-full">
+
                                   <div className='w-full'>
                     <label className="block text-sm font-semibold text-gray-500 mb-2">Established Year</label>
                     <div className="relative">
@@ -926,7 +930,7 @@ await Promise.all(
                       />
                     </div> 
                      </div>
-                
+                <div className="flex gap-4 w-full">
                     <div className='w-full'>
                           <label className="block text-sm font-semibold text-gray-500 mb-2">Location *</label>
                           <div className="relative">
@@ -943,7 +947,20 @@ await Promise.all(
                            {errorlocation && <p className="text-sm mt-2 text-accent">{errorlocation}</p>}
                           </div>
                       
-                           
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-500 mb-2">Number of rooms</label>
+                        <div className="relative">
+                          <MdOutlineBedroomChild className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                          <input
+                            type="number"
+                            name="chef"
+                            value={product.rooms_number}
+                            onChange={handleProductChange}
+                            className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-3 focus:ring-highlights focus:border-highlights transition-all"
+                            placeholder="Number of rooms"
+                          />
+                        </div>
+                      </div>
                         </div> 
                         
                 

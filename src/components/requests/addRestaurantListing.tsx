@@ -564,7 +564,7 @@ export default function RestaurantForm() {
                         <div>
                           <label className="block text-sm font-semibold text-gray-500 mb-2">Latitude *</label>
                           <input
-                            type="text"
+                            type="number"
                             name="latitude"
                             value={product.latitude}
                             onChange={handleProductChange}
@@ -577,7 +577,7 @@ export default function RestaurantForm() {
                         <div>
                           <label className="block text-sm font-semibold text-gray-500 mb-2">Longitude *</label>
                           <input
-                            type="text"
+                            type="number"
                             name="longitude"
                             value={product.longitude}
                             onChange={handleProductChange}

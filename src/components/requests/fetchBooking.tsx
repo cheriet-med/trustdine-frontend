@@ -52,7 +52,11 @@ interface Bookings {
     cancellation_date: string;     
     refund_amount: string;     
     restaurat_check_in_date: string;     
-    restaurat_check_in_time: string;     
+    restaurat_check_in_time: string;
+    name:string;
+    category:string;
+    cancellation_policy:string;
+    location:string;     
 }
 
 const useFetchBooking = (id:any) => {
