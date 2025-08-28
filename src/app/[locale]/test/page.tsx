@@ -81,6 +81,7 @@ if (status == 'valid') {
         method: 'POST',
         headers: {
           Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ 
           product: 18,
@@ -104,6 +105,7 @@ if (status == 'rejected') {
         method: 'POST',
         headers: {
           Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ 
           product: 18,
@@ -127,6 +129,7 @@ if (status == 'suspect') {
         method: 'POST',
         headers: {
           Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ 
           product: 18,
@@ -151,6 +154,7 @@ if (data.data.is_bill == false) {
         method: 'POST',
         headers: {
           Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ 
           product: 18,
