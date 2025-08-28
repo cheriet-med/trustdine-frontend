@@ -273,7 +273,7 @@ const router = useRouter();
   return (
     <div className=" py-4">
       <div className=" px-4">
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <div className="bg-white rounded-2xl  overflow-hidden">
           {/* Header */}
           <div className="bg-highlights px-8 py-6 flex flex-col justify-center items-center">
             <h1 className="text-3xl font-bold text-white font-playfair">Add Review</h1>

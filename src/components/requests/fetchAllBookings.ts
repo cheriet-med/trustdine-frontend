@@ -57,15 +57,16 @@ interface Bookings {
   cancellation_policy:string;
   location:string;
   total_guests:string;
+  user_owner:string
 }
 
 const useFetchAllBookings = () => {
-  const { data, error, isLoading } = useSWR<Bookings[]>(
+  const { data, error, isLoading , mutate} = useSWR<Bookings[]>(
     `${process.env.NEXT_PUBLIC_URL}order/`,
     fetcher // No need to explicitly pass generic here
   );
 
-  return { AllBookings: data || [], error, isLoading };
+  return { AllBookings: data || [], error, isLoading, mutate  };
 };
 
 export default useFetchAllBookings;

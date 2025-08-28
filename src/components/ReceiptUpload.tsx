@@ -447,12 +447,12 @@ const ReceiptUpload: React.FC<ReceiptUploadProps> = ({
       </div>
       
       {uploadedFile && (
-        <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+        <div className="mt-4 p-4 bg-gray-50 rounded-lg">
           <div className="flex items-center flex-wrap gap-5 justify-center">
-            <div className="flex items-center justify-center">
-              <Eye className="h-5 w-5 text-blue-500 mr-2" />
-              <span className="font-medium">{uploadedFile.name}</span>
-              <span className="text-sm text-gray-500 ml-2">
+            <div className="flex items-center justify-center flex-wrap">
+              
+              <span className="font-medium font-playfair">{uploadedFile.name}</span>
+              <span className="text-sm text-gray-500 ml-2 font-playfair">
                 ({(uploadedFile.size / 1024).toFixed(1)} KB)
               </span>
               <button
@@ -466,7 +466,7 @@ const ReceiptUpload: React.FC<ReceiptUploadProps> = ({
             <button
               onClick={handleValidateClick}
               disabled={isValidating || attempts >= MAX_ATTEMPTS}
-              className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="w-80 px-4 py-2 bg-accent text-white rounded-md hover:bg-highlights disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isValidating ? 'Validating...' : 'Validate Receipt'}
             </button>
@@ -516,7 +516,7 @@ const ReceiptUpload: React.FC<ReceiptUploadProps> = ({
             <div className="flex justify-center flex-wrap space-x-4">
               <button
                 onClick={capturePhoto}
-                className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="flex items-center px-6 py-3 bg-accent text-white rounded-lg hover:bg-highlights transition-colors"
               >
                 <Camera className="h-6 w-6 mr-2" />
                 Capture Photo
@@ -540,8 +540,8 @@ const ReceiptUpload: React.FC<ReceiptUploadProps> = ({
       {showCaptcha && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
           <div className="bg-white rounded-xl shadow-2xl p-6 max-w-md w-full border border-gray-200">
-            <div className="flex items-center mb-6">
-              <Shield className="h-6 w-6 text-blue-600 mr-2" />
+            <div className="flex items-center mb-2">
+              <Shield className="h-6 w-6 text-accent mr-2" />
               <h3 className="text-xl font-semibold text-primary">Security Verification</h3>
             </div>
             
@@ -567,11 +567,11 @@ const ReceiptUpload: React.FC<ReceiptUploadProps> = ({
                 </div>
               </div>
             ) : (
-              <div className="mb-6">
+              <div className="mb-4">
                 <p className="text-sm text-primary mb-3">Solve this math problem:</p>
                 <div className="flex items-center justify-center mb-4">
-                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-lg p-4 text-center">
-                    <span className="text-2xl font-bold text-blue-800">{captchaQuestion}</span>
+                  <div className="bg-gray-50 border-2 border-background rounded-lg  py-2 px-6 text-center">
+                    <span className="text-2xl font-bold text-secondary">{captchaQuestion}</span>
                   </div>
                   <button 
                     onClick={generateCaptcha}
@@ -613,7 +613,7 @@ const ReceiptUpload: React.FC<ReceiptUploadProps> = ({
               <button
                 onClick={handleCaptchaSubmit}
                 disabled={!userInput.trim()}
-                className="w-full px-6 py-2 bg-primary text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-md"
+                className="w-full px-6 py-2 bg-accent text-white rounded-lg hover:bg-highlights disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-md"
               >
                 Verify
               </button>

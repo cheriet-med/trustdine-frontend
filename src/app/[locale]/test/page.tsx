@@ -1,224 +1,262 @@
 'use client'
+import { CiReceipt } from "react-icons/ci";
+import { MdOutlineRateReview } from "react-icons/md";
+import { useState } from "react";
+import ReceiptUpload from "@/components/ReceiptUpload";
+import ValidationProgress from "@/components/ValidationProgress";
+import ValidationResults from "@/components/ValidationResults";
+import { ValidationResult, ExtractedData } from "@/types/receipt";
+import { useSession } from "next-auth/react";
 
-import { Restaurants } from '@/components/Data/restaurants';
-import { useState, useEffect } from "react";
-import React from 'react';
-import Link from "next/link";
-import { FaChevronRight } from "react-icons/fa6";
-import { LiaHotelSolid } from "react-icons/lia";
-import { IoRestaurantOutline } from "react-icons/io5";
-import { FaCircleChevronRight } from "react-icons/fa6";
-import useFetchAllBookings from '@/components/requests/fetchAllBookings';
 
-interface PropertyCardProps {
-  id: string | number | any;
-  price: string | number;
-  imageUrl: string;
-  location:string;
-  name:string
-  created_at:string;
-  check_in_date:string;
-  check_out_date:string;
-  total_guests:string;
-  room_quantity:string;
-  payment_method:string;
-  category:string;
-  restaurat_check_in_date:string;
-  restaurat_check_in_time:string;
-  cancellation_policy:string;
-status:string;
+export default function Receipt() {
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [isValidating, setIsValidating] = useState(false);
+  const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
+  const { data: session, status } = useSession({ required: true });
 
-}
+  const handleFileUpload = (file: File | null) => {
+    setUploadedFile(file);
+    setValidationResult(null); // Reset validation result when new file is uploaded
+  };
 
-const PropertyCard: React.FC<PropertyCardProps> = ({
-  id,
-  price,
-  imageUrl,
-  location,
-  name,
-  created_at,
-  check_in_date,
-  check_out_date,
-  total_guests,
-  room_quantity,
-  payment_method,
-  category,
-  restaurat_check_in_date,
-  restaurat_check_in_time,
-  cancellation_policy,
-  status
-}) => {
-
-  const roundFirstDecimalDigit = (num: number) => {
-    const intPart = Math.floor(num);
-    const decimal = num - intPart;
-  
-    // Shift decimal left to isolate the first two digits
-    const shifted = decimal * 10;
-    const roundedFirst = Math.round(shifted);
-  
-    // Recombine with integer part
-    return intPart + roundedFirst / 10;
+const handleValidate = async () => {
+  if (!uploadedFile) {
+    console.error("No file uploaded");
+    return;
   }
 
+  setIsValidating(true);
+
+
+  try {
+    const imageFormData = new FormData();
+    imageFormData.append('title', "Esco-bar & Cafe");
+    imageFormData.append('image', uploadedFile); // safe now, since we checked it's not null
+
+    const imageResponse = await fetch(
+      "https://api.goamico.com/api/validate-bill/",
+      {
+        method: 'POST',
+        headers: {
+          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+        },
+        body: imageFormData,
+      }
+    );
+
+    if (!imageResponse.ok) {
+      throw new Error(`Failed to upload image`);
+    }
+
+    const data = await imageResponse.json()
+
+    console.log("the status is ", data.status, "and the message is ", data.message, "is bill", data.data.is_bill);
 
 
 
-  return (
-    <div className="block rounded-lg p-2 shadow-xs shadow-black border border-1  font-montserrat text-secondary bg-accent lg:flex lg:gap-8">
-      <div className="relative">
-     <Link href={`/en/booking/${id}`}>
-     <img
-          alt="Property"
-          src={imageUrl}
-          className="h-80 lg:h-80 w-full lg:w-96  rounded-md object-cover"
-        />
-     </Link>
-      </div>
- <Link href={`/en/booking/${id}`}>
-      <div className="mt-2 flex flex-col gap-1">   
-     <div className="flex">
-  <p className="text-sm bg-background rounded-xl font-medium py-1 px-2 w-fit">{location}</p>
-</div>
-        <div>
-          <dd className="font-medium font-playfair text-white">{name}</dd>
-        </div>  
-<hr className='my-2 text-secondary'/>
-<div className='text-sm text-gray-50 space-y-2'>
-  <p><span className='font-bold'>Booking ID:</span>{id}</p>
-  <p><span className='font-bold'>Service Booked:</span>{name}</p>
-  {category == "Hotel"?  <p><span className='font-bold'>Check-In Date:</span> {check_in_date}</p>: "" }
-  {category == "Hotel"?<p><span className='font-bold'>Check-Out Date:</span> {check_out_date}</p>: "" }
-  {category == "Restaurant"?  <p><span className='font-bold'>Check-In Date:</span> {restaurat_check_in_date}</p>: "" }
-  {category == "Restaurant"?<p><span className='font-bold'>Check-In Time:</span> {restaurat_check_in_time}</p>: "" }
-  <p><span className='font-bold'>Total Price:</span> ${price} (incl. taxes & fees)</p>
-  <p><span className='font-bold'>Payment Method:</span>{payment_method} </p>
-  <p><span className='font-bold'>Status:</span> {status}</p>
-</div>      
-<p className='underline my-2 text-white'>Cancellation Policy Summary</p>
-      </div>
-      </Link>
-    </div>
-  );
+
+
+
+// Mock result (for now)
+  const mockExtractedData: ExtractedData = {
+    restaurantName: "Sample Restaurant",
+    date: new Date().toLocaleDateString(),
+    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    total: `$${(Math.random() * 50 + 10).toFixed(2)}`,
+    location: "123 Main St, Sample City",
+    taxAmount: `$${(Math.random() * 5 + 1).toFixed(2)}`,
+    items: ["Item 1", "Item 2", "Item 3"]
+  };
+
+  const rand = Math.random();
+  const status = data.status;
+  const validationReasons = data.message
+
+
+if (status == 'valid') {
+  const add = await fetch(
+      "https://api.goamico.com/score/",
+      {
+        method: 'POST',
+        headers: {
+          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+        },
+        body: JSON.stringify({ 
+          product: 18,
+          user:session?.user?.id,
+          clean:5,
+          blur:"",
+          verified:5,
+          fake:"",
+          total:"",
+
+        }),
+      }
+    );
+    }
+
+
+if (status == 'rejected') {
+  const add = await fetch(
+      "https://api.goamico.com/score/",
+      {
+        method: 'POST',
+        headers: {
+          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+        },
+        body: JSON.stringify({ 
+          product: 18,
+          user:session?.user?.id,
+          clean:"",
+          blur:5,
+          verified:"",
+          fake:"",
+          total:"",
+
+        }),
+      }
+    );
+    }
+
+
+if (status == 'suspect') {
+  const add = await fetch(
+      "https://api.goamico.com/score/",
+      {
+        method: 'POST',
+        headers: {
+          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+        },
+        body: JSON.stringify({ 
+          product: 18,
+          user:session?.user?.id,
+          clean:5,
+          blur:"",
+          verified:"",
+          fake:"",
+          total:"",
+
+        }),
+      }
+    );
+    }
+
+
+if (data.data.is_bill == false) {
+
+   const add = await fetch(
+      "https://api.goamico.com/score/",
+      {
+        method: 'POST',
+        headers: {
+          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+        },
+        body: JSON.stringify({ 
+          product: 18,
+          user:session?.user?.id,
+          clean:"",
+          blur:"",
+          verified:"",
+          fake:5,
+          total:"",
+
+        }),
+      }
+    );
+    }
+
+
+
+
+  const mockResult: ValidationResult = {
+    status,
+    confidence: Math.floor(Math.random() * 30) + 70,
+    processingTime: Math.random() * 2 + 1,
+    extractedData: mockExtractedData,
+    validationReasons,
+    is_bill:data.data.is_bill
+  };
+
+  setValidationResult(mockResult);
+
+
+
+
+
+
+
+
+
+  } catch (error) {
+    console.error("Validation error:", error);
+  } finally {
+    setIsValidating(false);
+  }
+
+  
 };
 
-export default function TripsCards() {
-
-  const {AllBookings} = useFetchAllBookings()
-  console.log(AllBookings)
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8;
-  const [currentCategory, setCurrentCategory] = useState("Hotel");
-  const toggle = AllBookings.filter(r => r.category === currentCategory)
-  const totalPages = Math.ceil(toggle?.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = toggle?.slice(startIndex, endIndex);
-
-  const handlePageChange = (page: number) => setCurrentPage(page);
-  const handleNext = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
-  const handlePrevious = () => currentPage > 1 && setCurrentPage(currentPage - 1);
-
+  
   return (
-    <div className="flex flex-col gap-4 mx-2 custom:mx-6 mt-6">
-
-      <div className='grid grid-cols-1 sm:grid-cols-2  gap-4'>
- <div className='h-16 border border-1 rounded-xl shaddow-sm bg-accent flex justify-around items-center text-white' onClick={()=>setCurrentCategory("Hotel")}>
-  <div className='flex gap-4 items-center cursor-pointer'>
-  <LiaHotelSolid size={22}/>
-       <h1 className="text-xl font-playfair font-semibold">
-        Hotels
-      </h1></div>
-      <FaChevronRight size={18}/>
-     </div>
- <div className='h-16 border border-1 rounded-xl shaddow-sm bg-background flex justify-around items-center text-secondary' onClick={()=>setCurrentCategory("Restaurant")}>
-  <div className='flex gap-4 items-center cursor-pointer'>
-  <IoRestaurantOutline size={22}/>
-       <h1 className="text-xl font-playfair font-semibold">
-        Restaurants
-      </h1></div>
-      <FaChevronRight size={18}/>
-     </div>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2  gap-5 ">
-        {currentItems.map((res, index) => (
-          <div key={index}>
-            <PropertyCard
-              id={res.id} // Use restaurant ID or fallback
-              location={res.location}
-              price={res.total_price}
-              name={res.name}
-              status={res.status}
-              imageUrl={`${process.env.NEXT_PUBLIC_IMAGE}/${res.image}`}
-              created_at={res.created_at}
-              check_in_date={res.check_in_date}
-              check_out_date={res.check_out_date}
-              total_guests={res.total_guests}
-              room_quantity={res.room_quantity}
-              payment_method={res.payment_method}
-              category={res.category}
-              restaurat_check_in_date={res.restaurat_check_in_date}
-              restaurat_check_in_time={res.restaurat_check_in_time}
-              cancellation_policy={res.cancellation_policy}
-            />
+    <div className="my-6 mx-2 lg:mx-6 ">
+      <div>
+        {/* Header Tabs */}
+        <div className="grid grid-cols-2 divide-x divide-accent overflow-hidden rounded-lg border border-1 text-sm text-gray-500 bg-white">
+          <div className="flex items-center justify-center gap-2 bg-accent text-white">
+            <CiReceipt size={24}/>
+            <p className="leading-none">
+              <strong className="block font-medium">Receipt</strong>
+              <small className="mt-1">Upload your receipt</small>
+            </p>
           </div>
-        ))}
-      </div>
-      
-      {/* Pagination */}
-      {Restaurants.length > itemsPerPage && (
-        <div className="flex justify-end items-center gap-1 flex-wrap">
-          <button disabled={currentPage === 1} onClick={handlePrevious} className="text-background hover:text-accent flex items-center ">
-            <FaCircleChevronRight size={40} className="rotate-180 "/>
-          </button>
 
-          <button disabled={currentPage === totalPages} onClick={handleNext} className="text-background hover:text-accent flex items-center">
-            <FaCircleChevronRight size={40}/>
-          </button>
+          <div className="relative flex items-center justify-center gap-2 p-4 bg-highlights text-white">
+            <span className="absolute top-1/2 -left-2 hidden size-4 -translate-y-1/2 rotate-45 border border-accent sm:block ltr:border-s-0 ltr:border-b-0 ltr:bg-white rtl:border-e-0 rtl:border-t-0 rtl:bg-white"></span>
+            <MdOutlineRateReview size={24}/>
+            <p className="leading-none">
+              <strong className="block font-medium">Review</strong>
+              <small className="mt-1">Write Review</small>
+            </p> 
+          </div>
         </div>
-      )}
+
+        {/* Main Content */}
+        <div className="p-6 rounded-lg border border-1 bg-white mt-8 space-y-6">
+          <ReceiptUpload 
+            onFileUpload={handleFileUpload}
+            uploadedFile={uploadedFile}
+            onValidate={handleValidate}
+            isValidating={isValidating}
+          />
+
+          {isValidating && <ValidationProgress isValidating={isValidating} />}
+
+          {validationResult && (
+            <ValidationResults result={validationResult} />
+          )}
+        </div>
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="p-6 rounded-lg border border-1 mt-8 space-y-6 text-sm text-white bg-accent">
+          <h1 className="text-xl font-playfair font-semibold">Receipt validation</h1>
+          <hr />
+          <p>Receipt validation ensures the accuracy and legitimacy of receipts for expenses, reimbursements, and audits. AI automates this process using computer vision, OCR, and machine learning to extract and verify data like merchant names, dates, and amounts.
+<br />
+Key benefits include faster processing, fraud detection (duplicates/altered receipts), and compliance checks (tax rules, company policies). AI also cross-references receipts with transactions for consistency.
+
+
+</p>
+        </div>
+
+
+        <div className="p-6 rounded-lg border border-1 mt-8 space-y-6 text-sm  text-white bg-highlights">
+          <h1 className="text-xl font-playfair font-semibold">Trusted Score</h1>
+          <hr />
+         <p>For the best results, please upload clear and legible receipts. High-quality uploads ensure fast and accurate processing, helping you maintain a good score. Blurry, incomplete, or altered receipts may affect your score and delay approval. Make sure the receipt is well-lit, fully visible, and unedited, with all key details like the merchant name, date, and total amount easy to read. Submitting valid receipts helps us verify transactions quickly and keeps your score high. Thank you for your attention to this important step!</p>
+        </div>
+</div>
+      </div>
     </div>
-  )
+  );
 }
-
-
-
-
-/**
- * 
- *  <div className='h-16 border border-1 rounded-xl shaddow-sm bg-background flex justify-around items-center text-secondary'>
-  <div className='flex gap-4 items-center'>
-  <TbMapPinCancel size={20}/>
-       <h1 className="text-xl font-playfair font-semibold">
-        Canceled
-      </h1></div>
-      <FaChevronRight size={18}/>
-     </div>
-
-
-
-
-
-      <div className='h-16 border border-1 rounded-xl shaddow-sm bg-background flex justify-around items-center text-secondary'>
-  <div className='flex gap-4 items-center'>
-  <MdOutlineRateReview size={20}/>
-       <h1 className="text-xl font-playfair font-semibold">
-        Reviewd
-      </h1></div>
-      <FaChevronRight size={18}/>
-     </div>
-
-
-
-
-
-
-
-
-
-
-
-     <p><span className='font-bold'>Time of Arrival:</span> 3:00 PM</p>
-
- */

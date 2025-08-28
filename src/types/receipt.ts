@@ -10,12 +10,13 @@ export interface ExtractedData {
   }
   
   export interface ValidationResult {
-    status: 'VALID' | 'NEEDS_REVIEW' | 'REJECTED';
+    status: 'VALID' | 'NEEDS_REVIEW' | 'REJECTED' |'valid' | 'suspect' | 'rejected';
     confidence: number;
     extractedData: ExtractedData | null;
     validationReasons: string[];
     flags?: string[];
     processingTime: number;
+    is_bill:boolean
   }
   
   export interface ValidationScenario {

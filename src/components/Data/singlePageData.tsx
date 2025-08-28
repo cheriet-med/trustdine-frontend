@@ -451,18 +451,18 @@ const {Review} = useFetchReviews(info.id)
                 <div className="pt-4 border-t border-gray-200 text-gray-500">
                
                    
-                   <div 
-  className="text-gray-500 leading-relaxed"
+<div 
+   className="text-gray-500 leading-relaxed"
    dangerouslySetInnerHTML={{ __html: info.description || '' }}
 />
 
         -------
 
-                           <div 
-  className="text-gray-500 leading-relaxed"
+<div 
+   className="text-gray-500 leading-relaxed"
    dangerouslySetInnerHTML={{ __html: Users?.about || '' }}
 />    
-                </div>
+</div>
 <hr />
 
 {info.category == "Restaurant" ?

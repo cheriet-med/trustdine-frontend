@@ -238,7 +238,8 @@ const HotelBookingComponent = ({bookdata}:any) => {
       name:bookdata.name,
       category:'Hotel',
       cancellation_policy:bookdata.cancellation_policy,
-      location:bookdata.location
+      location:bookdata.location,
+      user_owner:bookdata.user
     };
 
     try {

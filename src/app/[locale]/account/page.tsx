@@ -33,12 +33,7 @@ console.log(session?.user)
 
   return (
     
-    session?.user?.is_superuser? <DashboardAdmin/> :  ( session?.user?.is_staff? <DashboardPartner/>:(session?.user?.state === "" ? 
-    <div>
-<p>Commig Soon ...</p>
-<p onClick={() => signOut({ callbackUrl: `/en/login` })}>Log out</p>
-    </div>
-    : <DashboardUser/> ))
+    session?.user?.is_superuser? <DashboardAdmin/> :  ( session?.user?.is_staff? <DashboardPartner/>: <DashboardUser/> )
   
   )
 }

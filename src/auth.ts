@@ -9,19 +9,15 @@ declare module "next-auth" {
     id?: string;
     email?: string | null;
     full_name?: string | null;
+    profile_image?: string | null;
     is_superuser?: boolean;
     is_staff?: boolean;
-    address_line_1?: string | null;
-    address_line_2?: string | null;
-    city?: string | null;
-    state?: string | null;
-    postalCode?: string | null;
-    countryCode?: string | null;
-    phoneNumber?: string | null;
   }
 
   interface Session {
     user: User;
+    access_token?: string;
+    refresh_token?: string;
   }
 }
 
@@ -33,19 +29,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       authorization: {
         params: {
           scope: "openid email profile",
-          redirect_uri: "https://trustdine-frontend.vercel.app/api/auth/callback/google" // Add this
-        }
-      }
+          redirect_uri: "https://goamico.com/api/auth/callback/google",
+        },
+      },
     }),
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID!,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET!,
       authorization: {
         params: {
-          scope: "email",
-          redirect_uri: "https://trustdine-frontend.vercel.app/api/auth/callback/facebook"
-        }
-      }
+          scope: "email,public_profile",
+          redirect_uri: "https://goamico.com/api/auth/callback/facebook",
+        },
+      },
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -55,14 +51,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       async authorize(credentials) {
         try {
-          // Step 1: Fetch JWT token
           const tokenResponse = await fetch(
-            "https://trustdine-backend.onrender.com/auth/jwt/create/",
+            "https://api.goamico.com/auth/jwt/create/",
             {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 email: credentials?.email,
                 password: credentials?.password,
@@ -71,45 +64,34 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           );
 
           if (!tokenResponse.ok) {
-            console.error("Failed to fetch token:", tokenResponse.statusText);
             return null;
           }
 
           const tokenData = await tokenResponse.json();
           const accessToken = tokenData.access;
 
-          // Step 2: Fetch user data using the token
-          const userResponse = await fetch(
-            "https://trustdine-backend.onrender.com/api/user/",
-            {
-              method: "GET",
-              headers: {
-                Authorization: `JWT ${accessToken}`,
-              },
-            }
-          );
+          const userResponse = await fetch("https://api.goamico.com/api/user/", {
+            method: "GET",
+            headers: {
+              Authorization: `JWT ${accessToken}`,
+            },
+          });
 
           if (!userResponse.ok) {
-            console.error("Failed to fetch user:", userResponse.statusText);
             return null;
           }
 
           const user = await userResponse.json();
 
-          // Return the user object with all fields
           return {
             id: user.id,
             email: user.email,
-            name: user.full_name,
+            full_name: user.full_name,
+            profile_image: user.profile_image,
             is_superuser: user.is_superuser,
             is_staff: user.is_staff,
-            address_line_1: user.address_line_1,
-            address_line_2: user.address_line_2,
-            city: user.city,
-            state: user.state,
-            postalCode: user.postalCode,
-            countryCode: user.countryCode,
-            phoneNumber: user.phoneNumber
+            access_token: tokenData.access,
+            refresh_token: tokenData.refresh,
           };
         } catch (error) {
           console.error("Authorization error:", error);
@@ -124,158 +106,85 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   callbacks: {
     async signIn({ user, account, profile }) {
-      // Handle Google OAuth sign-in
-      if (account?.provider === "google") {
+      if (account?.provider === "google" || account?.provider === "facebook") {
         try {
-          // Check if user exists in Django backend
+          const email = user.email;
+          const full_name = user.name || (profile as any)?.name || "";
+          const profile_image =
+            (profile as any)?.picture ||
+            (profile as any)?.image ||
+            (user as any)?.image ||
+            null;
+
+          // Call your Django email-login-register endpoint
           const response = await fetch(
-            "https://trustdine-backend.onrender.com/auth/o/google-oauth2/",
+            "https://api.goamico.com/auth/email-login-register/",
             {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                access_token: account.access_token,
+                email,
+                full_name,
+                profile_image,
               }),
             }
           );
 
-          if (response.ok) {
-            const data = await response.json();
-            
-            // Fetch user details from Django
-            const userResponse = await fetch(
-              "https://trustdine-backend.onrender.com/api/user/",
-              {
-                method: "GET",
-                headers: {
-                  Authorization: `JWT ${data.access}`,
-                },
-              }
-            );
-
-            if (userResponse.ok) {
-              const userData = await userResponse.json();
-              // Update user object with Django data
-              user.id = userData.id;
-              user.full_name = userData.full_name;
-              user.is_superuser = userData.is_superuser;
-              user.address_line_1 = userData.address_line_1;
-              user.address_line_2 = userData.address_line_2;
-              user.city = userData.city;
-              user.state = userData.state;
-              user.postalCode = userData.postalCode;
-              user.countryCode = userData.countryCode;
-              user.phoneNumber = userData.phoneNumber;
-              (user as any).access_token = data.access;
-            }
+          if (!response.ok) {
+            console.error("Social login/register failed:", response.statusText);
+            return false;
           }
+
+          const data = await response.json();
+
+          // Map user fields from Django response
+          user.id = data.user.id;
+          user.email = data.user.email;
+          user.full_name = data.user.full_name;
+          user.profile_image = data.user.profile_image;
+          user.is_superuser = data.user.is_superuser;
+          user.is_staff = data.user.is_staff;
+
+          (user as any).access_token = data.tokens.access;
+          (user as any).refresh_token = data.tokens.refresh;
+
           return true;
         } catch (error) {
-          console.error("Google OAuth error:", error);
+          console.error(`${account.provider} OAuth error:`, error);
           return false;
         }
       }
-
-      // Handle Facebook OAuth sign-in
-      if (account?.provider === "facebook") {
-        try {
-          // Check if user exists in Django backend
-          const response = await fetch(
-            "https://trustdine-backend.onrender.com/auth/o/facebook/",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                access_token: account.access_token,
-              }),
-            }
-          );
-
-          if (response.ok) {
-            const data = await response.json();
-            
-            // Fetch user details from Django
-            const userResponse = await fetch(
-              "https://trustdine-backend.onrender.com/api/user/",
-              {
-                method: "GET",
-                headers: {
-                  Authorization: `JWT ${data.access}`,
-                },
-              }
-            );
-
-            if (userResponse.ok) {
-              const userData = await userResponse.json();
-              // Update user object with Django data
-              user.id = userData.id;
-              user.full_name = userData.full_name;
-              user.is_superuser = userData.is_superuser;
-              user.address_line_1 = userData.address_line_1;
-              user.address_line_2 = userData.address_line_2;
-              user.city = userData.city;
-              user.state = userData.state;
-              user.postalCode = userData.postalCode;
-              user.countryCode = userData.countryCode;
-              user.phoneNumber = userData.phoneNumber;
-              (user as any).access_token = data.access;
-            }
-          }
-          return true;
-        } catch (error) {
-          console.error("Facebook OAuth error:", error);
-          return false;
-        }
-      }
-
       return true;
     },
     async jwt({ token, user }) {
       if (user) {
-        // Include all user fields in the token
-        return {
-          ...token,
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          is_superuser: user.is_superuser,
-          is_staff: user.is_staff,
-          address_line_1: user.address_line_1,
-          address_line_2: user.address_line_2,
-          city: user.city,
-          state: user.state,
-          postalCode: user.postalCode,
-          countryCode: user.countryCode,
-          phoneNumber: user.phoneNumber
-        };
+        token.id = user.id;
+        token.email = user.email;
+        token.full_name = user.full_name;
+        token.profile_image = (user as any).profile_image;
+        token.is_superuser = (user as any).is_superuser;
+        token.is_staff = (user as any).is_staff;
+        token.access_token = (user as any).access_token;
+        token.refresh_token = (user as any).refresh_token;
       }
       return token;
     },
     async session({ session, token }) {
-      // Include all fields from token in the session
       session.user = {
         ...session.user,
         id: token.id as string,
         email: token.email as string,
-        full_name: token.name as string,
+        full_name: token.full_name as string,
+        profile_image: token.profile_image as string | null,
         is_superuser: token.is_superuser as boolean,
         is_staff: token.is_staff as boolean,
-        address_line_1: token.address_line_1 as string | null,
-        address_line_2: token.address_line_2 as string | null,
-        city: token.city as string | null,
-        state: token.state as string | null,
-        postalCode: token.postalCode as string | null,
-        countryCode: token.countryCode as string | null,
-        phoneNumber: token.phoneNumber as string | null
       };
+      (session as any).access_token = token.access_token;
+      (session as any).refresh_token = token.refresh_token;
       return session;
     },
   },
   pages: {
-    signIn: "/login", 
+    signIn: "/login",
   },
 });

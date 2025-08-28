@@ -1,7 +1,12 @@
 'use client'
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { format } from 'date-fns';
+import useFetchAllBookings from '@/components/requests/fetchAllBookings';
+import useFetchAllUser from '@/components/requests/fetchAllUsers';
+import PrivacyDialog from '@/components/Data/privacyDialog';
+import { RiCloseLargeLine } from "react-icons/ri";
+
 import { 
   Calendar as CalendarIcon,
   CalendarDays,
@@ -30,7 +35,7 @@ import {
 export interface User {
   id: string;
   name: string;
-  email: string;
+  title: string;
   profileImage: string;
 }
 
@@ -45,9 +50,10 @@ export interface Reservation {
   amount: number;
   currency: string;
   createdAt: Date;
+  image:string;
 }
 
-export type SortField = keyof Reservation | 'user.name' | 'user.email';
+export type SortField = keyof Reservation | 'user.name' | 'user.title';
 export type SortDirection = 'asc' | 'desc';
 
 export interface TableFilters {
@@ -60,113 +66,9 @@ export interface TableFilters {
   };
 }
 
-export const mockReservations: Reservation[] = [
-  {
-    id: '1',
-    user: {
-      id: 'u1',
-      name: 'Emily Johnson',
-      email: 'Software Developer',
-      profileImage: 'https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=120&h=120&fit=crop&crop=face'
-    },
-    reservationDate: new Date('2024-01-15T14:30:00'),
-    service: 'Premium Spa Package',
-    destination: 'Wellness Center',
-    paymentMethod: 'credit_card',
-    status: 'confirmed',
-    amount: 299.99,
-    currency: 'USD',
-    createdAt: new Date('2024-01-10T10:15:00')
-  },
-  {
-    id: '2',
-    user: {
-      id: 'u2',
-      name: 'Marcus Chen',
-      email: 'Digital Marketing Specialist',
-      profileImage: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=120&h=120&fit=crop&crop=face'
-    },
-    reservationDate: new Date('2024-01-20T09:00:00'),
-    service: 'City Tour',
-    destination: 'Downtown Heritage District',
-    paymentMethod: 'paypal',
-    status: 'pending',
-    amount: 75.00,
-    currency: 'USD',
-    createdAt: new Date('2024-01-18T16:45:00')
-  },
-  {
-    id: '3',
-    user: {
-      id: 'u3',
-      name: 'Sarah Williams',
-      email: 'Healthcare Nurse',
-      profileImage: 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=120&h=120&fit=crop&crop=face'
-    },
-    reservationDate: new Date('2024-01-25T19:30:00'),
-    service: 'Fine Dining Experience',
-    destination: 'Michelin Star Restaurant',
-    paymentMethod: 'credit_card',
-    status: 'completed',
-    amount: 450.00,
-    currency: 'USD',
-    createdAt: new Date('2024-01-12T14:20:00')
-  },
-  {
-    id: '4',
-    user: {
-      id: 'u4',
-      name: 'David Rodriguez',
-      email: 'Financial Analyst',
-      profileImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=120&h=120&fit=crop&crop=face'
-    },
-    reservationDate: new Date('2024-02-05T11:00:00'),
-    service: 'Adventure Sports',
-    destination: 'Mountain Resort',
-    paymentMethod: 'bank_transfer',
-    status: 'cancelled',
-    amount: 180.00,
-    currency: 'USD',
-    createdAt: new Date('2024-01-28T09:30:00')
-  },
-  {
-    id: '5',
-    user: {
-      id: 'u5',
-      name: 'Lisa Thompson',
-      email: 'Graphic Designer',
-      profileImage: 'https://images.unsplash.com/photo-1466442929976-97f336a657be?w=120&h=120&fit=crop&crop=face'
-    },
-    reservationDate: new Date('2024-02-10T16:00:00'),
-    service: 'Cultural Workshop',
-    destination: 'Art Museum',
-    paymentMethod: 'cash',
-    status: 'confirmed',
-    amount: 95.00,
-    currency: 'USD',
-    createdAt: new Date('2024-02-01T11:15:00')
-  },
-  {
-    id: '6',
-    user: {
-      id: 'u6',
-      name: 'James Wilson',
-      email: 'Renewable Energy Engineer',
-      profileImage: 'https://images.unsplash.com/photo-1517022812141-23620dba5c23?w=120&h=120&fit=crop&crop=face'
-    },
-    reservationDate: new Date('2024-02-15T13:45:00'),
-    service: 'Photography Tour',
-    destination: 'Historic District',
-    paymentMethod: 'credit_card',
-    status: 'pending',
-    amount: 120.00,
-    currency: 'USD',
-    createdAt: new Date('2024-02-08T15:30:00')
-  }
-];
 
 const ReservationsTable = () => {
-  const [reservations] = useState<Reservation[]>(mockReservations);
+  const [reservations, setReservations] = useState<Reservation[]>([]);
   const [filters, setFilters] = useState<TableFilters>({
     search: '',
     status: 'all',
@@ -179,17 +81,136 @@ const ReservationsTable = () => {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<string | null>(null);
 
+  const { AllBookings, mutate} = useFetchAllBookings();
+  const { AllUsers } = useFetchAllUser();
+
+ useEffect(() => {
+    if (AllBookings && AllUsers) {
+      const transformed = AllBookings.map((b: any) => {
+        const user = AllUsers.find((u: any) => u.id === b.user);
+
+        return {
+          id: String(b.id),
+          user: {
+            id: String(user?.id || "unknown"),
+            name: user?.full_name || "Unknown User",
+            title: user?.title || "",
+            profileImage: user?.profile_image || "",
+          },
+          reservationDate: new Date(
+            b.restaurat_check_in_date || b.check_in_date 
+          ),
+           reservationDateEnd: new Date(b.check_out_date
+          ),
+           reservationDateTime: new Date(b.restaurat_check_in_time
+          ),
+          service: b.name || "N/A",
+          destination: b.location || "N/A",
+          paymentMethod: b.payment_method?.toLowerCase().includes("credit, cash")
+            ? "credit_card"
+            : b.payment_method?.toLowerCase().includes("paypal")
+            ? "paypal"
+            : b.payment_method?.toLowerCase().includes("bank")
+            ? "bank_transfer"
+            : "cash",
+          status: b.status ? b.status.toLowerCase() : "pending",
+          amount: b.total_price ? parseFloat(b.total_price) : 0,
+          currency: "USD", // you can replace this if your API provides currency
+          createdAt: new Date(b.created_at),
+          total_guests:b.total_guests,
+          adults:b.adults,
+          children:b.children,
+          room_quantity:b.room_quantity,
+          image:b.image || "",
+          cancellation_policy:b.cancellation_policy,
+          category:b.category
+
+        } as Reservation;
+      });
+
+      setReservations(transformed);
+    }
+  }, [AllBookings, AllUsers]);
+
+
+
+
+const [isOpen, setIsOpen] = useState(false);
+const [isOpenupdate, setIsOpenUpdate] = useState(false);
+const [isOpendelete, setIsOpenDelete] = useState(false);
+const dialogRef = useRef<HTMLDivElement>(null); // Ref for the dialog container
+ const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
+
+  const [updateReservation, setUpdateReservation] = useState<Reservation | null>(null);
+  const [deleteReservation, setDeleteReservation] = useState<Reservation | null>(null);
+
+ const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Close the dialog when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dialogRef.current && !dialogRef.current.contains(event.target as Node)) {
+        setIsOpen(false); // Close the dialog
+      }
+    };
+
+    // Add event listener when the dialog is open
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    // Cleanup the event listener
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]); // Re-run effect when `isOpen` changes
+
+
+
+
+
   // Event handlers
   const handleEdit = (reservation: Reservation) => {
-    console.log('Edit:', reservation);
-  };
+  setUpdateReservation(reservation);
+  setIsOpenUpdate(true);
+};
 
   const handleDelete = (reservation: Reservation) => {
-    console.log('Delete:', reservation);
+  setDeleteReservation(reservation);
+  setIsOpenDelete(true);
   };
 
+
+  const handleDeleteConfirm = async (id:any) => {
+   
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}orderid/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          "Content-Type": "application/json",
+        },
+      
+      });
+
+         // Trigger SWR revalidation to refresh the data
+      if (mutate) {
+        await mutate();
+      }
+      
+
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something wrong please try again");
+    }
+  setIsOpenDelete(false);
+  };
+
+
   const handleView = (reservation: Reservation) => {
-    console.log('View:', reservation);
+    setSelectedReservation(reservation);
+    setIsOpen(true);
   };
 
   const formatCurrency = (amount: number, currency = 'USD') => {
@@ -240,7 +261,7 @@ const ReservationsTable = () => {
     if (filters.search) {
       filtered = filtered.filter(reservation =>
         reservation.user.name.toLowerCase().includes(filters.search.toLowerCase()) ||
-        reservation.user.email.toLowerCase().includes(filters.search.toLowerCase()) ||
+        reservation.user.title.toLowerCase().includes(filters.search.toLowerCase()) ||
         reservation.service.toLowerCase().includes(filters.search.toLowerCase()) ||
         reservation.destination.toLowerCase().includes(filters.search.toLowerCase())
       );
@@ -314,10 +335,10 @@ const ReservationsTable = () => {
   // Export functionality
   const exportToCSV = () => {
     const csvContent = [
-      ['User', 'Email', 'Date', 'Service', 'Destination', 'Amount', 'Currency', 'Status', 'Payment Method'].join(','),
+      ['User', 'title', 'Date', 'Service', 'Destination', 'Amount', 'Currency', 'Status', 'Payment Method'].join(','),
       ...filteredAndSortedReservations.map(reservation => [
         reservation.user.name,
-        reservation.user.email,
+        reservation.user.title,
         format(new Date(reservation.reservationDate), 'yyyy-MM-dd'),
         reservation.service,
         reservation.destination,
@@ -382,7 +403,7 @@ const ReservationsTable = () => {
   };
 
   // User Avatar Component
-  const UserAvatar = ({ user, size = "sm" }: { user: { name: string; email: string; profileImage: string }; size?: "sm" | "md" | "lg" }) => {
+  const UserAvatar = ({ user, size = "sm" }: { user: { name: string; title: string; profileImage: string }; size?: "sm" | "md" | "lg" }) => {
     const sizeClasses = {
       sm: "h-8 w-8",
       md: "h-10 w-10", 
@@ -493,7 +514,7 @@ const ReservationsTable = () => {
             item.onClick();
             setIsDropdownOpen(null);
           }}
-          className={`relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-gray-100 focus:text-gray-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ${item.className || ''}`}
+          className="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-gray-100 focus:text-gray-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
         >
           {item.icon && <span className="mr-2">{item.icon}</span>}
           {item.label}
@@ -833,7 +854,7 @@ const ReservationsTable = () => {
                     <UserAvatar user={reservation.user} size="md" />
                     <div>
                       <div className="font-medium text-slate-900 font-playfair">{reservation.user.name}</div>
-                      <div className="text-sm text-slate-500">{reservation.user.email}</div>
+                      <div className="text-sm text-slate-500">{reservation.user.title}</div>
                     </div>
                   </div>
                 </td>
@@ -900,6 +921,7 @@ const ReservationsTable = () => {
                       }
                     ]}
                   />
+
                 </td>
               </tr>
             ))
@@ -929,10 +951,10 @@ const ReservationsTable = () => {
                       <div className="flex items-center gap-3">
                         <UserAvatar user={reservation.user} size="lg" />
                         <div>
-                          <div className="text-base font-medium text-slate-900 ">
+                          <div className="text-base font-medium text-slate-900 font-playfair">
                             {reservation.user.name}
                           </div>
-                          <div className="text-sm text-slate-500 ">{reservation.user.email}</div>
+                          <div className="text-sm text-slate-500 ">{reservation.user.title}</div>
                         </div>
                       </div>
                       <StatusBadge status={reservation.status} />
@@ -995,6 +1017,136 @@ const ReservationsTable = () => {
           )}
         </div>
       )}
+
+
+
+      {/* Edit Dialog */}
+{isOpen && selectedReservation && (
+  <div className="fixed inset-0  flex items-center justify-center p-4 z-50">
+     
+    <div
+      ref={dialogRef}
+      className="bg-highlights rounded-lg shadow-lg p-6 max-w-lg w-full relative space-y-4"
+    >
+      {/* Close Button */}
+      <RiCloseLargeLine
+        size={24}
+        className="absolute top-2 right-2 text-white hover:text-gray-300 cursor-pointer"
+        onClick={() => setIsOpen(false)}
+      />
+
+      {/* Content */}
+      <h1 className="text-xl font-semibold font-playfair text-white">
+        Reservation Details
+      </h1>
+
+
+<div>
+  <img
+          alt="Property"
+          src={`${process.env.NEXT_PUBLIC_IMAGE}/${selectedReservation.image}`}
+          className="h-80 w-full rounded-md object-cover"
+        />
+
+  <p className="text-sm text-white">
+        Reservation ID: {selectedReservation.id}
+      </p>
+      <p className="text-sm text-white">
+        Service Name: {selectedReservation.service}
+      </p>
+      <p className="text-sm text-white">
+        Location: {selectedReservation.destination}
+      </p>
+       <p className="text-sm text-white">
+        Amount: {selectedReservation.amount}
+      </p>
+</div>
+      
+    </div>
+  </div>
+)}
+
+
+ {/* Edit Dialog */}
+{isOpenupdate && updateReservation && (
+  <div className="fixed inset-0  flex items-center justify-center p-4 z-50">
+    <div
+      ref={dialogRef}
+      className="bg-highlights rounded-lg shadow-lg p-6 max-w-lg w-full relative space-y-4"
+    >
+      {/* Close Button */}
+      <RiCloseLargeLine
+        size={24}
+        className="absolute top-2 right-2 text-white hover:text-gray-300 cursor-pointer"
+        onClick={() => setIsOpenUpdate(false)}
+      />
+
+      {/* Content */}
+      <h1 className="text-xl font-semibold font-playfair text-white">
+        Reservation view
+      </h1>
+
+    </div>
+  </div>
+)}
+
+
+ {/* Edit Dialog */}
+{isOpendelete && deleteReservation && (
+  <div className="fixed inset-0  flex items-center justify-center p-4 z-50">
+    <div
+      ref={dialogRef}
+      className="bg-highlights rounded-lg shadow-lg p-6 max-w-lg w-full relative space-y-4"
+    >
+      {/* Close Button */}
+      <RiCloseLargeLine
+        size={24}
+        className="absolute top-2 right-2 text-white hover:text-gray-300 cursor-pointer"
+        onClick={() => setIsOpenDelete(false)}
+      />
+
+      {/* Content */}
+      <h1 className="text-xl font-semibold font-playfair text-white">
+        Reservation Delete
+      </h1>
+    <p className='text-sm text-white'>Are you sure you want to delete this reservation? This action cannot be undone.</p>
+   
+
+    <div className="flex justify-end gap-3 mt-6">
+              <button
+                className="px-3 py-1 border border-gray-300 rounded hover:bg-accent transition-colors disabled:opacity-50 rounded-lg text-white"
+                onClick={() => setIsOpenDelete(false)}
+                disabled={isSaving}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-3 py-1 bg-secondary text-white rounded hover:bg-accent transition-colors disabled:bg-accent disabled:cursor-not-allowed rounded-lg"
+                onClick={()=>handleDeleteConfirm(deleteReservation.id)}
+                disabled={isSaving}
+              >
+                {isSaving ? (
+                  <span className="flex items-center justify-center">
+                    <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Deleting...
+                  </span>
+                ) : 'Delete'}
+              </button>
+            </div> 
+
+            {error && (
+              <div className="mt-4 p-2 bg-red-100 text-red-700 rounded text-sm">
+                {error}
+              </div>
+            )}
+
+            </div>
+  </div>
+)}
+
     </div>
   );
 };

@@ -246,12 +246,13 @@ if(!selectedDateObj || !selectedTimeSlot){
       status:"Completed",
       image:bookdata.image,
       total_guests:guests.adults+guests.children,
-      total_price:bookdata.price_per_night,
+      total_price:bookdata.average_cost,
       payment_method:"Cash, Credit Card",
       name:bookdata.name,
       category:'Restaurant',
       cancellation_policy:bookdata.cancellation_policy,
-      location:bookdata.location
+      location:bookdata.location,
+      user_owner:bookdata.user
     };
 
     try {

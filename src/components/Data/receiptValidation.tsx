@@ -7,6 +7,8 @@ import ValidationProgress from "@/components/ValidationProgress";
 import ValidationResults from "@/components/ValidationResults";
 import { ValidationResult, ExtractedData } from "@/types/receipt";
 
+
+
 export default function Receipt() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isValidating, setIsValidating] = useState(false);
@@ -17,61 +19,89 @@ export default function Receipt() {
     setValidationResult(null); // Reset validation result when new file is uploaded
   };
 
-  const handleValidate = () => {
-    setIsValidating(true);
-    
-    // Simulate validation process
-    setTimeout(() => {
-      setIsValidating(false);
-      
-      // Create mock extracted data
-      const mockExtractedData: ExtractedData = {
-        restaurantName: "Sample Restaurant",
-        date: new Date().toLocaleDateString(),
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-        total: `$${(Math.random() * 50 + 10).toFixed(2)}`,
-        location: "123 Main St, Sample City",
-        taxAmount: `$${(Math.random() * 5 + 1).toFixed(2)}`,
-        items: ["Item 1", "Item 2", "Item 3"]
-      };
+const handleValidate = async () => {
+  if (!uploadedFile) {
+    console.error("No file uploaded");
+    return;
+  }
 
-      // Determine random status with weighted probabilities
-      const rand = Math.random();
-      const status = rand > 0.7 ? 'REJECTED' : rand > 0.3 ? 'NEEDS_REVIEW' : 'VALID';
-      
-      // Create mock validation reasons based on status
-      const validationReasons = [
-        "Restaurant matched in database",
-        "Total amount matches item sum",
-        "Date is within valid range"
-      ];
-      if (status === 'REJECTED') {
-        validationReasons.push("Suspicious pattern detected");
-      }
-      if (status === 'NEEDS_REVIEW') {
-        validationReasons.push("Minor inconsistencies found");
-      }
+  setIsValidating(true);
 
-      // Create mock flags based on status
-      const flags = ["HIGH_QUALITY", "CLEAR_TEXT"];
-      if (status === 'VALID') {
-        flags.push("TRUSTED_VENDOR");
-      }
 
-      // Create the full mock result
-      const mockResult: ValidationResult = {
-        status,
-        confidence: Math.floor(Math.random() * 30) + 70, // 70-100%
-        processingTime: Math.random() * 2 + 1, // 1-3 seconds
-        extractedData: mockExtractedData,
-        validationReasons,
-        flags
-      };
-      
-      setValidationResult(mockResult);
-    }, 3000);
+  try {
+    const imageFormData = new FormData();
+    imageFormData.append('title', "Liquor Street");
+    imageFormData.append('image', uploadedFile); // safe now, since we checked it's not null
+
+    const imageResponse = await fetch(
+      "https://api.goamico.com/api/validate-bill/",
+      {
+        method: 'POST',
+        headers: {
+          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+        },
+        body: imageFormData,
+      }
+    );
+
+    if (!imageResponse.ok) {
+      throw new Error(`Failed to upload image`);
+    }
+
+    const data = await imageResponse.json()
+
+    console.log("the status is ", data.status, "and the message is ", data.message, "is bill", data.data.is_bill);
+
+
+
+
+
+
+// Mock result (for now)
+  const mockExtractedData: ExtractedData = {
+    restaurantName: "Sample Restaurant",
+    date: new Date().toLocaleDateString(),
+    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    total: `$${(Math.random() * 50 + 10).toFixed(2)}`,
+    location: "123 Main St, Sample City",
+    taxAmount: `$${(Math.random() * 5 + 1).toFixed(2)}`,
+    items: ["Item 1", "Item 2", "Item 3"]
   };
 
+  const rand = Math.random();
+  const status = data.status;
+  const validationReasons = data.message
+
+
+  const mockResult: ValidationResult = {
+    status,
+    confidence: Math.floor(Math.random() * 30) + 70,
+    processingTime: Math.random() * 2 + 1,
+    extractedData: mockExtractedData,
+    validationReasons,
+    is_bill:data.data.is_bill
+  };
+
+  setValidationResult(mockResult);
+
+
+
+
+
+
+
+
+
+  } catch (error) {
+    console.error("Validation error:", error);
+  } finally {
+    setIsValidating(false);
+  }
+
+  
+};
+
+  
   return (
     <div className="my-6 mx-2 lg:mx-6 ">
       <div>
@@ -118,8 +148,7 @@ export default function Receipt() {
           <p>Receipt validation ensures the accuracy and legitimacy of receipts for expenses, reimbursements, and audits. AI automates this process using computer vision, OCR, and machine learning to extract and verify data like merchant names, dates, and amounts.
 <br />
 Key benefits include faster processing, fraud detection (duplicates/altered receipts), and compliance checks (tax rules, company policies). AI also cross-references receipts with transactions for consistency.
-<br />
-AI-driven receipt validation reduces errors, cuts costs, and improves financial accuracy—making it essential for modern businesses. Need help implementing it? Let’s discuss!
+
 
 </p>
         </div>
