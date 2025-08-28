@@ -1,4 +1,5 @@
 
+/** 
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
@@ -49,7 +50,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
     }),
     CredentialsProvider({
-      name: "Credentials",
+      name: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
@@ -281,6 +282,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
 });
 
+*/
 
 
 
@@ -302,8 +304,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
 
 
-
-/** 
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
@@ -350,7 +350,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
     CredentialsProvider({
-      name: "Credentials",
+      name: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
@@ -427,7 +427,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             "https://api.goamico.com/auth/email-login-register/",
             {
               method: "POST",
-              headers: { "Content-Type": "application/json" },
+              headers: { 
+                Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+                "Content-Type": "application/json" },
               body: JSON.stringify({
                 email,
                 full_name,
@@ -494,4 +496,3 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     signIn: "/login",
   },
 });
-*/
