@@ -6,7 +6,6 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { LiaStarSolid } from "react-icons/lia";
 import { VscWorkspaceTrusted } from "react-icons/vsc";
-
 import { RiShieldStarFill } from "react-icons/ri";
 import { TbFileCheck } from "react-icons/tb";
 import { IoRocket } from "react-icons/io5";

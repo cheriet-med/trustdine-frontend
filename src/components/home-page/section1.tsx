@@ -237,14 +237,15 @@ export default function ScrollAnimation() {
           </div>
         </div>
 
-        <div className="video-container-mobile flex md:hidden flex-col gap-4 w-full max-w-[800px] mx-auto ">
+        <div className="video-container-mobile md:hidden flex  flex-col gap-4 w-full max-w-[800px] mx-auto ">
           <div className="video-preview relative box-border aspect-video rounded-3xl bg-[#b9b9b3] overflow-hidden">
-            <div className="video-wrapper absolute top-0 left-0 box-border h-full rounded-3xl overflow-hidden">
+            <div className="video-wrapper absolute top-0 left-0 w-full h-full rounded-3xl overflow-hidden">
               <video 
             autoPlay 
             loop 
             muted 
             playsInline 
+             preload="auto"
             className=" min-w-full min-h-full object-cover  rounded-3xl"
             style={{ 
              
@@ -252,7 +253,7 @@ export default function ScrollAnimation() {
               height: '100%'
             }}
           >
-            <source src="/video.mp4" type="video/mp4" />
+            <source src="/footer.mp4" type="video/mp4" />
           
           </video>
             </div>
@@ -263,9 +264,7 @@ export default function ScrollAnimation() {
           </div>
         </div>
       </section>
-
-      <section className="outro box-border h-80 p-6 md:p-10 flex justify-center items-center hidden md:block">
-       
+      <section className="outro box-border h-60 p-6 md:p-10 flex justify-center items-center hidden md:block">
       </section>
     </div>
   );

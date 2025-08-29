@@ -15,8 +15,7 @@ import { GoPencil } from "react-icons/go";
 import { CiLocationOn } from "react-icons/ci";
 import { SlLocationPin } from "react-icons/sl";
 import moment from "moment";
-
-
+import { useRouter } from "next/navigation";
 
 
 interface PropertyCardProps {
@@ -74,7 +73,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   }
 
 const { AllUsers, isLoading } = useFetchAllUser();
-
+  const router = useRouter();
 
   return (
     <div className="block rounded-lg p-2 shadow-xs shadow-black border border-1  font-montserrat text-secondary bg-accent lg:flex lg:gap-8">
@@ -93,7 +92,7 @@ const { AllUsers, isLoading } = useFetchAllUser();
   <p className="text-sm bg-background rounded-xl font-medium py-1 px-2 w-fit flex gap-1 capitalize items-center"><SlLocationPin size={16}/> {location}</p>
 
 
-  <p className="underline my-2 text-white cursor-pointer flex gap-1 capitalize items-center"><GoPencil size={18}/> Add Review</p>
+  <p className="underline my-2 text-white cursor-pointer flex gap-1 capitalize items-center hover:text-secondary" onClick={()=>router.push(`/en/account/receipt-validation?q=${id}&ctg=${category}`)}><GoPencil size={18}/> Add Review</p>
 </div>
         <div>
           <dd className="font-medium font-playfair text-white">{AllUsers.find((user) => user.id === owner_user)?.full_name}</dd>

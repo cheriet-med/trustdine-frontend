@@ -21,7 +21,11 @@ import { ApexOptions } from 'apexcharts';
 import AmenitiesSelector from '@/components/requests/amenities';
 import { useSession } from 'next-auth/react';
 import useFetchUser from '@/components/requests/fetchUser';
-
+import StarRating from '../starsComponent';
+import useFetchAllReviews from '../requests/fetchAllReviews';
+import useFetchScores from '../requests/fetchScore';
+import Link from 'next/link';
+import ReviewsCart from '../Data/reviewsPopupHistory';
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 
 const Chart = dynamic(() => import('react-apexcharts'), {
@@ -77,6 +81,27 @@ const ProfileCard: React.FC = () => {
 
     const userId = session?.user?.id;
   const { Users,  isLoading, mutate } = useFetchUser(userId);
+
+
+const {AllReview} = useFetchAllReviews()
+
+const Review = AllReview.filter((user) => user.user === userId)
+
+const averageRating = Review && Review.length > 0
+  ? Review.reduce((sum, r) => sum + +r.rating_global, 0) / Review.length
+  : 0;
+
+const {Score} = useFetchScores()
+const userScore = Score.filter((user) => user.user === +(userId ?? 0))
+
+const cleanScore =userScore && userScore.length > 0? parseFloat((userScore.reduce((sum, r) => sum + +r.clean, 0) / userScore.length).toFixed(2)): 0;
+const cleanBlur =userScore && userScore.length > 0? parseFloat((userScore.reduce((sum, r) => sum + +r.blur, 0) / userScore.length).toFixed(2)): 0;
+const cleanVerified = userScore && userScore.length > 0? parseFloat((userScore.reduce((sum, r) => sum + +r.verified, 0) / userScore.length).toFixed(2)): 0;
+const cleanFake = userScore && userScore.length > 0? parseFloat((userScore.reduce((sum, r) => sum + +r.fake, 0) / userScore.length).toFixed(2)): 0;
+
+
+
+const cleantotal = (cleanScore * cleanVerified) * (1 - cleanBlur)**1.5 * (1 - cleanFake)**3.0
 
  // Replace with actual userId
 
@@ -259,48 +284,48 @@ const initialAmenities = [
     }
   };
 
-  const handleImageClick = () => {
-    if (!isUploading) {
-      fileInputRef.current?.click();
-    }
-  };
-
-  const options: ApexOptions = {
-    chart: {
-      height: 350,
-      type: 'radialBar',
-    },
-    plotOptions: {
-      radialBar: {
-        dataLabels: {
-          name: {
-            fontSize: '14px',
-          },
-          value: {
-            fontSize: '16px',
-            formatter: function (val) {
-              return val + '%';
-            }
-          },
-          total: {
-            show: true,
-            label: 'TOTAL',
-            formatter: function (w) {
-              const sum = w.globals.series.reduce((a: number, b: number) => a + b, 0);
-              const avg = sum / w.globals.series.length;
-              return Math.round(avg) + '%';
+  
+  
+    const handleImageClick = () => {
+      if (!isUploading) {
+        fileInputRef.current?.click();
+      }
+    };
+  
+    const options: ApexOptions = {
+      chart: {
+        height: 350,
+        type: 'radialBar',
+      },
+      plotOptions: {
+        radialBar: {
+          dataLabels: {
+            name: {
+              fontSize: '14px',
+            },
+            value: {
+              fontSize: '16px',
+              formatter: function (val) {
+                return val + '%';
+              }
+            },
+            total: {
+              show: true,
+              label: 'Trust Score',
+              formatter: function (w) {
+                return Math.round(cleantotal) + '%';
+              }
             }
           }
         }
+      },
+      series: [cleanScore, cleanBlur, cleanVerified, cleanFake],
+      labels: ['Clean Receipt', 'Blur Receipt', 'Verified Receipt', 'Fake Receipt'],
+      colors: ['#9ED0E6', '#B796AC', '#82A7A6', '#785964'],
+      stroke: {
+        lineCap: 'round'
       }
-    },
-    series: [67, 84, 97, 61],
-    labels: ['Clean Receipt', 'Blur Receipt', 'Verified Receipt', 'Fake Receipt'],
-    colors: ['#9ED0E6', '#B796AC', '#82A7A6', '#785964'],
-    stroke: {
-      lineCap: 'round'
-    }
-  };
+    };
 
   if (isLoading) {
     return (
@@ -693,53 +718,46 @@ const initialAmenities = [
 
 
     {/* Reviews */}
-    <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative '>
+       <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative '>
       <h1 className='font-medium font-playfair mb-4 text-lg'>Reviews</h1>
 
       <div>
         <div className='flex justify-between mb-4 flex-wrap'>
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-2xl font-bold text-gray-900">4.2</span>
-            <div className="flex">
-              {[...Array(4)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-background text-background" />
-              ))}
-              <Star className="w-4 h-4 text-background" />
-            </div>
-            <span className="text-background font-medium">Good</span>
-            <span className="text-sm text-gray-500">(17 reviews)</span>
+            <span className="text-2xl font-bold text-gray-900">{averageRating}</span>
+             <StarRating rating={averageRating} size={16}/>
+            <span className="text-background font-medium">{averageRating == 5? "Excellent": (averageRating == 4? "Very Good" :(averageRating == 3? "Good":(averageRating == 2? 	"Poor" : "")))}</span>
+            <span className="text-sm text-gray-500">({Review.length} reviews)</span>
           </div>
-          <div className="text-sm text-gray-500 mb-4 px-2 py-1 border border-1 bg-secondary text-white rounded-3xl font-bold w-fit mt-2">Top #59 Reviewer</div>
+          {Review.length >50 ?  <div className="text-sm text-gray-500 mb-4 px-2 py-1 border border-1 bg-secondary text-white rounded-3xl font-bold w-fit mt-2">Top Reviewer</div>: ""}
+         
         </div>
         <div>
           <div className="space-y-4">
             <div className="grid gap-3 md:w-[400px]">
-              {[
-                { label: "Location", score: 4.8, color: "bg-background" },
-                { label: "Rooms", score: 4.4, color: "bg-background" },
-                { label: "Value", score: 4.0, color: "bg-background" },
-                { label: "Cleanliness", score: 4.6, color: "bg-background" },
-                { label: "Service", score: 4.2, color: "bg-background" },
-                { label: "Sleep Quality", score: 4.5, color: "bg-background" }
-              ].map((item) => (
-                <div key={item.label} className="flex items-center gap-4">
-                  <div className="w-24 md:w-28 text-sm font-medium text-gray-500">{item.label}</div>
-                  <div className="flex-1 bg-gray-100 rounded-full h-3">
-                    <div 
-                      className={`h-3 rounded-full ${item.color}`}
-                      style={{ width: `${(item.score / 5) * 100}%` }}
-                    />
-                  </div>
-                  <div className="w-8 text-sm font-medium text-right">{item.score}</div>
-                </div>
-              ))}
+                                 {[
+                      { label: "Location", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.location, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Rooms", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.room, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Value", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.value, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Cleanliness", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.clearliness, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Service", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.service, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Spcae", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.restaurant_space, 0) / Review.length: 0, color: "bg-accent" }
+                    ].map((item) => (
+                      <div key={item.label} className="flex items-center gap-4">
+                        <div className="w-24 md:w-28  text-sm font-medium text-gray-500">{item.label}</div>
+                        <div className="flex-1 bg-gray-100 rounded-full h-4">
+                          <div 
+                            className={`h-4 rounded-full ${item.color}`}
+                            style={{ width: `${(item.score / 5) * 100}%` }}
+                          />
+                        </div>
+                        <div className="w-8 text-sm font-medium text-right">{item.score}</div>
+                      </div>
+                    ))}
             </div>
           </div>
         </div>
-        <div className='flex gap-1 justify-center text-gray-600 mt-8'>
-          <TbHistoryToggle size={24}/>
-          <p className='underline'>Reviews History</p>
-        </div>
+       <ReviewsCart/>
       </div>
     </div>
 
@@ -785,11 +803,12 @@ const initialAmenities = [
 
 </div>
 
+<Link href="/en/trust-score">
 <div className='flex items-center gap-x-2.5 text-gray-500'>
   <FaRegQuestionCircle size={24}/>
   <p className='underline'>Read more about trust Score</p>
 </div>
-
+</Link>
 </div>
 
 </div>

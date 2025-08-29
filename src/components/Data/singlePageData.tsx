@@ -280,6 +280,7 @@ const Index = ({info}:any) => {
   const userid = info.id
 
 
+
   // const { Users, isLoading, mutate } = useFetchUser(info.user);
     const { Amenitie, error: amenitiesError } = useFetchAmenities(info.user);
     const { Users, isLoading, mutate } = useFetchUser(info.user);
@@ -422,7 +423,7 @@ const {Review} = useFetchReviews(info.id)
                  
                 </div>
               
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-2 gap-6">
                   <div>
                     <h4 className="font-semibold mb-3 font-playfair">Property amenities</h4>
                     <div className="grid grid-cols-1 gap-2">
@@ -551,7 +552,7 @@ const {Review} = useFetchReviews(info.id)
                    </div>
 
                   <div className="text-sm text-white bg-highlights w-fit py-1 px-4 rounded-3xl capitalize font-bold  flex gap-2 items-center" >
-                    <SlSizeFullscreen className="w-5 h-5"/>
+                    <SlSizeFullscreen className="w-4 h-4"/>
                     <p>Space - {info.size}</p>
                    </div>
 
@@ -679,7 +680,7 @@ const {Review} = useFetchReviews(info.id)
           {/* Booking Sidebar */}
           <div >
                {/* Rating Breakdown Section */}
-            <div className="mb-2 hidden lg:block">
+            <div className=" sm:mb-2 hidden lg:block">
             <Card>
               <CardHeader>
                 <CardTitle className="font-playfair">Rating Breakdown</CardTitle>
@@ -722,8 +723,9 @@ const {Review} = useFetchReviews(info.id)
 
 
 {/**Booking Form */}
+<div id="book">
         {info.category == "Restaurant" ? <RestaurantBookingComponent bookdata={info}/> : <HotelBookingComponent bookdata={info}/>}
-
+</div>
           </div>
         </div>
       </div>
@@ -732,17 +734,20 @@ const {Review} = useFetchReviews(info.id)
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-lg font-bold">$357</div>
-            <div className="text-sm text-gray-500">per night</div>
+            <div className="text-lg font-bold">${info.category == "Restaurant" ? info.price_range : info.price_per_night}</div>
+            <div className="text-sm text-gray-500">{info.category == "Restaurant" ? "average price" : "per night"}</div>
           </div>
 
 
 
-           <Link href="/en/checkout-booking">
-          <button className="bg-secondary hover:bg-accent text-white px-8 rounded-3xl py-2">
+           
+          <button className="bg-secondary hover:bg-accent text-white px-8 rounded-3xl py-2" onClick={() => {
+  const el = document.getElementById("book");
+  el?.scrollIntoView({ behavior: "smooth" });
+}}>
             Reserve Now
           </button>
-          </Link>
+         
 
            
        

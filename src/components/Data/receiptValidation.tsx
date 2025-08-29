@@ -6,13 +6,19 @@ import ReceiptUpload from "@/components/ReceiptUpload";
 import ValidationProgress from "@/components/ValidationProgress";
 import ValidationResults from "@/components/ValidationResults";
 import { ValidationResult, ExtractedData } from "@/types/receipt";
-
-
+import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 export default function Receipt() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isValidating, setIsValidating] = useState(false);
   const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
+  const { data: session, status } = useSession({ required: true });
+  const searchParams = useSearchParams();
+  const id = searchParams.get('q');
+  const category = searchParams.get('ctg');
+
+
 
   const handleFileUpload = (file: File | null) => {
     setUploadedFile(file);
@@ -30,7 +36,7 @@ const handleValidate = async () => {
 
   try {
     const imageFormData = new FormData();
-    imageFormData.append('title', "Liquor Street");
+    imageFormData.append('title', "Esco-bar & Cafe");
     imageFormData.append('image', uploadedFile); // safe now, since we checked it's not null
 
     const imageResponse = await fetch(
@@ -73,13 +79,114 @@ const handleValidate = async () => {
   const validationReasons = data.message
 
 
+if (status == 'valid') {
+  const add = await fetch(
+      "https://api.goamico.com/score/",
+      {
+        method: 'POST',
+        headers: {
+          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          product: id,
+          user:session?.user?.id,
+          clean:5,
+          blur:"",
+          verified:5,
+          fake:"",
+          total:"",
+
+        }),
+      }
+    );
+    }
+
+
+if (status == 'rejected') {
+  const add = await fetch(
+      "https://api.goamico.com/score/",
+      {
+        method: 'POST',
+        headers: {
+          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          product: id,
+          user:session?.user?.id,
+          clean:"",
+          blur:5,
+          verified:"",
+          fake:"",
+          total:"",
+
+        }),
+      }
+    );
+    }
+
+
+if (status == 'suspect') {
+  const add = await fetch(
+      "https://api.goamico.com/score/",
+      {
+        method: 'POST',
+        headers: {
+          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          product: id,
+          user:session?.user?.id,
+          clean:5,
+          blur:"",
+          verified:"",
+          fake:"",
+          total:"",
+
+        }),
+      }
+    );
+    }
+
+
+if (data.data.is_bill == false) {
+
+   const add = await fetch(
+      "https://api.goamico.com/score/",
+      {
+        method: 'POST',
+        headers: {
+          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          product: id,
+          user:session?.user?.id,
+          clean:"",
+          blur:"",
+          verified:"",
+          fake:5,
+          total:"",
+
+        }),
+      }
+    );
+    }
+
+
+
+
   const mockResult: ValidationResult = {
     status,
     confidence: Math.floor(Math.random() * 30) + 70,
     processingTime: Math.random() * 2 + 1,
     extractedData: mockExtractedData,
     validationReasons,
-    is_bill:data.data.is_bill
+    is_bill:data.data.is_bill,
+    productID:id,
+    category:category,
   };
 
   setValidationResult(mockResult);

@@ -4,8 +4,6 @@ import React, { useState, useRef } from 'react';
 import VerifiedBadge from '@/components/verified';
 import { MdOutlineTravelExplore } from "react-icons/md";
 import { CiLocationOn } from "react-icons/ci";
-import { Star } from "lucide-react";
-import { TbHistoryToggle } from "react-icons/tb";
 import Image from 'next/image';
 import { IoLanguage } from "react-icons/io5";
 import { MdAccessTime } from "react-icons/md";
@@ -17,8 +15,11 @@ import useFetchAmenities from '@/components/requests/fetchAmenities';
 import { GoUnverified } from "react-icons/go";
 import dynamic from 'next/dynamic';
 import { ApexOptions } from 'apexcharts';
-import AmenitiesSelector from '@/components/requests/amenities';
-import useFetchUser from '@/components/requests/fetchUser';
+import useFetchAllReviews from '../requests/fetchAllReviews';
+import StarRating from '../starsComponent';
+import useFetchScores from '../requests/fetchScore';
+import Link from 'next/link';
+
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 
 const Chart = dynamic(() => import('react-apexcharts'), {
@@ -88,43 +89,26 @@ const UserProfilePublic: React.FC<PartnerProfileProps> = ({ idu }) => {
  // Replace with actual userId
 
 
+const {AllReview} = useFetchAllReviews()
 
-const initialAmenities = [
-    // Fitness & Recreation
-    { id: 3, name: 'Gym / Workout Room', category: 'Fitness & Recreation', selected: false },
-    { id: 48, name: 'Yoga', category: 'Fitness & Recreation', selected: false },
-    { id: 21, name: 'Spa', category: 'Fitness & Recreation', selected: false },
-    
-    // Arts & Culture
-    { id: 44, name: 'Photography', category: 'Arts & Culture', selected: false },
-    { id: 46, name: 'Art Galleries', category: 'Arts & Culture', selected: false },
-    
-    // Travel & Tourism
-    { id: 40, name: 'Eco Tourism', category: 'Travel & Tourism', selected: false },
-    { id: 41, name: 'City Breaks', category: 'Travel & Tourism', selected: false },
-    { id: 42, name: 'Cultural Tours', category: 'Travel & Tourism', selected: false },
-    { id: 43, name: 'Adventure Travel', category: 'Travel & Tourism', selected: false },
-    
-    // Technology
-    { id: 45, name: 'Web Design', category: 'Technology', selected: false },
-    
-    // Lifestyle
-    { id: 49, name: 'Sustainability', category: 'Lifestyle', selected: false },
-    
-    // Pets
-    { id: 50, name: 'Pet-Friendly Places', category: 'Pets', selected: false },
-    
-    // Added general interests that might have been missing
-    { id: 51, name: 'Music', category: 'Arts & Culture', selected: false },
-    { id: 52, name: 'Reading', category: 'Arts & Culture', selected: false },
-    { id: 53, name: 'Gaming', category: 'Entertainment', selected: false },
-    { id: 54, name: 'Travel', category: 'Travel & Tourism', selected: false },
-    { id: 55, name: 'Cycling', category: 'Sports & Activities', selected: false },
-    { id: 56, name: 'Cars', category: 'Lifestyle', selected: false },
-    { id: 57, name: 'Hiking', category: 'Sports & Activities', selected: false },
-    { id: 58, name: 'Camping', category: 'Sports & Activities', selected: false },
-    { id: 59, name: 'Bowling', category: 'Sports & Activities', selected: false }
-];
+const Review = AllReview.filter((user) => user.user === idu.id)
+
+const averageRating = Review && Review.length > 0
+  ? Review.reduce((sum, r) => sum + +r.rating_global, 0) / Review.length
+  : 0;
+
+const {Score} = useFetchScores()
+const userScore = Score.filter((user) => user.user === idu.id)
+const cleanScore =userScore && userScore.length > 0? parseFloat((userScore.reduce((sum, r) => sum + +r.clean, 0) / userScore.length).toFixed(2)): 0;
+const cleanBlur =userScore && userScore.length > 0? parseFloat((userScore.reduce((sum, r) => sum + +r.blur, 0) / userScore.length).toFixed(2)): 0;
+const cleanVerified = userScore && userScore.length > 0? parseFloat((userScore.reduce((sum, r) => sum + +r.verified, 0) / userScore.length).toFixed(2)): 0;
+const cleanFake = userScore && userScore.length > 0? parseFloat((userScore.reduce((sum, r) => sum + +r.fake, 0) / userScore.length).toFixed(2)): 0;
+
+
+
+
+const cleantotal = (cleanScore * cleanVerified) * (1 - cleanBlur)**1.5 * (1 - cleanFake)**3.0
+
 
 
 
@@ -195,17 +179,15 @@ const amenityIcons: any = {
           },
           total: {
             show: true,
-            label: 'TOTAL',
+            label: 'Trust Score',
             formatter: function (w) {
-              const sum = w.globals.series.reduce((a: number, b: number) => a + b, 0);
-              const avg = sum / w.globals.series.length;
-              return Math.round(avg) + '%';
+              return Math.round(cleantotal) + '%';
             }
           }
         }
       }
     },
-    series: [67, 84, 97, 61],
+    series: [cleanScore, cleanBlur, cleanVerified, cleanFake],
     labels: ['Clean Receipt', 'Blur Receipt', 'Verified Receipt', 'Fake Receipt'],
     colors: ['#9ED0E6', '#B796AC', '#82A7A6', '#785964'],
     stroke: {
@@ -596,46 +578,38 @@ const hotelMarkers = [{
       <div>
         <div className='flex justify-between mb-4 flex-wrap'>
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-2xl font-bold text-gray-900">4.2</span>
-            <div className="flex">
-              {[...Array(4)].map((_, i) => (
-                <Star key={i} className="w-4 h-4 fill-background text-background" />
-              ))}
-              <Star className="w-4 h-4 text-background" />
-            </div>
-            <span className="text-background font-medium">Good</span>
-            <span className="text-sm text-gray-500">(17 reviews)</span>
+            <span className="text-2xl font-bold text-gray-900">{averageRating}</span>
+             <StarRating rating={averageRating} size={16}/>
+            <span className="text-background font-medium">{averageRating == 5? "Excellent": (averageRating == 4? "Very Good" :(averageRating == 3? "Good":(averageRating == 2? 	"Poor" : "")))}</span>
+            <span className="text-sm text-gray-500">(({Review.length} reviews))</span>
           </div>
-          <div className="text-sm text-gray-500 mb-4 px-2 py-1 border border-1 bg-secondary text-white rounded-3xl font-bold w-fit mt-2">Top #59 Reviewer</div>
+          {Review.length >50 ?  <div className="text-sm text-gray-500 mb-4 px-2 py-1 border border-1 bg-secondary text-white rounded-3xl font-bold w-fit mt-2">Top Reviewer</div>: ""}
+         
         </div>
         <div>
           <div className="space-y-4">
             <div className="grid gap-3 md:w-[400px]">
-              {[
-                { label: "Location", score: 4.8, color: "bg-background" },
-                { label: "Rooms", score: 4.4, color: "bg-background" },
-                { label: "Value", score: 4.0, color: "bg-background" },
-                { label: "Cleanliness", score: 4.6, color: "bg-background" },
-                { label: "Service", score: 4.2, color: "bg-background" },
-                { label: "Sleep Quality", score: 4.5, color: "bg-background" }
-              ].map((item) => (
-                <div key={item.label} className="flex items-center gap-4">
-                  <div className="w-24 md:w-28 text-sm font-medium text-gray-500">{item.label}</div>
-                  <div className="flex-1 bg-gray-100 rounded-full h-3">
-                    <div 
-                      className={`h-3 rounded-full ${item.color}`}
-                      style={{ width: `${(item.score / 5) * 100}%` }}
-                    />
-                  </div>
-                  <div className="w-8 text-sm font-medium text-right">{item.score}</div>
-                </div>
-              ))}
+                                 {[
+                      { label: "Location", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.location, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Rooms", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.room, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Value", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.value, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Cleanliness", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.clearliness, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Service", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.service, 0) / Review.length: 0, color: "bg-accent" },
+                      { label: "Spcae", score: Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.restaurant_space, 0) / Review.length: 0, color: "bg-accent" }
+                    ].map((item) => (
+                      <div key={item.label} className="flex items-center gap-4">
+                        <div className="w-24 md:w-28  text-sm font-medium text-gray-500">{item.label}</div>
+                        <div className="flex-1 bg-gray-100 rounded-full h-4">
+                          <div 
+                            className={`h-4 rounded-full ${item.color}`}
+                            style={{ width: `${(item.score / 5) * 100}%` }}
+                          />
+                        </div>
+                        <div className="w-8 text-sm font-medium text-right">{item.score}</div>
+                      </div>
+                    ))}
             </div>
           </div>
-        </div>
-        <div className='flex gap-1 justify-center text-gray-600 mt-8'>
-          <TbHistoryToggle size={24}/>
-          <p className='underline'>Reviews History</p>
         </div>
       </div>
     </div>
@@ -681,11 +655,12 @@ const hotelMarkers = [{
       />
 
 </div>
-
+<Link href="/en/trust-score">
 <div className='flex items-center gap-x-2.5 text-gray-500'>
   <FaRegQuestionCircle size={24}/>
   <p className='underline'>Read more about trust Score</p>
 </div>
+</Link>
 
 </div>
 

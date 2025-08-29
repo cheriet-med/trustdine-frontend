@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import LoginButtonBookinHotel from '../header/loginButtonBookingHotel';
 import { useRouter } from "next/navigation";
 import moment from 'moment';
+import { FaEye, FaEyeSlash, FaCircleNotch, FaCopy } from "react-icons/fa";
 
 const HotelBookingComponent = ({bookdata}:any) => {
   const now = moment();
@@ -21,6 +22,7 @@ const HotelBookingComponent = ({bookdata}:any) => {
   const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
   const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
   const [partner, setPartner] = useState(false);
+  const [isLoadingg, setIsLoadingg] = useState(false);
   const { data: session, status } = useSession( );
 
   // Guest selector state
@@ -221,6 +223,7 @@ const HotelBookingComponent = ({bookdata}:any) => {
   };
 
   const handleSubmit = async () => {
+    setIsLoadingg(true);
     const productData = {
       product: bookdata.id,
       user: session?.user?.id,
@@ -259,8 +262,7 @@ const HotelBookingComponent = ({bookdata}:any) => {
         const errorData = await productResponse.json();
         throw new Error(errorData.message || 'Failed to create product');
       }
-
-      router.push('/en/test');  
+      router.push('/en/account/trips');  
     } catch (error) {
       console.error('Submission error:', error);
     }
@@ -542,12 +544,33 @@ const HotelBookingComponent = ({bookdata}:any) => {
                   (session?.user?.is_staff?    <button className="w-full bg-secondary hover:bg-accent text-white font-medium py-2 rounded-3xl" onClick={()=> setPartner(true)}>
             Reserve Now
           </button>:
-                <button 
-                  className="w-full bg-secondary hover:bg-accent text-white font-medium py-2 rounded-3xl"
-                  onClick={handleSubmit} 
-                >
-                  Reserve Now
-                </button>):<LoginButtonBookinHotel/>}
+
+
+
+
+          <button
+          disabled={isLoadingg}
+          onClick={handleSubmit}
+          className={`w-full flex items-center justify-center gap-2 
+            bg-secondary hover:bg-accent text-white font-medium py-2 rounded-3xl ${
+              isLoadingg
+                ? "bg-secondary hover:bg-accent text-white"
+                : "bg-accent text-white hover:bg-accent"
+            }`}
+          >
+          {isLoadingg ? (
+            <>
+              <FaCircleNotch className="animate-spin" />
+              <span>Reserve Now</span>
+            </>
+          ) : (
+            "Reserve Now"
+          )}
+          </button>
+
+
+              ):
+              <LoginButtonBookinHotel/>}
               </div>
  {partner &&
           <div className="flex justify-center items-center">

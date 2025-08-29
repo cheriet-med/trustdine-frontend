@@ -1,12 +1,11 @@
 'use client'
 
 import React, { useState } from "react";
-import { Calendar, ChevronLeft, ChevronRight, MapPin, Phone, Mail, Star,  Bed, Wifi, Car, Coffee, ChefHat, Dumbbell, Utensils, Shield, Thermometer, Bath, Plus, Minus, ThumbsUp, Flag, User } from "lucide-react";
+import { Star } from "lucide-react";
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import Image from "next/image";
 import Link from "next/link";
-import useFetchUser from "@/components/requests/fetchUser";
 import useFetchReviews from "@/components/requests/fetchReviews";
 import ReportPopup from "@/components/requests/sendReportReview";
 import useFetchImageReviews from "@/components/requests/fetchImageReviews";
@@ -423,7 +422,7 @@ const handleDelete = async (id:any) => {
                     <div className="flex items-center justify-between ml-15 flex-wrap">
                       <div className="flex items-center flex-wrap gap-4 text-sm text-gray-500">
                         <span>Date of stay: {review.stay_date}</span>
-                        <span>• Trip type: Business</span>
+                        <span>• Trip type: {review.trip_type}</span>
                       </div>
                       <div className="flex items-center gap-2">
 

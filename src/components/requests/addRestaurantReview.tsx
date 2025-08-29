@@ -9,8 +9,10 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
-
+import moment from 'moment';
 import {FaStar } from "react-icons/fa"; 
+import useFetchBooking from './fetchBooking';
+
 // TypeScript interfaces
 interface Product {
   name: string;
@@ -49,9 +51,16 @@ interface ImagePreview {
 
 
 
-export default function AddReviewRestaurantForm() {
+export default function AddReviewRestaurantForm({proid}:any) {
+
 const router = useRouter();
    const { data: session, status } = useSession();
+  const { Booking } = useFetchBooking(proid)
+
+const date_stay = Booking.filter(reservation => reservation.user === session?.user?.id)
+
+
+
   const [product, setProduct] = useState<Product>({
     name: '',
     description: '',
@@ -65,7 +74,7 @@ const router = useRouter();
     latitude: '',
     longitude: '',
     location: '',
-    user: 26,
+    user: session?.user?.id,
   });
   
   const [images, setImages] = useState<ImagePreview[]>([]);
@@ -195,7 +204,7 @@ console.log(rating)
     try {
     // Create product with JSON
     const productData = {
-      product: 18,
+      product: proid,
       user: product.user,
       title: product.name,
       rating_global:(rating+ratingroom+ratingvalue+ratingclearliness+ratingservice)/5,
@@ -207,8 +216,8 @@ console.log(rating)
       value: ratingvalue,
       clearliness: ratingclearliness,
       service: ratingservice,
-      created_at: 'today',
-      stay_date: 'today'
+      created_at: moment().format('MMMM Do YYYY'),
+      stay_date: date_stay && date_stay[0]? moment(date_stay[0].restaurat_check_in_date).format("MMMM Do YYYY"): "Not Reserved Through Goamico"
     };
 
     const productResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}productreviews/`, {
@@ -267,7 +276,7 @@ console.log(rating)
       );
     } finally {
       setIsSubmitting(false);
-    
+      router.push(`/en/booking/${proid}`)
     }
   };
 
@@ -553,9 +562,8 @@ console.log(rating)
                 <div className="flex justify-center pt-6 mb-6">
                  
                 <button
-                  type="submit"
                   className="px-4 py-2 bg-white w-full text-gray-600 border border-1 font-semibold rounded-xl hover:bg-highlights hover:text-white"  
-                  onClick={()=>router.push('/en/account/listings')}
+                  onClick={()=>router.push(`/en/booking/${proid}`)}
                 >
                   Cancel
                 </button>

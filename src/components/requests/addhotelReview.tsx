@@ -5,11 +5,12 @@ import { X, Plus, Calendar, Upload, Award, MapPin, Trash2, Globe } from 'lucide-
 import TiptapEditor from '@/components/admin-dashboard/Tiptapeditor';
 import { LuImagePlus } from "react-icons/lu";
 import { AiOutlineFieldNumber } from "react-icons/ai";
+import useFetchBooking from './fetchBooking';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
-
+import moment from 'moment';
 import {FaStar } from "react-icons/fa"; 
 // TypeScript interfaces
 interface Product {
@@ -49,9 +50,14 @@ interface ImagePreview {
 
 
 
-export default function AddReviewHotelForm() {
+export default function AddReviewHotelForm({proid}:any) {
+  
 const router = useRouter();
    const { data: session, status } = useSession();
+  const { Booking } = useFetchBooking(proid)
+
+const date_stay = Booking.filter(reservation => reservation.user === session?.user?.id)
+
   const [product, setProduct] = useState<Product>({
     name: '',
     description: '',
@@ -65,7 +71,7 @@ const router = useRouter();
     latitude: '',
     longitude: '',
     location: '',
-    user: 26,
+    user: session?.user?.id,
   });
   
   const [images, setImages] = useState<ImagePreview[]>([]);
@@ -194,7 +200,7 @@ const router = useRouter();
     try {
     // Create product with JSON
     const productData = {
-      product: 18,
+      product: proid,
       user: product.user,
       title: product.name,
       rating_global:(rating+ratingroom+ratingvalue+ratingclearliness+ratingservice)/5,
@@ -206,8 +212,8 @@ const router = useRouter();
       value: ratingvalue,
       clearliness: ratingclearliness,
       service: ratingservice,
-      created_at: 'today',
-      stay_date: 'today'
+      created_at: moment().format('MMMM Do YYYY'),
+      stay_date: date_stay && date_stay[0]? moment(date_stay[0].check_in_date).format("MMMM Do YYYY"): "Not Reserved Through Goamico"
     };
 
     const productResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}productreviews/`, {
@@ -266,7 +272,7 @@ const router = useRouter();
       );
     } finally {
       setIsSubmitting(false);
-    
+      router.push(`/en/booking/${proid}`)
     }
   };
 
@@ -552,9 +558,9 @@ const router = useRouter();
                 <div className="flex justify-center pt-6 mb-6">
                  
                 <button
-                  type="submit"
+
                   className="px-4 py-2 bg-white w-full text-gray-600 border border-1 font-semibold rounded-xl hover:bg-highlights hover:text-white"  
-                  onClick={()=>router.push('/en/account/listings')}
+                  onClick={()=>router.push(`/en/booking/${proid}`)}
                 >
                   Cancel
                 </button>

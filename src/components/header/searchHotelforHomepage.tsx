@@ -220,11 +220,11 @@ export default function HotelSearchHomepage() {
             isPast 
               ? 'text-gray-300 cursor-not-allowed' 
               : isSelected
-              ? 'bg-green-500 text-white font-semibold'
+              ? 'bg-highlights text-white font-semibold'
               : isInRange
-              ? 'bg-green-100 text-green-700'
+              ? 'bg-secondary text-white'
               : isToday
-              ? 'bg-blue-100 text-blue-700 font-semibold'
+              ? 'bg-background text-white font-semibold'
               : 'hover:bg-gray-100'
           }`}
         >
@@ -252,35 +252,12 @@ export default function HotelSearchHomepage() {
         guests: guestCounts,
         dates: dateRange
       });
-      router.push(`/en/search-hotel`);
+      router.push(`/en/search-hotel/?q=${searchQuery}`);
     }
 
   };
 
-  if (!mounted) {
-    return (
-      <div className="relative mx-4  lg:w-[900px]">
-        <div className="relative flex justify-center items-center gap-2">
-          <input
-            type="text"
-            placeholder="Search Hotels, good places.."
-            value=""
-            readOnly
-            className="m-2 pl-12 pr-4 w-[300px] text-gray-300 rounded-3xl h-12 border border-gray-200"
-          />
-          <button className="w-32 h-12 bg-gray-200 text-gray-500 px-4 py-2 rounded-3xl font-medium" disabled>
-            Check In
-          </button>
-          <button className="w-32 h-12 bg-gray-200 text-gray-500 px-4 py-2 rounded-3xl font-medium" disabled>
-            Guest
-          </button>
-          <button className="w-32 h-12 bg-gray-400 text-white px-4 py-2 rounded-3xl font-medium" disabled>
-            Search
-          </button>
-        </div>
-      </div>
-    );
-  }
+ 
 
   return (
     <div className="relative mx-2  lg:w-[900px] font-montserrat">
@@ -294,9 +271,9 @@ export default function HotelSearchHomepage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setShowSuggestions(true)}
-            className="m-2 pl-12 pr-4 w-[345px] text-gray-700 rounded-3xl h-12 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm"
+            className="pl-12 pr-4 w-[345px] text-gray-700 rounded-3xl h-12 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm"
           />
-          <CiLocationOn className="absolute left-6 top-6 text-secondary" size={18} />
+          <CiLocationOn className="absolute left-6 top-4 text-secondary" size={18} />
         </div>
 
         {/* Date Picker Button */}
@@ -308,11 +285,11 @@ export default function HotelSearchHomepage() {
             setShowGuestPopup(false);
             setShowSuggestions(false);
           }}
-          className="flex items-center justify-center gap-2 w-54 h-12 bg-white border border-gray-200 hover:border-secondary hover:shadow-md text-gray-700 px-4 py-2 rounded-3xl font-medium transition-all"
+          className="flex items-center justify-center gap-2 w-48 h-12 bg-white border border-gray-200 hover:border-secondary hover:shadow-md text-gray-700 px-1 py-1 rounded-3xl font-medium transition-all"
         >
           <IoCalendarOutline size={18} className="text-secondary" />
           <span className="text-sm truncate">{getDateRangeText()}</span>
-          <IoChevronDown size={16} className={`transition-transform ${showCalendar ? 'rotate-180' : ''}`} />
+         {/* <IoChevronDown size={16} className={`transition-transform ${showCalendar ? 'rotate-180' : ''}`} />*/}
         </button>
 
         {/* Guest Selection Button */}
@@ -323,11 +300,11 @@ export default function HotelSearchHomepage() {
             setShowCalendar(false);
             setShowSuggestions(false);
           }}
-          className="flex items-center justify-center gap-2 w-54 h-12 bg-white border border-gray-200 hover:border-secondary hover:shadow-md text-gray-700 px-4 py-2 rounded-3xl font-medium transition-all"
+          className="flex items-center justify-center gap-2 w-48 h-12 bg-white border border-gray-200 hover:border-secondary hover:shadow-md text-gray-700 px-1 py-1 rounded-3xl font-medium transition-all"
         >
           <IoPeopleOutline size={18} className="text-secondary" />
           <span className="text-sm truncate">{getGuestText()}</span>
-          <IoChevronDown size={16} className={`transition-transform ${showGuestPopup ? 'rotate-180' : ''}`} />
+         {/* <IoChevronDown size={16} className={`transition-transform ${showGuestPopup ? 'rotate-180' : ''}`} />*/}
         </button>
 
         {/* Search Button */}
@@ -532,8 +509,8 @@ export default function HotelSearchHomepage() {
 
           {/* Date Info */}
           {(dateRange.checkIn || dateRange.checkOut) && (
-            <div className="mb-4 p-3 bg-accent rounded-lg">
-              <div className="text-sm text-white">
+            <div className="mb-2 flex justify-center">
+              <div className="text-sm text-secondary">
                 {dateRange.checkIn && !dateRange.checkOut && "Select check-out date"}
                 {dateRange.checkIn && dateRange.checkOut && 
                   `${formatDate(dateRange.checkIn)} - ${formatDate(dateRange.checkOut)}`

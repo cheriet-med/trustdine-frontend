@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import LoginButtonReservationsRestaurant from '../header/loginButtonReservationRestaurant';
 import { useRouter } from "next/navigation";
 import moment from 'moment';
+import { FaEye, FaEyeSlash, FaCircleNotch, FaCopy } from "react-icons/fa";
 
 const RestaurantBookingComponent = ({bookdata}:any) => {
   // Fetch existing reservations using your hook
@@ -19,7 +20,7 @@ const RestaurantBookingComponent = ({bookdata}:any) => {
   const [selectedDate, setSelectedDate] = useState('Select date');
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDateObj, setSelectedDateObj] = useState<Date | null>(null);
-
+  const [isLoadingg, setIsLoadingg] = useState(false);
   // Time picker state
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [selectedTime, setSelectedTime] = useState('Select time');
@@ -234,7 +235,7 @@ if(!selectedDateObj || !selectedTimeSlot){
   setSelect(true)
   return
 }
-
+setIsLoadingg(true);
     const reservationData = {
       product: bookdata.id,
       user: session?.user?.id,
@@ -281,7 +282,7 @@ if(!selectedDateObj || !selectedTimeSlot){
       setSelectedTimeSlot(null);
       setSelectedTime('Select time');
       
-      router.push('/en/test');  
+      router.push('/en/account/trips'); 
       // Note: The useFetchBooking hook should automatically refetch data
       // if it's set up to do so, or you might need to trigger a refetch
       
@@ -578,13 +579,38 @@ if(!selectedDateObj || !selectedTimeSlot){
                 >
                   Make Reservation
                 </button>:
-                <button 
-                  className="w-full bg-secondary hover:bg-accent text-white font-medium py-3 rounded-3xl disabled:bg-gray-400"
-                  onClick={handleSubmit}
-                 
-                >
-                  Make Reservation
-                </button>) : <LoginButtonReservationsRestaurant/>}
+
+// for submit
+           
+
+
+  <button
+          disabled={isLoadingg}
+          onClick={handleSubmit}
+          className={`w-full flex items-center justify-center gap-2 
+            bg-secondary hover:bg-accent text-white font-medium py-2 rounded-3xl ${
+              isLoadingg
+                ? "bg-secondary hover:bg-accent text-white"
+                : "bg-accent text-white hover:bg-accent"
+            }`}
+          >
+          {isLoadingg ? (
+            <>
+              <FaCircleNotch className="animate-spin" />
+              <span>Make Reservation</span>
+            </>
+          ) : (
+            "Make Reservation"
+          )}
+          </button>
+
+
+
+
+
+              ) 
+                
+                : <LoginButtonReservationsRestaurant/>}
               </div>
                 {select &&
           <div className="flex justify-center items-center">

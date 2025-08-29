@@ -5,6 +5,8 @@ import React from 'react';
 import { CheckCircle, AlertTriangle, XCircle, Clock } from 'lucide-react';
 import { ValidationResult } from '@/types/receipt';
 import AddReviewHotelForm from './requests/addhotelReview';
+import AddReviewRestaurantForm from './requests/addRestaurantReview';
+
 import Link from 'next/link';
 
 interface ValidationResultsProps {
@@ -12,13 +14,13 @@ interface ValidationResultsProps {
 }
 
 const ValidationResults: React.FC<ValidationResultsProps> = ({ result }) => {
-  
+ 
 
   return (
     <div className={`border-2 rounded-lg p-6 `}>
          
    {result.status == "valid" ?
-            <AddReviewHotelForm/>:
+           (result.category == "Hotel"?  <AddReviewHotelForm proid={result.productID}/> : <AddReviewRestaurantForm proid={result.productID}/>):
   (result.is_bill? (result.status == "suspect" ? 
      <div className='flex flex-col justify-center items-center'>
        <div className="flex items-center text-sm text-gray-500 mb-6">

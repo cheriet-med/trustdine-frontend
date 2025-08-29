@@ -26,6 +26,9 @@ import useFetchUser from '../requests/fetchUser';
 import useFetchListingImages from '../requests/fetchListingImages';
 import StarRating from '../starsComponent';
 import useFetchReviews from '../requests/fetchReviews';
+import { useRouter } from "next/navigation";
+
+
 
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 interface ImageData {
@@ -119,7 +122,7 @@ const hotelMarkers = [{
   // Check if current item is in wishlist
   const isInWishlist = isItemInWishlist(dat.data.id);
   const [showGalleryModal, setShowGalleryModal] = useState(false);
-
+  const router = useRouter();
 
 
 
@@ -260,12 +263,14 @@ could improve pricing</p>
                 </p></div>
              
   { status === "authenticated" ?
-   <div className='flex items-center hover:underline cursor-pointer' >
+
+   <div className='flex items-center hover:underline cursor-pointer' onClick={()=>router.push(`/en/account/receipt-validation?q=${dat.data.id}&ctg=${dat.data.category}`)}>
                   <GoPencil className="w-4 h-4 mr-2"/>
                    <p >
                     Write a review
-                  </p></div>
-       
+                  </p>
+                </div>
+
                 :  <LoginButtonAddReview/>}
               
               

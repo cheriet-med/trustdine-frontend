@@ -16,7 +16,9 @@ export interface ExtractedData {
     validationReasons: string[];
     flags?: string[];
     processingTime: number;
-    is_bill:boolean
+    is_bill:boolean;
+    productID:number | string | null;
+    category:string | null;
   }
   
   export interface ValidationScenario {

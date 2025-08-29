@@ -1,265 +1,157 @@
-'use client'
-import { CiReceipt } from "react-icons/ci";
-import { MdOutlineRateReview } from "react-icons/md";
-import { useState } from "react";
-import ReceiptUpload from "@/components/ReceiptUpload";
-import ValidationProgress from "@/components/ValidationProgress";
-import ValidationResults from "@/components/ValidationResults";
-import { ValidationResult, ExtractedData } from "@/types/receipt";
-import { useSession } from "next-auth/react";
+"use client";
 
+import { useEffect, useState, useRef, useCallback, lazy, Suspense } from 'react';
+import { motion, AnimatePresence } from "framer-motion";
+import { MdOutlineHotel } from "react-icons/md";
+import { IoRestaurantOutline } from "react-icons/io5";
+import { MdVerified } from "react-icons/md";
+import { VscWorkspaceTrusted } from "react-icons/vsc";
+import { MdVerifiedUser } from "react-icons/md";
+import { FaShieldHalved } from "react-icons/fa6";
+const HotelSearchHomepage = lazy(() => import('@/components/header/searchHotelforHomepage'));
+const RestaurantSearch = lazy(() => import("@/components/header/SearchRestaurant"));
 
-export default function Receipt() {
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [isValidating, setIsValidating] = useState(false);
-  const [validationResult, setValidationResult] = useState<ValidationResult | null>(null);
-  const { data: session, status } = useSession({ required: true });
+const slides = [
+  { id: 1, src: "/assets/image-1.avif", alt: "Slide 1" },
+  { id: 2, src: "/assets/image-16.avif", alt: "Slide 2" },
+  { id: 3, src: "/assets/image-11.avif", alt: "Slide 3" },
+];
 
-  const handleFileUpload = (file: File | null) => {
-    setUploadedFile(file);
-    setValidationResult(null); // Reset validation result when new file is uploaded
-  };
+export default function FullscreenSlider() {
+  const [index, setIndex] = useState(0);
 
-const handleValidate = async () => {
-  if (!uploadedFile) {
-    console.error("No file uploaded");
-    return;
-  }
-
-  setIsValidating(true);
-
-
-  try {
-    const imageFormData = new FormData();
-    imageFormData.append('title', "Esco-bar & Cafe");
-    imageFormData.append('image', uploadedFile); // safe now, since we checked it's not null
-
-    const imageResponse = await fetch(
-      "https://api.goamico.com/api/validate-bill/",
-      {
-        method: 'POST',
-        headers: {
-          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
-        },
-        body: imageFormData,
-      }
-    );
-
-    if (!imageResponse.ok) {
-      throw new Error(`Failed to upload image`);
-    }
-
-    const data = await imageResponse.json()
-
-    console.log("the status is ", data.status, "and the message is ", data.message, "is bill", data.data.is_bill);
-
-
-
-
-
-
-// Mock result (for now)
-  const mockExtractedData: ExtractedData = {
-    restaurantName: "Sample Restaurant",
-    date: new Date().toLocaleDateString(),
-    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    total: `$${(Math.random() * 50 + 10).toFixed(2)}`,
-    location: "123 Main St, Sample City",
-    taxAmount: `$${(Math.random() * 5 + 1).toFixed(2)}`,
-    items: ["Item 1", "Item 2", "Item 3"]
-  };
-
-  const rand = Math.random();
-  const status = data.status;
-  const validationReasons = data.message
-
-
-if (status == 'valid') {
-  const add = await fetch(
-      "https://api.goamico.com/score/",
-      {
-        method: 'POST',
-        headers: {
-          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ 
-          product: 18,
-          user:session?.user?.id,
-          clean:5,
-          blur:"",
-          verified:5,
-          fake:"",
-          total:"",
-
-        }),
-      }
-    );
-    }
-
-
-if (status == 'rejected') {
-  const add = await fetch(
-      "https://api.goamico.com/score/",
-      {
-        method: 'POST',
-        headers: {
-          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ 
-          product: 18,
-          user:session?.user?.id,
-          clean:"",
-          blur:5,
-          verified:"",
-          fake:"",
-          total:"",
-
-        }),
-      }
-    );
-    }
-
-
-if (status == 'suspect') {
-  const add = await fetch(
-      "https://api.goamico.com/score/",
-      {
-        method: 'POST',
-        headers: {
-          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ 
-          product: 18,
-          user:session?.user?.id,
-          clean:5,
-          blur:"",
-          verified:"",
-          fake:"",
-          total:"",
-
-        }),
-      }
-    );
-    }
-
-
-if (data.data.is_bill == false) {
-
-   const add = await fetch(
-      "https://api.goamico.com/score/",
-      {
-        method: 'POST',
-        headers: {
-          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ 
-          product: 18,
-          user:session?.user?.id,
-          clean:"",
-          blur:"",
-          verified:"",
-          fake:5,
-          total:"",
-
-        }),
-      }
-    );
-    }
-
-
-
-
-  const mockResult: ValidationResult = {
-    status,
-    confidence: Math.floor(Math.random() * 30) + 70,
-    processingTime: Math.random() * 2 + 1,
-    extractedData: mockExtractedData,
-    validationReasons,
-    is_bill:data.data.is_bill
-  };
-
-  setValidationResult(mockResult);
-
-
-
-
-
-
-
-
-
-  } catch (error) {
-    console.error("Validation error:", error);
-  } finally {
-    setIsValidating(false);
-  }
-
+  const counterRef = useRef<HTMLSpanElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [activeTab, setActiveTab] = useState<"hotels" | "restaurants">("hotels");
+  const [gsapLoaded, setGsapLoaded] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   
-};
-
+  // Initialize ref array for animated elements
+  const headerSpansRef = useRef<(HTMLDivElement | null)[]>([]);
   
+  useEffect(() => {
+    headerSpansRef.current = headerSpansRef.current.slice(0, 3);
+  }, []);
+
+  const handleTabChange = useCallback((tab: "hotels" | "restaurants") => {
+    setActiveTab(tab);
+  }, []);
+
+  const setHeaderSpanRef = useCallback((index: number) => (el: HTMLDivElement | null) => {
+    headerSpansRef.current[index] = el;
+  }, []);
+
+
+  // Auto-change every 5s
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
-    <div className="my-6 mx-2 lg:mx-6 ">
-      <div>
-        {/* Header Tabs */}
-        <div className="grid grid-cols-2 divide-x divide-accent overflow-hidden rounded-lg border border-1 text-sm text-gray-500 bg-white">
-          <div className="flex items-center justify-center gap-2 bg-accent text-white">
-            <CiReceipt size={24}/>
-            <p className="leading-none">
-              <strong className="block font-medium">Receipt</strong>
-              <small className="mt-1">Upload your receipt</small>
-            </p>
-          </div>
+    <div className="relative w-screen h-screen overflow-hidden">
+      <AnimatePresence>
+        <motion.img
+          key={slides[index].id}
+          src={slides[index].src}
+          alt={slides[index].alt}
+          initial={{ opacity: 0, scale: 1.1 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ duration: 1 }}
+          className="absolute top-0 left-0 w-full h-full object-cover"
+        />
+      </AnimatePresence>
 
-          <div className="relative flex items-center justify-center gap-2 p-4 bg-highlights text-white">
-            <span className="absolute top-1/2 -left-2 hidden size-4 -translate-y-1/2 rotate-45 border border-accent sm:block ltr:border-s-0 ltr:border-b-0 ltr:bg-white rtl:border-e-0 rtl:border-t-0 rtl:bg-white"></span>
-            <MdOutlineRateReview size={24}/>
-            <p className="leading-none">
-              <strong className="block font-medium">Review</strong>
-              <small className="mt-1">Write Review</small>
-            </p> 
+      {/* Overlay content (optional) */}
+       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full md:max-w-5xl px-4 flex flex-col justify-center items-center space-y-2 z-30">
+          {/* Title */}
+          <h1 className="text-center uppercase text-4xl md:text-6xl lg:text-6.5xl leading-[0.85] tracking-[-0.25rem] text-white font-bold font-playfair pb-2 ">
+            <span 
+              ref={setHeaderSpanRef(0)} 
+              className="block transform translate-y-full select-none bg-highlights px-4 py-2 rounded-3xl opacity-85"
+              style={{ wordSpacing: '0.1em' }}
+            >
+              {activeTab === "hotels" ? "Verified by Receipts" : "Trusted by Real Guests"}
+            </span>
+          </h1>
+          
+          {/* Subtitle */}
+          <h1 className="text-center text-3xl md:text-4xl custom:text-5xl leading-[0.85] tracking-[-0.25rem] text-white font-playfair">
+            <span 
+              ref={setHeaderSpanRef(1)} 
+              className="block transform translate-y-full select-none bg-highlights px-2 py-2 rounded-3xl opacity-85"
+              style={{ wordSpacing: '0.25em' }}
+            >
+              {activeTab === "hotels" ? "Skip the fake reviews, Discover restaurants and hotels that real people actually visited" 
+              : "This instantly communicates the platform's unique value, is clear, and builds trust"}
+            </span>
+          </h1>
+
+          {/* Tab Selector */}
+          <div 
+            ref={setHeaderSpanRef(2)} 
+            className="flex gap-6 mb-8 md:mb-8 pt-32 pb-4"
+          >
+            <div 
+              className={`flex gap-2 cursor-pointer pb-2 transition-colors bg-highlights px-4 py-1 rounded-3xl opacity-85${
+                activeTab === "hotels" ? "border-b-2 border-white bg-secondary" : "opacity-80 hover:opacity-100"
+              }`}
+              onClick={() => handleTabChange("hotels")}
+            >
+              <MdOutlineHotel className="text-white" size={28}/>
+              <p className="max-w-5xl text-white sm:text-lg">Hotels</p>
+            </div>
+            
+            <div 
+              className={`flex gap-2 cursor-pointer pb-2 transition-colors bg-highlights px-4 py-1 rounded-3xl opacity-85${
+                activeTab === "restaurants" ? "border-b-2 border-white bg-secondary"  : "opacity-80 hover:opacity-100"
+              }`}
+              onClick={() => handleTabChange("restaurants")}
+            >
+              <IoRestaurantOutline className="text-white" size={22}/>
+              <p className="max-w-5xl text-white sm:text-lg">Restaurants</p>
+            </div>
+          </div>
+          
+          <div className='pt-10 md:pt-1'>
+            {/* Conditional Search Component with Suspense */}
+            <Suspense fallback={<div className="text-white">Loading search...</div>}>
+              {activeTab === "hotels" ? <HotelSearchHomepage /> : <RestaurantSearch />}
+            </Suspense>
           </div>
         </div>
+              <div className="absolute bottom-8 md:bottom-12 left-1/2 transform -translate-x-1/2 flex gap-2 md:gap-6 z-30 justify-center md:justify-between w-full px-2 md:px-16 flex-wrap">
+                <div className="flex items-center gap-2">
+                  <MdVerified className="text-white h-5 w-5 md:h-6 md:w-6" />
+                  <span className="text-white text:xs md:text-lg font-playfair md:font-bold">Verified by Receipt</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <MdVerifiedUser className="text-white h-5 w-5 md:h-6 md:w-6" />
+                  <span className="text-white text:xs md:text-lg font-playfair md:font-bold">Real Guest Trusted</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <FaShieldHalved className="text-white h-5 w-5 md:h-6 md:w-6" />
+                  <span className="text-white text:xs md:text-lg font-playfair md:font-bold">No Fake Reviews</span>
+                </div>
+              </div>
 
-        {/* Main Content */}
-        <div className="p-6 rounded-lg border border-1 bg-white mt-8 space-y-6">
-          <ReceiptUpload 
-            onFileUpload={handleFileUpload}
-            uploadedFile={uploadedFile}
-            onValidate={handleValidate}
-            isValidating={isValidating}
+      {/* Slider dots */}
+      <div className="absolute bottom-6 w-full flex justify-center gap-2">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setIndex(i)}
+            className={`w-20 h-1 rounded-full ${
+              i === index ? "bg-white" : "bg-white/50"
+            }`}
           />
-
-          {isValidating && <ValidationProgress isValidating={isValidating} />}
-
-          {validationResult && (
-            <ValidationResults result={validationResult} />
-          )}
-        </div>
-
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="p-6 rounded-lg border border-1 mt-8 space-y-6 text-sm text-white bg-accent">
-          <h1 className="text-xl font-playfair font-semibold">Receipt validation</h1>
-          <hr />
-          <p>Receipt validation ensures the accuracy and legitimacy of receipts for expenses, reimbursements, and audits. AI automates this process using computer vision, OCR, and machine learning to extract and verify data like merchant names, dates, and amounts.
-<br />
-Key benefits include faster processing, fraud detection (duplicates/altered receipts), and compliance checks (tax rules, company policies). AI also cross-references receipts with transactions for consistency.
-
-
-</p>
-        </div>
-
-
-        <div className="p-6 rounded-lg border border-1 mt-8 space-y-6 text-sm  text-white bg-highlights">
-          <h1 className="text-xl font-playfair font-semibold">Trusted Score</h1>
-          <hr />
-         <p>For the best results, please upload clear and legible receipts. High-quality uploads ensure fast and accurate processing, helping you maintain a good score. Blurry, incomplete, or altered receipts may affect your score and delay approval. Make sure the receipt is well-lit, fully visible, and unedited, with all key details like the merchant name, date, and total amount easy to read. Submitting valid receipts helps us verify transactions quickly and keeps your score high. Thank you for your attention to this important step!</p>
-        </div>
-</div>
+        ))}
       </div>
     </div>
   );

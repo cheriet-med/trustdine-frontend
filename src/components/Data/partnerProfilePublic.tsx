@@ -20,6 +20,8 @@ import useFetchAmenities from '@/components/requests/fetchAmenities';
 import useFetchUser from '@/components/requests/fetchUser';
 import { LuMessageCircleMore } from "react-icons/lu";
 import useFetchLanguages from '@/components/requests/fetchLanguage';
+import useFetchAllReviews from '../requests/fetchAllReviews';
+
 
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 
@@ -173,6 +175,17 @@ const PartnerProfilePublic: React.FC<PartnerProfileProps> = ({ idu }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+
+const {AllReview} = useFetchAllReviews()
+
+const Review = AllReview.filter((user) => user.user === idu.id)
+
+const averageRating = Review && Review.length > 0
+  ? Review.reduce((sum, r) => sum + +r.rating_global, 0) / Review.length
+  : 0;
+
+
 
   const userId = idu.id;
   //const { Users, isLoading, mutate } = useFetchUser(userId);
@@ -469,6 +482,8 @@ const hotelMarkers = [{
               </div>
             </div>
           </div>
+
+
         </div>
 
         <div className="border border-1 rounded-2xl p-6 shadow-sm bg-white relative ">
