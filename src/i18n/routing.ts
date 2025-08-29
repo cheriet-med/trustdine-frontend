@@ -10,6 +10,7 @@ export const routing = defineRouting({
     "/": "/",
     "/checkout-boking":"/checkout-boking",
     "/profile":"/profile",
+    "/chat":"/chat",
     "/profile/[id]":"/profile/[id]",
     "/profile-partner":"/profile-partner",
     "/checkout-partner": "/checkout-partner",

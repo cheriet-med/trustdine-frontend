@@ -310,22 +310,29 @@ import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 
 // Extend the User and Session types in next-auth
+
 declare module "next-auth" {
   interface User {
     id?: string;
     email?: string | null;
     full_name?: string | null;
-    profile_image?: string | null;
     is_superuser?: boolean;
     is_staff?: boolean;
+    address_line_1?: string | null;
+    address_line_2?: string | null;
+    city?: string | null;
+    state?: string | null;
+    postalCode?: string | null;
+    countryCode?: string | null;
+    phoneNumber?: string | null;
   }
 
   interface Session {
     user: User;
-    access_token?: string;
-    refresh_token?: string;
+    
   }
 }
+
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [

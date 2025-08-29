@@ -5,8 +5,7 @@ import CombatLanding from "@/components/home-page/hero"
 import ScrollAnimationGallery from "@/components/home-page/section3"
 import CombinedScrollAnimation from "@/components/home-page/section4"
 import ScrollAnimation from "@/components/home-page/section1"
-import FullscreenSlider from "../test/page"
-
+import FullscreenSlider from "@/components/home-page/sectionTop"
 
 export default function Home () {
 

@@ -271,12 +271,13 @@ export default function HotelSearchHomepage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onFocus={() => setShowSuggestions(true)}
-            className="pl-12 pr-4 w-[345px] text-gray-700 rounded-3xl h-12 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-sm"
+            className="pl-12 pr-4 w-[330px] md:w-[345px] text-gray-700 rounded-3xl h-12 border border-gray-200 focus:outline-none focus:ring-1 focus:ring-highlights focus:border-transparent transition-all shadow-sm"
           />
           <CiLocationOn className="absolute left-6 top-4 text-secondary" size={18} />
         </div>
 
         {/* Date Picker Button */}
+        <div className="flex gap-2">
         <button
           type="button"
           onClick={() => {
@@ -285,7 +286,7 @@ export default function HotelSearchHomepage() {
             setShowGuestPopup(false);
             setShowSuggestions(false);
           }}
-          className="flex items-center justify-center gap-2 w-48 h-12 bg-white border border-gray-200 hover:border-secondary hover:shadow-md text-gray-700 px-1 py-1 rounded-3xl font-medium transition-all"
+          className="flex items-center justify-center gap-2 w-40 h-12 bg-white border border-gray-200 hover:border-secondary hover:shadow-md text-gray-700 px-1 py-1 rounded-3xl font-medium transition-all"
         >
           <IoCalendarOutline size={18} className="text-secondary" />
           <span className="text-sm truncate">{getDateRangeText()}</span>
@@ -300,17 +301,17 @@ export default function HotelSearchHomepage() {
             setShowCalendar(false);
             setShowSuggestions(false);
           }}
-          className="flex items-center justify-center gap-2 w-48 h-12 bg-white border border-gray-200 hover:border-secondary hover:shadow-md text-gray-700 px-1 py-1 rounded-3xl font-medium transition-all"
+          className="flex items-center justify-center gap-2 w-40 h-12 bg-white border border-gray-200 hover:border-secondary hover:shadow-md text-gray-700 px-1 py-1 rounded-3xl font-medium transition-all"
         >
           <IoPeopleOutline size={18} className="text-secondary" />
           <span className="text-sm truncate">{getGuestText()}</span>
          {/* <IoChevronDown size={16} className={`transition-transform ${showGuestPopup ? 'rotate-180' : ''}`} />*/}
         </button>
-
+</div>
         {/* Search Button */}
         <button 
           onClick={handleSearch}
-          className="w-[345px] md:w-32 h-11 bg-secondary hover:bg-accent text-white px-4 py-2 rounded-3xl font-medium transition-all shadow-md hover:shadow-lg transform hover:scale-105"
+          className=" w-[330px] md:w-32 h-11 bg-secondary hover:bg-accent text-white px-4 py-2 rounded-3xl font-medium transition-all shadow-md hover:shadow-lg transform hover:scale-105"
         >
           Search
         </button>
