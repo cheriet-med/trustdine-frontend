@@ -219,6 +219,7 @@ export default function RestaurantSearch() {
   }
 
   return (
+    <div className="flex justify-center">
     <div className="relative mx-2 lg:w-[700px]">
       <form onSubmit={handleSearch} className="relative">
         <input
@@ -307,6 +308,7 @@ export default function RestaurantSearch() {
           )}
         </div>
       )}
+    </div>
     </div>
   );
 }

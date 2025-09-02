@@ -23,6 +23,7 @@ interface Product {
   cancellation_policy: string;
   established: string;
   image: File | null;
+  receipt: File | null;
   type: string;
   longitude: string;
   location: any;
@@ -72,6 +73,7 @@ export default function HotelForm() {
     cancellation_policy: '',
     established: '',
     image: null,
+    receipt:null,
     latitude: '',
     longitude: '',
     location: '',
@@ -90,6 +92,7 @@ export default function HotelForm() {
   
   const [images, setImages] = useState<ImagePreview[]>([]);
   const [mainImagePreview, setMainImagePreview] = useState<string | null>(null);
+  const [recieptPreview, setRecieptPreview] = useState<string | null>(null);
   const [nearbyAttractions, setNearbyAttractions] = useState<NearbyAttraction[]>([{ name: '', distance: '' }]);
   const [awards, setAwards] = useState<Award[]>([{ name: '', year: '' }]);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -104,7 +107,7 @@ export default function HotelForm() {
   const [errorlocation, setErrorlocation] = useState('');
   const [errorlatitude, setErrorlatitude] = useState('');
   const [errorlongtitude, setErrorlongtitude] = useState('');
-
+  const [errorreciept, setErrorreciept] = useState('');
   const handleProductChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProduct(prev => ({ ...prev, [name]: value }));
@@ -130,6 +133,24 @@ export default function HotelForm() {
       [dayKey]: value || '' 
     }));
   };
+
+ const handleReciepChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setProduct(prev => ({ ...prev, receipt: file }));
+      const url = URL.createObjectURL(file);
+      setRecieptPreview(url);
+    }
+  };
+
+  const removeRecieptImage = () => {
+    setProduct(prev => ({ ...prev, receipt: null }));
+    if (recieptPreview) {
+      URL.revokeObjectURL(recieptPreview);
+      setRecieptPreview(null);
+    }
+  };
+
 
   const handleMainImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -216,7 +237,7 @@ export default function HotelForm() {
     setErrorlocation('');
     setErrorlatitude('');
     setErrorlongtitude('');
-
+    setErrorreciept('');
 
     if (!product.name.trim()) {
       setErrorname('Enter Listing Name Please');
@@ -232,7 +253,10 @@ export default function HotelForm() {
       setErrorimage('Enter Listing image Please');
       return;
     }
-
+    if (!product.receipt) {
+      setErrorreciept('Enter Listing reciept Please');
+      return;
+    }
     if (!product.price_per_night.trim()) {
       setErrorprice('Enter Listing price Please');
       return;
@@ -274,7 +298,7 @@ export default function HotelForm() {
       productFormData.append('size', product.size);
       productFormData.append('cancellation_policy', product.cancellation_policy);
       productFormData.append('established', product.established);
-      productFormData.append('category', 'Restaurant');
+      productFormData.append('category', 'Hotel');
       productFormData.append('latitude', product.latitude);
       productFormData.append('longtitude', product.longitude);
       productFormData.append('location', product.location);
@@ -293,6 +317,9 @@ export default function HotelForm() {
         productFormData.append('image', product.image);
       }
 
+      if (product.receipt) {
+        productFormData.append('receipt', product.receipt);
+      }
       const productResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}product/`, {
         method: 'POST',
         headers: {
@@ -703,10 +730,63 @@ export default function HotelForm() {
 
 
 
+                    {/* Receipt Image */}
+                    <div className="mb-2 bg-gray-50 rounded-xl p-2 mt-1">
+                      <label className="block text-sm font-semibold text-gray-500 mb-3"> Upload your receipt to post a trusted, verified review *</label>
+                      <p className="text-sm font-medium text-gray-600 mb-1 font-playfair">To ensure our reviews are authentic and only come from real customers, we verify visits using receipts</p>
+                      {!recieptPreview ? (
+                        <label className="block w-full cursor-pointer">
+                          <div className="border-2 bg-white border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-highlights hover:bg-gray-50 transition-all h-72">
+                            <LuImagePlus className="w-12 h-12 text-gray-400 mx-auto mt-10" />
+                            <p className="text-lg font-medium text-gray-600 mb-1 font-playfair">Click to upload Receipt image</p>
+                            <p className="text-sm text-gray-500">PNG, JPG, AVIF up to 10MB</p>
+                          </div>
+                          {errorreciept && <p className="text-sm mt-2 text-accent">{errorreciept}</p>}
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleReciepChange}
+                            className="hidden"
+                          />
+                        </label>
+                      ) : (
+                        <div className="relative inline-block">
+                          <div className="relative group">
+                            <Image
+                              src={recieptPreview}
+                              alt="Main preview"
+                              width={150}
+                              height={150}
+                              className="object-cover h-full w-full rounded-xl shadow-lg border-2 border-gray-200"
+                            />
+                            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-xl transition-all duration-200 flex items-center justify-center">
+                              <button
+                                type="button"
+                                onClick={removeRecieptImage}
+                                className="w-10 h-10 bg-highlights text-white rounded-full flex items-center justify-center hover:bg-secondary transition-colors shadow-lg opacity-0 group-hover:opacity-100 transform scale-90 group-hover:scale-100"
+                              >
+                                <X className="w-5 h-5" />
+                              </button>
+                            </div>
+                          </div>
+                          <div className="mt-3 text-center">
+                            <label className="inline-flex items-center gap-2 px-3 py-1 text-gray-800 rounded-3xl hover:bg-gray-100 border border-1 border-secondary transition-colors cursor-pointer font-medium">
+                              <Upload className="w-4 h-4" />
+                              Change Image
+                              <input
+                                type="file"
+                                accept="image/*"
+                                onChange={removeRecieptImage}
+                                className="hidden"
+                              />
+                            </label>
+                          </div>
+                        </div>
+                      )}
+                    </div>
 
 
-
-
+<div className='my-2'></div>
 
 
               {/* Nearby Attractions */}

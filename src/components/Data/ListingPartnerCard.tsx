@@ -234,7 +234,7 @@ export default function ListinPartnerCard() {
             <PropertyCard
               id={listin.id}
               location={listin.location || "Unknown location"}
-              price={listin.price_per_night ? `${listin.price_per_night} ${listin.currency || ''}` : "Price not available"}
+              price={listin.price_per_night ? `${listin.price_per_night} ${listin.currency || ''}` : `${listin.average_cost} ${listin.currency || ''}`}
               address={listin.name || "Unnamed listin"}
               imageUrl={`${process.env.NEXT_PUBLIC_IMAGE}/${listin.image}`}
               averageRating={listin.rating ? parseFloat(listin.rating) : 0}

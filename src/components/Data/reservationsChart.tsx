@@ -4,9 +4,11 @@ import { LuCalendarDays } from "react-icons/lu";
 import { GiConfirmed } from "react-icons/gi";
 import { TbCalendarCancel } from "react-icons/tb";
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { ApexOptions } from 'apexcharts';
 import useFetchAllBookings from "@/components/requests/fetchAllBookings";
+import { useSession } from "next-auth/react";
+
 
 // Dynamically import ApexCharts to avoid SSR issues
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
@@ -25,9 +27,11 @@ interface Booking {
 export default function ReservationChart() {
   const [revenueSeries, setRevenueSeries] = useState<{data: SeriesData}[]>([]);
   const [bookingSeries, setBookingSeries] = useState<{data: SeriesData}[]>([]);
-
+  const { data: session, status } = useSession({ required: true });
   const { AllBookings } = useFetchAllBookings();
-
+  const Owner = useMemo(() => {
+    return AllBookings.filter((user) => user.user_owner === session?.user?.id);
+  }, [AllBookings, session?.user?.id]);
 
   // Calculate metrics from booking data
   const calculateMetrics = (bookings: Booking[]) => {
@@ -73,7 +77,7 @@ export default function ReservationChart() {
   };
 
   useEffect(() => {
-    if (AllBookings && AllBookings.length > 0) {
+    if (Owner && Owner.length > 0) {
       // Process booking data for charts
       const processBookingData = (bookings: Booking[]) => {
         // Group bookings by date
@@ -119,124 +123,115 @@ export default function ReservationChart() {
         return { revenueData, bookingData };
       };
 
-      const { revenueData, bookingData } = processBookingData(AllBookings);
+      const { revenueData, bookingData } = processBookingData(Owner);
       setRevenueSeries([{ data: revenueData }]);
       setBookingSeries([{ data: bookingData }]);
     }
-  }, [AllBookings]);
+  }, [Owner]);
 
-  const metrics = AllBookings ? calculateMetrics(AllBookings) : {
+  const metrics = Owner ? calculateMetrics(Owner) : {
     todayRevenue: '0.00',
     monthRevenue: '0.00',
     yearRevenue: '0.00',
     completedBookings: 0
   };
 
-  const options1: ApexOptions = {
-    chart: {
-      id: "chart2",
-      type: "area",
-      height: 230,
-      foreColor: "#ccc",
-      toolbar: {
-        autoSelected: "pan",
-        show: false
-      }
-    },
-    colors: ["#00BAEC"],
-    stroke: {
-      width: 3
-    },
-    grid: {
-      borderColor: "#555",
-      yaxis: {
-        lines: {
-          show: false
-        }
-      }
-    },
-    dataLabels: {
-      enabled: false
-    },
-    fill: {
-      gradient: {
-        opacityFrom: 0.55,
-        opacityTo: 0
-      }
-    },
-    markers: {
-      size: 5,
-      colors: ["#000524"],
-      strokeWidth: 3
-    },
-    tooltip: {
-      theme: "dark",
-      y: {
-        formatter: function(val) {
-          return "$" + val.toFixed(2);
-        }
-      }
-    },
-    xaxis: {
-      type: "datetime"
-    },
-    yaxis: {
-      min: 0,
-      tickAmount: 4,
-      labels: {
-        formatter: function(val) {
-          return "$" + val.toFixed(0);
-        }
-      }
+ const options1: ApexOptions = {
+  chart: {
+    id: "chart2",
+    type: "area",
+    height: 230,
+    foreColor: "#ccc",
+    toolbar: {
+      autoSelected: "pan",
+      show: false
     }
-  };
+  },
+  noData: {
+    text: "No Revenue Data",
+    align: "center",
+    verticalAlign: "middle",
+    style: {
+      color: "#888",
+      fontSize: "16px"
+    }
+  },
+  colors: ["#00BAEC"],
+  stroke: {
+    width: 3
+  },
+  grid: {
+    borderColor: "#555",
+    yaxis: {
+      lines: { show: false }
+    }
+  },
+  dataLabels: { enabled: false },
+  fill: {
+    gradient: {
+      opacityFrom: 0.55,
+      opacityTo: 0
+    }
+  },
+  markers: {
+    size: 5,
+    colors: ["#000524"],
+    strokeWidth: 3
+  },
+  tooltip: {
+    theme: "dark",
+    y: {
+      formatter: (val) => "$" + val.toFixed(2)
+    }
+  },
+  xaxis: { type: "datetime" },
+  yaxis: {
+    min: 0,
+    tickAmount: 4,
+    labels: {
+      formatter: (val) => "$" + val.toFixed(0)
+    }
+  }
+};
 
-  const options2: ApexOptions = {
-    chart: {
-      id: "chart1",
-      height: 130,
-      type: "bar",
-      foreColor: "#ccc",
-      brush: {
-        target: "chart2",
-        enabled: true
-      },
-      selection: {
-        enabled: true,
-        fill: {
-          color: "#fff",
-          opacity: 0.4
-        }
-      }
-    },
-    colors: ["#FF0080"],
-    stroke: {
-      width: 2
-    },
-    grid: {
-      borderColor: "#444"
-    },
-    markers: {
-      size: 0
-    },
-    tooltip: {
-      theme: "dark",
-      y: {
-        formatter: function(val) {
-          return val + " bookings";
-        }
-      }
-    },
-    xaxis: {
-      type: "datetime",
-      tooltip: {
-        enabled: false
-      }
-    },
-    yaxis: {
-      tickAmount: 2
+const options2: ApexOptions = {
+  chart: {
+    id: "chart1",
+    height: 130,
+    type: "bar",
+    foreColor: "#ccc",
+    brush: { target: "chart2", enabled: true },
+    selection: {
+      enabled: true,
+      fill: { color: "#fff", opacity: 0.4 }
     }
-  };
+  },
+  noData: {
+    text: "No Booking Data",
+    align: "center",
+    verticalAlign: "middle",
+    style: {
+      color: "#888",
+      fontSize: "16px"
+    }
+  },
+  colors: ["#FF0080"],
+  stroke: { width: 2 },
+  grid: { borderColor: "#444" },
+  markers: { size: 0 },
+  tooltip: {
+    theme: "dark",
+    y: {
+      formatter: (val) => val + " bookings"
+    }
+  },
+  xaxis: {
+    type: "datetime",
+    tooltip: { enabled: false }
+  },
+  yaxis: { tickAmount: 2 }
+};
+
 
   return (
     <div className="mx-2 lg:mx-6 mt-6">
@@ -275,7 +270,7 @@ export default function ReservationChart() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-500">Total Reservations</p>
-              <p className="text-2xl font-medium text-gray-900">{AllBookings?.length || 0}</p>
+              <p className="text-2xl font-medium text-gray-900">{Owner?.length || 0}</p>
             </div>
            <LuCalendarDays size={32} className="text-accent"/>
           </div>
@@ -370,14 +365,14 @@ export default function ReservationChart() {
         <div className="px-6">
           <h3 className="text-lg font-medium text-gray-900 mb-2">Daily Revenue</h3>
           <div id="chart-area">
-            {revenueSeries.length > 0 && (
+         
               <Chart 
                 options={options1} 
                 series={revenueSeries} 
                 type="area" 
                 height={300} 
               />
-            )}
+          
           </div>
         </div>
 
@@ -385,14 +380,14 @@ export default function ReservationChart() {
         <div className="px-6 pb-6">
           <h3 className="text-lg font-medium text-gray-900 mb-2">Daily Bookings</h3>
           <div id="chart-bar" className="mt-4">
-            {bookingSeries.length > 0 && (
+          
               <Chart 
                 options={options2} 
                 series={bookingSeries} 
                 type="bar" 
                 height={300} 
               />
-            )}
+           
           </div>
         </div>
       </div>

@@ -1,13 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, lazy } from "react";
 import Image from "next/image";
-import RestaurantSearch from "../header/SearchRestaurant";
+
 //import HotelSearch from "../header/SearchHotels";
 import { MdOutlineHotel } from "react-icons/md";
 import { IoRestaurantOutline } from "react-icons/io5";
 import SearchForm from "../header/search";
 import HotelSearch from "../header/search";
+const HotelSearchHomepage = lazy(() => import('@/components/header/searchHotelforHomepage'));
+const RestaurantSearch = lazy(() => import("@/components/header/SearchRestaurant"));
 export default function SearchHero() {
   const [activeTab, setActiveTab] = useState("hotels");
 
@@ -58,7 +60,7 @@ export default function SearchHero() {
           </div>
           
           {/* Conditional Search Component */}
-          {activeTab === "hotels" ? <HotelSearch/> : <RestaurantSearch/>}
+          {activeTab === "hotels" ? <HotelSearchHomepage/> : <RestaurantSearch/>}
         </div>
       </div>
     </div>

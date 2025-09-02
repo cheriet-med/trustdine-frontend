@@ -22,6 +22,7 @@ interface Product {
   cancellation_policy: string;
   established: string;
   image: File | null;
+  receipt: File | null;
   type: string;
   longitude: any;
   location: string;
@@ -82,9 +83,11 @@ interface ListingData {
   cancellation_policy: string;
   established: string;
   image: string;
+  receipt:string;
   latitude: string;
   longtitude: string;
   category:string;
+  average_cost:string;
   location: string;
   nearby_attractions: NearbyAttraction[];
   awards: Award[];
@@ -121,6 +124,7 @@ export default function EditRestaurantForm(listingID:any) {
     cancellation_policy: '',
     established: '',
     image: null,
+    receipt:null,
     latitude: '',
     longitude: '',
     location: '',
@@ -154,7 +158,8 @@ export default function EditRestaurantForm(listingID:any) {
   const [errorlocation, setErrorlocation] = useState('');
   const [errorlatitude, setErrorlatitude] = useState('');
   const [errorlongtitude, setErrorlongtitude] = useState('');
-
+  const [recieptPreview, setRecieptPreview] = useState<string | null>(null);
+  const [errorreciept, setErrorreciept] = useState('');
 
 useEffect(() => {
   const fetchAllData = async () => {
@@ -175,13 +180,14 @@ useEffect(() => {
         user: data.user,
         name: data.name || '',
         description: data.description || '',
-        price_per_night: data.price_per_night || '',
+        price_per_night: data.average_cost || '',
         capacity: data.capacity || '',
         size: data.size || '',
         type: data.types || '',
         cancellation_policy: data.cancellation_policy || '',
         established: data.established || '',
         image: null, // Keep as null for new uploads
+        receipt:null,
         latitude: data.latitude || '',
         longitude: data.longtitude || '',
         location: data.location || '',
@@ -202,7 +208,9 @@ useEffect(() => {
       if (data.image) {
         setMainImagePreview(process.env.NEXT_PUBLIC_IMAGE+'/'+data.image);
       }
-
+      if (data.receipt) {
+        setRecieptPreview(process.env.NEXT_PUBLIC_IMAGE+'/'+data.receipt);
+      }
       // Fetch related data in parallel
       const [awardsRes, nearbyRes, imagesRes] = await Promise.all([
         fetch(`${process.env.NEXT_PUBLIC_URL}awards/?product=${query}`, {
@@ -326,6 +334,25 @@ useEffect(() => {
 
   fetchimages();
 }, []);
+
+
+
+ const handleReciepChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setProduct(prev => ({ ...prev, receipt: file }));
+      const url = URL.createObjectURL(file);
+      setRecieptPreview(url);
+    }
+  };
+
+  const removeRecieptImage = () => {
+    setProduct(prev => ({ ...prev, receipt: null }));
+    if (recieptPreview) {
+      URL.revokeObjectURL(recieptPreview);
+      setRecieptPreview(null);
+    }
+  };
 
 
 const handleDeleteFetchedImage = async (imageId: any, index: number) => {
@@ -509,8 +536,8 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
       setErrorlocation('');
       setErrorlatitude('');
       setErrorlongtitude('');
-  setErrorMessage('');
-   
+      setErrorMessage('');
+      setErrorreciept('');
 
  if (!product.name.trim()) {
        setErrorname('Enter Listing Name Please');
@@ -521,7 +548,7 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
        setErrordescription('Enter Listing description Please');
       return;
     } 
-    
+  
    if (!product.price_per_night.trim()) {
        setErrorprice('Enter Listing price Please');
       return;
@@ -584,7 +611,9 @@ const handleDeleteNearby = async (awardId: any, index: number) => {
       if (product.image) {
         productFormData.append('image', product.image);
       }
-
+      if (product.receipt) {
+        productFormData.append('receipt', product.receipt);
+      }
       const productResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}productid/${query}`, {
         method: 'PUT',
         headers: {
@@ -735,6 +764,7 @@ await Promise.all(
         cancellation_policy: '',
         established: '',
         image: null,
+        receipt: null,
         latitude: '',
         longitude: '',
         location: '',
@@ -1171,6 +1201,69 @@ await Promise.all(
 
               </div>
 <div className='my-2'></div>
+
+ {/* Reciept Image Display */}
+<div className="mb-2 bg-gray-50 rounded-xl p-2 mt-1">
+  <label className="block text-sm font-semibold text-gray-500 mb-3">Receipt Image *</label>
+  {!recieptPreview ? (
+    <label className="block w-full cursor-pointer">
+      <div className="border-2 bg-white border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-highlights hover:bg-gray-50 transition-all h-72">
+        <LuImagePlus className="w-12 h-12 text-gray-400 mx-auto mt-10" />
+        <p className="text-lg font-medium text-gray-600 mb-1 font-playfair">Click to upload receipt image</p>
+        <p className="text-sm text-gray-500">PNG, JPG, AVIF up to 10MB</p>
+      </div>
+      {errorreciept && <p className="text-sm mt-2 text-accent">{errorreciept}</p>}
+      <input
+        type="file"
+        accept="image/*"
+        onChange={handleReciepChange}
+        className="hidden"
+      />
+    </label>
+  ) : (
+    <div className="relative inline-block">
+      <div className="relative group">
+        {/* Use regular img tag for API images, Next.js Image for uploads */}
+
+          <Image
+            src={recieptPreview}
+            alt="Main preview"
+            width={600}
+            height={600}
+            className="object-cover h-full w-full rounded-xl shadow-lg border-2 border-gray-200"
+          />
+        
+        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-xl transition-all duration-200 flex items-center justify-center">
+          <button
+            type="button"
+            onClick={removeRecieptImage}
+            className="w-10 h-10 bg-highlights text-white rounded-full flex items-center justify-center hover:bg-secondary transition-colors shadow-lg opacity-0 group-hover:opacity-100 transform scale-90 group-hover:scale-100"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+      <div className="mt-3 text-center">
+        <label className="inline-flex items-center gap-2 px-3 py-1 text-gray-800 rounded-3xl hover:bg-gray-100 border border-1 border-secondary transition-colors cursor-pointer font-medium">
+          <Upload className="w-4 h-4" />
+          Change Image
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleReciepChange}
+            className="hidden"
+          />
+        </label>
+      </div>
+    </div>
+  )}
+</div>
+
+
+
+
+<div className='my-2'></div>
+
 
 
 

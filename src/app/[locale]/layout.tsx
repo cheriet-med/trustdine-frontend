@@ -14,7 +14,7 @@ import { WishlistProvider } from "@/components/cart";
 import {getTranslations} from 'next-intl/server';
 import {routing} from '@/i18n/routing';
 import Script from 'next/script'
-import YandexMetrika from "@/components/YandexMetrika";
+
 import 'leaflet/dist/leaflet.css';
 import HomeNav from "@/components/header/Home-Nav";
 import { Playfair_Display } from 'next/font/google'
@@ -48,8 +48,8 @@ export async function generateMetadata({
   const schemaData = {
     "@context": "https://schema.org",
     "@type": ["SportsOrganization", "Organization"],
-    "name": t('global-name'),
-    "description": t('global-name-description'),
+    "name": "Goamico",
+    "description": "Goamico is your go-to platform for discovering reliable services and reviews you can trust.",
     "url": `${process.env.NEXT_PUBLIC_HOME}/${locale}`,
     "publisher": {
       "@type": "Organization",
@@ -76,8 +76,8 @@ export async function generateMetadata({
   return {
 
 
-    title: "trustdine",
-    description: "",
+    title: "Goamico",
+    description: "Goamico is your go-to platform for discovering reliable services and reviews you can trust.",
 
     robots: {
       index: true,
@@ -93,10 +93,6 @@ export async function generateMetadata({
     },
     icons: {
       icon: [
-        { url: '/favicon.ico', sizes: 'any' },
-        { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
-        { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
-        { url: '/favicon-48×48.png', type: 'image/png', sizes: '48×48' },
         { url: '/icon.png', type: 'image/png', sizes: '192×192' },
       ],
       apple: '/apple-icon.png',
@@ -118,8 +114,9 @@ export async function generateMetadata({
   publisher: "padlev",  
 
   openGraph: {
-    title: t('global-og-title'),
-    description: t('global-og-description'),
+    
+    title: "Goamico",
+    description: "Goamico is your go-to platform for discovering reliable services and reviews you can trust.",
     url:  `${process.env.NEXT_PUBLIC_HOME}/` ,
     siteName: "Padlev",
     images: [
@@ -315,7 +312,7 @@ export default async function RootLayout({
            
             
               {children}
-              <YandexMetrika /> 
+       
             
             </WishlistProvider>  
         

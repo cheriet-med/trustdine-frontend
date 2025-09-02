@@ -58,7 +58,7 @@ export default function VerticalMenu() {
     { label: "Explore", icon: <MdOutlineTravelExplore />, href: "/en/booking" },
     { label: "My Bookings", icon: <FaPeopleGroup />, href: status === "authenticated" ? "/en/account" :"/en/login" },
     { label: status === "authenticated" ? "My Account" :"Sign in", icon: <FaUser />, href: status === "authenticated" ? "/en/account" :"/en/login" },
-    { label: "My Reviews", icon: <MdOutlineRateReview />, href: status === "authenticated" ? "/en/account" :"/en/login" },
+    //{ label: "My Reviews", icon: <MdOutlineRateReview />, href: status === "authenticated" ? "/en/account" :"/en/login" },
     { label: "Trust Score", icon: <MdOutlineCreditScore />, href: "/en/trust-score" },
     { label: "Help Center", icon: <FaHandsHelping />, href: "/en/help-center" },
     { label: "Wishlist", icon: <FaHeartCircleCheck />, href: status === "authenticated" ? "/en/account" :"/en/login" },

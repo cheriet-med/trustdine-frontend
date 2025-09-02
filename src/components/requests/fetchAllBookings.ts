@@ -57,7 +57,8 @@ interface Bookings {
   cancellation_policy:string;
   location:string;
   total_guests:string;
-  user_owner:string
+  user_owner:string;
+  receipt:string
 }
 
 const useFetchAllBookings = () => {

@@ -30,7 +30,13 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 import { FaRegAddressBook } from "react-icons/fa";
 import { MdOutlineInsights } from "react-icons/md";
 import { PiMoneyWavyThin } from "react-icons/pi";
-
+import ReservationChart from '../Data/reservationsChart';
+import { useSession } from 'next-auth/react';
+import useFetchUser from '../requests/fetchUser';
+import ListinPartnerCard from '../Data/ListingPartnerCard';
+import PersonalInformation from '../Data/personalInfo';
+import EditRestaurantForm from '../requests/editeRestaurantListing';
+import EditeHotelForm from '../requests/editeHotelListing';
 import EarningChart from '../Data/earnings';
 
 interface MenuItem {
@@ -45,7 +51,7 @@ const menuItems: MenuItem[] = [
   { id: 'Insights', label: 'Insights', icon: <MdOutlineInsights size={24} className='text-white'/>, href: '/en/account' },
   { id: 'Calendar', label: 'Calendar', icon: <FaRegCalendarAlt size={24} className='text-white'/>, href: '/en/account/calendar' },
   { id: 'Reservations', label: 'Reservations', icon:  <FaRegAddressBook size={24} className='text-white'/>, href: '/en/account/reservations' },
-  { id: 'Earnings', label: 'Earnings', icon: <PiMoneyWavyThin size={24} className='text-white'/>, href: '/en/account/earnings' },
+  //{ id: 'Earnings', label: 'Earnings', icon: <PiMoneyWavyThin size={24} className='text-white'/>, href: '/en/account/earnings' },
   { id: 'Profile', label: 'Profile', icon: <CgProfile size={24} className='text-white'/>, href: '/en/account/profile' },
   { id: 'Wishlist', label: 'Wishlist', icon:  <FaRegHeart size={24} className='text-white'/>, href: '/en/account/wishlist-partner' },
   { id: 'Listings', label: 'Listings', icon: <MdOutlineTravelExplore size={24} className='text-white'/>, href: '/en/account/listings' },
@@ -56,12 +62,14 @@ const menuItems: MenuItem[] = [
   { id: 'Home page', label: 'Home page', icon: <IoHomeOutline size={24} className='text-white'/>, href: '/' },
 ];
 
-export default function EarningsDashboard() {
+export default function DashboardUser() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
   const locale = useLocale(); // Get the current locale
+  const { data: session, status } = useSession({ required: true });
+  const {Users}  =useFetchUser(session?.user?.id)
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -69,13 +77,20 @@ export default function EarningsDashboard() {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1024) {
+        setIsCollapsed(true);
         setIsMobileMenuOpen(false);
+      } else {
+        setIsCollapsed(false);
       }
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    // Run once on mount
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -96,17 +111,12 @@ export default function EarningsDashboard() {
         <div className="flex items-center justify-between px-4 h-full">
           <button
             onClick={toggleMobileMenu}
-            className="p-2 rounded-lg  transition-colors"
+            className="p-2 rounded-lg transition-colors"
           >
             <HiOutlineMenuAlt1 size={28} className="text-white" />
           </button>
         
-          <div className="flex items-center space-x-2">
-            <button className="p-2 rounded-lg  transition-colors">
-             <IoMdNotificationsOutline size={28} className='text-white'/>
-            </button>
-          
-          </div>
+
         </div>
       </header>
 
@@ -118,7 +128,7 @@ export default function EarningsDashboard() {
       {/* Sidebar */}
       <aside
         className={`
-          fixed left-0 top-0 h-full bg-highlights border-r border-gray-200 z-50 transition-all duration-300 ease-in-out overflow-y-auto
+          fixed left-0 top-0 h-full bg-highlights border-r border-gray-200 z-50 transition-all duration-300 ease-in-out
           ${isCollapsed ? 'w-24' : 'w-64'}
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}
@@ -136,7 +146,7 @@ export default function EarningsDashboard() {
               
               <h2 className="text-xl font-bold text-white font-playfair">Dashboard</h2>
 
-              <IoMdNotificationsOutline size={28} className='text-white hidden md:block'/>
+             
             </div>
           )}
           {!isCollapsed && (
@@ -219,9 +229,9 @@ export default function EarningsDashboard() {
                     )}
                     {/* Tooltip for collapsed state */}
                     {isCollapsed && (
-                      <div className="absolute left-full ml-2 px-2 py-1 bg-secondary text-white text-sm rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
+                      <div className="absolute left-full ml-2 px-4 py-1 bg-accent text-white text-sm rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
                         {item.label}
-                        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1 border-4 border-transparent border-r-gray-900"></div>
+                        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1 border-4 border-transparent border-r-white pl-1.5"></div>
                       </div>
                     )}
                   </Link>
@@ -234,11 +244,12 @@ export default function EarningsDashboard() {
         {/* User Profile */}
         <div className="p-2 border-t border-gray-200">
           {!isCollapsed ? (
-            <div className="flex items-center space-x-3 px-2">
+            <div>
+            <div className="flex gap-2 items-center px-1  justify-center ml-6">
             <div className="w-10 h-10 relative rounded-full overflow-hidden">
   <Image
-    src="/h.jpg" 
-    alt="Facebook"
+    src={Users?.profile_image == null ? "/profile.webp" : `${process.env.NEXT_PUBLIC_IMAGE}/${Users?.profile_image}`}
+    alt={Users?.full_name || "Profile image"}
     fill // This makes the image fill the container
     style={{ 
       objectFit: 'cover', // This ensures the image covers the area while maintaining aspect ratio
@@ -247,31 +258,38 @@ export default function EarningsDashboard() {
 </div>
 
   <div className="flex-1">
-                <p className=" font-medium text-gray-700 font-playfair text-white">Whispering Pines Resort</p>
+                <p className=" font-medium text-gray-700 font-playfair text-white text-sm">{session?.user?.full_name}</p>
                 
               </div>
-              <div className='hover:bg-accent p-1 rounded-lg' onClick={() => signOut({ callbackUrl: `/en/login` })}>
+           
+            </div>
+           
+            <div className='flex gap-2 py-4 px-3 ml-6'>
+    <div className='hover:bg-accent p-1 rounded-lg' onClick={() => signOut({ callbackUrl: `/en/login` })}>
                 <FiLogOut size={24} className='text-white' />
-            </div>
-            </div>
- 
-
+            </div>  
+          <p className='text-white font-medium'>Log out</p>
+</div>
+</div>
             
           ) : (
             <div className="flex flex-col items-center space-y-4">
                <div className="w-10 h-10 relative rounded-full overflow-hidden">
   <Image
-    src="/h.jpg" 
-    alt="Facebook"
+    src={Users?.profile_image == null ? "/profile.webp" : `${process.env.NEXT_PUBLIC_IMAGE}/${Users?.profile_image}`}
+    alt={Users?.full_name || "Profile image"}
     fill // This makes the image fill the container
     style={{ 
       objectFit: 'cover', // This ensures the image covers the area while maintaining aspect ratio
     }}
   />
 </div>
-             <div className='hover:bg-background p-1 rounded-lg' onClick={() => signOut({ callbackUrl: `/en/login` })}>
+
+  <div className=' hover:bg-background p-1 rounded-lg' onClick={() => signOut({ callbackUrl: `/en/login` })}>
                <FiLogOut size={24} className='text-white' />
              </div>
+
+           
             
            
             </div>
@@ -291,7 +309,7 @@ export default function EarningsDashboard() {
       
       {/* Footer */}
       <div className='bg-white mt-auto'>
-        <p className='text-gray-500 text-center py-4 text-sm'>&copy; TrustDine All rights reserved 2025</p>
+        <p className='text-gray-500 text-center py-4 text-sm'>&copy; Goamico All rights reserved 2025</p>
       </div>
     </div>
     </>

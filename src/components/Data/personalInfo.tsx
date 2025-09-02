@@ -10,7 +10,7 @@ import EditAddress from "@/components/requests/editeAddress";
 import IdentityVerification from "@/components/requests/identityFerivication";
 import { useState } from "react";
 import { useSession } from 'next-auth/react';
-
+import Link from "next/link";
 
 interface ProfileData {
   id?: number;
@@ -136,7 +136,7 @@ export default function PersonalInformation() {
               
 
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 flex justify-between items-center">
-              <span>{profileData.username}</span>
+             {profileData.username == null ? "Not Provided" : <span>{profileData.username}</span>} 
               <EditUsername
   initialFullName={profileData.username}
   infoId={userId}
@@ -235,7 +235,7 @@ export default function PersonalInformation() {
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="font-medium text-gray-900 font-playfair">Residential address</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 flex justify-between items-center">
-              <span>{profileData.address_line_1}, {profileData.city}, {profileData.state},{profileData.postalCode}, {profileData.countryCode}</span>
+          {profileData.address_line_1 == null ? "Not Provided" :   <span>{profileData.address_line_1}, {profileData.city}, {profileData.state},{profileData.postalCode}, {profileData.countryCode}</span>}
             <EditAddress
   initialAddress={{
     address_line_1: profileData.address_line_1,
@@ -279,7 +279,7 @@ export default function PersonalInformation() {
         </div>
       
         <p className="mt-2 text-sm text-gray-500">
-          We're hiding some account details to protect your identity. If you need to update this information, <span className="underline">please contact support</span> .
+          We're hiding some account details to protect your identity. If you need to update this information, <Link href="/en/contact-us"><span className="underline">please contact support</span></Link> .
         </p>
       </div>
     </div>

@@ -54,6 +54,7 @@ export default function HotelSearchHomepage() {
   const suggestionsRef = useRef<HTMLDivElement>(null);
   const guestRef = useRef<HTMLDivElement>(null);
   const calendarRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Mock data
   const mockSuggestions: SearchSuggestion[] = [
@@ -260,7 +261,7 @@ export default function HotelSearchHomepage() {
  
 
   return (
-    <div className="relative mx-2  lg:w-[900px] font-montserrat">
+    <div ref={containerRef} className="relative mx-2 lg:w-[900px] font-montserrat">
       <div className="relative flex justify-center items-center gap-2 flex-wrap">
         {/* Search Input */}
         <div className="relative">
@@ -370,7 +371,7 @@ export default function HotelSearchHomepage() {
       {showGuestPopup && (
         <div
           ref={guestRef}
-          className="fixed top-16 left-0 right-0 lg:left-96 lg:w-[300px]  bg-white border border-gray-200 rounded-xl shadow-xl z-1000 p-6"
+          className="absolute top-16 left-1/2 transform -translate-x-1/2 w-[300px] max-w-[90vw] bg-white border border-gray-200 rounded-xl shadow-xl z-50 p-6"
         >
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Guests and Rooms</h3>
           <div className="space-y-6">
@@ -429,7 +430,7 @@ export default function HotelSearchHomepage() {
             {/* Rooms */}
             <div className="flex items-center justify-between">
               <div>
-                <div className="font-medium text-gray-900">Rooms</div>
+                <div className="font-medium text-gray-900 flex justify-start">Rooms</div>
                 <div className="text-sm text-gray-500">Number of rooms</div>
               </div>
               <div className="flex items-center gap-3">
@@ -472,7 +473,7 @@ export default function HotelSearchHomepage() {
       {showCalendar && (
         <div
           ref={calendarRef}
-          className="fixed top-16 left-1/2 transform -translate-x-1/2 w-96 max-w-[90vw] bg-white border border-gray-200 rounded-xl shadow-xl z-1000 p-6"
+          className="absolute top-16 left-1/2 transform -translate-x-1/2 w-96 max-w-[90vw] bg-white border border-gray-200 rounded-xl shadow-xl z-50 p-6"
         >
           <div className="flex items-center justify-between mb-6">
             <button

@@ -235,6 +235,7 @@ const HotelBookingComponent = ({bookdata}:any) => {
       created_at: now.format('MMMM Do YYYY'),
       status:"Completed",
       image:bookdata.image,
+      receipt:bookdata.receipt,
       total_guests:guests.adults+guests.children,
       total_price:bookdata.price_per_night,
       payment_method:"Cash, Credit Card",

@@ -19,6 +19,9 @@ import useFetchAllReviews from '../requests/fetchAllReviews';
 import StarRating from '../starsComponent';
 import useFetchScores from '../requests/fetchScore';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import LoginButtonSendMessages from '../header/LoginButtonSendMessage';
+import { useSession } from 'next-auth/react';
 
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 
@@ -82,6 +85,8 @@ const UserProfilePublic: React.FC<PartnerProfileProps> = ({ idu }) => {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+  const { data: session, status } = useSession();
   const userId = idu.id;
   //const { Users, isLoading, mutate } = useFetchUser(userId);
   const { Amenitie, isLoading, error: amenitiesError } = useFetchAmenities(userId);
@@ -107,7 +112,7 @@ const cleanFake = userScore && userScore.length > 0? parseFloat((userScore.reduc
 
 
 
-const cleantotal = (cleanScore * cleanVerified) * (1 - cleanBlur)**1.5 * (1 - cleanFake)**3.0
+const cleantotal = (cleanScore * cleanVerified) * (1 - cleanBlur)^1.5 * (1 - cleanFake)^3.0
 
 
 
@@ -419,11 +424,11 @@ const hotelMarkers = [{
               className={`shrink-0 size-48 rounded-full object-cover transition-all duration-300 ${
                 !isUploading ? 'group-hover:brightness-75' : 'opacity-75'
               }`}
-              src={idu.profile_image == null ? '/ex.avif':`${process.env.NEXT_PUBLIC_IMAGE}/${idu.profile_image}`}
+              src={idu.profile_image == null ? '/profile1.webp':`${process.env.NEXT_PUBLIC_IMAGE}/${idu.profile_image}`}
               alt="Avatar"
               height={150}
               width={150}
-              onError={() => setProfileImage("/ex.avif")} // Fallback on image load error
+              onError={() => setProfileImage("/profile1.webp")} // Fallback on image load error
             />
             
 
@@ -456,10 +461,14 @@ const hotelMarkers = [{
           >
             Joined in {idu.joined}
           </a>
-            <div className="border border-1 px-5 py-3 w-48 rounded-3xl border-gray-500 shadow-sm text-sm flex gap-1 mt-4 justify-center">
-                            <LuMessageCircleMore size={18}/>
-                            <p>Send Message</p> 
-                          </div> 
+  {idu.is_staff? "" : 
+    ( status === "authenticated" ? 
+                <div className="border border-1 px-5 py-2 w-48 rounded-3xl border-gray-500 shadow-sm text-sm flex gap-3 mt-4 justify-center cursor-pointer hover:bg-gray-50" onClick={()=>router.push(`/en/chat/?id=${idu.id}`)}>
+                  <LuMessageCircleMore size={18} className='text-gray-500'/>
+                  <p className='text-gray-500'>Send Message</p> 
+                </div> :
+                 <LoginButtonSendMessages/>)
+}
         </div>
       </div>
        <hr className='mt-8'/>

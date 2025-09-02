@@ -7,7 +7,7 @@ import listPlugin from '@fullcalendar/list';
 import { EventContentArg, EventClickArg } from '@fullcalendar/core';
 import { useState, useEffect } from 'react';
 import useFetchAllBookings from "@/components/requests/fetchAllBookings";
-
+import { useSession } from 'next-auth/react';
 interface CalendarEvent {
   id: string;
   title: string;
@@ -66,8 +66,9 @@ export default function Calendar() {
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [events, setEvents] = useState<CalendarEvent[]>([]);
-
+  const { data: session, status } = useSession({ required: true });
   const { AllBookings } = useFetchAllBookings();
+  const Owner = AllBookings.filter((user) => user.user_owner === session?.user?.id)
 
   useEffect(() => {
     setIsClient(true);
@@ -84,8 +85,8 @@ export default function Calendar() {
 
   // Convert booking data to calendar events
   useEffect(() => {
-    if (AllBookings && AllBookings.length > 0) {
-      const bookingEvents: CalendarEvent[] = AllBookings.map((booking) => {
+    if (Owner && Owner.length > 0) {
+      const bookingEvents: CalendarEvent[] = Owner.map((booking) => {
         // Determine the date to use
         let startDate: Date;
         let endDate: Date | undefined;

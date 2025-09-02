@@ -263,13 +263,13 @@ could improve pricing</p>
                 </p></div>
              
   { status === "authenticated" ?
-
-   <div className='flex items-center hover:underline cursor-pointer' onClick={()=>router.push(`/en/account/receipt-validation?q=${dat.data.id}&ctg=${dat.data.category}`)}>
+(session?.user?.is_staff? "" :
+   <div className='flex items-center hover:underline cursor-pointer' onClick={()=>router.push(`/en/account/receipt-validation?q=${dat.data.id}&ctg=${dat.data.category}&im=${dat.data.receipt}`)}>
                   <GoPencil className="w-4 h-4 mr-2"/>
                    <p >
                     Write a review
                   </p>
-                </div>
+                </div> )
 
                 :  <LoginButtonAddReview/>}
               

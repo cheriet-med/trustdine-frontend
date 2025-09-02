@@ -6,7 +6,7 @@ import useFetchAllBookings from '@/components/requests/fetchAllBookings';
 import useFetchAllUser from '@/components/requests/fetchAllUsers';
 import PrivacyDialog from '@/components/Data/privacyDialog';
 import { RiCloseLargeLine } from "react-icons/ri";
-
+import { useSession } from 'next-auth/react';
 import { 
   Calendar as CalendarIcon,
   CalendarDays,
@@ -80,13 +80,20 @@ const ReservationsTable = () => {
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<string | null>(null);
-
+  const { data: session, status } = useSession({ required: true });
   const { AllBookings, mutate} = useFetchAllBookings();
+
+
+  const Owner = useMemo(() => {
+    return AllBookings.filter((user) => user.user_owner === session?.user?.id);
+  }, [AllBookings, session?.user?.id]);
+
   const { AllUsers } = useFetchAllUser();
 
+
  useEffect(() => {
-    if (AllBookings && AllUsers) {
-      const transformed = AllBookings.map((b: any) => {
+    if (Owner && AllUsers) {
+      const transformed = Owner.map((b: any) => {
         const user = AllUsers.find((u: any) => u.id === b.user);
 
         return {
@@ -130,7 +137,7 @@ const ReservationsTable = () => {
 
       setReservations(transformed);
     }
-  }, [AllBookings, AllUsers]);
+  }, [Owner, AllUsers]);
 
 
 
@@ -996,11 +1003,7 @@ const dialogRef = useRef<HTMLDivElement>(null); // Ref for the dialog container
                             icon: <Eye className="mr-2 h-4 w-4" />,
                             onClick: () => handleView(reservation)
                           },
-                          {
-                            label: 'Edit',
-                            icon: <Edit className="mr-2 h-4 w-4" />,
-                            onClick: () => handleEdit(reservation)
-                          },
+                         
                           {
                             label: 'Delete',
                             icon: <Trash2 className="mr-2 h-4 w-4" />,
@@ -1152,3 +1155,17 @@ const dialogRef = useRef<HTMLDivElement>(null); // Ref for the dialog container
 };
 
 export default ReservationsTable;
+
+
+
+
+
+
+
+/**
+ *  {
+                            label: 'Edit',
+                            icon: <Edit className="mr-2 h-4 w-4" />,
+                            onClick: () => handleEdit(reservation)
+                          },
+ */

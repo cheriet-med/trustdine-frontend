@@ -22,6 +22,7 @@ interface PropertyCardProps {
   id: string | number | any;
   price: string | number;
   imageUrl: string;
+  receipt:string;
   location:string;
   name:string
   created_at:string;
@@ -56,6 +57,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   restaurat_check_in_time,
   cancellation_policy,
   status,
+  receipt,
   user_id,
   owner_user
 }) => {
@@ -92,7 +94,9 @@ const { AllUsers, isLoading } = useFetchAllUser();
   <p className="text-sm bg-background rounded-xl font-medium py-1 px-2 w-fit flex gap-1 capitalize items-center"><SlLocationPin size={16}/> {location}</p>
 
 
-  <p className="underline my-2 text-white cursor-pointer flex gap-1 capitalize items-center hover:text-secondary" onClick={()=>router.push(`/en/account/receipt-validation?q=${id}&ctg=${category}`)}><GoPencil size={18}/> Add Review</p>
+  <p className="underline my-2 text-white cursor-pointer flex gap-1 capitalize items-center hover:text-secondary"
+   onClick={()=>router.push(`/en/account/receipt-validation?q=${id}&ctg=${category}&im=${receipt}`)}
+   ><GoPencil size={18}/> Add Review</p>
 </div>
         <div>
           <dd className="font-medium font-playfair text-white">{AllUsers.find((user) => user.id === owner_user)?.full_name}</dd>
@@ -167,6 +171,7 @@ export default function TripsCards() {
               total_guests={res.total_guests}
               room_quantity={res.room_quantity}
               payment_method={res.payment_method}
+              receipt={res.receipt}
               category={res.category}
               restaurat_check_in_date={res.restaurat_check_in_date}
               restaurat_check_in_time={res.restaurat_check_in_time}

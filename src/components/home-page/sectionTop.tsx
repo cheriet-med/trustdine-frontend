@@ -54,27 +54,27 @@ export default function FullscreenSlider() {
   }, []);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden">
+    <div className="relative w-full h-screen max-w-full">
       <AnimatePresence>
         <motion.img
           key={slides[index].id}
           src={slides[index].src}
           alt={slides[index].alt}
-          initial={{ opacity: 0, scale: 1.1 }}
+          initial={{ opacity: 0, scale: 1 }}
           animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
+          exit={{ opacity: 0, scale: 1 }}
           transition={{ duration: 1 }}
           className="absolute top-0 left-0 w-full h-full object-cover"
         />
       </AnimatePresence>
 
       {/* Overlay content (optional) */}
-       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full md:max-w-5xl px-4 flex flex-col justify-center items-center space-y-2 z-30">
+       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl px-4 flex flex-col justify-center items-center space-y-2 z-30">
           {/* Title */}
-          <h1 className="text-center uppercase text-4xl md:text-6xl lg:text-6.5xl leading-[0.85] tracking-[-0.25rem] text-white font-bold font-playfair pb-2 ">
+          <h1 className="text-center uppercase text-2xl md:text-4xl lg:text-6xl leading-tight text-white font-bold font-playfair pb-2 max-w-full">
             <span 
               ref={setHeaderSpanRef(0)} 
-              className="block transform translate-y-full select-none bg-highlights px-4 py-2 rounded-3xl opacity-85"
+              className="block select-none bg-highlights px-4 py-2 rounded-3xl opacity-85"
               style={{ wordSpacing: '0.1em' }}
             >
               {activeTab === "hotels" ? "Verified by Receipts" : "Trusted by Real Guests"}
@@ -82,24 +82,24 @@ export default function FullscreenSlider() {
           </h1>
           
           {/* Subtitle */}
-          <h1 className="text-center text-3xl md:text-4xl custom:text-5xl leading-[0.85] tracking-[-0.25rem] text-white font-playfair">
+          <h2 className="text-center text-xl md:text-2xl lg:text-5xl leading-tight text-white font-playfair max-w-full mb-2 sm:mb-0">
             <span 
               ref={setHeaderSpanRef(1)} 
-              className="block transform translate-y-full select-none bg-highlights px-2 py-2 rounded-3xl opacity-85"
-              style={{ wordSpacing: '0.25em' }}
+              className="block select-none bg-highlights px-2 py-2 rounded-3xl opacity-85"
+              style={{ wordSpacing: '0.1em' }}
             >
               {activeTab === "hotels" ? "Skip the fake reviews, Discover restaurants and hotels that real people actually visited" 
               : "This instantly communicates the platform's unique value, is clear, and builds trust"}
             </span>
-          </h1>
+          </h2>
 
           {/* Tab Selector */}
           <div 
             ref={setHeaderSpanRef(2)} 
-            className="flex gap-6 mb-4 md:mb-8 pt-32 pb-4"
+            className="flex gap-4 md:gap-6 mb-4 md:mb-8 pt-8 md:pt-16 pb-4 max-w-full"
           >
             <div 
-              className={`flex gap-2 cursor-pointer pb-2 transition-colors bg-highlights px-4 py-1 rounded-3xl opacity-85${
+              className={`flex gap-2 cursor-pointer  transition-colors bg-highlights px-4 py-1 rounded-3xl opacity-85${
                 activeTab === "hotels" ? "border-b-2 border-white bg-secondary" : "opacity-80 hover:opacity-100"
               }`}
               onClick={() => handleTabChange("hotels")}
@@ -109,7 +109,7 @@ export default function FullscreenSlider() {
             </div>
             
             <div 
-              className={`flex gap-2 cursor-pointer pb-2 transition-colors bg-highlights px-4 py-1 rounded-3xl opacity-85${
+              className={`flex gap-2 cursor-pointer  transition-colors bg-highlights px-4 py-1 rounded-3xl opacity-85${
                 activeTab === "restaurants" ? "border-b-2 border-white bg-secondary"  : "opacity-80 hover:opacity-100"
               }`}
               onClick={() => handleTabChange("restaurants")}
@@ -119,14 +119,13 @@ export default function FullscreenSlider() {
             </div>
           </div>
           
-          <div className=' md:pt-10 md:pt-1 '>
-  
+          <div className='w-full md:pt-4 max-w-full'>
            
               {activeTab === "hotels" ? <HotelSearchHomepage /> : <RestaurantSearch />}
          
           </div>
         </div>
-              <div className="absolute bottom-8 md:bottom-12 left-1/2 transform -translate-x-1/2 flex gap-2 md:gap-6 z-30 justify-center md:justify-between w-full px-2 md:px-16 flex-wrap hidden md:flex">
+              <div className="absolute bottom-8 md:bottom-12 left-1/2 transform -translate-x-1/2 w-full max-w-4xl flex gap-2 md:gap-6 z-30 justify-center md:justify-between px-4 md:px-8 flex-wrap hidden md:flex">
                 <div className="flex items-center gap-2">
                   <MdVerified className="text-white h-5 w-5 md:h-6 md:w-6" />
                   <span className="text-white text:xs md:text-lg font-playfair md:font-bold">Verified by Receipt</span>

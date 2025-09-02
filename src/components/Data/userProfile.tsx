@@ -25,7 +25,7 @@ import StarRating from '../starsComponent';
 import useFetchAllReviews from '../requests/fetchAllReviews';
 import useFetchScores from '../requests/fetchScore';
 import Link from 'next/link';
-import ReviewsCart from '../Data/reviewsPopupHistory';
+import ReviewsCart from './reviewsPopupHistory';
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 
 const Chart = dynamic(() => import('react-apexcharts'), {
@@ -101,7 +101,7 @@ const cleanFake = userScore && userScore.length > 0? parseFloat((userScore.reduc
 
 
 
-const cleantotal = (cleanScore * cleanVerified) * (1 - cleanBlur)**1.5 * (1 - cleanFake)**3.0
+const cleantotal = (cleanScore * cleanVerified) * (1 - cleanBlur)^1.5 * (1 - cleanFake)^3.0
 
  // Replace with actual userId
 
@@ -313,8 +313,8 @@ const initialAmenities = [
               show: true,
               label: 'Trust Score',
               formatter: function (w) {
-                return Math.round(cleantotal) + '%';
-              }
+              return Math.round(cleantotal) + '%';
+            }
             }
           }
         }
@@ -556,11 +556,11 @@ const initialAmenities = [
               className={`shrink-0 size-48 rounded-full object-cover transition-all duration-300 ${
                 !isUploading ? 'group-hover:brightness-75' : 'opacity-75'
               }`}
-              src={profileData.profile_image == null ? '/profile.webp':`${process.env.NEXT_PUBLIC_IMAGE}/${profileData.profile_image}`}
+              src={profileData.profile_image == null ? '/profile1.webp':`${process.env.NEXT_PUBLIC_IMAGE}/${profileData.profile_image}`}
               alt="Avatar"
               height={150}
               width={150}
-              onError={() => setProfileImage("/profile.webp")} // Fallback on image load error
+              onError={() => setProfileImage("/profile1.webp")} // Fallback on image load error
             />
             
             {/* Overlay with edit icon - shown on hover or when uploading */}

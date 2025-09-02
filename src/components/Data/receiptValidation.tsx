@@ -17,8 +17,7 @@ export default function Receipt() {
   const searchParams = useSearchParams();
   const id = searchParams.get('q');
   const category = searchParams.get('ctg');
-
-
+  const reciept = searchParams.get('im');
 
   const handleFileUpload = (file: File | null) => {
     setUploadedFile(file);
@@ -36,11 +35,11 @@ const handleValidate = async () => {
 
   try {
     const imageFormData = new FormData();
-    imageFormData.append('title', "Esco-bar & Cafe");
+    imageFormData.append('reference_image_url', `${process.env.NEXT_PUBLIC_IMAGE}/${reciept}`);
     imageFormData.append('image', uploadedFile); // safe now, since we checked it's not null
 
     const imageResponse = await fetch(
-      "https://api.goamico.com/api/validate-bill/",
+      "http://127.0.0.1:8000/api/validate-bill/",
       {
         method: 'POST',
         headers: {
@@ -55,9 +54,6 @@ const handleValidate = async () => {
     }
 
     const data = await imageResponse.json()
-
-    console.log("the status is ", data.status, "and the message is ", data.message, "is bill", data.data.is_bill);
-
 
 
 
@@ -103,7 +99,7 @@ if (status == 'valid') {
     }
 
 
-if (status == 'rejected') {
+if (data.message == 'Image is too blurry - extracted very little text') {
   const add = await fetch(
       "https://api.goamico.com/score/",
       {
@@ -127,7 +123,7 @@ if (status == 'rejected') {
     }
 
 
-if (status == 'suspect') {
+if (data.message == 'Bill date is not within the last 21 days or date not found') {
   const add = await fetch(
       "https://api.goamico.com/score/",
       {
@@ -151,7 +147,7 @@ if (status == 'suspect') {
     }
 
 
-if (data.data.is_bill == false) {
+if (data.message == "Uploaded image does not match the reference image") {
 
    const add = await fetch(
       "https://api.goamico.com/score/",

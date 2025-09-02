@@ -57,7 +57,8 @@ interface Bookings {
     category:string;
     cancellation_policy:string;
     location:string;   
-    user_owner:string
+    user_owner:string;
+    receipt:string
 }
 
 const useFetchBooking = (id:any) => {

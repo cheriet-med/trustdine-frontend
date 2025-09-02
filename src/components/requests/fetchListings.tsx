@@ -43,6 +43,7 @@ interface Listing {
   established: string | null;
   chef: string | null;
   image: string | null; // Assuming CloudinaryField returns a string URL
+  receipt: string | null;
   opening_hours_monday: string | null;
   opening_hours_tuesday: string | null;
   opening_hours_wednesday: string | null;

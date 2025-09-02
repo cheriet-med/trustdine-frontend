@@ -24,15 +24,8 @@ import {
   LogOut,
   User
 } from 'lucide-react';
-import ProfileCard from '../user-dashboard/profilePage';
-import { CgProfile } from "react-icons/cg";
 
 import { IoMdNotificationsOutline } from "react-icons/io";
-import { FaRegHeart } from "react-icons/fa";
-import { MdOutlineTravelExplore } from "react-icons/md";
-import { FaRegMessage } from "react-icons/fa6";
-import { IoSettingsOutline } from "react-icons/io5";
-import { LuCircleHelp } from "react-icons/lu";
 import { FiLogOut } from "react-icons/fi";
 import { IoHomeOutline } from "react-icons/io5";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
