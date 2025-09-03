@@ -121,6 +121,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
+  trustHost: true, // ADD THIS FOR VPS DEPLOYMENT
+  basePath: "/api/auth", // EXPLICITLY SET BASE PATH
+
   session: {
     strategy: "jwt",
   },

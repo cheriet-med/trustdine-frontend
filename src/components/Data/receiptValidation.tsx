@@ -39,7 +39,7 @@ const handleValidate = async () => {
     imageFormData.append('image', uploadedFile); // safe now, since we checked it's not null
 
     const imageResponse = await fetch(
-      "http://127.0.0.1:8000/api/validate-bill/",
+      "https://api.goamico.com/api/validate-bill/",
       {
         method: 'POST',
         headers: {
