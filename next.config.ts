@@ -5,7 +5,8 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   productionBrowserSourceMaps: true,
-  
+
+  output: 'standalone',
   // Webpack configuration for optimization and debugging
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     // Fix webpack caching issues
@@ -106,6 +107,12 @@ const nextConfig: NextConfig = {
         }
       ],
     },
+    {
+  source: '/_next/image',
+  headers: [
+    { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }
+  ]
+},
     // Video files in public directory
     {
       source: '/:path*.mp4',
@@ -121,15 +128,13 @@ const nextConfig: NextConfig = {
       ],
     },
     // Keep your existing robots header
-    {
-      source: '/:locale',
-      headers: [
-        {
-          key: 'X-Robots-Tag',
-          value: 'index, follow',
-        },
-      ],
-    },
+{
+  source: '/:path*',
+  headers: [
+    { key: 'X-Robots-Tag', value: 'index, follow' }
+  ]
+}
+
   ],
 
   experimental: {

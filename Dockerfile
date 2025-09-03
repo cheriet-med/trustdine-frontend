@@ -1,31 +1,38 @@
-FROM node:18-alpine
+FROM node:18-alpine AS base
+RUN apk add --no-cache libc6-compat openssl
 
+# Install dependencies only when needed
+FROM base AS deps
 WORKDIR /app
-
-# Install dependencies
 COPY package.json package-lock.json* ./
-RUN npm ci --only=production && npm cache clean --force
+RUN npm ci
 
-# Copy source code
+# Build source
+FROM base AS builder
+WORKDIR /app
+ENV NODE_ENV production
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# Build the application
 RUN npm run build
 
-# Create non-root user
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+# Production image
+FROM base AS runner
+WORKDIR /app
+ENV NODE_ENV production
 
-# Change ownership of needed directories
-RUN chown -R nextjs:nodejs /app/.next
-RUN chown -R nextjs:nodejs /app/public
+RUN addgroup --system --gid 1001 nodejs \
+    && adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+RUN mkdir .next && chown nextjs:nodejs .next
+
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
 EXPOSE 3000
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
 
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
-ENV NODE_ENV=production
-
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
