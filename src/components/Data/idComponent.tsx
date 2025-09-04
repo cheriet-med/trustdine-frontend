@@ -219,7 +219,7 @@ const hotelMarkers = [{
     <div className="max-w-7xl mx-auto px-2  font-montserrat ">
           <div className="space-y-2 mb-4 bg-white p-4 rounded-xl shadow-sm">
            <div className='flex flex-wrap gap-4 items-center'>
-               <p className='py-1.5 px-16 bg-accent text-white font-playfair rounded-3xl w-fit font-bold'>Book Now</p>
+               <p className='py-1.5 px-16 bg-accent text-white font-playfair rounded-3xl w-fit font-bold hidden lg:flex'>Book Now</p>
                <div className='flex gap-1 items-center'>
                  <Check className="w-5 h-5 text-accent" />
                   <p className='text-accent font-medium'>Guents aveskient service</p>
@@ -385,7 +385,31 @@ could improve pricing</p>
                 className="flex transition-transform duration-300 ease-in-out"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
+                    <Item
+              original={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.image}`}
+              thumbnail={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.name}`}
+              width={800}
+              height={600}
+            >
+              {({ ref, open }) => (
+                <div
+                  ref={ref}
+                  onClick={open}
+                  className="relative w-full h-96 bg-gray-200 rounded-lg overflow-hidden cursor-pointer group"
+                >
+                  <img
+                    src={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.image}`}
+                    alt={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.name}`}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300" />
+                </div>
+              )}
+            </Item>
+       
                 {productimage?.map((image, index) => (
+                  
+       
                   <Item
                     key={index}
                     original={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}

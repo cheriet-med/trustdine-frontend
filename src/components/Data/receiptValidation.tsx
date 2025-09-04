@@ -19,6 +19,7 @@ export default function Receipt() {
   const category = searchParams.get('ctg');
   const reciept = searchParams.get('im');
 
+
   const handleFileUpload = (file: File | null) => {
     setUploadedFile(file);
     setValidationResult(null); // Reset validation result when new file is uploaded
@@ -39,7 +40,7 @@ const handleValidate = async () => {
     imageFormData.append('image', uploadedFile); // safe now, since we checked it's not null
 
     const imageResponse = await fetch(
-      "https://api.goamico.com/api/validate-bill/",
+       `${process.env.NEXT_PUBLIC_URL}api/validate-bill/`,
       {
         method: 'POST',
         headers: {
@@ -77,11 +78,11 @@ const handleValidate = async () => {
 
 if (status == 'valid') {
   const add = await fetch(
-      "https://api.goamico.com/score/",
+       `${process.env.NEXT_PUBLIC_URL}score/`,
       {
         method: 'POST',
         headers: {
-          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          Authorization: "Token " +process.env.NEXT_PUBLIC_TOKEN,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ 
@@ -100,12 +101,11 @@ if (status == 'valid') {
 
 
 if (data.message == 'Image is too blurry - extracted very little text') {
-  const add = await fetch(
-      "https://api.goamico.com/score/",
+  const add = await fetch(`${process.env.NEXT_PUBLIC_URL}score/`,
       {
         method: 'POST',
         headers: {
-          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          Authorization: "Token " +process.env.NEXT_PUBLIC_TOKEN,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ 
@@ -121,15 +121,15 @@ if (data.message == 'Image is too blurry - extracted very little text') {
       }
     );
     }
-
+   
 
 if (data.message == 'Bill date is not within the last 21 days or date not found') {
   const add = await fetch(
-      "https://api.goamico.com/score/",
+      `${process.env.NEXT_PUBLIC_URL}score/`,
       {
         method: 'POST',
         headers: {
-          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          Authorization: "Token " +process.env.NEXT_PUBLIC_TOKEN,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ 
@@ -150,11 +150,11 @@ if (data.message == 'Bill date is not within the last 21 days or date not found'
 if (data.message == "Uploaded image does not match the reference image") {
 
    const add = await fetch(
-      "https://api.goamico.com/score/",
+       `${process.env.NEXT_PUBLIC_URL}score/`,
       {
         method: 'POST',
         headers: {
-          Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          Authorization: "Token " +process.env.NEXT_PUBLIC_TOKEN,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ 
@@ -178,7 +178,7 @@ if (data.message == "Uploaded image does not match the reference image") {
     status,
     confidence: Math.floor(Math.random() * 30) + 70,
     processingTime: Math.random() * 2 + 1,
-    extractedData: mockExtractedData,
+    extractedData: data.data.comparison_details,
     validationReasons,
     is_bill:data.data.is_bill,
     productID:id,

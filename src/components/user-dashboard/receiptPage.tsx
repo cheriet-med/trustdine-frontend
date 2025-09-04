@@ -37,20 +37,38 @@ interface MenuItem {
   badge?: string;
 }
 
-const menuItems: MenuItem[] = [
-  { id: 'Profile', label: 'Profile', icon: <CgProfile size={24} className='text-white'/>, href: '/en/account' },
-  { id: 'Wishlist', label: 'Wishlist', icon:  <FaRegHeart size={24} className='text-white'/>, href: '/en/account/wishlist' },
-  { id: 'Trips', label: 'Trips', icon: <MdOutlineTravelExplore size={24} className='text-white'/>, href: '/en/account/trips' },
-  { id: 'Messages', label: 'Messages', icon: <FaRegMessage size={24} className='text-white'/>, href: '/en/account/messages', },
-  { id: 'Account Settings', label: 'Account Settings', icon:<IoSettingsOutline size={24} className='text-white'/>, href: '/en/account/personal-information' },
-  { id: 'Help Center', label: 'Help Center', icon: <LuCircleHelp size={24} className='text-white'/>, href: '/en/help-center' },
- { id: 'Home page', label: 'Home page', icon: <IoHomeOutline size={24} className='text-white'/>, href: '/' },
-];
+
+interface User {
+  id: string;
+  email: string;
+  full_name: string;
+  profile_image: string;
+  is_active?: boolean;
+}
+
+interface Message {
+  id: string;
+  sender: User;
+  receiver: User;
+  content: string;
+  timestamp: string;
+  is_read: boolean;
+}
+
+interface Conversation {
+  user: User;
+  last_message: Message;
+  unread_count: number;
+}
+
+
 
 export default function DashboardUser() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+    
+  
   const pathname = usePathname();
   const locale = useLocale(); // Get the current locale
     const { data: session, status } = useSession({ required: true });
@@ -58,6 +76,53 @@ export default function DashboardUser() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+
+const [conversations, setConversations] = useState<Conversation[]>([]);
+const fetchConversations = async () => {
+ 
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/conversations/`, {
+        headers: {
+          'Authorization': `JWT ${session?.accessToken}`
+        }
+      });
+      console.log('Response status:', response.status);
+      if (!response.ok) {
+        throw new Error('Failed to fetch conversations');
+      }
+       
+      const data = await response.json();
+      setConversations(data);
+  };
+
+    useEffect(() => {
+    if (session?.accessToken) {
+      fetchConversations();
+    }
+  }, [session?.accessToken]);
+
+ const unread = conversations.reduce((sum, convo) => {
+  return sum + (convo.unread_count || 0);
+}, 0);
+
+
+const menuItems: MenuItem[] = [
+  { id: 'Profile', label: 'Profile', icon: <CgProfile size={24} className='text-white'/>, href: '/en/account' },
+  { id: 'Wishlist', label: 'Wishlist', icon:  <FaRegHeart size={24} className='text-white'/>, href: '/en/account/wishlist' },
+  { id: 'Trips', label: 'Trips', icon: <MdOutlineTravelExplore size={24} className='text-white'/>, href: '/en/account/trips' },
+  { id: 'Messages', label: 'Messages', 
+    icon:   unread > 0 ? <div className='relative'>   
+
+   <span className="absolute -top-1 left-4 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white font-semibold">{unread}
+   </span><FaRegMessage size={24} className='text-white'/> 
+    </div> :<FaRegMessage size={24} className='text-white'/> , 
+    href: '/en/account/messages', },
+  { id: 'Account Settings', label: 'Account Settings', icon:<IoSettingsOutline size={24} className='text-white'/>, href: '/en/account/personal-information' },
+  { id: 'Help Center', label: 'Help Center', icon: <LuCircleHelp size={24} className='text-white'/>, href: '/en/help-center' },
+ { id: 'Home page', label: 'Home page', icon: <IoHomeOutline size={24} className='text-white'/>, href: '/' },
+];
+
 
   useEffect(() => {
     const handleResize = () => {

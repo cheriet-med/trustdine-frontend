@@ -56,12 +56,12 @@ export default function VerticalMenu() {
   
   const menuItems: MenuItem[] = [
     { label: "Explore", icon: <MdOutlineTravelExplore />, href: "/en/booking" },
-    { label: "My Bookings", icon: <FaPeopleGroup />, href: status === "authenticated" ? "/en/account" :"/en/login" },
+    { label: "My Bookings", icon: <FaPeopleGroup />, href: status === "authenticated" ? (session?.user?.is_staff? "/en/account/listings" : "/en/account/trips") :"/en/login" },
     { label: status === "authenticated" ? "My Account" :"Sign in", icon: <FaUser />, href: status === "authenticated" ? "/en/account" :"/en/login" },
     //{ label: "My Reviews", icon: <MdOutlineRateReview />, href: status === "authenticated" ? "/en/account" :"/en/login" },
     { label: "Trust Score", icon: <MdOutlineCreditScore />, href: "/en/trust-score" },
     { label: "Help Center", icon: <FaHandsHelping />, href: "/en/help-center" },
-    { label: "Wishlist", icon: <FaHeartCircleCheck />, href: status === "authenticated" ? "/en/account" :"/en/login" },
+    { label: "Wishlist", icon: <FaHeartCircleCheck />, href: status === "authenticated" ? (session?.user?.is_staff? "/en/account/wishlist-partner" : "/en/account/wishlist") :"/en/login" },
   ];
 
   const menuRef = useRef<HTMLDivElement>(null);

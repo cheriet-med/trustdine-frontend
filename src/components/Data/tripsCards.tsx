@@ -16,7 +16,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { SlLocationPin } from "react-icons/sl";
 import moment from "moment";
 import { useRouter } from "next/navigation";
-
+import Image from 'next/image';
 
 interface PropertyCardProps {
   id: string | number | any;
@@ -36,6 +36,7 @@ interface PropertyCardProps {
   restaurat_check_in_time:string;
   cancellation_policy:string;
   status:string;
+  productID:string | number;
   user_id:string | number
   owner_user:string | number
 }
@@ -59,7 +60,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   status,
   receipt,
   user_id,
-  owner_user
+  owner_user,
+  productID
 }) => {
 
   const roundFirstDecimalDigit = (num: number) => {
@@ -80,12 +82,16 @@ const { AllUsers, isLoading } = useFetchAllUser();
   return (
     <div className="block rounded-lg p-2 shadow-xs shadow-black border border-1  font-montserrat text-secondary bg-accent lg:flex lg:gap-8">
       <div className="relative">
-     <Link href={`/en/booking/${id}`}>
-     <img
-          alt="Property"
-          src={imageUrl}
-          className="h-80 lg:h-80 w-full lg:w-96  rounded-md object-cover"
-        />
+     <Link href={`/en/booking/${productID}`}>
+           <Image
+              alt="Property"
+              src={imageUrl}
+              width={400} // Set appropriate width
+              height={320} // Set appropriate height (maintaining 5:4 aspect ratio)
+              className="h-80 lg:h-80 w-full lg:w-96  rounded-md object-cover"
+              placeholder="blur" // Optional: add blur placeholder
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaUMk9SQ2Tv6JauWg===" // Optional: small base64 placeholder
+            />
      </Link>
       </div>
 
@@ -95,7 +101,7 @@ const { AllUsers, isLoading } = useFetchAllUser();
 
 
   <p className="underline my-2 text-white cursor-pointer flex gap-1 capitalize items-center hover:text-secondary"
-   onClick={()=>router.push(`/en/account/receipt-validation?q=${id}&ctg=${category}&im=${receipt}`)}
+   onClick={()=>router.push(`/en/account/receipt-validation?q=${productID}&ctg=${category}&im=${receipt}`)}
    ><GoPencil size={18}/> Add Review</p>
 </div>
         <div>
@@ -178,6 +184,7 @@ export default function TripsCards() {
               cancellation_policy={res.cancellation_policy}
               user_id={res.user}
               owner_user={res.user_owner}
+              productID={res.product}
             />
           </div>
         ))}

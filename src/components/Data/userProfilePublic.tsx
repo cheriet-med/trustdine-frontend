@@ -104,15 +104,24 @@ const averageRating = Review && Review.length > 0
 
 const {Score} = useFetchScores()
 const userScore = Score.filter((user) => user.user === idu.id)
-const cleanScore =userScore && userScore.length > 0? parseFloat((userScore.reduce((sum, r) => sum + +r.clean, 0) / userScore.length).toFixed(2)): 0;
-const cleanBlur =userScore && userScore.length > 0? parseFloat((userScore.reduce((sum, r) => sum + +r.blur, 0) / userScore.length).toFixed(2)): 0;
-const cleanVerified = userScore && userScore.length > 0? parseFloat((userScore.reduce((sum, r) => sum + +r.verified, 0) / userScore.length).toFixed(2)): 0;
-const cleanFake = userScore && userScore.length > 0? parseFloat((userScore.reduce((sum, r) => sum + +r.fake, 0) / userScore.length).toFixed(2)): 0;
+function average(arr: any[], key: string, normalize = false) {
+  if (arr.length === 0) return 0;
+  const avg = arr.reduce((sum, r) => sum + +r[key], 0) / arr.length;
+  const value = normalize ? avg / 100 : avg; // normalize if percentage (0–100)
+  return parseFloat(value.toFixed(2)); // round to 2 decimals
+}
 
+const cleanScore = average(userScore, "clean", true);
+const cleanBlur = average(userScore, "blur", true);
+const cleanVerified = average(userScore, "verified", true);
+const cleanFake = average(userScore, "fake", true);
 
+const cleantotal = parseFloat((
+  (cleanScore * cleanVerified) 
+  * Math.pow(Math.max(0, 1 - cleanBlur), 1.5) 
+  * Math.pow(Math.max(0, 1 - cleanFake), 3.0)
+).toFixed(2));
 
-
-const cleantotal = (cleanScore * cleanVerified) * (1 - cleanBlur)^1.5 * (1 - cleanFake)^3.0
 
 
 
@@ -463,7 +472,7 @@ const hotelMarkers = [{
           </a>
   {idu.is_staff? "" : 
     ( status === "authenticated" ? 
-                <div className="border border-1 px-5 py-2 w-48 rounded-3xl border-gray-500 shadow-sm text-sm flex gap-3 mt-4 justify-center cursor-pointer hover:bg-gray-50" onClick={()=>router.push(`/en/chat/?id=${idu.id}`)}>
+                <div className="border border-1 px-5 py-2 w-48 rounded-3xl border-gray-500 shadow-sm text-sm flex gap-3 mt-4 justify-center cursor-pointer hover:bg-gray-50" onClick={()=>router.push(`/en/account/messages/?id=${idu.id}`)}>
                   <LuMessageCircleMore size={18} className='text-gray-500'/>
                   <p className='text-gray-500'>Send Message</p> 
                 </div> :

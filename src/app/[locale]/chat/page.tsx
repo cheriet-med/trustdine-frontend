@@ -1,11 +1,21 @@
 'use client'
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
+import dynamic from 'next/dynamic';
 import { 
   Search, Send, Paperclip, Smile, MoreHorizontal, Star, 
   Phone, Video, Info, ArrowLeft, Camera, Image, Menu 
 } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
+
+// Dynamically import EmojiPicker to avoid SSR issues
+const EmojiPicker = dynamic(
+  () => import('emoji-picker-react'),
+  { 
+    ssr: false,
+    loading: () => <div className="w-8 h-8 animate-pulse bg-gray-200 rounded"></div>
+  }
+);
 
 interface User {
   id: string;
@@ -76,24 +86,91 @@ const MessagesComponent: React.FC = () => {
   const [wsConnected, setWsConnected] = useState(false);
   const [reconnectAttempts, setReconnectAttempts] = useState(0);
   
+  // Emoji picker states
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [emojiPickerPosition, setEmojiPickerPosition] = useState<'top' | 'bottom'>('top');
+  
   const ws = useRef<WebSocket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const emojiButtonRef = useRef<HTMLButtonElement>(null);
+  const emojiPickerRef = useRef<HTMLDivElement>(null);
+  const messageInputRef = useRef<HTMLInputElement>(null);
   const searchParams = useSearchParams();
   const userId = searchParams.get('id') || 0;
 
+
+  // Handle emoji picker positioning
+  const updateEmojiPickerPosition = useCallback(() => {
+    if (emojiButtonRef.current) {
+      const rect = emojiButtonRef.current.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const spaceBelow = windowHeight - rect.bottom;
+      const spaceAbove = rect.top;
+      
+      // If there's more space above, position picker above
+      setEmojiPickerPosition(spaceAbove > spaceBelow && spaceAbove > 400 ? 'top' : 'bottom');
+    }
+  }, []);
+
+  // Close emoji picker when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        emojiPickerRef.current && 
+        !emojiPickerRef.current.contains(event.target as Node) &&
+        emojiButtonRef.current &&
+        !emojiButtonRef.current.contains(event.target as Node)
+      ) {
+        setShowEmojiPicker(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Handle emoji selection
+  const handleEmojiSelect = (emojiData: any) => {
+    const emoji = emojiData.emoji;
+    const input = messageInputRef.current;
+    
+    if (input) {
+      const cursorPosition = input.selectionStart || newMessage.length;
+      const newText = newMessage.slice(0, cursorPosition) + emoji + newMessage.slice(cursorPosition);
+      setNewMessage(newText);
+      
+      // Focus back on input and set cursor position
+      setTimeout(() => {
+        input.focus();
+        input.setSelectionRange(cursorPosition + emoji.length, cursorPosition + emoji.length);
+      }, 0);
+    } else {
+      setNewMessage(prev => prev + emoji);
+    }
+    
+    setShowEmojiPicker(false);
+  };
+
+  // Toggle emoji picker
+  const toggleEmojiPicker = () => {
+    updateEmojiPickerPosition();
+    setShowEmojiPicker(prev => !prev);
+  };
+
   // WebSocket connection management
   const connectWebSocket = useCallback(() => {
-    if (status !== "authenticated" || !session?.user?.access_token) {
+    if (status !== "authenticated" || !session?.accessToken) {
       return;
     }
-
     setWsConnecting(true);
     
     try {
       ws.current = new WebSocket(
-        `ws://127.0.0.1:8000/ws/chat/?token=${session.user.access_token}`
+        `wss://api.goamico.com/ws/chat/?token=${session.accessToken}`
       );
 
       ws.current.onopen = () => {
@@ -105,7 +182,7 @@ const MessagesComponent: React.FC = () => {
         // Authenticate after connecting
         ws.current?.send(JSON.stringify({
           type: "authenticate",
-          token: `Bearer ${session.user.access_token}`,
+          token: `Bearer ${session.accessToken}`,
         }));
       };
 
@@ -179,7 +256,7 @@ const MessagesComponent: React.FC = () => {
 
   // Connect to WebSocket when authenticated
   useEffect(() => {
-    if (status === "authenticated" && session?.user?.access_token) {
+    if (status === "authenticated" && session?.accessToken) {
       connectWebSocket();
     } else {
       if (ws.current) {
@@ -189,7 +266,7 @@ const MessagesComponent: React.FC = () => {
   }, [status, session, connectWebSocket]);
 
   useEffect(() => {
-    if (status === "authenticated" && session?.user?.access_token) {
+    if (status === "authenticated" && session?.accessToken) {
       fetchConversations();
     }
   }, [status, session]);
@@ -197,7 +274,7 @@ const MessagesComponent: React.FC = () => {
   useEffect(() => {
     if (
       status === "authenticated" &&
-      session?.user?.access_token &&
+      session?.accessToken &&
       selectedContact
     ) {
       fetchMessages(selectedContact.id);
@@ -213,9 +290,9 @@ const MessagesComponent: React.FC = () => {
     try {
       setIsLoadingConversations(true);
       setError(null);
-      const response = await fetch('http://127.0.0.1:8000/api/conversations/', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/conversations/`, {
         headers: {
-          'Authorization': `JWT ${session?.user?.access_token}`
+          'Authorization': `JWT ${session?.accessToken}`
         }
       });
       console.log('Response status:', response.status);
@@ -236,9 +313,9 @@ const MessagesComponent: React.FC = () => {
     try {
       setIsLoadingMessages(true);
       setError(null);
-      const response = await fetch(`http://127.0.0.1:8000/api/messages/${userId}/`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/messages/${userId}/`, {
         headers: {
-          'Authorization': `JWT ${session?.user?.access_token}`
+          'Authorization': `JWT ${session?.accessToken}`
         }
       });
       
@@ -268,10 +345,10 @@ const MessagesComponent: React.FC = () => {
 
   const markMessagesAsRead = async (userId: string) => {
     try {
-      await fetch(`http://127.0.0.1:8000/api/messages/${userId}/read/`, {
+      await fetch(`${process.env.NEXT_PUBLIC_URL}api/messages/${userId}/read/`, {
         method: 'POST',
         headers: {
-          'Authorization': `JWT ${session?.user?.access_token}`
+          'Authorization': `JWT ${session?.accessToken}`
         }
       });
       
@@ -413,6 +490,7 @@ const MessagesComponent: React.FC = () => {
       // Add optimistic message immediately
       setMessages(prev => [...prev, optimisticMessage]);
       setNewMessage('');
+      setShowEmojiPicker(false); // Close emoji picker when sending
       stopTyping();
       
       // Check if WebSocket is in ready state
@@ -491,6 +569,7 @@ const MessagesComponent: React.FC = () => {
   const handleContactClick = async (user: User) => {
     setSelectedContact(user);
     setIsMobileView(true);
+    setShowEmojiPicker(false); // Close emoji picker when switching contacts
     
     // Mark messages as read when opening conversation
     if (user.id) {
@@ -501,6 +580,7 @@ const MessagesComponent: React.FC = () => {
   const handleBackToList = () => {
     setSelectedContact(null);
     setIsMobileView(false);
+    setShowEmojiPicker(false); // Close emoji picker when going back
     stopTyping();
   };
 
@@ -576,14 +656,6 @@ const MessagesComponent: React.FC = () => {
     // Convert both IDs to strings for comparison (in case one is number, one is string)
     const isOwn = String(messageSenderId) === String(currentUserId);
     
-    //console.log(`🔍 Message alignment check:`, {
-    //  messageId: message.id,
-    //  messageSenderId,
-    //  currentUserId,
-    //  isOwn,
-    //  messageContent: message.content.substring(0, 20) + '...'
-    //});
-    
     return (
       <div
         key={message.id}
@@ -642,7 +714,7 @@ const MessagesComponent: React.FC = () => {
               </p>
             </div>
           </div>
-                  {/* Connection status indicator */}
+          {/* Connection status indicator */}
           {wsConnecting && (
             <div className="flex items-center justify-center mt-2 text-xs text-gray-500">
               <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-400 mr-2"></div>
@@ -699,10 +771,29 @@ const MessagesComponent: React.FC = () => {
         </div>
 
         {/* Mobile Message Input */}
-        <div className="bg-white border-t border-gray-200 p-4">
+        <div className="bg-white border-t border-gray-200 p-4 relative">
+          {/* Emoji Picker for Mobile */}
+          {showEmojiPicker && (
+            <div 
+              ref={emojiPickerRef}
+              className={`absolute left-4 right-4 z-50 ${
+                emojiPickerPosition === 'top' ? 'bottom-16' : 'top-16'
+              }`}
+            >
+              <EmojiPicker
+                onEmojiClick={handleEmojiSelect}
+                searchDisabled={false}
+                skinTonesDisabled={false}
+                width="100%"
+                height={350}
+              />
+            </div>
+          )}
+          
           <div className="flex items-center space-x-2">
             <div className="flex-1 relative">
               <input
+                ref={messageInputRef}
                 type="text"
                 placeholder={wsConnected ? "Type a message..." : "Connecting..."}
                 value={newMessage}
@@ -717,10 +808,17 @@ const MessagesComponent: React.FC = () => {
                 onKeyPress={handleKeyPress}
                 onBlur={stopTyping}
                 disabled={isSendingMessage || !wsConnected}
-                className="w-full px-4 py-3 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-accent focus:bg-white border border-transparent focus:border-accent disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-4 py-3 pr-12 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-accent focus:bg-white border border-transparent focus:border-accent disabled:opacity-50 disabled:cursor-not-allowed"
               />
-             
-
+              <button
+                ref={emojiButtonRef}
+                type="button"
+                onClick={toggleEmojiPicker}
+                disabled={isSendingMessage || !wsConnected}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 disabled:opacity-50 rounded-full hover:bg-gray-100"
+              >
+                <Smile className="w-5 h-5" />
+              </button>
             </div>
             <button
               onClick={sendMessage}
@@ -734,8 +832,6 @@ const MessagesComponent: React.FC = () => {
               )}
             </button>
           </div>
-          
-
         </div>
       </div>
     );
@@ -763,10 +859,6 @@ const MessagesComponent: React.FC = () => {
                 className="w-full pl-10 pr-4 py-3 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-accent focus:bg-white border border-transparent focus:border-accent"
               />
             </div>
-
-
-
-
           </div>
 
           {/* Contacts List */}
@@ -783,7 +875,6 @@ const MessagesComponent: React.FC = () => {
                 <button 
                   onClick={fetchConversations}
                   className="text-sm bg-highlights text-white px-3 py-1 rounded hover:bg-secondary hover:text-white"
-
                 >
                   Retry
                 </button>
@@ -837,7 +928,7 @@ const MessagesComponent: React.FC = () => {
         </div>
 
         {/* Desktop Chat Area */}
-        <div className="hidden md:flex flex-1 flex-col">
+        <div className="hidden md:flex flex-1 flex-col relative">
           {selectedContact ? (
             <>
               {/* Desktop Chat Header */}
@@ -863,11 +954,10 @@ const MessagesComponent: React.FC = () => {
                     </p>
                   </div>
                 </div>
-              
 
-               {/* Connection status indicator */}
-                <div className="flex items-center justify-between mt-2">
-                  <div className="flex items-center">
+                {/* Connection status indicator */}
+                <div className="flex items-center gap-2 justify-between mt-2">
+                  <div className="flex items-center gap-2">
                     {wsConnecting && (
                       <div className="flex items-center text-xs text-gray-500">
                         <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-400 mr-2"></div>
@@ -877,7 +967,7 @@ const MessagesComponent: React.FC = () => {
                     {wsConnected && (
                       <div className="flex items-center text-xs text-green-600">
                         <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                        Connected
+                        Online
                       </div>
                     )}
                     {!wsConnected && !wsConnecting && (
@@ -898,7 +988,6 @@ const MessagesComponent: React.FC = () => {
                     </button>
                   )}
                 </div>
-
               </div>
 
               {/* Desktop Messages */}
@@ -942,12 +1031,30 @@ const MessagesComponent: React.FC = () => {
                 <div ref={messagesEndRef} />
               </div>
 
+              {/* Desktop Emoji Picker */}
+              {showEmojiPicker && (
+                <div 
+                  ref={emojiPickerRef}
+                  className={`absolute left-4 right-4 z-50 ${
+                    emojiPickerPosition === 'top' ? 'bottom-20' : 'top-20'
+                  }`}
+                >
+                  <EmojiPicker
+                    onEmojiClick={handleEmojiSelect}
+                    searchDisabled={false}
+                    skinTonesDisabled={false}
+                    width="100%"
+                    height={400}
+                  />
+                </div>
+              )}
+
               {/* Desktop Message Input */}
               <div className="bg-white border-t border-gray-200 p-4">
                 <div className="flex items-center space-x-3">
-              
                   <div className="flex-1 relative">
                     <input
+                      ref={messageInputRef}
                       type="text"
                       placeholder={wsConnected ? "Type message..." : "Connecting..."}
                       value={newMessage}
@@ -962,9 +1069,17 @@ const MessagesComponent: React.FC = () => {
                       onKeyPress={handleKeyPress}
                       onBlur={stopTyping}
                       disabled={isSendingMessage || !wsConnected}
-                      className="w-full px-4 py-3 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-accent focus:bg-white border border-transparent focus:border-accent disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full px-4 py-3 pr-12 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-accent focus:bg-white border border-transparent focus:border-accent disabled:opacity-50 disabled:cursor-not-allowed"
                     />
-                   
+                    <button
+                      ref={emojiButtonRef}
+                      type="button"
+                      onClick={toggleEmojiPicker}
+                      disabled={isSendingMessage || !wsConnected}
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 disabled:opacity-50 rounded-full hover:bg-gray-100"
+                    >
+                      <Smile className="w-5 h-5" />
+                    </button>
                   </div>
                   <button
                     onClick={sendMessage}
@@ -978,8 +1093,6 @@ const MessagesComponent: React.FC = () => {
                     )}
                   </button>
                 </div>
-                
- 
               </div>
             </>
           ) : (
@@ -1003,84 +1116,3 @@ const MessagesComponent: React.FC = () => {
 };
 
 export default MessagesComponent;
-
-
-
-
-
-/**
- * # desktop header
- *   <div className="flex items-center space-x-2">
-                  <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full">
-                    <Phone className="w-5 h-5" />
-                  </button>
-                  <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full">
-                    <Video className="w-5 h-5" />
-                  </button>
-                  <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full">
-                    <Info className="w-5 h-5" />
-                  </button>
-                  <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full">
-                    <MoreHorizontal className="w-5 h-5" />
-                  </button>
-                </div>
- * 
- */
-
-                /***
-                 * #desktop input
-                 * 
-                 *     <button 
-                    className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full disabled:opacity-50"
-                    disabled={isSendingMessage}
-                  >
-                    <Paperclip className="w-5 h-5" />
-                  </button>
-                 * 
-                 * 
-                 * 
-                 *  <button 
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1 text-gray-500 hover:text-gray-700 disabled:opacity-50"
-                      disabled={isSendingMessage}
-                    >
-                      <Smile className="w-5 h-5" />
-                    </button>
-                 */
-
-
-
-                    /** #mobile header menu
-                     *            
-            <div className="md:hidden flex justify-between items-center">
-              <button className="p-2 text-gray-600 hover:text-gray-800">
-                <Menu className="w-5 h-5" />
-              </button>
-              <button className="text-xs text-accent hover:text-secondary font-medium">
-                New Message
-              </button>
-            </div>
-
-
-
-
-
-  <div className="flex items-center space-x-2">
-            <button className="p-2 text-gray-600 hover:text-gray-800">
-              <Phone className="w-5 h-5" />
-            </button>
-            <button className="p-2 text-gray-600 hover:text-gray-800">
-              <Video className="w-5 h-5" />
-            </button>
-          </div>
-
-
-#input
-             <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
-                <button className="text-gray-500 hover:text-gray-700" disabled={isSendingMessage}>
-                  <Paperclip className="w-5 h-5" />
-                </button>
-                <button className="text-gray-500 hover:text-gray-700" disabled={isSendingMessage}>
-                  <Camera className="w-5 h-5" />
-                </button>
-              </div>
-                     */

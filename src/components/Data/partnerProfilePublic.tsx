@@ -399,7 +399,7 @@ const hotelMarkers = [{
 
   {idu.is_staff? "" : 
     ( status === "authenticated" ? 
-                <div className="border border-1 px-5 py-2 w-48 rounded-3xl border-gray-500 shadow-sm text-sm flex gap-3 mt-4 justify-center cursor-pointer hover:bg-gray-50" onClick={()=>router.push(`/en/chat/?id=${idu.id}`)}>
+                <div className="border border-1 px-5 py-2 w-48 rounded-3xl border-gray-500 shadow-sm text-sm flex gap-3 mt-4 justify-center cursor-pointer hover:bg-gray-50" onClick={()=>router.push(`/en/account/messages/?id=${idu.id}`)}>
                   <LuMessageCircleMore size={18} className='text-gray-500'/>
                   <p className='text-gray-500'>Send Message</p> 
                 </div> :

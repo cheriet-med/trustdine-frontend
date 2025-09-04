@@ -123,7 +123,7 @@ export default function RestaurantSearch() {
       }
 
       // Navigate to search results
-      router.push(`/${locale}/search-hotel?q=${encodeURIComponent(query)}`);
+      router.push(`/${locale}/search-restaurant?q=${encodeURIComponent(query)}`);
       setShowSuggestions(false);
       setSearchQuery('');
     }

@@ -745,7 +745,8 @@ const {Review} = useFetchReviews(info.id)
   const el = document.getElementById("book");
   el?.scrollIntoView({ behavior: "smooth" });
 }}>
-            Reserve Now
+         {info.category == "Restaurant" ?
+   "Reserve Now" : "Book Now"}
           </button>
          
 

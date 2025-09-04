@@ -40,7 +40,6 @@ interface Rev {
   restaurant_space:string;
   value:string;
   clearliness:string;
-  
   service:string;
   created_at:string;
   updated_at:string;

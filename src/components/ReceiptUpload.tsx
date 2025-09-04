@@ -4,7 +4,7 @@
 import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { Upload, Eye, X, RefreshCw, Shield, Camera, StopCircle } from 'lucide-react';
 import { FaFileUpload } from "react-icons/fa";
-
+import Image from 'next/image';
 
 
 interface ReceiptUploadProps {
@@ -38,10 +38,25 @@ const ReceiptUpload: React.FC<ReceiptUploadProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const captureCanvasRef = useRef<HTMLCanvasElement>(null);
-
+const [previewUrl, setPreviewUrl] = useState<string >('');
   const MAX_ATTEMPTS = 3;
   const CAPTCHA_TIMEOUT = 300000; // 5 minutes
   const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB in bytes
+
+
+
+
+useEffect(() => {
+  if (uploadedFile) {
+    const objectUrl = URL.createObjectURL(uploadedFile);
+    setPreviewUrl(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  } else {
+    setPreviewUrl('');
+  }
+}, [uploadedFile]);
+
+
 
   // Generate distorted text CAPTCHA
   const generateTextCaptcha = useCallback(() => {
@@ -446,23 +461,36 @@ const ReceiptUpload: React.FC<ReceiptUploadProps> = ({
         )}
       </div>
       
+
+
       {uploadedFile && (
         <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-          <div className="flex items-center flex-wrap gap-5 justify-center">
-            <div className="flex items-center justify-center flex-wrap">
-              
-              <span className="font-medium font-playfair">{uploadedFile.name}</span>
-              <span className="text-sm text-gray-500 ml-2 font-playfair">
-                ({(uploadedFile.size / 1024).toFixed(1)} KB)
-              </span>
-              <button
-                onClick={removeFile}
-                className="ml-2 text-primary hover:text-gray-700"
-                aria-label="Remove file"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
+
+
+          <div className="flex sm:flex-col  items-center flex-wrap gap-5 justify-center">
+
+                                      <div className="relative group">
+                                       {previewUrl && (
+  <Image
+    src={previewUrl}
+    alt="Receipt preview"
+    width={150}
+    height={150}
+    className="object-cover h-full sm:h-[500px] w-full rounded-xl shadow-lg border-2 border-gray-200"
+  />
+)}
+
+                                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 rounded-xl transition-all duration-200 flex items-center justify-center">
+                                          <button
+                                            type="button"
+                                            onClick={removeFile}
+                                            className="w-10 h-10 bg-highlights text-white rounded-full flex items-center justify-center hover:bg-secondary transition-colors shadow-lg opacity-0 group-hover:opacity-100 transform scale-90 group-hover:scale-100"
+                                          >
+                                            <X className="w-5 h-5" />
+                                          </button>
+                                        </div>
+                                      </div>
+
             <button
               onClick={handleValidateClick}
               disabled={isValidating || attempts >= MAX_ATTEMPTS}
@@ -471,6 +499,9 @@ const ReceiptUpload: React.FC<ReceiptUploadProps> = ({
               {isValidating ? 'Validating...' : 'Validate Receipt'}
             </button>
           </div>
+
+
+
           {attempts > 0 && attempts < MAX_ATTEMPTS && (
             <p className="text-orange-600 text-sm mt-2">
               {attempts} failed verification attempt{attempts > 1 ? 's' : ''}
@@ -483,6 +514,9 @@ const ReceiptUpload: React.FC<ReceiptUploadProps> = ({
           )}
         </div>
       )}
+
+
+
 
       {/* Camera Modal */}
       {showCamera && (
@@ -516,14 +550,14 @@ const ReceiptUpload: React.FC<ReceiptUploadProps> = ({
             <div className="flex justify-center flex-wrap space-x-4">
               <button
                 onClick={capturePhoto}
-                className="flex items-center px-6 py-3 bg-accent text-white rounded-lg hover:bg-highlights transition-colors"
+                className="flex items-center px-3 py-2 bg-accent text-white rounded-lg hover:bg-highlights transition-colors"
               >
                 <Camera className="h-6 w-6 mr-2" />
                 Capture Photo
               </button>
               <button
                 onClick={stopCamera}
-                className="flex items-center px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
+                className="flex items-center px-3 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-colors"
               >
                 <StopCircle className="h-6 w-6 mr-2" />
                 Cancel

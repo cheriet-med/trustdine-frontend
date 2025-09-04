@@ -131,7 +131,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           src={imageUrl}
           height={500}
           width={500}
-          className="h-80 lg:h-60  lg:w-96  rounded-md object-cover"
+          className="h-80 lg:h-60 lg:w-96 rounded-md object-cover"
         />
       </div>
       <div className="mt-2 flex flex-col gap-1 ">
@@ -149,7 +149,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   <p><span className='font-bold'>Service Booked:</span> {category}</p>
   <p><span className='font-bold'>Total Price:</span> ${price} (incl. taxes & fees)</p>
   <p><span className='font-bold'>Payment Method:</span> Credit Card </p>
-  <p><span className='font-bold'>Status:</span> Active</p>
+  <p className="text-green-500"><span className='font-bold text-gray-500'>Status:</span> Active</p>
 </div>      
 </div>
     </div>

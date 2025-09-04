@@ -209,7 +209,9 @@ export default function PersonalInformation() {
             </dd>
           </div>
 
+       
           {/* Identity Verification */}
+          {session?.user?.is_staff?
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="font-medium text-gray-900 font-playfair">Identity verification</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 flex justify-between items-center">
@@ -229,7 +231,7 @@ export default function PersonalInformation() {
       />
   
             </dd>
-          </div>
+          </div>:""}
 
           {/* Residential Address */}
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">

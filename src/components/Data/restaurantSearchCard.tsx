@@ -13,10 +13,11 @@ import LoginButton from "../header/loginButton";
 import { Hotels } from "./hotels";
 import Link from "next/link";
 import useFetchListing from "../requests/fetchListings";
-
+import useFetchReviews from "../requests/fetchReviews";
+import Image from "next/image";
 interface PropertyCardProps {
   id: string | number | any;
-  price: string  ;
+  price: string  | null;
   address: string  ;
   imageUrl: string;
   averageRating: number;
@@ -88,7 +89,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   const { data: session, status } = useSession();
   // Check if current item is in wishlist
   const isInWishlist = isItemInWishlist(id);
-
+  const {Review} = useFetchReviews(id)
+  const totalReviews = Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.rating_global, 0) / Review.length: 0
   // Handle heart icon click
   const handleWishlistToggle = (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent the anchor tag from navigating
@@ -140,11 +142,15 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
             <LoginButton />
           )}
       <Link href={`/en/booking/${id}`}>
-        <img
-          alt="Property"
-          src={imageUrl}
-          className="h-80 w-full rounded-md object-cover"
-        />
+          <Image
+             alt="Property"
+             src={imageUrl}
+             width={400} // Set appropriate width
+             height={320} // Set appropriate height (maintaining 5:4 aspect ratio)
+             className="h-80 sm:h-40 md:h-55 custom:h-80 w-full rounded-md object-cover"
+             placeholder="blur" // Optional: add blur placeholder
+             blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaUMk9SQ2Tv6JauWg===" // Optional: small base64 placeholder
+           />
         </Link>
       </div>
  <Link href={`/en/booking/${id}`}>
@@ -153,9 +159,9 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
           <dd className="font-medium font-playfair">{name}</dd>
         </div>  
         <div className='flex gap-1'>
-          <p className="text-sm">{averageRating}</p>
-          <StarRating rating={averageRating} />      
-          <p className=' text-sm'>{"("}{lengtReviews}{")"}</p>   
+         {totalReviews == 0 ? "" : <p className="text-sm">{totalReviews}</p>} 
+          <StarRating rating={totalReviews} />      
+         {totalReviews == 0 ? "" : <p className=' text-sm'>{"("}{Review.length}{")"}</p>} 
         </div>
         <div className="flex gap-1 text-sm items-center">
           <CiForkAndKnife size={14}/>
@@ -219,7 +225,7 @@ const handlePrevious = () => {
              <PropertyCard
                 id={res.id || `restaurant-${index}`} // Use restaurant ID or fallback
                 name={res.name}
-                price={res.average_cost || ''}
+                price={res.average_cost || res.price_range}
                 address={res.location || ''}
                 imageUrl={`${process.env.NEXT_PUBLIC_IMAGE}/${res.image}`}
                 averageRating={4}

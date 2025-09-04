@@ -7,7 +7,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('Layout'); // Fixed namespace
   const locale = await getLocale(); 
   return {
-    title: t('Dashboard-title'),
+    title: "My Goamico Dashboard",
     description: t('Dashboard-description'),
  
     robots: {

@@ -11,6 +11,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
 import moment from 'moment';
+import useFetchAllBookings from './fetchAllBookings';
 import {FaStar } from "react-icons/fa"; 
 // TypeScript interfaces
 interface Product {
@@ -54,9 +55,12 @@ export default function AddReviewHotelForm({proid}:any) {
   
 const router = useRouter();
    const { data: session, status } = useSession();
-  const { Booking } = useFetchBooking(proid)
+  //const { Booking } = useFetchBooking(proid)
+const { AllBookings }=useFetchAllBookings()
 
-const date_stay = Booking.filter(reservation => reservation.user === session?.user?.id)
+const date_stay = AllBookings.filter(reservation => reservation.user === session?.user?.id)
+
+
 
   const [product, setProduct] = useState<Product>({
     name: '',

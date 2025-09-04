@@ -15,7 +15,7 @@ type WishlistItem = {
   rating:number;
   name:string;
   location:string;
-  price: string | number;
+  price: string | number | null;
   lengtReviews:string | number
 };
 

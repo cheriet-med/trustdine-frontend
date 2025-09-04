@@ -192,6 +192,23 @@ const images: ImageData[] = [
     [15, null, null, 16],
   ];
 
+ const gridLayoutMobile = [
+    [0, null, 1],
+    [null, 2, null],
+    [3, null, null],
+    [null, 5, 6],
+    [7, null, null],
+    [null, null, 9],
+    [null, 10, null],
+    [12, null, 13],
+    [null, 14, null],
+    [15, null, null],
+    [null, 4, 8],
+    [11, null, null],
+    [null, 16, null],
+  ];
+
+
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -264,9 +281,65 @@ const images: ImageData[] = [
   }, []);
 
   return (
+<>
     <div ref={containerRef} className="relative">
+   <section className="relative box-border overflow-hidden bg-secondary md:hidden">
+{/**<div className='h-96 flex gap-20 flex-wrap lg:flex-nowrap bg-secondary px-72 py-20 text-white'>
+   <h1 className='text-6xl font-bold flex-2 font-playfair'>Discrover More</h1>
+        <p className='flex-1'>This implementation maintains both animation behaviors while keeping them separate and organized. The feature cards will animate first as you scroll, followed by the testimonial cards animation.</p>
+</div> */}
+
+        {gridLayoutMobile.map((row, rowIndex) => (
+          <div key={rowIndex} className="gallery-row box-border flex">
+            {row.map((imageIndex, colIndex) => (
+              <div key={colIndex} className="flex-1 aspect-square">
+                {imageIndex !== null && (
+                  <div className={`img-container relative box-border h-full will-change-transform rounded-xl ${
+                    images[imageIndex].origin === 'left' ? 'origin-left' : 'origin-right'
+                  }`}>
+                    <Link href="/en/">
+                    <div >
+ <Image
+    src={images[imageIndex].src}
+    alt={images[imageIndex].alt}
+    height={300}
+    width={300}
+    className="w-full h-full object-cover rounded-xl transition-transform duration-500 ease-in-out hover:scale-110"
+  />
+                    <div className='bg-a rounded-xl px-1.5 md:px-6 py-1 lg:py-2 mt-1 md:mt-2 space-y-1 text-white'>
+                    <p className="font-bold font-playfair text-sm md:text-base">{images[imageIndex].name}</p>
+                    <div className='flex gap-1'>
+<StarRating rating={images[imageIndex].rating}/>
+                       <p className="text-sm">{images[imageIndex].rating}</p>
+                    </div>
+ <p className="md:text-sm text-xs">{images[imageIndex].location}</p>
+
+<div className='hidden custom:block'>
+   <VerifiedBadge text='Receipt Verified' />
+</div>
+<div className='hidden md:block custom:hidden'>
+   <VerifiedBadge text='Receipt Verified' size='md'/>
+</div>
+  <div className='block md:hidden'>
+   <VerifiedBadge text='verified' size='sm'/>
+</div>
+
+                    </div>
+
+                    </div>
+                    </Link>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
+      </section>
+</div>
+    <div ref={containerRef} className="relative">
+  
      
-      <section className="relative box-border overflow-hidden bg-secondary">
+      <section className="relative box-border overflow-hidden bg-secondary hidden md:block">
 {/**<div className='h-96 flex gap-20 flex-wrap lg:flex-nowrap bg-secondary px-72 py-20 text-white'>
    <h1 className='text-6xl font-bold flex-2 font-playfair'>Discrover More</h1>
         <p className='flex-1'>This implementation maintains both animation behaviors while keeping them separate and organized. The feature cards will animate first as you scroll, followed by the testimonial cards animation.</p>
@@ -280,7 +353,7 @@ const images: ImageData[] = [
                   <div className={`img-container relative box-border h-full will-change-transform rounded-xl ${
                     images[imageIndex].origin === 'left' ? 'origin-left' : 'origin-right'
                   }`}>
-                    <Link href="/en/id">
+                    <Link href="/en/">
                     <div >
  <Image
     src={images[imageIndex].src}
@@ -322,6 +395,8 @@ const images: ImageData[] = [
  */}
     
     </div>
+    
+    </>
   );
 };
 

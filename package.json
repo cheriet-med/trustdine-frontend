@@ -50,6 +50,7 @@
     "apexcharts": "^5.2.0",
     "cors": "^2.8.5",
     "dompurify": "^3.2.6",
+    "emoji-picker-react": "^4.13.2",
     "framer-motion": "^12.19.2",
     "gsap": "^3.13.0",
     "html-react-parser": "^5.2.2",

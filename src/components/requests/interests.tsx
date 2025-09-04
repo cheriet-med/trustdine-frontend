@@ -114,9 +114,7 @@ const Interests: React.FC<AmenitiesSelectorProps> = ({ initialAmenities, user })
   // Update state when Amenitie data changes
   useEffect(() => {
     if (Amenitie) {
-      console.log('Fetched userAmenitiesData:', Amenitie);
       setUserAmenities(Amenitie);
-      
       // Update amenities with selected state from API
       setAmenities(prevAmenities => {
         const updatedAmenities = prevAmenities.map(amenity => {

@@ -10,7 +10,6 @@ import useFetchUser from "@/components/requests/fetchUser";
 
 export default function ProtectedPage() {
   const { data: session, status } = useSession({ required: true });
-console.log(session?.user)
 //const {Users} =useFetchUser(+session?.user?.id)
 
 //console.log("users data is", Users)

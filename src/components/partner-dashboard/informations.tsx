@@ -36,6 +36,8 @@ import useFetchUser from '../requests/fetchUser';
 import ListinPartnerCard from '../Data/ListingPartnerCard';
 import PersonalInformation from '../Data/personalInfo';
 
+
+
 interface MenuItem {
   id: string;
   label: string;
@@ -43,21 +45,28 @@ interface MenuItem {
   href: string;
   badge?: string;
 }
+interface User {
+  id: string;
+  email: string;
+  full_name: string;
+  profile_image: string;
+  is_active?: boolean;
+}
 
-const menuItems: MenuItem[] = [
-  { id: 'Insights', label: 'Insights', icon: <MdOutlineInsights size={24} className='text-white'/>, href: '/en/account' },
-  { id: 'Calendar', label: 'Calendar', icon: <FaRegCalendarAlt size={24} className='text-white'/>, href: '/en/account/calendar' },
-  { id: 'Reservations', label: 'Reservations', icon:  <FaRegAddressBook size={24} className='text-white'/>, href: '/en/account/reservations' },
-  //{ id: 'Earnings', label: 'Earnings', icon: <PiMoneyWavyThin size={24} className='text-white'/>, href: '/en/account/earnings' },
-  { id: 'Profile', label: 'Profile', icon: <CgProfile size={24} className='text-white'/>, href: '/en/account/profile' },
-  { id: 'Wishlist', label: 'Wishlist', icon:  <FaRegHeart size={24} className='text-white'/>, href: '/en/account/wishlist-partner' },
-  { id: 'Listings', label: 'Listings', icon: <MdOutlineTravelExplore size={24} className='text-white'/>, href: '/en/account/listings' },
-  { id: 'Messages', label: 'Messages', icon: <FaRegMessage size={24} className='text-white'/>, href: '/en/account/messages', },
-  { id: 'Account Settings', label: 'Account Settings', icon:<IoSettingsOutline size={24} className='text-white'/>, href: '/en/account/partner-information' },
-  { id: 'Business Support', label: 'Business Support', icon: <LuBriefcaseBusiness size={24} className='text-white'/>, href: '/en/support' },
-  { id: 'Help Center', label: 'Help Center', icon: <LuCircleHelp size={24} className='text-white'/>, href: '/en/help-center' },
-  { id: 'Home page', label: 'Home page', icon: <IoHomeOutline size={24} className='text-white'/>, href: '/' },
-];
+interface Message {
+  id: string;
+  sender: User;
+  receiver: User;
+  content: string;
+  timestamp: string;
+  is_read: boolean;
+}
+
+interface Conversation {
+  user: User;
+  last_message: Message;
+  unread_count: number;
+}
 
 export default function DashboardUser() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -71,6 +80,61 @@ export default function DashboardUser() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+
+
+const [conversations, setConversations] = useState<Conversation[]>([]);
+const fetchConversations = async () => {
+ 
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/conversations/`, {
+        headers: {
+          'Authorization': `JWT ${session?.accessToken}`
+        }
+      });
+      console.log('Response status:', response.status);
+      if (!response.ok) {
+        throw new Error('Failed to fetch conversations');
+      }
+       
+      const data = await response.json();
+      setConversations(data);
+  };
+
+    useEffect(() => {
+    if (session?.accessToken) {
+      fetchConversations();
+    }
+  }, [session?.accessToken]);
+
+ const unread = conversations.reduce((sum, convo) => {
+  return sum + (convo.unread_count || 0);
+}, 0);
+
+
+
+
+const menuItems: MenuItem[] = [
+  { id: 'Insights', label: 'Insights', icon: <MdOutlineInsights size={24} className='text-white'/>, href: '/en/account' },
+  { id: 'Calendar', label: 'Calendar', icon: <FaRegCalendarAlt size={24} className='text-white'/>, href: '/en/account/calendar' },
+  { id: 'Reservations', label: 'Reservations', icon:  <FaRegAddressBook size={24} className='text-white'/>, href: '/en/account/reservations' },
+  //{ id: 'Earnings', label: 'Earnings', icon: <PiMoneyWavyThin size={24} className='text-white'/>, href: '/en/account/earnings' },
+  { id: 'Profile', label: 'Profile', icon: <CgProfile size={24} className='text-white'/>, href: '/en/account/profile' },
+  { id: 'Wishlist', label: 'Wishlist', icon:  <FaRegHeart size={24} className='text-white'/>, href: '/en/account/wishlist-partner' },
+  { id: 'Listings', label: 'Listings', icon: <MdOutlineTravelExplore size={24} className='text-white'/>, href: '/en/account/listings' },
+  { id: 'Messages', label: 'Messages', 
+    icon:   unread > 0 ? <div className='relative'>   
+          
+   <span className="absolute -top-1 left-4 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white font-semibold">{unread}
+   </span><FaRegMessage size={24} className='text-white'/> 
+    </div> :<FaRegMessage size={24} className='text-white'/> , 
+    href: '/en/account/messages', },
+  { id: 'Account Settings', label: 'Account Settings', icon:<IoSettingsOutline size={24} className='text-white'/>, href: '/en/account/partner-information' },
+  { id: 'Business Support', label: 'Business Support', icon: <LuBriefcaseBusiness size={24} className='text-white'/>, href: '/en/support' },
+  { id: 'Help Center', label: 'Help Center', icon: <LuCircleHelp size={24} className='text-white'/>, href: '/en/help-center' },
+  { id: 'Home page', label: 'Home page', icon: <IoHomeOutline size={24} className='text-white'/>, href: '/' },
+];
+
 
   useEffect(() => {
     const handleResize = () => {

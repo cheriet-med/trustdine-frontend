@@ -85,7 +85,7 @@ const MessagesComponent: React.FC = () => {
 
   // WebSocket connection management
   const connectWebSocket = useCallback(() => {
-    if (status !== "authenticated" || !session?.user?.access_token) {
+    if (status !== "authenticated" || !session?.accessToken) {
       return;
     }
 
@@ -93,7 +93,7 @@ const MessagesComponent: React.FC = () => {
     
     try {
       ws.current = new WebSocket(
-        `wss://api.goamico.com/ws/chat/?token=${session.user.access_token}`
+        `wss://api.goamico.com/ws/chat/?token=${session.accessToken}`
       );
 
       ws.current.onopen = () => {
@@ -105,7 +105,7 @@ const MessagesComponent: React.FC = () => {
         // Authenticate after connecting
         ws.current?.send(JSON.stringify({
           type: "authenticate",
-          token: `Bearer ${session.user.access_token}`,
+          token: `Bearer ${session.accessToken}`,
         }));
       };
 
@@ -179,7 +179,7 @@ const MessagesComponent: React.FC = () => {
 
   // Connect to WebSocket when authenticated
   useEffect(() => {
-    if (status === "authenticated" && session?.user?.access_token) {
+    if (status === "authenticated" && session?.accessToken) {
       connectWebSocket();
     } else {
       if (ws.current) {
@@ -189,7 +189,7 @@ const MessagesComponent: React.FC = () => {
   }, [status, session, connectWebSocket]);
 
   useEffect(() => {
-    if (status === "authenticated" && session?.user?.access_token) {
+    if (status === "authenticated" && session?.accessToken) {
       fetchConversations();
     }
   }, [status, session]);
@@ -197,7 +197,7 @@ const MessagesComponent: React.FC = () => {
   useEffect(() => {
     if (
       status === "authenticated" &&
-      session?.user?.access_token &&
+      session?.accessToken &&
       selectedContact
     ) {
       fetchMessages(selectedContact.id);
@@ -213,9 +213,9 @@ const MessagesComponent: React.FC = () => {
     try {
       setIsLoadingConversations(true);
       setError(null);
-      const response = await fetch('https://api.goamico.com/api/conversations/', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/conversations/`, {
         headers: {
-          'Authorization': `JWT ${session?.user?.access_token}`
+          'Authorization': `JWT ${session?.accessToken}`
         }
       });
       console.log('Response status:', response.status);
@@ -236,9 +236,9 @@ const MessagesComponent: React.FC = () => {
     try {
       setIsLoadingMessages(true);
       setError(null);
-      const response = await fetch(`https://api.goamico.com/api/messages/${userId}/`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}api/messages/${userId}/`, {
         headers: {
-          'Authorization': `JWT ${session?.user?.access_token}`
+          'Authorization': `JWT ${session?.accessToken}`
         }
       });
       
@@ -268,10 +268,10 @@ const MessagesComponent: React.FC = () => {
 
   const markMessagesAsRead = async (userId: string) => {
     try {
-      await fetch(`https://api.goamico.com/api/messages/${userId}/read/`, {
+      await fetch(`${process.env.NEXT_PUBLIC_URL}api/messages/${userId}/read/`, {
         method: 'POST',
         headers: {
-          'Authorization': `JWT ${session?.user?.access_token}`
+          'Authorization': `JWT ${session?.accessToken}`
         }
       });
       
@@ -652,7 +652,7 @@ const MessagesComponent: React.FC = () => {
           {!wsConnected && !wsConnecting && (
             <div className="flex items-center justify-center mt-2 text-xs text-red-500">
               <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
-              Disconnected - <button onClick={handleReconnect} className="ml-1 underline">Reconnect</button>
+              Disconnected - <button onClick={handleReconnect} className="ml-1 underline">Online</button>
             </div>
           )}
         </div>
@@ -670,7 +670,7 @@ const MessagesComponent: React.FC = () => {
               <p className="mb-2">{error}</p>
               <button 
                 onClick={() => selectedContact && fetchMessages(selectedContact.id)}
-                className="text-sm bg-red-100 text-red-600 px-3 py-1 rounded hover:bg-red-200"
+                className="text-sm bg-highlights text-white px-3 py-1 rounded hover:bg-red-200"
               >
                 Retry
               </button>
@@ -825,7 +825,7 @@ const MessagesComponent: React.FC = () => {
                       </p>
                     </div>
                     {conversation.unread_count > 0 && (
-                      <div className="bg-accent text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                      <div className="bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-semibold">
                         {conversation.unread_count}
                       </div>
                     )}

@@ -4,6 +4,7 @@ import SearchHotelHero from "@/components/Data/searchHotelHero";
 import HotelSearchCards from "@/components/Data/hotehlSearchCards";
 import useFetchListing from "@/components/requests/fetchListings";
 import RestaurantSearchCards from '@/components/Data/restaurantSearchCard';
+import useFetchAllReviews from '@/components/requests/fetchAllReviews';
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 
 export default function Booking() {
@@ -12,6 +13,7 @@ export default function Booking() {
   const hotelsWithLocations = listings?.filter(hotel => 
     hotel.latitude && hotel.longtitude && hotel.category == "Restaurant"
   );
+ const {AllReview} = useFetchAllReviews()
 
 const hotelMarkers = hotelsWithLocations?.map(hotel => ({
   position: [hotel.latitude || 51.505, hotel.longtitude || -0.09] as [number, number],
@@ -22,13 +24,13 @@ const hotelMarkers = hotelsWithLocations?.map(hotel => ({
         ${hotel.name}
       </h3>
       <p style="margin: 0 0 5px 0; font-size: 14px; color: #785964;">${hotel.location}</p>
-      <p style="margin: 0 0 5px 0; font-size: 14px; display: flex; align-items: center; gap: 4px; color: #4a5568;">
-        <span style="color: #82A7A6;">★</span> ${hotel.rating} / 5 • From $${hotel.price_per_night} per night
+    <p style="margin: 0 0 5px 0; font-size: 14px; display: flex; align-items: center; gap: 4px; color: #4a5568;">
+        <span style="color: #82A7A6;">★</span> ${AllReview?.filter(listing => +listing.product == hotel.id).length == 0 ? 0 : AllReview?.filter(listing => +listing.product == hotel.id).reduce((sum, r) => sum + +r.rating_global, 0) / AllReview?.filter(listing => +listing.product == hotel.id).length} / 5 • From $${hotel.price_per_night} per night
       </p>
       <p style="margin: 0 0 10px 0; font-size: 12px; color: #718096; text-transform: capitalize;">
         ${hotel.category}
       </p>
-      <a href="${hotel.id}" target="_blank" 
+      <a href="/en/booking/${hotel.id}" target="_blank" 
          style="display: inline-block; background: #785964; color: white; padding: 6px 12px; 
                 text-decoration: none; border-radius: 4px; font-size: 13px; font-weight: 500;">
         Book Now

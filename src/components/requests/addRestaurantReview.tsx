@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import moment from 'moment';
 import {FaStar } from "react-icons/fa"; 
 import useFetchBooking from './fetchBooking';
+import useFetchAllBookings from './fetchAllBookings';
 
 // TypeScript interfaces
 interface Product {
@@ -55,10 +56,12 @@ export default function AddReviewRestaurantForm({proid}:any) {
 
 const router = useRouter();
    const { data: session, status } = useSession();
-  const { Booking } = useFetchBooking(proid)
+ // const { Booking } = useFetchBooking(proid)
 
-const date_stay = Booking.filter(reservation => reservation.user === session?.user?.id)
+const { AllBookings }=useFetchAllBookings()
 
+const date_stay = AllBookings.filter(reservation => reservation.user === session?.user?.id)
+console.log(date_stay)
 
 
   const [product, setProduct] = useState<Product>({
