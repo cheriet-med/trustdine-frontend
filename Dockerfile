@@ -13,6 +13,8 @@ FROM base AS builder
 WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=deps /app/node_modules ./node_modules
+# copy env file for build-time vars
+COPY .env.local ./
 COPY . .
 RUN npm run build
 
