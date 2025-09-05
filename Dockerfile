@@ -14,7 +14,6 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-COPY .env.local ./
 RUN npm run build
 
 # Runner
