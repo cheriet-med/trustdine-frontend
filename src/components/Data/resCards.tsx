@@ -166,7 +166,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         </div>
         <div className="flex gap-1 text-sm items-center">
           <CiForkAndKnife size={14}/>
-          <dd className="text-sm text-gray-500">Average Price {price} -$$</dd>
+          <dd className="text-sm text-gray-500">{price}</dd>
         </div>
       </div>
       </Link>
@@ -223,7 +223,7 @@ export default function ResCards() {
               <PropertyCard
                 id={res.id} // Use restaurant ID or fallback
                 name={res.name}
-                price={res.average_cost || res.price_range}
+                price={"Averege Price "+res.average_cost +" -$$" ||"Averege Price "+res.price_range +" -$$"}
                 address={res.location || ''}
                 imageUrl={`${process.env.NEXT_PUBLIC_IMAGE}/${res.image}`}
                 averageRating={4}

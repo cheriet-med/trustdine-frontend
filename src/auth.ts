@@ -18,12 +18,15 @@ declare module "next-auth" {
     postalCode?: string | null;
     countryCode?: string | null;
     phoneNumber?: string | null;
-    access_token?: string; // Add this to User interface
+    access_token?: string;
+    refresh_token?: string;
   }
 
   interface Session {
     user: User;
-    accessToken?: string; // Add this to Session interface
+    accessToken?: string;
+    refreshToken?: string;
+    error?: string;
   }
 }
 
@@ -42,7 +45,53 @@ declare module "next-auth/jwt" {
     postalCode?: string | null;
     countryCode?: string | null;
     phoneNumber?: string | null;
-    accessToken?: string; // Add this to JWT interface
+    accessToken?: string;
+    refreshToken?: string;
+    accessTokenExpires?: number;
+    error?: string;
+  }
+}
+
+// Token refresh function - FIXED: Removed duplicate declaration
+async function refreshAccessToken(token: any) {
+  try {
+    console.log("Attempting to refresh token...");
+    
+    if (!token.refreshToken) {
+      console.error("No refresh token found");
+      return { ...token, error: "NoRefreshToken" };
+    }
+
+    const response = await fetch("https://api.goamico.com/auth/jwt/refresh/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refresh: token.refreshToken }),
+    });
+
+    const refreshedTokens = await response.json();
+
+    if (!response.ok) {
+      console.error("Failed to refresh token:", refreshedTokens);
+      throw refreshedTokens;
+    }
+
+    console.log("Token refreshed successfully");
+    
+    return {
+      ...token,
+      accessToken: refreshedTokens.access,
+      accessTokenExpires: Date.now() + 10 * 60 * 1000, // 10 minutes
+      refreshToken: refreshedTokens.refresh ?? token.refreshToken,
+      error: undefined, // Clear any previous errors
+    };
+  } catch (error) {
+    console.error("Error refreshing access token:", error);
+    return { 
+      ...token, 
+      error: "RefreshAccessTokenError",
+      // Keep the user logged in even if refresh fails
+      // The error will be available in the session for handling
+    };
   }
 }
 
@@ -96,6 +145,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           const tokenData = await tokenResponse.json();
           const accessToken = tokenData.access;
+          const refreshToken = tokenData.refresh;
 
           // Step 2: Fetch user data using the token
           const userResponse = await fetch(
@@ -115,7 +165,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           const user = await userResponse.json();
 
-          // Return the user object with all fields including access_token
+          // Return the user object with all fields including tokens
           return {
             id: user.id,
             email: user.email,
@@ -130,7 +180,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             postalCode: user.postalCode,
             countryCode: user.countryCode,
             phoneNumber: user.phoneNumber,
-            access_token: accessToken // Include the access token
+            access_token: accessToken,
+            refresh_token: refreshToken
           };
         } catch (error) {
           console.error("Authorization error:", error);
@@ -144,6 +195,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   basePath: "/api/auth",
   session: {
     strategy: "jwt",
+    maxAge: 24 * 60 * 60, // 24 hours - Keep session alive longer
   },
   callbacks: {
     async signIn({ user, account, profile }) {
@@ -162,7 +214,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 access_token: account?.access_token,
                 id_token: account?.id_token,
                 code: account?.code,
-                redirect_uri: "http://goamico.com/api/auth/callback/google"
+                redirect_uri: "https://goamico.com/api/auth/callback/google"
               })
             }
           );
@@ -200,7 +252,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             user.postalCode = djangoUser.postalCode;
             user.countryCode = djangoUser.countryCode;
             user.phoneNumber = djangoUser.phoneNumber;
-            user.access_token = tokens?.access; // Store access token properly
+            user.access_token = tokens?.access;
+            user.refresh_token = tokens?.refresh;
           }
           
           return true;
@@ -253,7 +306,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               user.postalCode = userData.postalCode;
               user.countryCode = userData.countryCode;
               user.phoneNumber = userData.phoneNumber;
-              user.access_token = data.access; // Store access token properly
+              user.access_token = data.access;
+              user.refresh_token = data.refresh;
             }
           }
           return true;
@@ -266,9 +320,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return true;
     },
     
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       // If user is available (sign in), update token
       if (user) {
+        console.log("JWT callback - storing user data:", {
+          hasAccessToken: !!user.access_token,
+          hasRefreshToken: !!user.refresh_token,
+          userId: user.id
+        });
+
         token.id = user.id;
         token.email = user.email;
         token.full_name = user.full_name;
@@ -282,8 +342,45 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         token.countryCode = user.countryCode;
         token.phoneNumber = user.phoneNumber;
         token.accessToken = user.access_token;
+        token.refreshToken = user.refresh_token;
+        token.accessTokenExpires = Date.now() + 10 * 60 * 1000; // 10 minutes from now
+        token.error = undefined; // Clear any errors on fresh login
+        
+        console.log("JWT token updated:", {
+          hasAccessToken: !!token.accessToken,
+          hasRefreshToken: !!token.refreshToken,
+          expiresAt: new Date(token.accessTokenExpires || 0).toISOString()
+        });
       }
-      return token;
+
+      // Check if we have a refresh token before attempting refresh
+      if (!token.refreshToken) {
+        console.log("No refresh token available, keeping existing session");
+        return token;
+      }
+
+      // Return previous token if the access token has not expired yet
+      if (Date.now() < (token.accessTokenExpires || 0)) {
+        return token;
+      }
+
+      console.log("Access token expired, attempting refresh...");
+      // Access token has expired, try to refresh it
+      const refreshedToken = await refreshAccessToken(token);
+      
+      // If refresh failed but we still have user data, keep the session alive
+      // The error will be handled at the application level
+      if (refreshedToken.error && token.id) {
+        console.log("Refresh failed but keeping user logged in:", refreshedToken.error);
+        // Keep the user data but mark the token as expired/errored
+        return {
+          ...token,
+          error: refreshedToken.error,
+          accessToken: undefined, // Clear invalid access token
+        };
+      }
+      
+      return refreshedToken;
     },
     
     async session({ session, token }) {
@@ -304,8 +401,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         phoneNumber: token.phoneNumber as string | null,
       };
       
-      // Make accessToken available at session level
+      // Make accessToken and error available at session level
       session.accessToken = token.accessToken as string;
+      session.refreshToken = token.refreshToken as string;
+      session.error = token.error as string;
+      
+      console.log("Session callback:", {
+        hasUser: !!session.user?.id,
+        hasAccessToken: !!session.accessToken,
+        hasError: !!session.error
+      });
       
       return session;
     },

@@ -285,14 +285,11 @@ const Index = ({info}:any) => {
     const { Amenitie, error: amenitiesError } = useFetchAmenities(info.user);
     const { Users, isLoading, mutate } = useFetchUser(info.user);
     const { Languages } = useFetchLanguages(info.user);
+    const { Nearbies } = useFetchNearby(userid);
+    const { Awards } = useFetchAwards(userid);
+    const {Review} = useFetchReviews(info.id)
 
-     const { Nearbies } = useFetchNearby(userid);
-      const { Awards } = useFetchAwards(userid);
-//console.log(info)
-
-const {Review} = useFetchReviews(info.id)
-
- const averageRating = Review && Review.length > 0
+  const averageRating = Review && Review.length > 0
   ? Review.reduce((sum, r) => sum + +r.rating_global, 0) / Review.length
   : 0;
   const [guests, setGuests] = useState({ rooms: 1, adults: 2, children: 0 });
@@ -402,7 +399,7 @@ const {Review} = useFetchReviews(info.id)
   
 
   return (
-    <div className="min-h-screen font-montserrat">
+    <div className="font-montserrat">
       {/* Header */}
       <div className="container mx-auto  py-6">
         <div className="flex flex-col lg:flex-row gap-2">
@@ -564,8 +561,9 @@ const {Review} = useFetchReviews(info.id)
                    </div>}
                   </div>
                   <Link href={`/en/profile/${Users?.id}`}>
-                  <div className="flex items-center gap-3 ">
-                        <div className="w-24 h-24 relative rounded-full overflow-hidden">
+                 <div className="flex items-center gap-5 justify-start md:justify-between">
+
+                        <div className="w-32 md:w-24 h-24 relative rounded-full overflow-hidden ">
                           <Image
                             src={Users?.profile_image == null ? '/profile.webp':`${process.env.NEXT_PUBLIC_IMAGE}/${Users?.profile_image}`}
                             alt="image"
@@ -734,7 +732,7 @@ const {Review} = useFetchReviews(info.id)
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-lg font-bold">${info.category == "Restaurant" ? info.price_range : info.price_per_night}</div>
+            <div className="text-lg font-bold">${info.category == "Restaurant" ? info.average_cost : info.price_per_night}</div>
             <div className="text-sm text-gray-500">{info.category == "Restaurant" ? "average price" : "per night"}</div>
           </div>
 
@@ -756,8 +754,7 @@ const {Review} = useFetchReviews(info.id)
         </div>
       </div>
 
-      {/* Mobile bottom padding to prevent content being hidden behind fixed button */}
-      <div className="lg:hidden h-32"></div>
+     
     </div>
   );
 };

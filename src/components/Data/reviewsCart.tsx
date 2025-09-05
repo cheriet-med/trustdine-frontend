@@ -344,11 +344,11 @@ const handleDelete = async (id:any) => {
                 {Review.slice(0, visibleCount).map((review) => (
                   <div key={review.id} className="space-y-3 pb-6 border-b border-gray-200 last:border-b-0">
                     <div className="flex items-start justify-between flex-wrap gap-3">
-                      <Link href="/en/profile">
+                      <Link href={`/en/profile/${AllUsers.find((user) => user.id === +review.user)?.id}`}>
                                   <div className="flex items-start gap-3">
                         <div className="w-10 h-10 relative rounded-full overflow-hidden">
                           <Image
-                            src={`${process.env.NEXT_PUBLIC_IMAGE}/${AllUsers.find((user) => user.id === +review.user)?.profile_image}` || '/profile.webp'}
+                            src={AllUsers.find((user) => user.id === +review.user)?.profile_image == null ? '/profile.webp' :`${process.env.NEXT_PUBLIC_IMAGE}/${AllUsers.find((user) => user.id === +review.user)?.profile_image}`}
                             alt="Facebook"
                             fill // This makes the image fill the container
                             style={{ 
@@ -467,11 +467,6 @@ const handleDelete = async (id:any) => {
           </CardContent>
           </Card>
         
-
-
-
-      {/* Mobile bottom padding to prevent content being hidden behind fixed button */}
-      <div className="lg:hidden h-32"></div>
     </div>
   );
 };

@@ -10,11 +10,13 @@ import { useSession} from "next-auth/react";
 import LoginButton from '@/components/header/loginButton';
 import Link from "next/link";
 import { Search } from 'lucide-react';
+import useFetchReviews from "../requests/fetchReviews";
+import { CiForkAndKnife } from "react-icons/ci";
 
 
 interface PropertyCardProps {
   id: string | number | any;
-  price: string | number;
+  price: any ;
   address: string;
   imageUrl: string;
   averageRating: number ;
@@ -48,7 +50,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   const { data: session, status } = useSession();
   // Check if current item is in wishlist
   const isInWishlist = isItemInWishlist(id);
-console.log(wishlist)
+
+  const {Review} = useFetchReviews(id)
+  const totalReviews = Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.rating_global, 0) / Review.length: 0
+
   // Handle heart icon click
   const handleWishlistToggle = (e: React.MouseEvent) => {
     e.preventDefault(); // Prevent the anchor tag from navigating
@@ -129,13 +134,14 @@ console.log(wishlist)
           <dd className="font-medium font-playfair">{address}</dd>
         </div>  
         <div className='flex gap-1'>
-          <p className="text-sm">{averageRating}</p>
-          <StarRating rating={averageRating} />      
-          <p className=' text-sm'>{"("}{lengtReviews}{")"}</p>   
+           {totalReviews == 0 ? "" : <p className="text-sm">{totalReviews}</p>} 
+          <StarRating rating={totalReviews} />      
+         {totalReviews == 0 ? "" : <p className=' text-sm'>{"("}{Review.length}{")"}</p>} 
         </div>
-     
+         <div className="flex gap-1 text-sm items-center">
+           {price?.includes("Averege Price") && <CiForkAndKnife size={14} />}
           <dd className="text-sm text-gray-500">{price}</dd>
-        
+         </div>
       </div>
       </Link>
     </div>

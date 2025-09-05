@@ -340,6 +340,11 @@ const MessagesComponent: React.FC = () => {
     });
   };
 
+
+
+
+
+
   const handleMessageRead = (messageId: string) => {
     setMessages(prev => prev.map(msg => 
       msg.id === messageId ? { ...msg, is_read: true } : msg
@@ -741,6 +746,8 @@ const MessagesComponent: React.FC = () => {
     );
   };
 
+console.log(filteredConversations)
+
   return (
     <>
       <div className="flex h-screen bg-gray-50">
@@ -804,7 +811,7 @@ const MessagesComponent: React.FC = () => {
                   <div className="flex items-center space-x-3">
                     <div className="relative">
                       <img
-                        src={conversation.user.profile_image || '/default-avatar.png'}
+                        src={conversation.user.profile_image == null ? '/profile.webp' : conversation.user.profile_image }
                         alt={conversation.user.full_name}
                         className="w-12 h-12 md:w-10 md:h-10 rounded-full object-cover"
                       />

@@ -397,13 +397,13 @@ const hotelMarkers = [{
                 </a>
 
 
-  {idu.is_staff? "" : 
-    ( status === "authenticated" ? 
+  {
+     status === "authenticated" ? 
                 <div className="border border-1 px-5 py-2 w-48 rounded-3xl border-gray-500 shadow-sm text-sm flex gap-3 mt-4 justify-center cursor-pointer hover:bg-gray-50" onClick={()=>router.push(`/en/account/messages/?id=${idu.id}`)}>
                   <LuMessageCircleMore size={18} className='text-gray-500'/>
                   <p className='text-gray-500'>Send Message</p> 
                 </div> :
-                 <LoginButtonSendMessages/>)
+                 <LoginButtonSendMessages/>
 }
 
 
@@ -458,7 +458,7 @@ const hotelMarkers = [{
             <span className="text-2xl font-bold text-gray-900">{averageRating}</span>
              <StarRating rating={averageRating} size={16}/>
             <span className="text-background font-medium">{averageRating == 5? "Excellent": (averageRating == 4? "Very Good" :(averageRating == 3? "Good":(averageRating == 2? 	"Poor" : "")))}</span>
-            <span className="text-sm text-gray-500">(({Review.length} reviews))</span>
+            <span className="text-sm text-gray-500">({Review.length} reviews)</span>
           </div>
           {Review.length >50 ?  <div className="text-sm text-gray-500 mb-4 px-2 py-1 border border-1 bg-secondary text-white rounded-3xl font-bold w-fit mt-2">Trusted</div>: ""}
          
@@ -504,7 +504,7 @@ const hotelMarkers = [{
             dangerouslySetInnerHTML={{ __html: idu?.about || '' }}
           />
            
-          <div className="min-h-80">
+          <div className="min-h-72">
             <hr className="mt-8"/>
             <h1 className="mt-4 mb-4 font-medium font-playfair text-lg">Features</h1>
             <div className="flex flex-wrap gap-2">
