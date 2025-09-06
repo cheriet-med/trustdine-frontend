@@ -83,13 +83,7 @@ const MessagesComponent: React.FC = () => {
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const searchParams = useSearchParams();
   const userId = searchParams.get('id') || 0;
-
-
-       const {Users} = useFetchUser(userId || session?.user.id)
- 
-
- 
-
+  const {Users} = useFetchUser(userId || session?.user.id)
  useEffect(() => {
   if (userId && Users && Users.id) {
     const med = {

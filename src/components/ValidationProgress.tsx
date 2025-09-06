@@ -18,6 +18,10 @@ const ValidationProgress: React.FC<ValidationProgressProps> = ({ isValidating })
     'Calculating confidence score'
   ];
 
+
+
+
+
   return (
     <div className="mb-8 p-6 bg-gray-50 rounded-lg flex flex-col justify-center items-center">
       <div className="flex items-center mb-4">

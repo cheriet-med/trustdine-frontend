@@ -222,7 +222,7 @@ export default function HotelCards() {
           currentItems.map((res, index) => (
             <div key={index}>
               <PropertyCard
-                id={res.id || `restaurant-${index}`} // Use restaurant ID or fallback
+                id={res.id} // Use restaurant ID or fallback
                 location={res.location}
                 price={"From $"+res.price_per_night + " per night"}
                 address={res.name}

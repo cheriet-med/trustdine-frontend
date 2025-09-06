@@ -61,7 +61,6 @@ const router = useRouter();
 const { AllBookings }=useFetchAllBookings()
 
 const date_stay = AllBookings.filter(reservation => reservation.user === session?.user?.id)
-console.log(date_stay)
 
 
   const [product, setProduct] = useState<Product>({
