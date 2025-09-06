@@ -6,7 +6,7 @@ import FacebookProvider from "next-auth/providers/facebook";
 // Extend the User and Session types in next-auth
 declare module "next-auth" {
   interface User {
-    id?: string;
+    id?: any;
     email?: string | undefined;
     full_name?: string | undefined;
     is_superuser?: boolean;

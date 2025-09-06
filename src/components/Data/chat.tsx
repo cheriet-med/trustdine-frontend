@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
+import useFetchUser from '../requests/fetchUser';
 import { 
   Search, Send, Paperclip, Smile, MoreHorizontal, Star, 
   Phone, Video, Info, ArrowLeft, Camera, Image, Menu 
@@ -8,7 +9,7 @@ import {
 import { useSearchParams } from 'next/navigation';
 
 interface User {
-  id: string;
+  id: string ;
   email: string;
   full_name: string;
   profile_image: string;
@@ -83,84 +84,124 @@ const MessagesComponent: React.FC = () => {
   const searchParams = useSearchParams();
   const userId = searchParams.get('id') || 0;
 
-  // WebSocket connection management
-  const connectWebSocket = useCallback(() => {
-    if (status !== "authenticated" || !session?.accessToken) {
-      return;
-    }
 
-    setWsConnecting(true);
+       const {Users} = useFetchUser(userId || session?.user.id)
+ 
+
+ 
+
+ useEffect(() => {
+  if (userId && Users && Users.id) {
+    const med = {
+      id: String(Users.id),
+      email: Users.email,
+      full_name: Users.full_name || '',
+      profile_image: Users.profile_image,
+      is_active: false,
+    };
     
-    try {
-      ws.current = new WebSocket(
-        `wss://api.goamico.com/ws/chat/?token=${session.accessToken}`
-      );
-
-      ws.current.onopen = () => {
-        console.log("✅ WebSocket connected");
-        setWsConnected(true);
-        setWsConnecting(false);
-        setReconnectAttempts(0);
-        
-        // Authenticate after connecting
-        ws.current?.send(JSON.stringify({
-          type: "authenticate",
-          token: `Bearer ${session.accessToken}`,
-        }));
-      };
-
-      ws.current.onmessage = (event) => {
-        try {
-          const data = JSON.parse(event.data);
-          console.log("📩 WebSocket message:", data);
-          
-          // Handle different message types
-          switch (data.type) {
-            case 'new_message':
-              handleNewMessage(data.message);
-              break;
-            case 'user_typing':
-              handleUserTyping(data.user_id);
-              break;
-            case 'user_stopped_typing':
-              handleUserStoppedTyping(data.user_id);
-              break;
-            case 'message_read':
-              handleMessageRead(data.message_id);
-              break;
-            default:
-              console.log('Unknown message type:', data.type);
-          }
-        } catch (error) {
-          console.error('Error parsing WebSocket message:', error);
-        }
-      };
-
-      ws.current.onerror = (error) => {
-        console.error("❌ WebSocket error:", error);
-        setWsConnecting(false);
-      };
-
-      ws.current.onclose = (event) => {
-        console.log("⚠️ WebSocket closed:", event.code, event.reason);
-        setWsConnected(false);
-        setWsConnecting(false);
-        
-        // Attempt reconnection with exponential backoff
-        if (reconnectAttempts < 5) {
-          const delay = Math.min(1000 * Math.pow(2, reconnectAttempts), 30000);
-          reconnectTimeoutRef.current = setTimeout(() => {
-            setReconnectAttempts(prev => prev + 1);
-            connectWebSocket();
-          }, delay);
-        }
-      };
-
-    } catch (error) {
-      console.error("❌ WebSocket connection failed:", error);
-      setWsConnecting(false);
+    setSelectedContact(med);
+    setIsMobileView(true);
+    
+    // Also fetch messages for this contact if we have a session
+    if (status === "authenticated" && session?.accessToken) {
+      fetchMessages(String(Users.id));
     }
-  }, [status, session, reconnectAttempts]);
+  }
+}, [userId, Users, status, session]);
+
+// Add this additional useEffect to handle the case where session loads after the user data
+useEffect(() => {
+  if (selectedContact && status === "authenticated" && session?.accessToken && messages.length === 0) {
+    fetchMessages(selectedContact.id);
+  }
+}, [selectedContact, status, session, messages.length]);
+
+
+
+
+  // WebSocket connection management
+ 
+const connectWebSocket = useCallback(() => {
+  if (status !== "authenticated" || !session?.accessToken) {
+    return;
+  }
+
+  setWsConnecting(true);
+  
+  try {
+    ws.current = new WebSocket(
+      `wss://api.goamico.com/ws/chat/?token=${session.accessToken}`
+    );
+
+    ws.current.onopen = () => {
+      console.log("✅ WebSocket connected");
+      setWsConnected(true);
+      setWsConnecting(false);
+      setReconnectAttempts(0);
+      
+      // Add a small delay and check readyState before sending
+      setTimeout(() => {
+        if (ws.current?.readyState === WebSocket.OPEN) {
+          ws.current.send(JSON.stringify({
+            type: "authenticate",
+            token: `Bearer ${session.accessToken}`,
+          }));
+        }
+      }, 100); // 100ms delay to ensure connection is fully established
+    };
+
+    // ... rest of your WebSocket handlers remain the same
+    ws.current.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        console.log("📩 WebSocket message:", data);
+        
+        switch (data.type) {
+          case 'new_message':
+            handleNewMessage(data.message);
+            break;
+          case 'user_typing':
+            handleUserTyping(data.user_id);
+            break;
+          case 'user_stopped_typing':
+            handleUserStoppedTyping(data.user_id);
+            break;
+          case 'message_read':
+            handleMessageRead(data.message_id);
+            break;
+          default:
+            console.log('Unknown message type:', data.type);
+        }
+      } catch (error) {
+        console.error('Error parsing WebSocket message:', error);
+      }
+    };
+
+    ws.current.onerror = (error) => {
+      console.error("❌ WebSocket error:", error);
+      setWsConnecting(false);
+    };
+
+    ws.current.onclose = (event) => {
+      console.log("⚠️ WebSocket closed:", event.code, event.reason);
+      setWsConnected(false);
+      setWsConnecting(false);
+      
+      if (reconnectAttempts < 5) {
+        const delay = Math.min(1000 * Math.pow(2, reconnectAttempts), 30000);
+        reconnectTimeoutRef.current = setTimeout(() => {
+          setReconnectAttempts(prev => prev + 1);
+          connectWebSocket();
+        }, delay);
+      }
+    };
+
+  } catch (error) {
+    console.error("❌ WebSocket connection failed:", error);
+    setWsConnecting(false);
+  }
+}, [status, session, reconnectAttempts]);
 
   // Cleanup WebSocket on unmount
   useEffect(() => {
@@ -377,70 +418,72 @@ const MessagesComponent: React.FC = () => {
     });
   };
 
-  const sendMessage = async () => {
-    if (!newMessage.trim() || !selectedContact || isSendingMessage) return;
+const sendMessage = async () => {
+  if (!newMessage.trim() || !selectedContact || isSendingMessage) return;
 
-    // If WebSocket is not connected, try to reconnect
-    if (!wsConnected || !ws.current) {
-      console.log("WebSocket not connected, attempting to reconnect...");
-      connectWebSocket();
-      
-      // Wait a bit for connection attempt
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // If still not connected, show error
-      if (!wsConnected) {
-        setError('Unable to connect. Please try again.');
-        return;
-      }
-    }
-
-    const messageContent = newMessage.trim();
+  // Check WebSocket state more thoroughly
+  if (!ws.current || ws.current.readyState !== WebSocket.OPEN) {
+    console.log("WebSocket not ready, attempting to reconnect...");
+    connectWebSocket();
     
-    try {
-      setIsSendingMessage(true);
-      
-      // Create optimistic message for immediate display
-      const optimisticMessage: Message = {
-        id: `temp-${Date.now()}`, // Temporary ID
-        sender: {
-          id: session?.user?.id || '',
-          email: session?.user?.email || '',
-          full_name: session?.user?.name || '',
-          profile_image: session?.user?.image || ''
-        },
-        receiver: selectedContact,
-        content: messageContent,
-        timestamp: new Date().toISOString(),
-        is_read: false
-      };
-
-      // Add optimistic message immediately
-      setMessages(prev => [...prev, optimisticMessage]);
-      setNewMessage('');
-      stopTyping();
-      
-      // Check if WebSocket is in ready state
-      if (ws.current?.readyState === WebSocket.OPEN) {
-        ws.current.send(JSON.stringify({
-          type: 'send_message',
-          receiver_id: selectedContact.id,
-          content: messageContent
-        }));
-      } else {
-        // Remove optimistic message if send fails
-        setMessages(prev => prev.filter(m => m.id !== optimisticMessage.id));
-        setError('Connection not ready. Please try again.');
-      }
-    } catch (err) {
-      // Remove optimistic message on error
-      setMessages(prev => prev.filter(m => m.id.startsWith('temp-')));
-      setError('Failed to send message');
-      console.error('Send message error:', err);
-    } finally {
-      setIsSendingMessage(false);
+    // Wait for connection with timeout
+    let attempts = 0;
+    const maxAttempts = 10;
+    
+    while ((!ws.current || ws.current.readyState !== WebSocket.OPEN) && attempts < maxAttempts) {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      attempts++;
     }
-  };
+    
+    if (!ws.current || ws.current.readyState !== WebSocket.OPEN) {
+      setError('Unable to connect. Please try again.');
+      return;
+    }
+  }
+
+  const messageContent = newMessage.trim();
+  
+  try {
+    setIsSendingMessage(true);
+    
+    const optimisticMessage = {
+      id: `temp-${Date.now()}`,
+      sender: {
+        id: session?.user?.id || '',
+        email: session?.user?.email || '',
+        full_name: session?.user?.name || '',
+        profile_image: session?.user?.image || ''
+      },
+      receiver: selectedContact,
+      content: messageContent,
+      timestamp: new Date().toISOString(),
+      is_read: false
+    };
+
+    setMessages(prev => [...prev, optimisticMessage]);
+    setNewMessage('');
+    stopTyping();
+    
+    // Double-check WebSocket state before sending
+    if (ws.current.readyState === WebSocket.OPEN) {
+      ws.current.send(JSON.stringify({
+        type: 'send_message',
+        receiver_id: selectedContact.id,
+        content: messageContent
+      }));
+    } else {
+      // Remove optimistic message if can't send
+      setMessages(prev => prev.filter(m => m.id !== optimisticMessage.id));
+      setError('Connection lost. Please try again.');
+    }
+  } catch (err) {
+    setMessages(prev => prev.filter(m => m.id.startsWith('temp-')));
+    setError('Failed to send message');
+    console.error('Send message error:', err);
+  } finally {
+    setIsSendingMessage(false);
+  }
+};
 
   const handleTyping = () => {
     if (!selectedContact || !ws.current) return;
@@ -540,15 +583,8 @@ const MessagesComponent: React.FC = () => {
     convo.user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  useEffect(() => {
-    if (userId && conversations.length > 0) {
-      const user = conversations.find(c => +c.user.id === +userId)?.user;
-      if (user) {
-        setSelectedContact(user);
-        setIsMobileView(true);
-      }
-    }
-  }, [userId, conversations]);
+
+
 
   // Show loading if session is still loading
   if (status === 'loading') {
@@ -632,7 +668,7 @@ const MessagesComponent: React.FC = () => {
             </button>
             <div className="relative">
               <img
-                src={selectedContact.profile_image || '/default-avatar.png'}
+                src={`${process.env.NEXT_PUBLIC_IMAGE}/${selectedContact.profile_image}`|| '/profile.webp'}
                 alt={selectedContact.full_name}
                 className="w-10 h-10 rounded-full object-cover"
               />
@@ -811,7 +847,7 @@ console.log(filteredConversations)
                   <div className="flex items-center space-x-3">
                     <div className="relative">
                       <img
-                        src={conversation.user.profile_image == null ? '/profile.webp' : conversation.user.profile_image }
+                        src={`${process.env.NEXT_PUBLIC_IMAGE}/${conversation.user.profile_image}`|| '/profile.webp'}
                         alt={conversation.user.full_name}
                         className="w-12 h-12 md:w-10 md:h-10 rounded-full object-cover"
                       />
@@ -852,7 +888,7 @@ console.log(filteredConversations)
                 <div className="flex items-center space-x-3">
                   <div className="relative">
                     <img
-                      src={selectedContact.profile_image || '/default-avatar.png'}
+                      src={`${process.env.NEXT_PUBLIC_IMAGE}/${selectedContact.profile_image}`|| '/profile.webp'}
                       alt={selectedContact.full_name}
                       className="w-10 h-10 rounded-full object-cover"
                     />

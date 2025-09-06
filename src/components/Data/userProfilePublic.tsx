@@ -565,7 +565,7 @@ const hotelMarkers = [{
     {/* About */}
 
       <div 
-  className="text-sm text-gray-600 dark:text-neutral-400 mt-8 space-y-2"
+  className="text-sm text-gray-600 dark:text-neutral-400 mt-8 space-y-2 prose-inherit"
   dangerouslySetInnerHTML={{ __html: idu?.about || '' }}
 />
      

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { CiLocationOn } from "react-icons/ci";
+import { TiLocation } from "react-icons/ti";
 
 export default function IpInfo() {
   const [data, setData] = useState<any>(null);
@@ -10,7 +11,7 @@ export default function IpInfo() {
   useEffect(() => {
     const fetchIpInfo = async () => {
       try {
-        const res = await fetch("http://127.0.0.1:8000/get-ip-info/");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_URL}get-ip-info/`);
         if (!res.ok) throw new Error("Failed to fetch");
         const result = await res.json();
         setData(result);
@@ -27,10 +28,10 @@ export default function IpInfo() {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="flex flex-wrap gap-4 text-white font-medium justify-center pt-4 items-center">
 
-      <div className="flex gap-1">
-        <CiLocationOn size={22}/>
+      <div className="flex gap-1 items-center">
+        <TiLocation size={22} />
         <p>{data.country_name}</p>
       </div>
       

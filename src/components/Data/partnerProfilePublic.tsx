@@ -184,7 +184,6 @@ const PartnerProfilePublic: React.FC<PartnerProfileProps> = ({ idu }) => {
 const alluserproducts = listings?.filter((user) => user.user === idu.id)
 const {AllReview} = useFetchAllReviews()
 
-
 const userProductIds = alluserproducts?.map((p) => p.id);
 const Review = AllReview?.filter((review) =>
   userProductIds?.includes(+review.product)
@@ -500,7 +499,7 @@ const hotelMarkers = [{
 
           {/* About */}
           <div 
-            className="text-sm text-gray-600 dark:text-neutral-400 mt-8 space-y-2 min-h-32"
+            className="text-sm text-gray-600 dark:text-neutral-400 mt-8 space-y-2 min-h-32 prose-inherit"
             dangerouslySetInnerHTML={{ __html: idu?.about || '' }}
           />
            

@@ -217,11 +217,12 @@ const ProfileCard: React.FC = () => {
   const { Users, isLoading, mutate } = useFetchUser(userId);
 
   const { AllReview } = useFetchAllReviews();
-  const Review = AllReview.filter((user) => user.user === userId);
+  const Review = AllReview.filter((user) => +user.user === +userId);
 
   const averageRating = Review && Review.length > 0
     ? Review.reduce((sum, r) => sum + +r.rating_global, 0) / Review.length
     : 0;
+
 
   const { Score } = useFetchScores();
   const userScore = Score.filter((user) => user.user === +(userId ?? 0));
@@ -610,10 +611,11 @@ const cleantotal = parseFloat((
           <EditAboutPopup initialAbout={profileData.about} infoId={userId} mutate={mutate}/>
           <h1 className='font-medium font-playfair text-lg'>About Us</h1>
 
-          <div 
-            className="text-sm text-gray-600 dark:text-neutral-400 mt-8 space-y-2"
-            dangerouslySetInnerHTML={{ __html: profileData?.about || '' }}
-          />
+         <div
+  className="text-sm text-gray-600 dark:text-neutral-400 mt-8 space-y-2 prose-inherit"
+  dangerouslySetInnerHTML={{ __html: profileData?.about || '' }}
+/>
+
 
           <hr className='mt-8'/>
 

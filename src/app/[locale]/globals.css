@@ -8,8 +8,9 @@ body {
   background: white;
   font-family: var(--font-montserrat), sans-serif;
 }
-
-
+.prose-inherit * {
+  color: inherit !important;
+}
 
 /* globals.css or your custom CSS file */
 .ProseMirror {

@@ -450,14 +450,14 @@ const Index = ({info}:any) => {
                
                    
 <div 
-   className="text-gray-500 leading-relaxed"
+   className="text-gray-500 leading-relaxed prose-inherit"
    dangerouslySetInnerHTML={{ __html: info.description || '' }}
 />
 
         -------
 
 <div 
-   className="text-gray-500 leading-relaxed"
+   className="text-gray-500 leading-relaxed prose-inherit"
    dangerouslySetInnerHTML={{ __html: Users?.about || '' }}
 />    
 </div>
@@ -561,7 +561,7 @@ const Index = ({info}:any) => {
                    </div>}
                   </div>
                   <Link href={`/en/profile/${Users?.id}`}>
-                 <div className="flex items-center gap-5 justify-start md:justify-between">
+                 <div className="flex items-center gap-5 justify-start flex-wrap">
 
                         <div className="w-32 md:w-24 h-24 relative rounded-full overflow-hidden ">
                           <Image

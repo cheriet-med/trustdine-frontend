@@ -7,6 +7,7 @@ import useFetchAllUser from '@/components/requests/fetchAllUsers';
 import PrivacyDialog from '@/components/Data/privacyDialog';
 import { RiCloseLargeLine } from "react-icons/ri";
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import { 
   Calendar as CalendarIcon,
   CalendarDays,
@@ -51,6 +52,10 @@ export interface Reservation {
   currency: string;
   createdAt: Date;
   image:string;
+  category:string,
+  total_guests:string,
+  room_quantity:string,
+  cancellation_policy:string,
 }
 
 export type SortField = keyof Reservation | 'user.name' | 'user.title';
@@ -147,7 +152,6 @@ const [isOpenupdate, setIsOpenUpdate] = useState(false);
 const [isOpendelete, setIsOpenDelete] = useState(false);
 const dialogRef = useRef<HTMLDivElement>(null); // Ref for the dialog container
  const [selectedReservation, setSelectedReservation] = useState<Reservation | null>(null);
-
   const [updateReservation, setUpdateReservation] = useState<Reservation | null>(null);
   const [deleteReservation, setDeleteReservation] = useState<Reservation | null>(null);
 
@@ -425,7 +429,7 @@ const dialogRef = useRef<HTMLDivElement>(null); // Ref for the dialog container
       <div className={`relative flex ${sizeClasses[size]} shrink-0 overflow-hidden rounded-full`}>
         {user.profileImage ? (
           <img
-            src={user.profileImage}
+            src={`${process.env.NEXT_PUBLIC_IMAGE}/${user.profileImage}`}
             alt={user.name}
             className="aspect-square h-full w-full"
           />
@@ -521,7 +525,7 @@ const dialogRef = useRef<HTMLDivElement>(null); // Ref for the dialog container
             item.onClick();
             setIsDropdownOpen(null);
           }}
-          className="relative flex w-full cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-gray-100 focus:text-gray-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+          className="relative flex w-full cursor-default select-none hover:bg-highlights hover:text-white items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-gray-100 focus:text-gray-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
         >
           {item.icon && <span className="mr-2">{item.icon}</span>}
           {item.label}
@@ -901,7 +905,8 @@ const dialogRef = useRef<HTMLDivElement>(null); // Ref for the dialog container
                 
                 {/* Status Column */}
                 <td className="py-4 px-4 lg:px-4 align-middle sm:py-3 min-w-[100px] lg:min-w-0">
-                  <StatusBadge status={reservation.status} />
+                <p className='text-secondary capitalize text-sm font-semibold'>{reservation.status}</p>
+                 {/**<StatusBadge status={reservation.status} /> */} 
                 </td>
                 
                 {/* Actions Column */}
@@ -915,11 +920,7 @@ const dialogRef = useRef<HTMLDivElement>(null); // Ref for the dialog container
                         icon: <Eye className="mr-2 h-4 w-4" />,
                         onClick: () => handleView(reservation)
                       },
-                      {
-                        label: 'Edit',
-                        icon: <Edit className="mr-2 h-4 w-4" />,
-                        onClick: () => handleEdit(reservation)
-                      },
+                   
                       {
                         label: 'Delete',
                         icon: <Trash2 className="mr-2 h-4 w-4" />,
@@ -964,7 +965,8 @@ const dialogRef = useRef<HTMLDivElement>(null); // Ref for the dialog container
                           <div className="text-sm text-slate-500 ">{reservation.user.title}</div>
                         </div>
                       </div>
-                      <StatusBadge status={reservation.status} />
+                    <p className='text-secondary capitalize text-sm font-semibold'>{reservation.status}</p>
+                    {/** <StatusBadge status={reservation.status} /> */} 
                     </div>
                   </div>
                   <div className="space-y-3">
@@ -1044,25 +1046,54 @@ const dialogRef = useRef<HTMLDivElement>(null); // Ref for the dialog container
       </h1>
 
 
-<div>
-  <img
-          alt="Property"
-          src={`${process.env.NEXT_PUBLIC_IMAGE}/${selectedReservation.image}`}
-          className="h-80 w-full rounded-md object-cover"
-        />
-
-  <p className="text-sm text-white">
+<div className='space-y-2'>
+ 
+<Image
+  alt="Property"
+  src={`${process.env.NEXT_PUBLIC_IMAGE}/${selectedReservation.image}`}
+  width={800} // set an appropriate width
+  height={320} // set an appropriate height
+  className="h-80 w-full rounded-md object-cover"
+/>
+<div className='flex justify-between flex-wrap gap-2'>
+   <p className="text-sm text-white">
         Reservation ID: {selectedReservation.id}
-      </p>
-      <p className="text-sm text-white">
-        Service Name: {selectedReservation.service}
-      </p>
+      </p>  
       <p className="text-sm text-white">
         Location: {selectedReservation.destination}
       </p>
-       <p className="text-sm text-white">
-        Amount: {selectedReservation.amount}
+</div>
+ <hr />
+
+      <p className="text-sm text-white">
+        Service Name: {selectedReservation.service}
       </p>
+
+<div className='flex  flex-wrap gap-6'>
+
+  <div className='space-y-2'>
+     <p className="text-sm text-white">Amount: {selectedReservation.amount}$</p>
+      <p className="text-sm text-white">Category:{selectedReservation.category}</p>
+  </div>   
+    
+
+ <div className='space-y-2'>
+   <p className="text-sm text-white">Total guests:{selectedReservation.total_guests}</p>
+ <p className="text-sm text-white">Room quantity:{selectedReservation.room_quantity}</p>
+</div> 
+</div>
+ 
+<hr />
+
+ <div>
+  <p className="text-sm text-white font-bold">Cancellation policy:</p>
+  <div 
+   className="text-white text-sm leading-relaxed prose-inherit"
+   dangerouslySetInnerHTML={{ __html: selectedReservation.cancellation_policy || '' }}
+/>
+ </div>
+
+
 </div>
       
     </div>

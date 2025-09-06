@@ -69,11 +69,11 @@ const PartnerProfile: React.FC = () => {
    const { data: session, status } = useSession({ required: true });
 
     const userId = session?.user?.id;
+   
   const { Users,  isLoading, mutate } = useFetchUser(userId);
  const { listings } = useFetchListing();
 
-
-const alluserproducts = listings?.filter((user) => user.user === userId)
+const alluserproducts = listings?.filter((user) => user.user === +userId)
 const {AllReview} = useFetchAllReviews()
 
 
@@ -85,6 +85,7 @@ const Review = AllReview?.filter((review) =>
 const averageRating = Review && Review.length > 0
   ? Review.reduce((sum, r) => sum + +r.rating_global, 0) / Review.length
   : 0;
+
 
  // Replace with actual userId
 
@@ -666,7 +667,7 @@ const initialAmenities = [
     </div>
 
     {/* Reviews */}
-<div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative '>
+ <div className='border border-1 rounded-2xl p-6 shadow-sm bg-white relative mt-4'>
       <h1 className='font-medium font-playfair mb-4 text-lg'>Reviews</h1>
 
       <div>
@@ -675,7 +676,7 @@ const initialAmenities = [
             <span className="text-2xl font-bold text-gray-900">{averageRating}</span>
              <StarRating rating={averageRating} size={16}/>
             <span className="text-background font-medium">{averageRating == 5? "Excellent": (averageRating == 4? "Very Good" :(averageRating == 3? "Good":(averageRating == 2? 	"Poor" : "")))}</span>
-            <span className="text-sm text-gray-500">(({Review.length} reviews))</span>
+            <span className="text-sm text-gray-500">({Review.length} reviews)</span>
           </div>
           {Review.length >50 ?  <div className="text-sm text-gray-500 mb-4 px-2 py-1 border border-1 bg-secondary text-white rounded-3xl font-bold w-fit mt-2">Trusted</div>: ""}
          
@@ -720,7 +721,7 @@ const initialAmenities = [
         </div> 
         :
       <div 
-  className="text-sm text-gray-600 dark:text-neutral-400 mt-8 space-y-2"
+  className="text-sm text-gray-600 dark:text-neutral-400 mt-8 space-y-2 prose-inherit"
   dangerouslySetInnerHTML={{ __html: profileData?.about || '' }}
 />
 }

@@ -3,7 +3,7 @@
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import LanguageSelect from "../header/languages";
-
+import IpInfo from "./geolocationInfo";
 const End = () => {
   const t = useTranslations('Footer');
 
@@ -25,7 +25,7 @@ const End = () => {
 
  </div>
           
-             
+             <IpInfo/>
       </footer>
       
     );

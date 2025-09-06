@@ -6,9 +6,6 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import Image from "next/image";
 import Link from "next/link";
-import useFetchUser from "@/components/requests/fetchUser";
-import useFetchReviews from "@/components/requests/fetchReviews";
-import ReportPopup from "@/components/requests/sendReportReview";
 import useFetchImageReviews from "@/components/requests/fetchImageReviews";
 import useFetchAllUser from "@/components/requests/fetchAllUsers";
 import useFetchAllReviews from "@/components/requests/fetchAllReviews";
@@ -18,7 +15,6 @@ import { AiFillLike } from "react-icons/ai";
 import { AiOutlineLike } from "react-icons/ai";
 import { Gallery, Item } from 'react-photoswipe-gallery';
 import 'photoswipe/dist/photoswipe.css';
-
 import LoginButtonHelpFull from "@/components/header/loginButtonHelpful";
 import useFetchListing from "../requests/fetchListings";
 import StarRating from "../starsComponent";
@@ -271,8 +267,10 @@ const ReviewsContent = ({ productID }: any) => {
   const [visibleCount, setVisibleCount] = useState(10);
 const { listings } = useFetchListing()
 
-const Review = AllReview.filter((user) => user.user === session?.user?.id)
-console.log(Review)
+const Review = AllReview.filter((user) => +user.user === +session?.user?.id)
+
+console.log(Review.length)
+
 const averageRating = Review && Review.length > 0
   ? Review.reduce((sum, r) => sum + +r.rating_global, 0) / Review.length
   : 0;
@@ -328,13 +326,17 @@ const averageRating = Review && Review.length > 0
   };
 
   return (
+    <>
+    {Review.length > 0 ? 
     <div className="space-y-6">
       {Review.slice(0, visibleCount).map((review) => (
         <div key={review.id} className="space-y-3 pb-6 border-b border-gray-200 last:border-b-0">
-          <div className="flex items-start justify-between flex-wrap gap-3">
-            <Link href="/en/boking">
-              <div className="flex items-start gap-3">
-                <div className="w-100 h-100 relative rounded-md overflow-hidden">
+          <div className="flex  justify-between gap-3">
+           
+
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <Link href={`/en/booking/${listings?.find((user) => user.id === +review.product)?.id}`}>  
+                <div className="w-auto h-64 relative rounded-md overflow-hidden">
                   <Image
                     src={`${process.env.NEXT_PUBLIC_IMAGE}/${listings?.find((user) => user.id === +review.product)?.image}` || '/profile.webp'}
                     alt="Profile"
@@ -344,15 +346,17 @@ const averageRating = Review && Review.length > 0
                     }}
                   />
                 </div>
-                <div>
-                  <p className="font-semibold text-secondary hover:underline">
+              </Link>
+
+                <div className="space-y-1 w-full">
+                   <Link href={`/en/booking/${listings?.find((user) => user.id === +review.product)?.id}`}>  
+                  <p className="font-semibold text-secondary hover:underline capitalize font-playfair text-xl">
                      {listings?.find((user) => user.id === +review.product)?.name || "Unknown"}
                   </p>
-                </div>
-              </div>
-            </Link>
-
-          </div>
+         </Link>
+            
+          
+         
 
           <div className="flex items-center flex-wrap gap-2 ml-15">
             <StarRating rating={averageRating} size={16}/>
@@ -361,8 +365,8 @@ const averageRating = Review && Review.length > 0
           </div>
 
           <p className="text-gray-500 leading-relaxed ml-15">{review.description}</p>
-
-          <Gallery>
+<div className="py-2">
+ <Gallery>
             <div className="flex flex-wrap gap-2">
               {ImageReviews
                 .filter((img) => +img.ProductReview === +review.id)
@@ -392,15 +396,19 @@ const averageRating = Review && Review.length > 0
                 ))}
             </div>
           </Gallery>
-
+</div>
+         
           <div className="flex items-center justify-between ml-15 flex-wrap">
             <div className="flex items-center flex-wrap gap-4 text-sm text-gray-500">
-              <span>Date of stay: {review.stay_date}</span>
-              <span>• Trip type: {review.trip_type}</span>
+             Date of stay: {review.stay_date}
+            </div>
+            <div className="flex justify-between w-full"> 
+              <div className="flex items-center flex-wrap gap-4 text-sm text-gray-500">
+            • Trip type: {review.trip_type}
             </div>
             <div className="flex items-center gap-2">
-              {status === "authenticated" ?
-                (AllHelpfullReview.filter(r => +r.user === +review.user).length == 1 ?
+             
+                {AllHelpfullReview.filter(r => +r.user === +review.user).length == 1 ?
                   <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-900" onClick={() => handleDelete(AllHelpfullReview.find((user) => user.user === +review.user)?.id)}>
                     <AiFillLike size={24} className=" mr-1 text-secondary" />
                     Helpful {" "} {AllHelpfullReview.filter(r => +r.review === +review.id).length}
@@ -409,18 +417,15 @@ const averageRating = Review && Review.length > 0
                   <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-900" onClick={() => handleSubmit(AllUsers.find((user) => user.id === +review.user)?.id, review.id)}>
                     <AiOutlineLike size={24} className=" mr-1" />
                     Helpful {" "} {AllHelpfullReview.filter(r => +r.review === +review.id).length}
-                  </Button>)
-                :  
-                <div className="flex items-center">
-                  <LoginButtonHelpFull/>
-                  <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-900" >
-                    Helpful {" "} {AllHelpfullReview.filter(r => +r.review === +review.id).length}
-                  </Button>
-                </div>
-              }
-
+                  </Button>}
+                 
+               </div>
+              </div>
+             </div>  
+            </div>
             </div>
           </div>
+          <hr />
         </div>
       ))}
       
@@ -431,7 +436,12 @@ const averageRating = Review && Review.length > 0
           </Button>
         </div>
       )}
-    </div>
+    </div> :  
+    
+    <div className="text-center py-8 text-gray-500">
+    <Star className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+    <p>No reviews available yet.</p>
+  </div>}</>
   );
 };
 
@@ -509,7 +519,7 @@ const Review = AllReview.filter((user) => user.user === session?.user?.id)
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <div className="flex items-center gap-2">
               
-                <h2 className="text-xl font-semibold font-playfair">Reviews History</h2>
+                <h2 className="text-2xl font-semibold font-playfair">Reviews History</h2>
               
               </div>
               <Button 
@@ -523,17 +533,11 @@ const Review = AllReview.filter((user) => user.user === session?.user?.id)
             </div>
 
             {/* Content */}
-            <div className="overflow-y-auto max-h-[calc(90vh-80px)] p-6">
-              {Review.length > 1 ? (
-               <ReviewsContent  />
-              ) : (
-                <div className="text-center py-8 text-gray-500">
-                  <Star className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-                  <p>No reviews available yet.</p>
-                </div>
-              )}
+            <div className="overflow-y-auto max-h-[calc(90vh-80px)] p-6">   
+  <ReviewsContent />
             </div>
           </div>
+
         </div>
       )}
     </>
