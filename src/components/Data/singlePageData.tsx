@@ -563,7 +563,7 @@ const Index = ({info}:any) => {
                   <Link href={`/en/profile/${Users?.id}`}>
                  <div className="flex items-center gap-5 justify-start flex-wrap">
 
-                        <div className="w-32 md:w-24 h-24 relative rounded-full overflow-hidden ">
+                        <div className="w-32 md:w-24 h-32 md:h-24 relative rounded-full overflow-hidden ">
                           <Image
                             src={Users?.profile_image == null ? '/profile.webp':`${process.env.NEXT_PUBLIC_IMAGE}/${Users?.profile_image}`}
                             alt="image"

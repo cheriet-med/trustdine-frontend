@@ -19,8 +19,6 @@ import { TbGridDots } from "react-icons/tb";
 import LoginButtonWishlistSinglepage from '@/components/header/loginButtonWishlistSingle';
 import LoginButtonAddReview from '@/components/header/LoginButtonAddReview';
 import Index from '@/components/Data/singlePageData';
-import ReviewsPopup from './reviewspopup';
-import { Check, Clock, BarChart3 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import useFetchUser from '../requests/fetchUser';
 import useFetchListingImages from '../requests/fetchListingImages';
@@ -28,9 +26,8 @@ import StarRating from '../starsComponent';
 import useFetchReviews from '../requests/fetchReviews';
 import { useRouter } from "next/navigation";
 
-
-
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
+
 interface ImageData {
   src: string;
   width: number;
@@ -48,9 +45,7 @@ interface PropertyCardProps {
   averageRating: number;
   lengtReviews: string;
   location:string;
- 
 }
-
 
 const ImageGalleryModal = ({ images, onClose }: { images: any[], onClose: () => void }) => {
   return (
@@ -68,8 +63,8 @@ const ImageGalleryModal = ({ images, onClose }: { images: any[], onClose: () => 
             {images.map((image, index) => (
               <Item
                 key={index}
-                original={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}
-                thumbnail={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}
+                original={image.src}
+                thumbnail={image.src}
                 width={800}
                 height={600}
               >
@@ -80,7 +75,7 @@ const ImageGalleryModal = ({ images, onClose }: { images: any[], onClose: () => 
                     className="relative aspect-square bg-gray-800 rounded-lg overflow-hidden cursor-pointer group"
                   >
                     <img
-                      src={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}
+                      src={image.src}
                       alt="Property image"
                       className="w-full h-full object-cover group-hover:opacity-80 transition-opacity"
                     />
@@ -100,51 +95,47 @@ const Idcomponent = (dat:any) => {
   const [isMobile, setIsMobile] = useState(false);
   const userid = dat.data.user
   const { Users, isLoading, mutate } = useFetchUser(userid);
-   const {productimage} = useFetchListingImages(dat.data.id)
+  const {productimage} = useFetchListingImages(dat.data.id)
+  const {Review} = useFetchReviews(dat.data.id)
 
-const {Review} = useFetchReviews(dat.data.id)
+  // Create combined images array with main image first
+  const allImages = [
+    {
+      src: `${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.image}`,
+      alt: dat.data.name || 'Main image',
+      isMain: true
+    },
+    ...(productimage?.map(img => ({
+      src: `${process.env.NEXT_PUBLIC_IMAGE}/${img.image}`,
+      alt: 'Property image',
+      isMain: false
+    })) || [])
+  ];
 
- const averageRating = Review && Review.length > 0
-  ? Review.reduce((sum, r) => sum + +r.rating_global, 0) / Review.length
-  : 0;
-const hotelMarkers = [{
-  position: [dat.data.latitude || 51.505, dat.data.longtitude || -0.09] as [number, number],
-  //popup: listing.name // using the listing name as popup text
-}];
-  // Calculate center position if hotels exist, otherwise use default
+  const averageRating = Review && Review.length > 0
+    ? Review.reduce((sum, r) => sum + +r.rating_global, 0) / Review.length
+    : 0;
+
+  const hotelMarkers = [{
+    position: [dat.data.latitude || 51.505, dat.data.longtitude || -0.09] as [number, number],
+  }];
+
   const centerPosition = 
     [dat.data.latitude || 51.505, dat.data.longtitude || -0.09] as [number, number];
 
-
   const { wishlist, addItemToWishlist, removeItemFromWishlist, isItemInWishlist } = useWishlist();
   const { data: session, status } = useSession();
-
-  // Check if current item is in wishlist
   const isInWishlist = isItemInWishlist(dat.data.id);
   const [showGalleryModal, setShowGalleryModal] = useState(false);
   const router = useRouter();
 
-
-
-
-
-
-
-
-
-
-
-
-
-  // Handle heart icon click
   const handleWishlistToggle = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent the anchor tag from navigating
-    e.stopPropagation(); // Stop event bubbling
+    e.preventDefault();
+    e.stopPropagation();
     
     if (isInWishlist) {
       removeItemFromWishlist(dat.data.id);
     } else {
-      // Create wishlist item with simplified structure
       const wishlistItem = {
        id: dat.data.id,
         image: dat.data.image,
@@ -163,9 +154,6 @@ const hotelMarkers = [{
     }
   };
 
-
-
-  // Check if screen is mobile
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
@@ -178,36 +166,19 @@ const hotelMarkers = [{
   }, []);
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % productimage.length);
+    setCurrentSlide((prev) => (prev + 1) % allImages.length);
   };
 
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + productimage.length) % productimage.length);
+    setCurrentSlide((prev) => (prev - 1 + allImages.length) % allImages.length);
   };
 
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
   };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   return (
      <div className="flex flex-col gap-4">
-     
-      
-      
         <div className="rounded-2xl m-1 sm:m-2 md:m-3 relative">
           <Map
             center={centerPosition}
@@ -218,15 +189,6 @@ const hotelMarkers = [{
         </div>
     <div className="max-w-7xl mx-auto px-2  font-montserrat ">
           <div className="space-y-2 mb-4 bg-white p-4 rounded-xl shadow-sm">
-           <div className='flex flex-wrap gap-4 items-center'>
-               <p className='py-1.5 px-16 bg-accent text-white font-playfair rounded-3xl w-fit font-bold hidden lg:flex'>Book Now</p>
-               <div className='flex gap-1 items-center'>
-                 <Check className="w-5 h-5 text-accent" />
-                  <p className='text-accent font-medium'>Guents aveskient service</p>
-               </div>
-          
-            </div>
-           
               <h1 className="text-3xl lg:text-4xl font-bold font-playfair text-gray-900">
                {dat.data.name} 
               </h1>
@@ -238,7 +200,6 @@ const hotelMarkers = [{
                   <span className="text-accent font-medium">{averageRating == 5? "Excellent": (averageRating == 4? "Very Good" :(averageRating == 3? "Good":(averageRating == 2? 	"Poor" : "")))}</span>
                   <span className="text-sm text-gray-500">({Review.length} reviews)</span>
                 </div>
-                <ReviewsPopup/>
               </div>
               <p className='text-accent font-semibold font-playfair '>What guests love: Exceptional service, quiet rooms, and great location. Some noted the restaurant
 could improve pricing</p>
@@ -259,7 +220,6 @@ could improve pricing</p>
                <Phone className="w-4 h-4 mr-2" /> 
                <p >
                   {Users?.phoneNumber}
-                  
                 </p></div>
              
   { status === "authenticated" ?
@@ -272,19 +232,12 @@ could improve pricing</p>
                 </div> )
 
                 :  <LoginButtonAddReview/>}
-              
-              
-               
               </div>
               <div className='flex gap-4 items-center'>
-                 
-   
-            
-              <ShareButton/>
+              <ShareButton id={dat.data.id}/> 
 
                {
                           status === "authenticated" ?
-                          
                         
                (
                             isInWishlist ?    
@@ -293,13 +246,9 @@ could improve pricing</p>
                               <p className='text-bold'>Save</p>
                           </button> : 
                            <button onClick={handleWishlistToggle} className='border border-1 border-black px-4 py-1 rounded-3xl flex gap-2 items-center' >
-                         
-              
                               <FaRegHeart size={18} className="text-gray-600 group-hover:text-accent transition-colors" />
                               <p className='text-bold'>Save</p>
-                           
                          </button>
-                         
                         )   
                        :
                          (
@@ -316,7 +265,7 @@ could improve pricing</p>
           <div className="md:col-span-2 md:row-span-2">
             <Item
               original={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.image}`}
-              thumbnail={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.name}`}
+              thumbnail={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.image}`}
               width={800}
               height={600}
             >
@@ -328,7 +277,7 @@ could improve pricing</p>
                 >
                   <img
                     src={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.image}`}
-                    alt={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.name}`}
+                    alt={dat.data.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300" />
@@ -354,27 +303,21 @@ could improve pricing</p>
                 >
                   <img
                     src={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}
-                    alt="images"
+                    alt="Property image"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300" />
-                  
-                
-                  
-           
                 </div>
               )}
             </Item>
           ))}
 
           <button className='text-a bg-white px-4 py-1 rounded-3xl  absolute right-4 bottom-4 flex gap-1 items-center'
-         
-          onClick={() => setShowGalleryModal(true)}
+            onClick={() => setShowGalleryModal(true)}
           >
-<TbGridDots size={18}/>
+            <TbGridDots size={18}/>
             <p >Show All Images </p>
           </button>
-          
         </div>
 
         {/* Mobile Slider Layout */}
@@ -385,35 +328,11 @@ could improve pricing</p>
                 className="flex transition-transform duration-300 ease-in-out"
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
-                    <Item
-              original={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.image}`}
-              thumbnail={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.name}`}
-              width={800}
-              height={600}
-            >
-              {({ ref, open }) => (
-                <div
-                  ref={ref}
-                  onClick={open}
-                  className="relative w-full h-96 bg-gray-200 rounded-lg overflow-hidden cursor-pointer group"
-                >
-                  <img
-                    src={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.image}`}
-                    alt={`${process.env.NEXT_PUBLIC_IMAGE}/${dat.data.name}`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-opacity duration-300" />
-                </div>
-              )}
-            </Item>
-       
-                {productimage?.map((image, index) => (
-                  
-       
+                {allImages.map((image, index) => (
                   <Item
                     key={index}
-                    original={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}
-                    thumbnail={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}
+                    original={image.src}
+                    thumbnail={image.src}
                     width={800}
                     height={600}
                   >
@@ -424,15 +343,10 @@ could improve pricing</p>
                         className="relative w-full h-96 bg-gray-200 flex-shrink-0 cursor-pointer"
                       >
                         <img
-                          src={`${process.env.NEXT_PUBLIC_IMAGE}/${image.image}`}
-                          alt="images"
+                          src={image.src}
+                          alt={image.alt}
                           className="w-full h-full object-cover"
                         />
-                        
-                        {/* Category badge */}
-                      
-                        
-                       
                       </div>
                     )}
                   </Item>
@@ -458,7 +372,7 @@ could improve pricing</p>
 
           {/* Slide indicators */}
           <div className="flex justify-center mt-4 space-x-2">
-            {productimage?.map((_, index) => (
+            {allImages.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
@@ -469,49 +383,19 @@ could improve pricing</p>
             ))}
           </div>
         </div>
-
-        {/* Additional grid for remaining images on desktop */}
-
       </Gallery>
 
- {showGalleryModal && (
-  <ImageGalleryModal 
-    images={productimage} 
-    onClose={() => setShowGalleryModal(false)} 
-  />
-)}
+      {showGalleryModal && (
+        <ImageGalleryModal 
+          images={allImages} 
+          onClose={() => setShowGalleryModal(false)} 
+        />
+      )}
 
-
-    <Index info={dat.data}/>
+      <Index info={dat.data}/>
     </div>
     </div>
   );
 };
 
 export default Idcomponent;
-
-
-
-
-
-/** {
-                          status === "authenticated" ?   <Link href="/en/account/receipt-validation">
-                <div className='flex items-center hover:underline'>
-                <GoPencil className="w-4 h-4 mr-2"/>
-                 <p >
-                  Write a review
-                </p></div>
-                </Link> :
-                <LoginButtonAddReview/>
-                           
-                
-
-
-                  <div className='flex  items-center'>
-                  <Mail className="w-4 h-4 mr-2" />
-                  <p className='underline'>
-                     E-mail hotel
-                  </p>
-                 
-                </div>
-            } */

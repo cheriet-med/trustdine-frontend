@@ -78,6 +78,7 @@ const totalPerDay =
   todayBookings.length > 0
     ? todayBookings.reduce((sum, r) => sum + Number(r.total_price || 0), 0)
     : 0;
+    
   const month = AllBookings.filter(item =>
     item.created_at && moment(item.created_at, ["MMMM Do YYYY", moment.ISO_8601]).isSame(moment(), "month")
   );

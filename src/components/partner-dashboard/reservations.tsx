@@ -31,8 +31,6 @@ import { FaRegAddressBook } from "react-icons/fa";
 import { MdOutlineInsights } from "react-icons/md";
 import { useSession } from 'next-auth/react';
 import useFetchUser from '../requests/fetchUser';
-import PartnerProfile from '../Data/partnerProfile';
-import HotelForm from '../requests/addHotelListing';
 import ReservationsTable from '../Data/reservationsTable';
 
 
@@ -129,8 +127,8 @@ const menuItems: MenuItem[] = [
    </span><FaRegMessage size={24} className='text-white'/> 
     </div> :<FaRegMessage size={24} className='text-white'/> , 
     href: '/en/account/messages', },
-  { id: 'Account Settings', label: 'Account Settings', icon:<IoSettingsOutline size={24} className='text-white'/>, href: '/en/account/partner-information' },
-  { id: 'Business Support', label: 'Business Support', icon: <LuBriefcaseBusiness size={24} className='text-white'/>, href: '/en/support' },
+  { id: 'Account Settings', label: 'Settings', icon:<IoSettingsOutline size={24} className='text-white'/>, href: '/en/account/partner-information' },
+  { id: 'Business Support', label: 'Assistance', icon: <LuBriefcaseBusiness size={24} className='text-white'/>, href: '/en/support' },
   { id: 'Help Center', label: 'Help Center', icon: <LuCircleHelp size={24} className='text-white'/>, href: '/en/help-center' },
   { id: 'Home page', label: 'Home page', icon: <IoHomeOutline size={24} className='text-white'/>, href: '/' },
 ];
@@ -190,21 +188,21 @@ const menuItems: MenuItem[] = [
       {/* Sidebar */}
       <aside
         className={`
-          fixed left-0 top-0 h-full bg-highlights border-r border-gray-200 z-50 transition-all duration-300 ease-in-out
-          ${isCollapsed ? 'w-24' : 'w-64'}
+          fixed left-0 top-0 h-full bg-highlights border-r border-gray-200 z-50 transition-all duration-300 ease-in-out overflow-y-auto
+          ${isCollapsed ? 'w-28' : 'w-64'}
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}
       >
         {/* Header */}
         <div className={`flex items-center justify-between border-b border-gray-200 ${isCollapsed ? 'p-2' : 'p-4'}`}>
           {isCollapsed ? (
-            <div className="flex items-center justify-center w-full">
+            <div className="flex items-center justify-center w-full pr-3">
            
                 <span className="text-white font-bold font-playfair text-xl">D</span>
              
             </div>
           ) : (
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 ">
               
               <h2 className="text-xl font-bold text-white font-playfair">Dashboard</h2>
 
@@ -214,7 +212,7 @@ const menuItems: MenuItem[] = [
           {!isCollapsed && (
             <button
               onClick={window.innerWidth < 1024 ? toggleMobileMenu : toggleSidebar}
-              className="p-2 rounded-lg hover:bg-accent transition-colors"
+              className="p-2 rounded-lg hover:bg-accent transition-colors "
             >
               {window.innerWidth < 1024 ? (
                 <X className="h-5 w-5 text-white" />
@@ -227,7 +225,7 @@ const menuItems: MenuItem[] = [
 
         {/* Collapse/Expand Button for Desktop */}
         {isCollapsed && (
-          <div className="hidden lg:flex justify-center p-2">
+          <div className="hidden lg:flex justify-center py-2 pr-3">
             <button
               onClick={toggleSidebar}
               className="p-2 rounded-lg hover:bg-accent transition-colors"
@@ -290,12 +288,15 @@ const menuItems: MenuItem[] = [
                       </span>
                     )}
                     {/* Tooltip for collapsed state */}
-                    {isCollapsed && (
-                      <div className="absolute left-full ml-2 px-4 py-1 bg-accent text-white text-sm rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
-                        {item.label}
-                        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1 border-4 border-transparent border-r-white pl-1.5"></div>
-                      </div>
-                    )}
+                   {isCollapsed && (
+  <div className="absolute left-1/2 -translate-x-1/2 -translate-y-full mb-2 px-4 py-1 bg-accent text-white text-sm rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
+    {item.label}
+
+    {/* Tooltip arrow */}
+    <div className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-accent"></div>
+  </div>
+)}
+
                   </Link>
                 </div>
               );
@@ -307,8 +308,8 @@ const menuItems: MenuItem[] = [
         <div className="p-2 border-t border-gray-200">
           {!isCollapsed ? (
             <div>
-            <div className="flex gap-2 items-center px-1  justify-center ml-6">
-            <div className="w-10 h-10 relative rounded-full overflow-hidden">
+            <div className="flex gap-2 items-center px-1  justify-center ml-6 ">
+            <div className="w-10 h-10 relative rounded-full overflow-hidden ">
   <Image
     src={Users?.profile_image == null ? "/profile.webp" : `${process.env.NEXT_PUBLIC_IMAGE}/${Users?.profile_image}`}
     alt={Users?.full_name || "Profile image"}
@@ -335,8 +336,8 @@ const menuItems: MenuItem[] = [
 </div>
             
           ) : (
-            <div className="flex flex-col items-center space-y-4">
-               <div className="w-10 h-10 relative rounded-full overflow-hidden">
+            <div className="flex flex-col items-center space-y-4 mr-4">
+               <div className="w-10 h-10 relative rounded-full overflow-hidden ">
   <Image
     src={Users?.profile_image == null ? "/profile.webp" : `${process.env.NEXT_PUBLIC_IMAGE}/${Users?.profile_image}`}
     alt={Users?.full_name || "Profile image"}

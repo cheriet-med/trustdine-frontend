@@ -11,6 +11,9 @@ import IdentityVerification from "@/components/requests/identityFerivication";
 import { useState } from "react";
 import { useSession } from 'next-auth/react';
 import Link from "next/link";
+import { AiOutlineUserDelete } from "react-icons/ai";
+import { RiCloseLargeLine } from "react-icons/ri";
+import { signOut } from "next-auth/react";
 
 interface ProfileData {
   id?: number;
@@ -65,6 +68,75 @@ export default function PersonalInformation() {
  const { data: session, status } = useSession({ required: true });
    const userId = session?.user?.id;
   const { Users,  isLoading, mutate } = useFetchUser(userId);
+
+
+
+
+  const [isOpendelete, setIsOpenDelete] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const handleDelete = () => {
+    setIsOpenDelete(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    setIsSaving(true);
+    setError(null);
+    setSuccessMessage(null);
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}infoid/${userId}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to cancel reservation: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      
+      // Show success message
+     // setSuccessMessage("Reservation successfully canceled!");
+      
+      // Trigger SWR revalidation to refresh the data
+      if (mutate) {
+        await mutate();
+      }
+      signOut({ callbackUrl: `/en/login` })
+      // Close the dialog after a short delay
+      setTimeout(() => {
+        setIsOpenDelete(false);
+        setIsSaving(false);
+      }, 1500);
+      
+    } catch (err) {
+      setError("An error occurred while Deleting Account");
+      setIsSaving(false);
+    }
+  };
+
+  const handleCloseDialog = () => {
+    if (!isSaving) {
+      setIsOpenDelete(false);
+      setError(null);
+      setSuccessMessage(null);
+    }
+  };
+
+
+
+
+
+
+
+
+
 
  // Replace with actual userId
 
@@ -275,6 +347,10 @@ export default function PersonalInformation() {
       </div>
 
       <div className="mt-8 pt-6 border-t border-gray-200">
+             <div className="flex gap-2  mt-8">
+<AiOutlineUserDelete size={24} className="text-accent"/>
+         <h3 className="font-medium text-gray-900 font-playfair hover:underline cursor-pointer" onClick={handleDelete}>Delete Account</h3>
+       </div>
         <div className="flex gap-2 items-center mt-8 ">
 <MdOutlineSecurity size={24} className="text-accent"/> 
  <h3 className="font-medium text-gray-900 font-playfair">Why isn't my info shown here?</h3>
@@ -284,6 +360,63 @@ export default function PersonalInformation() {
           We're hiding some account details to protect your identity. If you need to update this information, <Link href="/en/contact-us"><span className="underline">please contact support</span></Link> .
         </p>
       </div>
+
+            {/* Delete Dialog */}
+            {isOpendelete && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                <div className="bg-highlights rounded-lg shadow-lg p-6 max-w-lg w-full relative space-y-4">
+                  {/* Close Button */}
+                  <RiCloseLargeLine
+                    size={24}
+                    className="absolute top-2 right-2 text-white hover:text-gray-300 cursor-pointer"
+                    onClick={handleCloseDialog}
+                  />
+      
+                  {/* Content */}
+                  <h1 className="text-xl font-semibold font-playfair text-white">
+                    Delete Account
+                  </h1>
+                  <p className='text-sm text-white'>Are you sure you want to Delete this Account? This action cannot be undone.</p>
+      
+                  {successMessage && (
+                    <div className="mt-4 p-2 bg-green-100 text-green-700 rounded text-sm">
+                      {successMessage}
+                    </div>
+                  )}
+      
+                  <div className="flex justify-end gap-3 mt-6">
+                    <button
+                      className="px-3 py-1 border border-gray-300 rounded hover:bg-accent transition-colors disabled:opacity-50 rounded-lg text-white"
+                      onClick={handleCloseDialog}
+                      disabled={isSaving}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="px-3 py-1 bg-secondary text-white rounded hover:bg-accent transition-colors disabled:bg-accent disabled:cursor-not-allowed rounded-lg"
+                      onClick={handleDeleteConfirm}
+                      disabled={isSaving }
+                    >
+                      {isSaving ? (
+                        <span className="flex items-center justify-center">
+                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                          Deleting...
+                        </span>
+                      ) : 'Delete Account'}
+                    </button>
+                  </div>
+      
+                  {error && (
+                    <div className="mt-4 p-2 bg-red-100 text-red-700 rounded text-sm">
+                      {error}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
     </div>
   );
 }

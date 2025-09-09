@@ -1,7 +1,7 @@
 'use client'
 // src/contexts/WishlistContext.tsx
 import React, { createContext, useState, useEffect, ReactNode } from "react";
-const WISHLIST_STORAGE_KEY = "wishlist";
+import { useSession } from "next-auth/react";
 
 // Simplified wishlist item structure
 type WishlistItem = {
@@ -9,14 +9,14 @@ type WishlistItem = {
   image: string;
   title: string;
   dateAdded: Date;
-  category:string;
-  cuisine:string;
-  price_range:string;
-  rating:number;
-  name:string;
-  location:string;
+  category: string;
+  cuisine: string;
+  price_range: string;
+  rating: number;
+  name: string;
+  location: string;
   price: string | number | null;
-  lengtReviews:string | number
+  lengtReviews: string | number;
 };
 
 type WishlistContextType = {
@@ -27,6 +27,7 @@ type WishlistContextType = {
   isItemInWishlist: (id: string) => boolean;
   getWishlistCount: () => number;
   moveToCart?: (id: string) => void;
+  isLoading: boolean;
 };
 
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
@@ -36,13 +37,25 @@ type WishlistProviderProps = {
 };
 
 export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) => {
+  const { data: session, status } = useSession();
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Handle hydration
-  useEffect(() => {
+  // Generate storage key based on user session
+  const getStorageKey = () => {
+    if (session?.user?.email) {
+      return `wishlist_${session.user.email}`;
+    }
+    return "wishlist_guest"; // Fallback for non-authenticated users
+  };
+
+  // Load wishlist from sessionStorage
+  const loadWishlistFromSession = () => {
     if (typeof window !== "undefined") {
-      const savedWishlist = localStorage.getItem(WISHLIST_STORAGE_KEY);
+      const storageKey = getStorageKey();
+      const savedWishlist = sessionStorage.getItem(storageKey);
+      
       if (savedWishlist) {
         try {
           const parsed = JSON.parse(savedWishlist);
@@ -53,20 +66,55 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
           }));
           setWishlist(wishlistWithDates);
         } catch (error) {
-          console.error('Error parsing wishlist from localStorage:', error);
+          console.error('Error parsing wishlist from sessionStorage:', error);
+          setWishlist([]);
         }
+      } else {
+        setWishlist([]);
       }
-      setIsHydrated(true);
     }
-  }, []);
+  };
 
-  useEffect(() => {
-    if (isHydrated && typeof window !== "undefined") {
-      localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlist));
+  // Save wishlist to sessionStorage
+  const saveWishlistToSession = (wishlistData: WishlistItem[]) => {
+    if (typeof window !== "undefined" && isHydrated) {
+      const storageKey = getStorageKey();
+      sessionStorage.setItem(storageKey, JSON.stringify(wishlistData));
     }
-  }, [wishlist, isHydrated]);
+  };
+
+  // Handle session changes and hydration
+  useEffect(() => {
+    if (status === "loading") {
+      setIsLoading(true);
+      return;
+    }
+
+    if (typeof window !== "undefined") {
+      loadWishlistFromSession();
+      setIsHydrated(true);
+      setIsLoading(false);
+    }
+  }, [session, status]);
+
+  // Save wishlist whenever it changes
+  useEffect(() => {
+    if (isHydrated && !isLoading) {
+      saveWishlistToSession(wishlist);
+    }
+  }, [wishlist, isHydrated, isLoading]);
+
+  // Clear wishlist when user logs out or switches accounts
+  useEffect(() => {
+    if (isHydrated && status !== "loading") {
+      // If user changes (login/logout), reload the appropriate wishlist
+      loadWishlistFromSession();
+    }
+  }, [session?.user?.email, isHydrated, status]);
 
   const addItemToWishlist = (item: Omit<WishlistItem, 'dateAdded'>) => {
+    if (isLoading) return;
+
     setWishlist((prevWishlist) => {
       const existingItem = prevWishlist.find((wishlistItem) => wishlistItem.id === item.id);
       if (existingItem) {
@@ -83,11 +131,20 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
   };
 
   const removeItemFromWishlist = (id: string) => {
+    if (isLoading) return;
+
     setWishlist((prevWishlist) => prevWishlist.filter((item) => item.id !== id));
   };
 
   const clearWishlist = () => {
+    if (isLoading) return;
+
     setWishlist([]);
+    // Also clear from sessionStorage
+    if (typeof window !== "undefined") {
+      const storageKey = getStorageKey();
+      sessionStorage.removeItem(storageKey);
+    }
   };
 
   const isItemInWishlist = (id: string) => {
@@ -99,10 +156,13 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
   };
 
   const moveToCart = (id: string) => {
+    if (isLoading) return;
+
     const item = wishlist.find((wishlistItem) => wishlistItem.id === id);
     if (item) {
       removeItemFromWishlist(id);
       console.log('Item moved to cart:', item);
+      // Here you could integrate with a cart context or API
     }
   };
 
@@ -115,7 +175,8 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
         clearWishlist, 
         isItemInWishlist, 
         getWishlistCount,
-        moveToCart 
+        moveToCart,
+        isLoading
       }}
     >
       {children}

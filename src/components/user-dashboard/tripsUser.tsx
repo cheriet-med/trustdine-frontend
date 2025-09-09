@@ -29,7 +29,6 @@ import { useSession } from 'next-auth/react';
 import useFetchUser from '../requests/fetchUser';
 import TripsCards from '../Data/tripsCards';
 
-
 interface MenuItem {
   id: string;
   label: string;
@@ -119,10 +118,12 @@ const menuItems: MenuItem[] = [
    </span><FaRegMessage size={24} className='text-white'/> 
     </div> :<FaRegMessage size={24} className='text-white'/> , 
     href: '/en/account/messages', },
-  { id: 'Account Settings', label: 'Account Settings', icon:<IoSettingsOutline size={24} className='text-white'/>, href: '/en/account/personal-information' },
+  { id: 'Account Settings', label: 'Settings', icon:<IoSettingsOutline size={24} className='text-white'/>, href: '/en/account/personal-information' },
   { id: 'Help Center', label: 'Help Center', icon: <LuCircleHelp size={24} className='text-white'/>, href: '/en/help-center' },
  { id: 'Home page', label: 'Home page', icon: <IoHomeOutline size={24} className='text-white'/>, href: '/' },
 ];
+
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -178,15 +179,15 @@ const menuItems: MenuItem[] = [
       {/* Sidebar */}
       <aside
         className={`
-          fixed left-0 top-0 h-full bg-accent border-r border-gray-200 z-50 transition-all duration-300 ease-in-out
-          ${isCollapsed ? 'w-24' : 'w-64'}
+          fixed left-0 top-0 h-full bg-accent border-r border-gray-200 z-50 transition-all duration-300 ease-in-out overflow-y-auto
+          ${isCollapsed ? 'w-28' : 'w-64'}
           ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         `}
       >
         {/* Header */}
         <div className={`flex items-center justify-between border-b border-gray-200 ${isCollapsed ? 'p-2' : 'p-4'}`}>
           {isCollapsed ? (
-            <div className="flex items-center justify-center w-full">
+            <div className="flex items-center justify-center w-full pr-3">
            
                 <span className="text-white font-bold font-playfair text-xl">D</span>
              
@@ -215,7 +216,7 @@ const menuItems: MenuItem[] = [
 
         {/* Collapse/Expand Button for Desktop */}
         {isCollapsed && (
-          <div className="hidden lg:flex justify-center p-2">
+          <div className="hidden lg:flex justify-center py-2 pr-3">
             <button
               onClick={toggleSidebar}
               className="p-2 rounded-lg hover:bg-accent transition-colors"
@@ -278,12 +279,15 @@ const menuItems: MenuItem[] = [
                       </span>
                     )}
                     {/* Tooltip for collapsed state */}
-                    {isCollapsed && (
-                      <div className="absolute left-full ml-2 px-4 py-1 bg-background text-white text-sm rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
-                        {item.label}
-                        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1 border-4 border-transparent border-r-white pl-1.5"></div>
-                      </div>
-                    )}
+                   {isCollapsed && (
+  <div className="absolute left-1/2 -translate-x-1/2 -translate-y-full mb-2 px-4 py-1 bg-background text-white text-sm rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-50">
+    {item.label}
+
+    {/* Tooltip arrow */}
+    <div className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-white"></div>
+  </div>
+)}
+
                   </Link>
                 </div>
               );
@@ -323,7 +327,7 @@ const menuItems: MenuItem[] = [
 </div>
             
           ) : (
-            <div className="flex flex-col items-center space-y-4">
+            <div className="flex flex-col items-center space-y-4 mr-4">
                <div className="w-10 h-10 relative rounded-full overflow-hidden">
   <Image
     src={Users?.profile_image == null ? "/profile1.webp" : `${process.env.NEXT_PUBLIC_IMAGE}/${Users?.profile_image}`}

@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, FormEvent, useEffect, useRef } from "react";
+import { useState, FormEvent, useEffect, useRef , useMemo} from "react";
 import { IoSearch, IoLocationOutline, IoTimeOutline, IoBusinessOutline } from "react-icons/io5";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
+import useFetchListing from "../requests/fetchListings";
+
 
 interface SearchSuggestion {
   id: string;
@@ -14,9 +16,18 @@ interface SearchSuggestion {
   imageUrl?: string;
 }
 
+
+function useDebounce<T>(value: T, delay = 300): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+  return debounced;
+}
+
 export default function RestaurantSearch() {
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [recentSearches, setRecentSearches] = useState<SearchSuggestion[]>([]);
@@ -27,45 +38,10 @@ export default function RestaurantSearch() {
   const locale = useLocale();
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLDivElement>(null);
+  const {listings} =useFetchListing()
+  const hotelsListings = listings?.filter((user) => user.category === "Restaurant");
 
-  // Mock data - replace with your actual data source
-  const mockSuggestions: SearchSuggestion[] = [
-    {
-      id: '1',
-      title: 'New York City',
-      subtitle: 'New York, United States',
-      type: 'location',
-      imageUrl: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa'
-    },
-    {
-      id: '2',
-      title: 'Benjamin Steakhouse Prime',
-      subtitle: 'New York City, New York',
-      type: 'business',
-      imageUrl: 'https://images.unsplash.com/photo-1590490360182-c33d57733427'
-    },
-    {
-      id: '3',
-      title: 'Musée Public National Bardo',
-      subtitle: 'Algiers, Algeria',
-      type: 'location',
-      imageUrl: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6'
-    },
-    {
-      id: '4',
-      title: 'The Unvanquished Tour in Porto City Center',
-      subtitle: 'Porto, Portugal',
-      type: 'business',
-      imageUrl: 'https://images.unsplash.com/photo-1584132967334-10e028bd69f7'
-    },
-    {
-      id: '5',
-      title: 'Amsterdam All-Inclusive 90-Minutes Canal Cruise',
-      subtitle: 'Amsterdam, The Netherlands',
-      type: 'business',
-      imageUrl: 'https://images.unsplash.com/photo-1578683010236-d716f9a3f461'
-    }
-  ];
+
 
   // Handle mounting
   useEffect(() => {
@@ -85,19 +61,27 @@ export default function RestaurantSearch() {
   }, []);
 
   // Filter suggestions based on search query
-  useEffect(() => {
-    if (searchQuery.trim() === '') {
-      setSuggestions([]);
-      return;
-    }
-
-    const filtered = mockSuggestions.filter(suggestion =>
-      suggestion.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      suggestion.subtitle.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    setSuggestions(filtered.slice(0, 6));
-  }, [searchQuery]);
+ 
+ const debouncedQuery = useDebounce(searchQuery, 300);
+ 
+ const suggestions = useMemo<SearchSuggestion[]>(() => {
+   if (!debouncedQuery) return [];
+   return (
+     hotelsListings
+       ?.filter((hotel) =>
+         (hotel.name ?? "").toLowerCase().includes(debouncedQuery.toLowerCase()) ||
+         (hotel.location ?? "").toLowerCase().includes(debouncedQuery.toLowerCase())
+       )
+       .slice(0, 6)
+       .map((hotel) => ({
+         id: String(hotel.id),
+         title: hotel.name ?? "Unnamed Hotel",
+         subtitle: hotel.location ?? "Unknown location",
+         type: "location" as const,
+         imageUrl: hotel.image ?? undefined,
+       })) ?? []
+   );
+ }, [debouncedQuery, hotelsListings]);
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
@@ -123,16 +107,26 @@ export default function RestaurantSearch() {
       }
 
       // Navigate to search results
-      router.push(`/${locale}/search-restaurant?q=${encodeURIComponent(query)}`);
+      router.push(`/en/search-restaurant?q=${encodeURIComponent(query)}`);
       setShowSuggestions(false);
       setSearchQuery('');
     }
   };
 
-  const handleSuggestionClick = (suggestion: SearchSuggestion) => {
-    setSearchQuery(suggestion.title);
+const handleSuggestionClick = (suggestion: SearchSuggestion) => {
+  setSearchQuery(suggestion.title);
+  setShowSuggestions(false);
+
+  if (suggestion.id && suggestion.type !== "recent") {
+   
+    router.push(`/en/booking/${suggestion.id}`);
+  } else {
+   
     performSearch(suggestion.title);
-  };
+  }
+};
+
+
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!showSuggestions) return;
@@ -203,7 +197,7 @@ export default function RestaurantSearch() {
             placeholder="Search Restaurants, good Dines.."
             value=""
             readOnly
-            className="m-2 pl-12 pr-24 lg:w-[700px] text-gray-300 focus:text-gray-700 rounded-3xl h-12 focus:outline-none focus:ring-2 focus:bg-white hover:bg-white transition-colors"
+            className="m-2 pl-12 pr-24 lg:w-[700px] text-gray-300 focus:text-secondary rounded-3xl h-12 focus:outline-none focus:ring-2 focus:bg-white hover:bg-white transition-colors"
           />
           <IoSearch className="absolute left-4 top-4 text-gray-600" size={28} />
           <button 
@@ -231,9 +225,9 @@ export default function RestaurantSearch() {
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           onKeyDown={handleKeyDown}
-          className="m-2 pl-12 pr-24 lg:w-[700px] text-gray-300 focus:text-gray-700 rounded-3xl h-12 focus:outline-none focus:ring-2 focus:bg-white hover:bg-white transition-colors"
+          className="m-2 pl-12 pr-24 lg:w-[700px] text-gray-700 focus:text-gray-700 rounded-3xl h-12 focus:outline-none focus:ring-1 focus:bg-white hover:bg-white transition-colors"
         />
-        <IoSearch className="absolute left-4 top-4 text-gray-600" size={28} />
+        <IoSearch className="absolute left-4 top-4 text-gray-400" size={28} />
         <button 
           type="submit" 
           className="absolute right-4 lg:right-0 top-3 bg-secondary hover:bg-accent text-white px-4 py-2 rounded-3xl font-medium transition-colors"
@@ -275,7 +269,7 @@ export default function RestaurantSearch() {
               <div className="flex-shrink-0 mr-3">
                 {suggestion.imageUrl ? (
                   <img
-                    src={suggestion.imageUrl}
+                    src={`${process.env.NEXT_PUBLIC_IMAGE}/${suggestion.imageUrl}`}
                     alt={suggestion.title}
                     className="w-10 h-10 rounded-lg object-cover"
                   />

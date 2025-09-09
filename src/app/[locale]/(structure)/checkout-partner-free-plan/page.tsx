@@ -7,8 +7,8 @@ import moment from 'moment';
 import MailChecker from "mailchecker";
 import validator from "validator";
 
+// Country data with phone codes (unchanged)
 
-// Country data with phone codes
 const countries = [
   { name: 'Afghanistan', code: 'AF', phoneCode: '+93' },
   { name: 'Albania', code: 'AL', phoneCode: '+355' },
@@ -252,6 +252,7 @@ const countries = [
   { name: 'Zimbabwe', code: 'ZW', phoneCode: '+263' }
 ];
 
+
 interface FormData {
   // Step 1: Auth
   email: string;
@@ -277,7 +278,6 @@ interface FormData {
 }
 
 const PartnerRegistrationCheckout: React.FC = () => {
-
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     email: '',
@@ -300,36 +300,30 @@ const PartnerRegistrationCheckout: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null); // Error state
-  const [error1, setError1] = useState(""); // Email validation error state
-  const [error2, setError2] = useState(""); // Password validation error state
-
-  // Debounce for real-time validation
+  const [error, setError] = useState<string | null>(null);
+  const [error1, setError1] = useState("");
+  const [error2, setError2] = useState("");
+  const [emailExists, setEmailExists] = useState<boolean | null>(null);
   const [emailDebounce, setEmailDebounce] = useState<NodeJS.Timeout | null>(null);
 
   const isValidEmail = async (email: string): Promise<{ valid: boolean; message?: string }> => {
-    // Step 1: Check if the email is empty or null
     if (!email || email.trim() === "") {
       return { valid: false, message: 'Email is required' };
     }
 
-    // Step 2: Validate email format using regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return { valid: false, message: 'Invalid email format' };
     }
 
-    // Step 3: Validate email format using validator library
     if (!validator.isEmail(email)) {
       return { valid: false, message: 'Invalid email format'};
     }
 
-    // Step 4: Check if the email is disposable using mailchecker
     if (!MailChecker.isValid(email)) {
       return { valid: false, message: 'Disposable emails are not allowed' };
     }
 
-    // If all checks pass, the email is valid
     return { valid: true };
   };
 
@@ -338,33 +332,49 @@ const PartnerRegistrationCheckout: React.FC = () => {
       return 'Password is required';
     }
 
-    // Check if password is at least 8 characters long
     if (password.length < 8) {
       return 'Password must be at least 8 characters long';
     }
 
-    // Check if password contains at least one uppercase letter
     if (!/[A-Z]/.test(password)) {
       return 'Password must contain at least one uppercase letter';
     }
 
-    // Check if password contains at least one lowercase letter
     if (!/[a-z]/.test(password)) {
       return 'Password must contain at least one lowercase letter';
     }
 
-    // Check if password contains at least one digit
     if (!/[0-9]/.test(password)) {
       return 'Password must contain at least one digit';
     }
 
-    // Check if password contains at least one special character
     if (!/[!@#$%^&*]/.test(password)) {
       return 'Password must contain at least one special character (!@#$%^&*)';
     }
 
-    // If all conditions are met, return null (no error)
     return null;
+  };
+
+  const checkEmailExists = async (email: string): Promise<boolean> => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}infoglobal/?email=${email}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      return Array.isArray(data) && data.length > 0;
+    } catch (error) {
+      console.error('Error checking email:', error);
+      return false;
+    }
   };
 
   // Real-time email validation with debounce
@@ -379,6 +389,7 @@ const PartnerRegistrationCheckout: React.FC = () => {
     // Clear error if email is empty
     if (!email.trim()) {
       setError1("");
+      setEmailExists(null);
       return;
     }
 
@@ -387,10 +398,14 @@ const PartnerRegistrationCheckout: React.FC = () => {
       const validation = await isValidEmail(email);
       if (!validation.valid) {
         setError1(validation.message || 'Invalid email');
+        setEmailExists(null);
       } else {
         setError1("");
+        // Check if email exists only after format is valid
+        const exists = await checkEmailExists(email);
+        setEmailExists(exists);
       }
-    }, 500); // 500ms delay
+    }, 500);
 
     setEmailDebounce(timeout);
   };
@@ -417,110 +432,107 @@ const PartnerRegistrationCheckout: React.FC = () => {
     };
   }, [emailDebounce]);
 
-const CustomSelect = ({ 
-  value, 
-  onChange, 
-  options, 
-  placeholder,
-  className = ""
-}: {
-  value: string;
-  onChange: (value: string) => void;
-  options: { value: string; label: string }[];
-  placeholder: string;
-  className?: string;
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const selectRef = useRef<HTMLDivElement>(null);
-  const selectedLabel = options.find(opt => opt.value === value)?.label || placeholder;
+  const CustomSelect = ({ 
+    value, 
+    onChange, 
+    options, 
+    placeholder,
+    className = ""
+  }: {
+    value: string;
+    onChange: (value: string) => void;
+    options: { value: string; label: string }[];
+    placeholder: string;
+    className?: string;
+  }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const selectRef = useRef<HTMLDivElement>(null);
+    const selectedLabel = options.find(opt => opt.value === value)?.label || placeholder;
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+          setIsOpen(false);
+        }
+      };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
 
-
-  return (
-    <div className={`relative ${className}`} ref={selectRef}>
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsOpen(!isOpen);
-        }}
-        className={`flex h-12 w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-4 py-3 text-left text-sm transition-all hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-accent ${
-          isOpen ? 'ring-2 ring-accent' : ''
-        }`}
-      >
-        <span className="truncate text-left">{selectedLabel}</span>
-        <ChevronDown
-          className={`h-4 w-4 text-gray-500 transition-transform ${
-            isOpen ? 'rotate-180' : ''
+    return (
+      <div className={`relative ${className}`} ref={selectRef}>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsOpen(!isOpen);
+          }}
+          className={`flex h-12 w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-4 py-3 text-left text-sm transition-all hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-accent ${
+            isOpen ? 'ring-2 ring-accent' : ''
           }`}
-        />
-      </button>
-
-      {isOpen && (
-        <div 
-          className="absolute z-50 mt-1 w-full overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg"
-          onClick={(e) => e.stopPropagation()}
         >
+          <span className="truncate text-left">{selectedLabel}</span>
+          <ChevronDown
+            className={`h-4 w-4 text-gray-500 transition-transform ${
+              isOpen ? 'rotate-180' : ''
+            }`}
+          />
+        </button>
+
+        {isOpen && (
           <div 
-            className="max-h-60 overflow-y-auto"
-            onWheel={(e) => {
-              // Prevent scroll propagation to parent elements
-              e.stopPropagation();
-              const { currentTarget } = e;
-              if (
-                e.deltaY < 0 && currentTarget.scrollTop <= 0 ||
-                e.deltaY > 0 && currentTarget.scrollHeight - currentTarget.clientHeight <= currentTarget.scrollTop
-              ) {
-                e.preventDefault();
-              }
-            }}
+            className="absolute z-50 mt-1 w-full overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg"
+            onClick={(e) => e.stopPropagation()}
           >
-            {options.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onChange(option.value);
-                  setIsOpen(false);
-                }}
-                className={`relative flex w-full cursor-pointer select-none items-center px-4 py-2 text-sm text-left ${
-                  value === option.value
-                    ? 'bg-accent text-white'
-                    : 'text-gray-900 hover:bg-gray-100'
-                }`}
-              >
-                <span className="flex-1 truncate text-left">{option.label}</span>
-                {value === option.value && (
-                  <CheckIcon className="ml-2 h-4 w-4 flex-shrink-0" />
-                )}
-              </button>
-            ))}
+            <div 
+              className="max-h-60 overflow-y-auto"
+              onWheel={(e) => {
+                e.stopPropagation();
+                const { currentTarget } = e;
+                if (
+                  e.deltaY < 0 && currentTarget.scrollTop <= 0 ||
+                  e.deltaY > 0 && currentTarget.scrollHeight - currentTarget.clientHeight <= currentTarget.scrollTop
+                ) {
+                  e.preventDefault();
+                }
+              }}
+            >
+              {options.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onChange(option.value);
+                    setIsOpen(false);
+                  }}
+                  className={`relative flex w-full cursor-pointer select-none items-center px-4 py-2 text-sm text-left ${
+                    value === option.value
+                      ? 'bg-accent text-white'
+                      : 'text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  <span className="flex-1 truncate text-left">{option.label}</span>
+                  {value === option.value && (
+                    <CheckIcon className="ml-2 h-4 w-4 flex-shrink-0" />
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
-};
+        )}
+      </div>
+    );
+  };
 
   const steps = [
     { id: 1, title: 'Account Setup', icon: User },
     { id: 2, title: 'Business Information', icon: Building }
-  
   ];
+  
   const router = useRouter();
   
   const handleInputChange = (field: keyof FormData, value: string) => {
@@ -552,20 +564,29 @@ const CustomSelect = ({
 
   const handleSubmit = async () => {
     if (currentStep < 2) {
-      handleNextStep(); // Just move to next step if not on final step
+      handleNextStep();
       return;
     }
 
     setIsLoading(true);
-    setError(null); // Reset error state
+    setError(null);
 
     const email = formData.email;
-    const password = formData.password
+    const password = formData.password;
 
     // Final validation before submission
     const emailValidation = await isValidEmail(email);
     if (!emailValidation.valid) {
       setError1(emailValidation.message || 'Invalid email');
+      setIsLoading(false);
+      return;
+    }
+
+    // Check email existence one more time before submission
+    const exists = await checkEmailExists(email);
+    if (exists) {
+      setError1("This email is already registered");
+      setEmailExists(true);
       setIsLoading(false);
       return;
     }
@@ -578,7 +599,7 @@ const CustomSelect = ({
     }
 
     try {
-      // Final submission logic only runs on step 3
+      // Final submission logic
       const userResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}auth/users/`, {
         method: "POST",
         headers: {
@@ -624,7 +645,6 @@ const CustomSelect = ({
           phoneNumber: `${formData.phoneCode}${formData.phoneNumber}`,
           plan: "free",
           joined: moment().format('ll')
-          // ... other fields
         }),
       });
 
@@ -632,11 +652,10 @@ const CustomSelect = ({
         throw new Error('Partner info update failed');
       }
 
-      // Registration successful
       router.push('/en/account/profile');  
       
     } catch (err) {
-      setError('Registration error please verify your data')
+      setError('Registration error please verify your data');
       console.error('Registration error:', err);
     } finally {
       setIsLoading(false);
@@ -646,21 +665,25 @@ const CustomSelect = ({
   const isStepValid = (step: number): boolean => {
     switch (step) {
       case 1:
-        return !!(formData.email && formData.password && formData.confirmPassword && formData.password === formData.confirmPassword && !error1 && !error2);
+        return !!(formData.email && formData.password && formData.confirmPassword && 
+                 formData.password === formData.confirmPassword && !error1 && !error2 && 
+                 emailExists === false);
       case 2:
-        return !!(formData.businessName && formData.contactName && formData.address && formData.city && formData.phoneNumber);
+        return !!(formData.businessName && formData.contactName && formData.address && 
+                 formData.city && formData.phoneNumber && formData.businessType);
       default:
         return false;
     }
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-       <div className="flex items-center justify-center mb-10 lg:mb-14 h-56 pt-16 rounded-b-3xl bg-[url('/profile.avif')] bg-no-repeat bg-center bg-cover">
+    <div className="bg-gray-50 min-h-screen ">
+      <div className="flex items-center justify-center mb-10 lg:mb-14 h-56 pt-16 rounded-b-3xl bg-[url('/profile.avif')] bg-no-repeat bg-center bg-cover">
         <div className="text-2xl font-bold md:text-3xl md:leading-tight text-white dark:text-neutral-200 font-playfair uppercase">
-         <h2>Partner Registration</h2> 
+          <h2>Partner Registration</h2> 
         </div>
       </div>
+      
       <div className="max-w-7xl mx-auto mb-8 px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-8">
@@ -725,12 +748,18 @@ const CustomSelect = ({
                           value={formData.email}
                           onChange={(e) => handleEmailChange(e.target.value)}
                           className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition ${
-                            error1 ? 'border-secondary' : 'border-gray-300'
+                            error1 || emailExists ? 'border-secondary' : 'border-gray-300'
                           }`}
                           placeholder="Enter your email"
                         />
                       </div>
                       {error1 && <p className="text-secondary text-sm mt-1">{error1}</p>}
+                      {emailExists === true && (
+                        <p className="mt-1 text-sm text-secondary">This email is already registered. Please use another.</p>
+                      )}
+                      {emailExists === false && (
+                        <p className="mt-1 text-sm text-green-600">Email is available</p>
+                      )}
                     </div>
                     
                     <div>
@@ -790,63 +819,61 @@ const CustomSelect = ({
 
               {/* Step 2: Business Information */}
               {currentStep === 2 && (
-                <div className="space-y-6">
+                <div className="space-y-6 relative">
                   <div className="bg-black text-white p-4 rounded-lg">
                     <h2 className="text-xl font-bold mb-2 font-playfair">2. Business Information</h2>
                     <p className="text-gray-200">Tell us about your business</p>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full pb-6">
                     <div className="md:col-span-2">
                       <label className="block text-sm font-medium text-gray-700 mb-2">Business Type</label>
-                   <CustomSelect
-                      value={formData.businessType}
-                      onChange={(value) => handleInputChange('businessType', value)}
-                      placeholder="Select business type"
-                      options={[
-                        { value: 'hotel', label: 'Hotel' },
-                        { value: 'restaurant', label: 'Restaurant' },
-                        { value: 'restaurant-hotel', label: 'Hotel & Restaurant' },
-                        { value: 'cafe', label: 'Cafe' },
-                        { value: 'bar', label: 'Bar' },
-                        { value: 'cafe-restaurant', label: 'Cafe & Restaurant' },
-                      ]}
-                    />
-                  </div>
+                      <CustomSelect
+                        value={formData.businessType}
+                        onChange={(value) => handleInputChange('businessType', value)}
+                        placeholder="Select business type"
+                        options={[
+                          { value: 'hotel', label: 'Hotel' },
+                          { value: 'restaurant', label: 'Restaurant' },
+                          { value: 'restaurant-hotel', label: 'Hotel & Restaurant' },
+                          { value: 'cafe', label: 'Cafe' },
+                          { value: 'bar', label: 'Bar' },
+                          { value: 'cafe-restaurant', label: 'Cafe & Restaurant' },
+                        ]}
+                      />
+                    </div>
 
-
-                
-                    </div> 
-                      <div className='md:flex  gap-2 w-full space-y-6 md:space-y-0'>
-                    <div className="md:col-span-2 w-full">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Business Name</label>
-                      <div className="relative">
-                        <Building className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                        <input
-                          type="text"
-                          value={formData.businessName}
-                          onChange={(e) => handleInputChange('businessName', e.target.value)}
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
-                          placeholder="Enter business name"
-                        />
+                    <div className='md:flex gap-2 w-full space-y-6 md:space-y-0 md:col-span-2'>
+                      <div className="md:col-span-2 w-full">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Business Name</label>
+                        <div className="relative">
+                          <Building className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                          <input
+                            type="text"
+                            value={formData.businessName}
+                            onChange={(e) => handleInputChange('businessName', e.target.value)}
+                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                            placeholder="Enter business name"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="md:col-span-2 w-full">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Contact Name</label>
+                        <div className="relative">
+                          <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                          <input
+                            type="text"
+                            value={formData.contactName}
+                            onChange={(e) => handleInputChange('contactName', e.target.value)}
+                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                            placeholder="Enter contact person name"
+                          />
+                        </div>
                       </div>
                     </div>
                     
-                    <div className="md:col-span-2 w-full ">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Contact Name</label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                        <input
-                          type="text"
-                          value={formData.contactName}
-                          onChange={(e) => handleInputChange('contactName', e.target.value)}
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
-                          placeholder="Enter contact person name"
-                        />
-                      </div>
-                    </div>
-                     </div>
-                    <div className="md:col-span-2">
+                    <div className="md:col-span-2 w-full">
                       <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
                       <div className="relative">
                         <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
@@ -859,65 +886,59 @@ const CustomSelect = ({
                         />
                       </div>
                     </div>
+                    
                     <div className='md:flex gap-2 w-full space-y-6 md:space-y-0'>
-                    <div className='w-full mb:2'>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
-                      <input
-                        type="text"
-                        value={formData.city}
-                        onChange={(e) => handleInputChange('city', e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
-                        placeholder="City"
-                      />
-                    </div>
-                    
-                    <div  className='w-full'>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">ZIP Code</label>
-                      <input
-                        type="text"
-                        value={formData.zipCode}
-                        onChange={(e) => handleInputChange('zipCode', e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
-                        placeholder="ZIP Code"
-                      />
-                    </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Country</label>
-                    <CustomSelect
-                      value={formData.country}
-                      onChange={(value) => {
-                        handleInputChange('country', value);
-                        const selectedCountry = countries.find(c => c.name === value);
-                        if (selectedCountry) {
-                          handleInputChange('phoneCode', selectedCountry.phoneCode);
-                        }
-                      }}
-                      placeholder="Select country"
-                      options={countries.map(country => ({
-                        value: country.name,
-                        label: country.name
-                      }))}
-                    />
-                    </div>
-                    
-                    <div className='pb-6'>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-                      <div className='flex gap-2'>
-                          <div className="flex">
-                          <CustomSelect
-                          value={formData.phoneCode}
-                          onChange={(value) => handleInputChange('phoneCode', value)}
-                          placeholder="Code"
-                          options={countries.map(country => ({
-                            value: country.phoneCode,
-                            label: country.phoneCode
-                          }))}
+                      <div className='w-full mb:2'>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
+                        <input
+                          type="text"
+                          value={formData.city}
+                          onChange={(e) => handleInputChange('city', e.target.value)}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                          placeholder="City"
                         />
                       </div>
-                      <div className="flex-1">
-                        <div >
-                          
+                      
+                   
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Country</label>
+                      <CustomSelect
+                        value={formData.country}
+                        onChange={(value) => {
+                          handleInputChange('country', value);
+                          const selectedCountry = countries.find(c => c.name === value);
+                          if (selectedCountry) {
+                            handleInputChange('phoneCode', selectedCountry.phoneCode);
+                          }
+                        }}
+                        placeholder="Select country"
+                        options={countries.map(country => ({
+                          value: country.name,
+                          label: country.name
+                        }))}
+                      />
+                    </div>
+
+                    <div className='flex flex-col md:flex-row w-full md:col-span-2 gap-3 '>
+                       <div className='w-1/2 md:w-1/3 '>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">ZIP Code</label>
+                        <input
+                          type="text"
+                          value={formData.zipCode}
+                          onChange={(e) => handleInputChange('zipCode', e.target.value)}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                          placeholder="ZIP Code"
+                        />
+                      </div>
+                    <div className='pb-6 w-full'>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                      <div className='flex gap-2 w-full'>
+                          <div className="h-12 px-4 py-3 border border-gray-300 rounded-lg select-none flex items-center justify-center min-w-[80px]">
+                            <span className="text-gray-700 font-medium">{formData.phoneCode || '+1'}</span>
+                          </div>
+                        <div className="flex-1">
                           <input
                             type="tel"
                             value={formData.phoneNumber}
@@ -927,22 +948,21 @@ const CustomSelect = ({
                           />
                         </div>
                       </div>
-                    
-                      </div>
-
                     </div>
-                     {error && <p className="text-secondary text-sm mb-4">{error}</p>}
+                    </div>
+                    {error && <p className="text-secondary text-sm mb-4">{error}</p>}
                   </div>
-               
+                   <hr/>
+                </div>
               )}
 
-            
               {/* Navigation Buttons */}
-              <div className="flex justify-between pt-6 border-t">
+              <div className="flex justify-between mt-6 ">
+              
                 {currentStep > 1 && (
                   <button
                     onClick={handlePrevStep}
-                    className="sm:px-6 py-1.5  px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                    className="sm:px-6 py-1.5 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                   >
                     Previous
                   </button>
@@ -953,7 +973,7 @@ const CustomSelect = ({
                     <button
                       onClick={handleSubmit}
                       disabled={!isStepValid(currentStep)}
-                      className="sm:px-6 sm:py-2 text-sm sm:text-base py-2 px-2  bg-black text-white rounded-lg hover:bg-accent disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                      className="sm:px-6 sm:py-2 text-sm sm:text-base py-2 px-2 bg-black text-white rounded-lg hover:bg-accent disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
                     >
                       Continue
                       <ChevronRight className="w-4 h-4" />
@@ -981,7 +1001,7 @@ const CustomSelect = ({
               </div>
             </div>
 
-            {/* Summary Section */}
+            {/* Summary Section (unchanged) */}
             <div className="bg-gray-50 p-8 border-l">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 font-playfair">Registration Summary</h3>
               

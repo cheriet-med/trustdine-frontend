@@ -190,6 +190,7 @@ const images: ImageData[] = [
     [12, null, 13, null],
     [null, 14, null, null],
     [15, null, null, 16],
+    [null, null, null, null],
   ];
 
  const gridLayoutMobile = [
@@ -206,6 +207,7 @@ const images: ImageData[] = [
     [null, 4, 8],
     [11, null, null],
     [null, 16, null],
+    [null, null, null],
   ];
 
 
@@ -283,14 +285,14 @@ const images: ImageData[] = [
   return (
 <>
     <div ref={containerRef} className="relative">
-   <section className="relative box-border overflow-hidden bg-secondary md:hidden">
+   <section className="relative box-border overflow-hidden bg-accent md:hidden py-24">
 {/**<div className='h-96 flex gap-20 flex-wrap lg:flex-nowrap bg-secondary px-72 py-20 text-white'>
    <h1 className='text-6xl font-bold flex-2 font-playfair'>Discrover More</h1>
         <p className='flex-1'>This implementation maintains both animation behaviors while keeping them separate and organized. The feature cards will animate first as you scroll, followed by the testimonial cards animation.</p>
 </div> */}
 
         {gridLayoutMobile.map((row, rowIndex) => (
-          <div key={rowIndex} className="gallery-row box-border flex">
+          <div key={rowIndex} className="gallery-row box-border flex ">
             {row.map((imageIndex, colIndex) => (
               <div key={colIndex} className="flex-1 aspect-square">
                 {imageIndex !== null && (
@@ -339,7 +341,8 @@ const images: ImageData[] = [
     <div ref={containerRef} className="relative">
   
      
-      <section className="relative box-border overflow-hidden bg-secondary hidden md:block">
+      <section className="relative box-border overflow-hidden bg-accent hidden md:block py-32">
+         
 {/**<div className='h-96 flex gap-20 flex-wrap lg:flex-nowrap bg-secondary px-72 py-20 text-white'>
    <h1 className='text-6xl font-bold flex-2 font-playfair'>Discrover More</h1>
         <p className='flex-1'>This implementation maintains both animation behaviors while keeping them separate and organized. The feature cards will animate first as you scroll, followed by the testimonial cards animation.</p>
@@ -390,6 +393,7 @@ const images: ImageData[] = [
             ))}
           </div>
         ))}
+
       </section>
       {/**<section className='h-32 md:h-96 bg-secondary '></section>
  */}

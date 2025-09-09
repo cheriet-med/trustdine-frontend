@@ -1,5 +1,5 @@
 'use client'
-
+import { useRef, useEffect } from 'react';
 
 import CombatLanding from "@/components/home-page/hero"
 import ScrollAnimationGallery from "@/components/home-page/section3"
@@ -8,13 +8,23 @@ import ScrollAnimation from "@/components/home-page/section1"
 import FullscreenSlider from "@/components/home-page/sectionTop"
 
 export default function Home () {
+ const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  // Ensure autoplay works (muted is required for most browsers)
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch((err) => {
+        console.warn('Autoplay prevented:', err);
+      });
+    }
+  }, []);
 
   return(
     <div>
 
       
 <FullscreenSlider/>
-   <div className=' flex gap-10 lg:gap-20 flex-wrap lg:flex-nowrap bg-secondary px-6 lg:px-60 py-20  lg:py-32 text-white '>
+   <div className=' flex gap-10 lg:gap-20 flex-wrap lg:flex-nowrap bg-a px-6 lg:px-60 py-20  lg:py-32 text-white '>
    <h1 className=' font-extratbold lg:flex-1 font-playfair uppercase text-3xl md:text-5xl font-bold'>Real Places, Real Reviews</h1>
         <p className='lg:flex-1 text-2xl md:text-4xl font-playfair'>Dive into trending restaurants and hotels, rated by real diners and travelers.
 
@@ -32,9 +42,24 @@ export default function Home () {
 We cut the noise — so you can nd real places people actually loved.
 </p>
 </div> 
-
+ 
 <CombinedScrollAnimation/>
-<ScrollAnimation/>
+
+ <section className="relative h-screen">
+      {/* Video background */}
+      <video
+        ref={videoRef}
+        className="absolute inset-0 w-full h-full object-cover"
+        src="/footer.mp4" // ✅ replace with your video path
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        poster="/footer.jpg" // ✅ optional poster
+      />
+    </section>
+
     </div>
   )
 }

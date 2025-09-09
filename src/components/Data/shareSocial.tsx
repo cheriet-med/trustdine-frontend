@@ -9,8 +9,41 @@ import {
   ChevronRight
 } from "lucide-react";
 
-const ShareButton = () => {
+import { AiFillFacebook } from "react-icons/ai";
+import { RiTwitterXFill } from "react-icons/ri";
+import { CiLink } from "react-icons/ci";
+import { MdEmail } from "react-icons/md";
+import { ImVk } from "react-icons/im";
+import { FaLinkedin } from "react-icons/fa6";
+import { FaRedditAlien } from "react-icons/fa";
+import { FaSquarePinterest } from "react-icons/fa6";
+import Image from "next/image";
+import { useTranslations } from "next-intl";
+
+import { useLocale } from "next-intl";
+import parse from 'html-react-parser';
+
+import { FaTelegramPlane } from "react-icons/fa";
+import { FaWhatsapp } from "react-icons/fa";
+import { MdCopyAll } from "react-icons/md";
+
+import {
+  FacebookShareButton,
+  PinterestShareButton,
+  RedditShareButton,
+  TelegramShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+  LinkedinShareButton,
+  VKShareButton,
+  EmailShareButton
+} from 'next-share'
+
+
+
+const ShareButton = ({id}:any) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isCopied, setIsCopied] = useState(false); // Track if password is copied
   const popupRef = useRef<HTMLDivElement>(null);
 
   // Close popup when clicking outside
@@ -26,6 +59,33 @@ const ShareButton = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleCopyPassword = () => {
+    
+      navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_HOME}/booking/${id}`)
+        .then(() => {
+          setIsCopied(true); // Show "Copied!" text
+          setTimeout(() => setIsCopied(false), 2000); // Hide "Copied!" text after 2 seconds
+        })
+     
+  };
+
+const social = () => {
+    return (
+      <div className="flex gap-3 text-secondary flex-wrap">
+         <FacebookShareButton url={`${process.env.NEXT_PUBLIC_HOME}/booking/${id}`}><AiFillFacebook size={24} className="hover:text-[#1877F2]"/></FacebookShareButton>
+          <TwitterShareButton url={`${process.env.NEXT_PUBLIC_HOME}/booking/${id}`}><RiTwitterXFill size={24} className="hover:text-gray-600"/></TwitterShareButton>
+         <RedditShareButton url={`${process.env.NEXT_PUBLIC_HOME}/booking/${id}`}> <FaRedditAlien size={24} className="hover:text-[#FF4500]"/></RedditShareButton>
+         <TelegramShareButton url={`${process.env.NEXT_PUBLIC_HOME}/booking/${id}`}> <FaTelegramPlane size={24} className="hover:text-blue-500"/></TelegramShareButton>
+         <WhatsappShareButton url={`${process.env.NEXT_PUBLIC_HOME}/booking/${id}`}><FaWhatsapp size={24} className="hover:text-[#25D366]"/></WhatsappShareButton>
+           <LinkedinShareButton url={`${process.env.NEXT_PUBLIC_HOME}/booking/${id}`}><FaLinkedin size={24} className="hover:text-[#0077B5]"/></LinkedinShareButton>
+          <VKShareButton url={`${process.env.NEXT_PUBLIC_HOME}/booking/${id}`}> <ImVk size={24} className="hover:text-[#0077FF]"/></VKShareButton>
+          <EmailShareButton url={`${process.env.NEXT_PUBLIC_HOME}/booking/${id}`}><MdEmail size={24} className="hover:text-gray-600 "/></EmailShareButton>
+         {isCopied? <MdCopyAll size={24} className="text-green-500"/> : <CiLink size={24} onClick={handleCopyPassword} className="hover:text-green-500"/>}
+      </div>
+    )
+  }
+
 
   const shareOptions = [
     { icon: Link, label: "Copy Link", action: () => copyToClipboard() },
@@ -53,26 +113,15 @@ const ShareButton = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 z-10 overflow-hidden">
+        <div className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10 overflow-hidden">
           <div className="p-4 border-b border-gray-200">
             <h3 className="font-semibold text-lg font-playfair">Share this place</h3>
-            <p className="text-sm text-gray-500 mt-1">
-              Rental unit in Alicante • 4.94 • 1 bedroom • 1 bed • 1 shared bath
-            </p>
           </div>
-
-          <div className="divide-y divide-gray-200">
-            {shareOptions.map((option, index) => (
-              <button
-                key={index}
-                onClick={option.action}
-                className="flex items-center w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors"
-              >
-                <option.icon className="w-5 h-5 text-gray-700 mr-3" />
-                <span>{option.label}</span>
-              </button>
-            ))}
+          <div className="p-3">
+              {social()}
           </div>
+       
+ 
         </div>
       )}
     </div>

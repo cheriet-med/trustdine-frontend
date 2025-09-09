@@ -38,7 +38,7 @@ const PrivacyDialog = ({text}:any) => {
 
   return (
 <div>
-<p className='underline my-2 text-white cursor-pointer'  onClick={() => setIsOpen(true)}>Cancellation Policy Summary</p>
+<p className='underline my-2 text-white cursor-pointer hover:text-secondary'  onClick={() => setIsOpen(true)}>Cancellation Policy Summary</p>
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div
@@ -49,7 +49,7 @@ const PrivacyDialog = ({text}:any) => {
             <RiCloseLargeLine size={24}    className="absolute top-2  right-2 text-white hover:text-gray-700" onClick={() => setIsOpen(false)}/>
             
             {/* Content */}
-            <h1 className='text-xl font-semibold font-playfair text-white'>Cancellation Policy Summary</h1>
+            <h1 className='text-xl font-semibold font-playfair text-white '>Cancellation Policy Summary</h1>
        <div 
   className="text-white leading-relaxed"
    dangerouslySetInnerHTML={{ __html: text || '' }}

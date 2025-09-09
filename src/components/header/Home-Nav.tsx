@@ -68,7 +68,7 @@ export default function HomeNav() {
         >
             <div className="col-span-1">
 <Link href="/">
-                    <div className="relative h-9 w-32 ">
+                    <div className="relative h-28 w-40 ">
                               <Image
                                 src="/trust.png" // or "/logo.webp" if using an webp
                                 alt="logo"

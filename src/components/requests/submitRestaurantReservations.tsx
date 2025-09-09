@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Calendar, Plus, Minus, Clock } from 'lucide-react';
 import { LuUsersRound } from 'react-icons/lu';
 import useFetchBooking from '@/components/requests/fetchBooking';
@@ -32,6 +32,76 @@ const RestaurantBookingComponent = ({bookdata}:any) => {
   const [partner, setPartner] = useState(false);
   const [select, setSelect] = useState(false);
   const { data: session, status } = useSession( );
+
+  // Refs for popups and their trigger buttons
+  const datePickerRef = useRef<HTMLDivElement>(null);
+  const datePickerButtonRef = useRef<HTMLButtonElement>(null);
+  const timePickerRef = useRef<HTMLDivElement>(null);
+  const timePickerButtonRef = useRef<HTMLButtonElement>(null);
+  const guestSelectorRef = useRef<HTMLDivElement>(null);
+  const guestSelectorButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Smooth scroll function to center popup
+  const scrollToCenter = (popupRef: React.RefObject<HTMLDivElement | null>) => {
+    if (popupRef.current) {
+      const popup = popupRef.current;
+      const popupRect = popup.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      
+      // Calculate the center position
+      const popupCenter = popupRect.top + popupRect.height / 2;
+      const viewportCenter = viewportHeight / 2;
+      const scrollOffset = popupCenter - viewportCenter;
+      
+      // Smooth scroll to center the popup
+      window.scrollBy({
+        top: scrollOffset,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Close popups when clicking outside - HANDLES ALL THREE POPUPS
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // Check if click is outside date picker popup
+      if (
+        showDatePicker &&
+        datePickerRef.current && 
+        !datePickerRef.current.contains(event.target as Node) &&
+        datePickerButtonRef.current &&
+        !datePickerButtonRef.current.contains(event.target as Node)
+      ) {
+        setShowDatePicker(false);
+      }
+
+      // Check if click is outside time picker popup
+      if (
+        showTimePicker &&
+        timePickerRef.current && 
+        !timePickerRef.current.contains(event.target as Node) &&
+        timePickerButtonRef.current &&
+        !timePickerButtonRef.current.contains(event.target as Node)
+      ) {
+        setShowTimePicker(false);
+      }
+
+      // Check if click is outside guest selector popup
+      if (
+        showGuestSelector &&
+        guestSelectorRef.current && 
+        !guestSelectorRef.current.contains(event.target as Node) &&
+        guestSelectorButtonRef.current &&
+        !guestSelectorButtonRef.current.contains(event.target as Node)
+      ) {
+        setShowGuestSelector(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showDatePicker, showTimePicker, showGuestSelector]);
+
   // Generate time slots from 6:00 AM to 11:30 PM (30-minute intervals)
   const generateTimeSlots = (): string[] => {
     const slots = [];
@@ -51,8 +121,6 @@ const RestaurantBookingComponent = ({bookdata}:any) => {
   };
 
   const timeSlots = generateTimeSlots();
-
-  console.log('Booking data:', Booking);
 
   // Helper function to safely parse dates
   const parseDate = (dateValue: any): string | null => {
@@ -229,13 +297,49 @@ const RestaurantBookingComponent = ({bookdata}:any) => {
     }));
   };
 
-  const handleSubmit = async () => {
+  // Handle popup opening with smooth scroll - UPDATED WITH MUTUAL EXCLUSIVITY
+  const handleDatePickerOpen = () => {
+    setShowDatePicker(!showDatePicker);
+    setShowTimePicker(false); // Close other popups
+    setShowGuestSelector(false);
+    
+    if (!showDatePicker) {
+      setTimeout(() => {
+        scrollToCenter(datePickerRef);
+      }, 100);
+    }
+  };
 
-if(!selectedDateObj || !selectedTimeSlot){
-  setSelect(true)
-  return
-}
-setIsLoadingg(true);
+  const handleTimePickerOpen = () => {
+    setShowTimePicker(!showTimePicker);
+    setShowDatePicker(false); // Close other popups
+    setShowGuestSelector(false);
+    
+    if (!showTimePicker) {
+      setTimeout(() => {
+        scrollToCenter(timePickerRef);
+      }, 100);
+    }
+  };
+
+  const handleGuestSelectorOpen = () => {
+    setShowGuestSelector(!showGuestSelector);
+    setShowDatePicker(false); // Close other popups
+    setShowTimePicker(false);
+    
+    if (!showGuestSelector) {
+      setTimeout(() => {
+        scrollToCenter(guestSelectorRef);
+      }, 100);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if(!selectedDateObj || !selectedTimeSlot){
+      setSelect(true)
+      return
+    }
+    setIsLoadingg(true);
     const reservationData = {
       product: bookdata.id,
       user: session?.user?.id,
@@ -244,12 +348,12 @@ setIsLoadingg(true);
       adults: guests.adults,
       children: guests.children,
       created_at:now.format('MMMM Do YYYY'),
-      status:"Completed",
+      status:"pending",
       image:bookdata.image,
       receipt:bookdata.receipt,
       total_guests:guests.adults+guests.children,
       total_price:bookdata.average_cost,
-      payment_method:"Cash, Credit Card",
+      payment_method:"Cash",
       name:bookdata.name,
       category:'Restaurant',
       cancellation_policy:bookdata.cancellation_policy,
@@ -275,7 +379,7 @@ setIsLoadingg(true);
         throw new Error(errorData.message || 'Failed to create reservation');
       }
 
-      
+      const data = await response.json();
       
       // Reset form after successful submission
       setSelectedDateObj(null);
@@ -283,7 +387,7 @@ setIsLoadingg(true);
       setSelectedTimeSlot(null);
       setSelectedTime('Select time');
       
-      router.push('/en/account/trips'); 
+      router.push(`/en/checkout-booking?nb=${data.id}`); 
       // Note: The useFetchBooking hook should automatically refetch data
       // if it's set up to do so, or you might need to trigger a refetch
       
@@ -391,245 +495,244 @@ setIsLoadingg(true);
   };
 
   return (
-    
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-          <div className="p-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-1">Reserve Table
-              <span className="text-base font-medium text-gray-600"> - Average cost ${bookdata.average_cost} </span>
-            </h2>
-            <p className="text-sm text-gray-500 mb-6">Book your perfect dining experience</p>
+    <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+      <div className="p-6">
+        <h2 className="text-2xl font-bold text-gray-900 mb-1">Reserve Table
+          <span className="text-base font-medium text-gray-600"> - Average cost ${bookdata.average_cost} </span>
+        </h2>
+        <p className="text-sm text-gray-500 mb-6">Book your perfect dining experience</p>
 
-            <div className="space-y-4">
-              {/* Date Picker */}
-              <div className="relative">
-                <button
-                  className="w-full h-auto p-3 justify-center text-center flex-col border border-2 rounded-3xl hover:border-secondary transition-colors touch-manipulation"
-                  onClick={() => setShowDatePicker(!showDatePicker)}
-                >
-                  <div className="text-xs text-gray-500 flex items-center justify-center gap-1">
-                    <Calendar size={12} />
-                    Reservation Date
-                  </div>
-                  <div className="font-medium text-sm md:text-base">{selectedDate}</div>
-                </button>
-                
-                {showDatePicker && (
-                  <div className="absolute top-full left-0 right-0 z-20 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden w-full max-w-[400px] mx-auto">
-                    <div className="p-3 md:p-6">
-                      {renderCalendar()}
-                      
-                      <div className="flex flex-col sm:flex-row sm:items-center flex-wrap justify-between pt-4 border-t border-gray-200 gap-3">
-                        <button
-                          onClick={resetDate}
-                          className="text-gray-500 hover:text-gray-700 text-sm transition-colors order-2 sm:order-1 touch-manipulation underline"
-                        >
-                          Clear date
-                        </button>
-                        
-                        <button
-                          onClick={() => setShowDatePicker(false)}
-                          className="flex-1 sm:flex-none px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors touch-manipulation border border-1 rounded-3xl order-1 sm:order-2"
-                        >
-                          Close
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
+        <div className="space-y-4">
+          {/* Date Picker */}
+          <div className="relative">
+            <button
+              ref={datePickerButtonRef}
+              className="w-full h-auto p-3 justify-center text-center flex-col border border-2 rounded-3xl hover:border-secondary transition-colors touch-manipulation"
+              onClick={handleDatePickerOpen}
+            >
+              <div className="text-xs text-gray-500 flex items-center justify-center gap-1">
+                <Calendar size={12} />
+                Reservation Date
               </div>
-
-              {/* Time Picker */}
-              <div className="relative">
-                <button
-                  className="w-full h-auto p-3 justify-center text-center flex-col border border-2 rounded-3xl hover:border-secondary transition-colors touch-manipulation"
-                  onClick={() => setShowTimePicker(!showTimePicker)}
-                >
-                  <div className="text-xs text-gray-500 flex items-center justify-center gap-1">
-                    <Clock size={12} />
-                    Reservation Time
+              <div className="font-medium text-sm md:text-base">{selectedDate}</div>
+            </button>
+            
+            {showDatePicker && (
+              <div 
+                ref={datePickerRef}
+                className="absolute top-full left-0 right-0 z-20 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden w-full max-w-[400px] mx-auto"
+              >
+                <div className="p-3 md:p-6">
+                  {renderCalendar()}
+                  
+                  <div className="flex flex-col sm:flex-row sm:items-center flex-wrap justify-between pt-4 border-t border-gray-200 gap-3">
+                    <button
+                      onClick={resetDate}
+                      className="text-gray-500 hover:text-gray-700 text-sm transition-colors order-2 sm:order-1 touch-manipulation underline"
+                    >
+                      Clear date
+                    </button>
+                    
+                    <button
+                      onClick={() => setShowDatePicker(false)}
+                      className="flex-1 sm:flex-none px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors touch-manipulation border border-1 rounded-3xl order-1 sm:order-2"
+                    >
+                      Close
+                    </button>
                   </div>
-                  <div className="font-medium text-sm md:text-base">{selectedTime}</div>
-                </button>
-                
-                {showTimePicker && (
-                  <div className="absolute top-full left-0 right-0 z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-64 overflow-y-auto">
-                    <div className="p-2">
-                      {!selectedDateObj ? (
-                        <div className="p-4 text-center text-gray-500">
-                          Please select a date first
-                        </div>
-                      ) : getAvailableTimeSlots().length === 0 ? (
-                        <div className="p-4 text-center text-gray-500">
-                          No available time slots for this date
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-2 gap-2">
-                          {timeSlots.map((time) => {
-                            const isReserved = selectedDateObj && isTimeSlotReserved(selectedDateObj, time);
-                            return (
-                              <button
-                                key={time}
-                                onClick={() => !isReserved && handleTimeSelect(time)}
-                                disabled={isReserved}
-                                className={`p-2 text-sm rounded-lg transition-colors ${
-                                  isReserved
-                                    ? 'bg-secondary text-white cursor-not-allowed line-through'
-                                    : selectedTimeSlot === time
-                                    ? 'bg-secondary text-white'
-                                    : 'hover:bg-gray-100'
-                                }`}
-                                title={isReserved ? 'This time slot is already reserved' : ''}
-                              >
-                                {time}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
-                      <div className="flex justify-between pt-3 border-t border-gray-200 mt-3">
-                        <button
-                          onClick={resetTime}
-                          className="text-gray-500 hover:text-gray-700 text-sm transition-colors underline"
-                        >
-                          Clear time
-                        </button>
-                        <button
-                          onClick={() => setShowTimePicker(false)}
-                          className="px-4 py-1 text-gray-600 hover:text-gray-800 transition-colors border border-1 rounded-lg text-sm"
-                        >
-                          Close
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                </div>
               </div>
+            )}
+          </div>
 
-              {/* Guest Selector */}
-              <div className="relative">
-                <button 
-                  className="w-full flex justify-center items-center rounded-3xl border border-2 py-3 hover:border-secondary"
-                  onClick={() => setShowGuestSelector(!showGuestSelector)}
-                >
-                  <LuUsersRound className="w-4 h-4 mr-2" />
-                  {guests.adults} adults{guests.children > 0 ? `, ${guests.children} children` : ''}
-                </button>
-                
-                {showGuestSelector && (
-                  <div className="absolute top-full left-0 right-0 z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg">
-                    <div className="p-4 space-y-4">
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold">Adults</span>
-                        <div className="flex items-center gap-2">
+          {/* Time Picker */}
+          <div className="relative">
+            <button
+              ref={timePickerButtonRef}
+              className="w-full h-auto p-3 justify-center text-center flex-col border border-2 rounded-3xl hover:border-secondary transition-colors touch-manipulation"
+              onClick={handleTimePickerOpen}
+            >
+              <div className="text-xs text-gray-500 flex items-center justify-center gap-1">
+                <Clock size={12} />
+                Reservation Time
+              </div>
+              <div className="font-medium text-sm md:text-base">{selectedTime}</div>
+            </button>
+            
+            {showTimePicker && (
+              <div 
+                ref={timePickerRef}
+                className="absolute top-full left-0 right-0 z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-64 overflow-y-auto"
+              >
+                <div className="p-2">
+                  {!selectedDateObj ? (
+                    <div className="p-4 text-center text-gray-500">
+                      Please select a date first
+                    </div>
+                  ) : getAvailableTimeSlots().length === 0 ? (
+                    <div className="p-4 text-center text-gray-500">
+                      No available time slots for this date
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-2">
+                      {timeSlots.map((time) => {
+                        const isReserved = selectedDateObj && isTimeSlotReserved(selectedDateObj, time);
+                        return (
                           <button
-                            className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
-                            onClick={() => updateGuests('adults', false)}
-                            disabled={guests.adults <= 1}
+                            key={time}
+                            onClick={() => !isReserved && handleTimeSelect(time)}
+                            disabled={isReserved}
+                            className={`p-2 text-sm rounded-lg transition-colors ${
+                              isReserved
+                                ? 'bg-secondary text-white cursor-not-allowed line-through'
+                                : selectedTimeSlot === time
+                                ? 'bg-secondary text-white'
+                                : 'hover:bg-gray-100'
+                            }`}
+                            title={isReserved ? 'This time slot is already reserved' : ''}
                           >
-                            <Minus className="w-4 h-4" />
+                            {time}
                           </button>
-                          <span className="w-8 text-center select-none">{guests.adults}</span>
-                          <button 
-                            className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
-                            onClick={() => updateGuests('adults', true)}
-                          >
-                            <Plus className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-center justify-between">
-                        <span className="font-semibold">Children</span>
-                        <div className="flex items-center gap-2">
-                          <button 
-                            className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
-                            onClick={() => updateGuests('children', false)}
-                            disabled={guests.children <= 0}
-                          >
-                            <Minus className="w-4 h-4" />
-                          </button>
-                          <span className="w-8 text-center select-none">{guests.children}</span>
-                          <button 
-                            className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
-                            onClick={() => updateGuests('children', true)}
-                          >
-                            <Plus className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-                      
-                      <button 
-                        className="w-full bg-secondary hover:bg-accent py-2 text-white rounded-3xl"
-                        onClick={() => setShowGuestSelector(false)}
+                        );
+                      })}
+                    </div>
+                  )}
+                  <div className="flex justify-between pt-3 border-t border-gray-200 mt-3">
+                    <button
+                      onClick={resetTime}
+                      className="text-gray-500 hover:text-gray-700 text-sm transition-colors underline"
+                    >
+                      Clear time
+                    </button>
+                    <button
+                      onClick={() => setShowTimePicker(false)}
+                      className="px-4 py-1 text-gray-600 hover:text-gray-800 transition-colors border border-1 rounded-lg text-sm"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Guest Selector */}
+          <div className="relative">
+            <button 
+              ref={guestSelectorButtonRef}
+              className="w-full flex justify-center items-center rounded-3xl border border-2 py-3 hover:border-secondary"
+              onClick={handleGuestSelectorOpen}
+            >
+              <LuUsersRound className="w-4 h-4 mr-2" />
+              {guests.adults} adults{guests.children > 0 ? `, ${guests.children} children` : ''}
+            </button>
+            
+            {showGuestSelector && (
+              <div 
+                ref={guestSelectorRef}
+                className="absolute top-full left-0 right-0 z-10 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg"
+              >
+                <div className="p-4 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold">Adults</span>
+                    <div className="flex items-center gap-2">
+                      <button
+                        className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
+                        onClick={() => updateGuests('adults', false)}
+                        disabled={guests.adults <= 1}
                       >
-                        Update
+                        <Minus className="w-4 h-4" />
+                      </button>
+                      <span className="w-8 text-center select-none">{guests.adults}</span>
+                      <button 
+                        className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
+                        onClick={() => updateGuests('adults', true)}
+                      >
+                        <Plus className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
-                )}
+                  
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold">Children</span>
+                    <div className="flex items-center gap-2">
+                      <button 
+                        className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
+                        onClick={() => updateGuests('children', false)}
+                        disabled={guests.children <= 0}
+                      >
+                        <Minus className="w-4 h-4" />
+                      </button>
+                      <span className="w-8 text-center select-none">{guests.children}</span>
+                      <button 
+                        className="p-2 rounded-full border border-2 hover:bg-secondary hover:text-white"
+                        onClick={() => updateGuests('children', true)}
+                      >
+                        <Plus className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <button 
+                    className="w-full bg-secondary hover:bg-accent py-2 text-white rounded-3xl"
+                    onClick={() => setShowGuestSelector(false)}
+                  >
+                    Update
+                  </button>
+                </div>
               </div>
+            )}
+          </div>
 
-              <div className="border-t border-gray-200 pt-4">
- {status === "authenticated" ?       
-    (session?.user?.is_staff?    
-
+          <div className="border-t border-gray-200 pt-4">
+            {status === "authenticated" ?       
+              (session?.user?.is_staff?    
                 <button 
                   className="w-full bg-secondary hover:bg-accent text-white font-medium py-3 rounded-3xl disabled:bg-gray-400"
                   onClick={()=> setPartner(true)}
-                
                 >
                   Make Reservation
                 </button>:
-
-// for submit
-           
-
-
-  <button
-          disabled={isLoadingg}
-          onClick={handleSubmit}
-          className={`w-full flex items-center justify-center gap-2 
-            bg-secondary hover:bg-accent text-white font-medium py-2 rounded-3xl ${
-              isLoadingg
-                ? "bg-secondary hover:bg-accent text-white"
-                : "bg-accent text-white hover:bg-accent"
-            }`}
-          >
-          {isLoadingg ? (
-            <>
-              <FaCircleNotch className="animate-spin" />
-              <span>Make Reservation</span>
-            </>
-          ) : (
-            "Make Reservation"
-          )}
-          </button>
-
-
-
-
-
+                <button
+                  disabled={isLoadingg}
+                  onClick={handleSubmit}
+                  className={`w-full flex items-center justify-center gap-2 
+                    bg-secondary hover:bg-accent text-white font-medium py-2 rounded-3xl ${
+                      isLoadingg
+                        ? "bg-secondary hover:bg-accent text-white"
+                        : "bg-accent text-white hover:bg-accent"
+                    }`}
+                >
+                  {isLoadingg ? (
+                    <>
+                      <FaCircleNotch className="animate-spin" />
+                      <span>Make Reservation</span>
+                    </>
+                  ) : (
+                    "Make Reservation"
+                  )}
+                </button>
               ) 
-                
-                : <LoginButtonReservationsRestaurant/>}
-              </div>
-                {select &&
-          <div className="flex justify-center items-center">
-             <p className="text-accent font-semibold ">Please select date and time</p>
+              : <LoginButtonReservationsRestaurant/>}
           </div>
-          }
-          {partner &&
-          <div className="flex justify-center items-center">
-             <p className="text-accent font-semibold ">Please swich to user Account</p>
-          </div>
-          }
-          <p className="text-xs text-gray-500 text-center">Reservations are subject to availability and restaurant policies.</p>
+          
+          {select &&
+            <div className="flex justify-center items-center">
+              <p className="text-accent font-semibold ">Please select date and time</p>
             </div>
-          </div>
+          }
+          
+          {partner &&
+            <div className="flex justify-center items-center">
+              <p className="text-accent font-semibold ">Please switch to user Account</p>
+            </div>
+          }
+          
+          <p className="text-xs text-gray-500 text-center">Reservations are subject to availability and restaurant policies.</p>
         </div>
-      
+      </div>
+    </div>
   );
 };
 
 export default RestaurantBookingComponent;
-

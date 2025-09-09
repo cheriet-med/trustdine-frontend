@@ -10,6 +10,11 @@ import NewsletterDialog from "../header/newsletters";
 import Image from "next/image";
 import { GoArrowRight } from "react-icons/go";
 import dynamic from "next/dynamic";
+import { useState } from "react";
+import MailChecker from "mailchecker";
+import validator from "validator";
+import moment from 'moment';
+
 
 const PartnerMenu = dynamic(
   () => import("./partnerMenu"),
@@ -25,11 +30,82 @@ const Footer = () => {
   const router = useRouter(); // Initialize the router
   const locale = useLocale(); // Get the current locale
   const t = useTranslations('Footer');
-  // Function to handle navigation with query parameters
-  const handleNavigateWithQuery = ( query: string) => {
-    // Include the locale and query parameters in the URL
-    router.push(`/${locale}/p?q=${encodeURIComponent(query)}`);
+  const te = useTranslations('Login');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false);
+  const [wrong, setWrong] = useState(false);
+  const [email, setEmail] = useState("");
+
+const isValidEmail = (email: string): { valid: boolean; message?: string } => {
+  if (!email || email.trim() === "") {
+    return { valid: false, message: te('Email-is-required') };
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return { valid: false, message: te('Invalid-email-format') };
+  }
+
+  if (!validator.isEmail(email)) {
+    return { valid: false, message: te('Invalid-email-format') };
+  }
+
+  // remove MailChecker (not safe for client)
+  return { valid: true };
+};
+
+
+
+
+  const handleSubscribe = async () => {
+   const emailValidation = isValidEmail(email);
+
+  if (!emailValidation.valid) {
+    setError(emailValidation.message || te('Invalid-email'));
+    return;
+  }
+
+  setError("");
+
+
+    const now = new Date();
+    const date = now.toISOString().split("T")[0]; // YYYY-MM-DD
+    const time = now.toTimeString().split(" ")[0]; // HH:mm:ss
+    const language = "en";
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}newsletterpost/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+        },
+        body: JSON.stringify({
+          email,
+          language,
+          date,
+          time,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to subscribe");
+      }
+
+      const data = await response.json();
+      setEmail(""); // clear input
+      setSuccess(true)
+    } catch (error) {
+      console.error("Error:", error);
+      setWrong(true)
+    }
   };
+
+
+
+
+
+
 
     return (
         <footer className="bg-a text-gray-50 ">
@@ -37,7 +113,7 @@ const Footer = () => {
           <div className="grid  grid-cols-1 sm:grid-cols-2 custom:grid-cols-2 gap-10">
             {/* Contact & Follow Section */}
             <div className="col-span-1 hover:bg-gray-800 p-3">
-             <div className="relative h-9 w-32 ">
+             <div className="relative h-24 w-40 ">
                        <Image
                          src="/trust.png" // or "/logo.webp" if using an webp
                          alt="logo"
@@ -54,24 +130,32 @@ const Footer = () => {
             
             </div>
            
-
-
-            <div className="flex items-center w-full max-w-xs border-b border-gray-300 pb-1">
-      <input
-        type="text"
-        placeholder="Subscribe with your email"
-        className="flex-grow outline-none px-2 py-1 w-full bg-transparent placeholder:text-white"
-      />
-      <div className="flex items-center">
-        {/* Right arrow icon (using Heroicons) */}
-        <GoArrowRight size={28} className="text-white"/>
-      </div>
-    </div>
-
+<div className="w-full max-w-xs">
+  <div className="flex items-center border-b border-gray-300 pb-1">
+    <input
+      type="email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+      placeholder="Subscribe with your email"
+      className="flex-grow outline-none px-2 py-1 w-full bg-transparent placeholder:text-white"
+    />
+    <button
+      onClick={handleSubscribe}
+      className="flex items-center hover:bg-accent"
+    >
+      <GoArrowRight size={28} className="text-white" />
+    </button>
+  </div>
+ {success && <p className="text-green-500 text-sm mt-2">Thanks for joining our newsletter!</p>}
+  {wrong && <p className="text-red-500 text-sm mt-2"> Something wrong please try later</p>}
+  {/* Error message below input */}
+  {error && <p className="text-background text-sm mt-2">{error}</p>}
+</div>
+        
 
 
             </div>
-            <div className="hover:bg-secondary p-3">
+            <div className="hover:bg-secondary p-3 flex flex-col justify-center">
             <h2 className="pb-4 font-semibold uppercase font-playfair">{t('Follow us')}</h2>
             <p className="text-sm 00 mb-3">Be part of the TrustDine community, follow us on social media</p>
              <SocialMedia/>

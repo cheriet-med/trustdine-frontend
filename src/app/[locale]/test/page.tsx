@@ -1,40 +1,38 @@
 'use client';
 
-import React, { useEffect, useState } from "react";
-import { CiLocationOn } from "react-icons/ci";
+import { useRef, useEffect } from 'react';
 
-export default function IpInfo() {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+export default function FullscreenVideoSection() {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
+  // Ensure autoplay works (muted is required for most browsers)
   useEffect(() => {
-    const fetchIpInfo = async () => {
-      try {
-        const res = await fetch("http://127.0.0.1:8000/get-ip-info/");
-        if (!res.ok) throw new Error("Failed to fetch");
-        const result = await res.json();
-        setData(result);
-      } catch (error) {
-        console.error("Error fetching IP info:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchIpInfo();
+    if (videoRef.current) {
+      videoRef.current.play().catch((err) => {
+        console.warn('Autoplay prevented:', err);
+      });
+    }
   }, []);
 
-  if (loading) return <p>Loading...</p>;
-
   return (
-    <div className="flex flex-wrap gap-4">
+    <section className="relative w-screen h-screen overflow-hidden">
+      {/* Video background */}
+      <video
+        ref={videoRef}
+        className="absolute inset-0 w-full h-full object-cover"
+        src="/footer.mp4" // ✅ replace with your video path
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        poster="/images/hero-poster.jpg" // ✅ optional poster
+      />
 
-      <div className="flex gap-1">
-        <CiLocationOn size={22}/>
-        <p>{data.country_name}</p>
-      </div>
-      
-      <p>IP: {data.ip}</p>
-    </div>
+      {/* Dark overlay */}
+      <div className="absolute inset-0 bg-black/40"></div>
+
+      {/* Overlay content */}
+    </section>
   );
 }

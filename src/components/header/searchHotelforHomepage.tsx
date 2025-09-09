@@ -1,11 +1,10 @@
 'use client';
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { IoSearch, IoLocationOutline, IoTimeOutline, IoBusinessOutline, IoCalendarOutline, IoPeopleOutline, IoChevronDown, IoRemoveOutline, IoAddOutline } from "react-icons/io5";
 import { CiLocationOn } from "react-icons/ci";
 import { useRouter } from "next/navigation";
-
-
+import useFetchListing from "../requests/fetchListings";
 interface SearchSuggestion {
   id: string;
   title: string;
@@ -25,14 +24,28 @@ interface DateRange {
   checkOut: Date | null;
 }
 
+
+function useDebounce<T>(value: T, delay = 300): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+  return debounced;
+}
+
+
 export default function HotelSearchHomepage() {
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [recentSearches, setRecentSearches] = useState<SearchSuggestion[]>([]);
   const [mounted, setMounted] = useState(false);
   const router = useRouter();
+  const {listings} =useFetchListing()
+  const hotelsListings = listings?.filter((user) => user.category === "Hotel");
+
+
   // Guest selection state
   const [showGuestPopup, setShowGuestPopup] = useState(false);
   const [guestCounts, setGuestCounts] = useState<GuestCounts>({
@@ -56,48 +69,73 @@ export default function HotelSearchHomepage() {
   const calendarRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Mock data
-  const mockSuggestions: SearchSuggestion[] = [
-    {
-      id: '1',
-      title: 'New York City',
-      subtitle: 'New York, United States',
-      type: 'location',
-      imageUrl: 'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=100&h=100&fit=crop'
-    },
-    {
-      id: '2',
-      title: 'Benjamin Steakhouse Prime',
-      subtitle: 'New York City, New York',
-      type: 'business',
-      imageUrl: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?w=100&h=100&fit=crop'
-    },
-    {
-      id: '3',
-      title: 'Musée Public National Bardo',
-      subtitle: 'Algiers, Algeria',
-      type: 'location',
-      imageUrl: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=100&h=100&fit=crop'
-    }
-  ];
+  
+
+  // Smooth scroll to center popup function
+  const scrollToCenter = (element: HTMLElement) => {
+    if (!element) return;
+    
+    const elementRect = element.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Calculate the center position
+    const elementCenter = elementRect.top + scrollTop + (elementRect.height / 2);
+    const viewportCenter = viewportHeight / 2;
+    const targetScrollTop = elementCenter - viewportCenter;
+    
+    // Smooth scroll to the calculated position
+    window.scrollTo({
+      top: Math.max(0, targetScrollTop),
+      behavior: 'smooth'
+    });
+  };
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+const debouncedQuery = useDebounce(searchQuery, 300);
+
+const suggestions = useMemo<SearchSuggestion[]>(() => {
+  if (!debouncedQuery) return [];
+  return (
+    hotelsListings
+      ?.filter((hotel) =>
+        (hotel.name ?? "").toLowerCase().includes(debouncedQuery.toLowerCase()) ||
+        (hotel.location ?? "").toLowerCase().includes(debouncedQuery.toLowerCase())
+      )
+      .slice(0, 6)
+      .map((hotel) => ({
+        id: String(hotel.id),
+        title: hotel.name ?? "Unnamed Hotel",
+        subtitle: hotel.location ?? "Unknown location",
+        type: "location" as const,
+        imageUrl: hotel.image ?? undefined,
+      })) ?? []
+  );
+}, [debouncedQuery, hotelsListings]);
+
+  // Scroll to center when popups open
   useEffect(() => {
-    if (searchQuery.trim() === '') {
-      setSuggestions([]);
-      return;
+    if (showCalendar && calendarRef.current) {
+      // Small delay to ensure popup is rendered
+      const timer = setTimeout(() => {
+        scrollToCenter(calendarRef.current!);
+      }, 100);
+      return () => clearTimeout(timer);
     }
+  }, [showCalendar]);
 
-    const filtered = mockSuggestions.filter(suggestion =>
-      suggestion.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      suggestion.subtitle.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-
-    setSuggestions(filtered.slice(0, 6));
-  }, [searchQuery]);
+  useEffect(() => {
+    if (showGuestPopup && guestRef.current) {
+      // Small delay to ensure popup is rendered
+      const timer = setTimeout(() => {
+        scrollToCenter(guestRef.current!);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [showGuestPopup]);
 
   // Close popups when clicking outside
   useEffect(() => {
@@ -245,20 +283,23 @@ export default function HotelSearchHomepage() {
     });
   };
 
-  const handleSearch = () => {
-    if (searchQuery.trim()) {
 
-      console.log('Searching for:', {
-        query: searchQuery,
-        guests: guestCounts,
-        dates: dateRange
-      });
-      router.push(`/en/search-hotel/?q=${searchQuery}`);
-    }
+const handleSearch = () => {
+  if (searchQuery.trim()) {
+    // include guests and dates if you want
+    const params = new URLSearchParams({
+      q: searchQuery,
+      adults: String(guestCounts.adults),
+      children: String(guestCounts.children),
+      rooms: String(guestCounts.rooms),
+      checkIn: dateRange.checkIn ? dateRange.checkIn.toISOString() : "",
+      checkOut: dateRange.checkOut ? dateRange.checkOut.toISOString() : "",
+      
+    });
+    router.push(`/en/search-hotel?${params.toString()}`);
+  }
+};
 
-  };
-
- 
 
   return (
     <div ref={containerRef} className="relative mx-2 lg:w-[900px] font-montserrat">
@@ -282,7 +323,6 @@ export default function HotelSearchHomepage() {
         <button
           type="button"
           onClick={() => {
-     
             setShowCalendar(!showCalendar);
             setShowGuestPopup(false);
             setShowSuggestions(false);
@@ -338,12 +378,14 @@ export default function HotelSearchHomepage() {
                   setShowSuggestions(false);
                   setShowCalendar(false);
                   setShowGuestPopup(false);
+                  router.push(`/en/booking/${suggestion.id}`);
                 }}
+               
               >
                 <div className="flex-shrink-0 mr-3">
                   {suggestion.imageUrl ? (
                     <img
-                      src={suggestion.imageUrl}
+                      src={`${process.env.NEXT_PUBLIC_IMAGE}/${suggestion.imageUrl}`}
                       alt={suggestion.title}
                       className="w-10 h-10 rounded-lg object-cover"
                     />

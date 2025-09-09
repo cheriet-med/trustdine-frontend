@@ -84,6 +84,7 @@ const MessagesComponent: React.FC = () => {
   const searchParams = useSearchParams();
   const userId = searchParams.get('id') || 0;
   const {Users} = useFetchUser(userId || session?.user.id)
+  
  useEffect(() => {
   if (userId && Users && Users.id) {
     const med = {
@@ -129,7 +130,7 @@ const connectWebSocket = useCallback(() => {
     );
 
     ws.current.onopen = () => {
-      console.log("✅ WebSocket connected");
+     // console.log("✅ WebSocket connected");
       setWsConnected(true);
       setWsConnecting(false);
       setReconnectAttempts(0);
@@ -149,7 +150,7 @@ const connectWebSocket = useCallback(() => {
     ws.current.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        console.log("📩 WebSocket message:", data);
+       // console.log("📩 WebSocket message:", data);
         
         switch (data.type) {
           case 'new_message':
@@ -173,12 +174,12 @@ const connectWebSocket = useCallback(() => {
     };
 
     ws.current.onerror = (error) => {
-      console.error("❌ WebSocket error:", error);
+    //  console.error("❌ WebSocket error:", error);
       setWsConnecting(false);
     };
 
     ws.current.onclose = (event) => {
-      console.log("⚠️ WebSocket closed:", event.code, event.reason);
+     // console.log("⚠️ WebSocket closed:", event.code, event.reason);
       setWsConnected(false);
       setWsConnecting(false);
       
@@ -192,7 +193,7 @@ const connectWebSocket = useCallback(() => {
     };
 
   } catch (error) {
-    console.error("❌ WebSocket connection failed:", error);
+  //  console.error("❌ WebSocket connection failed:", error);
     setWsConnecting(false);
   }
 }, [status, session, reconnectAttempts]);
@@ -253,7 +254,7 @@ const connectWebSocket = useCallback(() => {
           'Authorization': `JWT ${session?.accessToken}`
         }
       });
-      console.log('Response status:', response.status);
+      //console.log('Response status:', response.status);
       if (!response.ok) {
         throw new Error('Failed to fetch conversations');
       }
@@ -282,12 +283,12 @@ const connectWebSocket = useCallback(() => {
       }
       
       const data = await response.json();
-      console.log("📥 Fetched messages data:", data);
-      console.log("📱 Current session user ID:", session?.user?.id);
+     // console.log("📥 Fetched messages data:", data);
+    //  console.log("📱 Current session user ID:", session?.user?.id);
       
       // Debug message sender IDs
       data.forEach((msg: Message, index: number) => {
-        console.log(`Message ${index}: sender.id = "${msg.sender.id}", session.user.id = "${session?.user?.id}", isOwn = ${msg.sender.id === session?.user?.id}`);
+     //   console.log(`Message ${index}: sender.id = "${msg.sender.id}", session.user.id = "${session?.user?.id}", isOwn = ${msg.sender.id === session?.user?.id}`);
       });
       
       setMessages(data);
@@ -322,7 +323,7 @@ const connectWebSocket = useCallback(() => {
   };
 
   const handleNewMessage = (message: Message) => {
-    console.log("📨 Handling new message:", message);
+ //   console.log("📨 Handling new message:", message);
     
     // Add message to current chat if it's from/to the selected contact
     if (selectedContact && 
@@ -417,7 +418,7 @@ const sendMessage = async () => {
 
   // Check WebSocket state more thoroughly
   if (!ws.current || ws.current.readyState !== WebSocket.OPEN) {
-    console.log("WebSocket not ready, attempting to reconnect...");
+   // console.log("WebSocket not ready, attempting to reconnect...");
     connectWebSocket();
     
     // Wait for connection with timeout
@@ -473,7 +474,7 @@ const sendMessage = async () => {
   } catch (err) {
     setMessages(prev => prev.filter(m => m.id.startsWith('temp-')));
     setError('Failed to send message');
-    console.error('Send message error:', err);
+//    console.error('Send message error:', err);
   } finally {
     setIsSendingMessage(false);
   }
