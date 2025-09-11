@@ -288,7 +288,7 @@ export default function CombinedScrollAnimation() {
   return (
     <div className="font-montserrat" ref={container}>
       {/* Initial spacer */}
-        <section className='h-32 md:h-96  bg-secondary '>
+        <section className='h-32  bg-secondary '>
 
       </section>
       
@@ -300,7 +300,7 @@ export default function CombinedScrollAnimation() {
       </section>
 
       {/* Transition Section */}
-      <section className="transition-section relative  h-32 p-8 bg-accent flex items-center">
+      <section className="transition-section relative  h-24 p-8 bg-accent flex items-center">
       
       </section>
 

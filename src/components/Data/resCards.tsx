@@ -13,6 +13,8 @@ import LoginButton from "../header/loginButton";
 import Link from "next/link";
 import useFetchListing from "../requests/fetchListings";
 import useFetchReviews from "../requests/fetchReviews";
+import useWishlistCheck from "../requests/fetchWishlistCheck";
+
 import Image from "next/image";
 interface PropertyCardProps {
   id: string | number | any;
@@ -87,10 +89,45 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   const { wishlist, addItemToWishlist, removeItemFromWishlist, isItemInWishlist } = useWishlist();
   const { data: session, status } = useSession();
   // Check if current item is in wishlist
-  const isInWishlist = isItemInWishlist(id);
+    const isInWishlist = isItemInWishlist(id);
 
   const {Review} = useFetchReviews(id)
   const totalReviews = Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.rating_global, 0) / Review.length: 0
+
+const { wishlistStatus, isLoading, error, mutate } = useWishlistCheck(id, session?.user?.id);
+
+
+
+
+const toggle = async () => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}wishlist/${id}/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${process.env.NEXT_PUBLIC_TOKEN}`,
+      },
+      body: JSON.stringify({ user_id: session?.user?.id }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+     // Trigger SWR revalidation to refresh the data
+      if (mutate) {
+        await mutate();
+      }
+
+    return (await response.json());
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw new Error("Failed to fetch data. Please try again later.");
+  } 
+};
+
+
+
+
 
   // Handle heart icon click
   const handleWishlistToggle = (e: React.MouseEvent) => {
@@ -125,19 +162,20 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
       <div className="relative">
           {
             status === "authenticated" ?         
- (isInWishlist ?   
- <button 
-          onClick={handleWishlistToggle}
-          className="absolute right-4 top-4 z-10 p-1 rounded-full bg-white/80 hover:bg-white transition-colors group"
-        >
-               <FaHeart size={24} className="text-secondary" />
-            </button> : 
-             <button 
-          onClick={handleWishlistToggle}
-          className="absolute right-4 top-4 z-10 p-1 rounded-full bg-white/80 hover:bg-white transition-colors group"
-        >
-        <FaRegHeart size={24} className="text-gray-600 group-hover:text-accent transition-colors" />
-           </button>)   
+  (
+              wishlistStatus?.is_in_wishlist == true ? <button 
+           onClick={toggle}
+           className="absolute right-4 top-4 z-10 p-1 rounded-full bg-white/80 hover:bg-white transition-colors group"
+         >
+                <FaHeart size={24} className="text-secondary" />
+             </button> : 
+              <button 
+           onClick={toggle}
+           className="absolute right-4 top-4 z-10 p-1 rounded-full bg-white/80 hover:bg-white transition-colors group"
+         >
+                 <FaRegHeart size={24} className="text-gray-600 group-hover:text-accent transition-colors" />
+            </button>
+           )   
          :
            (
             <LoginButton />

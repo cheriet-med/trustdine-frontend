@@ -5,7 +5,7 @@ import React from 'react';
 const TrustSystem: React.FC = () => {
   return (
     <div >
-            <div className="flex flex-col text-center items-center justify-center px-2 mb-10 lg:mb-14 bg-a h-96  pt-16 rounded-b-3xl">
+            <div className="flex flex-col text-center items-center justify-center px-2 mb-10 lg:mb-14 bg-a h-96  pt-32 rounded-b-3xl">
       <h1 className="text-3xl font-extrabold text-white md:text-5xl mb-2 font-playfair">
             <span className="block">Real Reviews.</span>
             <span className="block text-background">Verified Experiences.</span>

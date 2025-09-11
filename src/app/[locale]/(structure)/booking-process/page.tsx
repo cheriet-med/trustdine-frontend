@@ -7,7 +7,7 @@ const Privacy: React.FC = () => {
   return (
     <div >
       {/* Title */}
-      <div className="flex text-center items-center justify-center mb-10 lg:mb-14 bg-secondary h-48 pt-16 rounded-b-3xl">
+      <div className="flex text-center items-center justify-center mb-10 lg:mb-14 bg-secondary h-48 pt-28 rounded-b-3xl">
         <h2 className="text-2xl font-bold md:text-3xl md:leading-tight text-white dark:text-neutral-200 font-playfair ">
           Booking Process
         </h2>

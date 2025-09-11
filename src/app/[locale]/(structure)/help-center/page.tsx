@@ -113,7 +113,7 @@ const HelpCenter: React.FC = () => {
   return (
     <div >
       {/* Header */}
-      <div className="flex flex-col text-center items-center justify-center px-2 mb-10 lg:mb-14 bg-secondary h-96  pt-16 rounded-b-3xl">
+      <div className="flex flex-col text-center items-center justify-center px-4 mb-10 lg:mb-14 bg-secondary h-96  pt-32 rounded-b-3xl">
         <h2 className="text-xl font-bold md:text-3xl md:leading-tight text-white dark:text-neutral-200 font-playfair ">
         Welcome to the TrustDine Help Center
         </h2>

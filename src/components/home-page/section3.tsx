@@ -285,7 +285,7 @@ const images: ImageData[] = [
   return (
 <>
     <div ref={containerRef} className="relative">
-   <section className="relative box-border overflow-hidden bg-accent md:hidden py-24">
+   <section className="relative box-border overflow-hidden bg-a md:hidden py-24">
 {/**<div className='h-96 flex gap-20 flex-wrap lg:flex-nowrap bg-secondary px-72 py-20 text-white'>
    <h1 className='text-6xl font-bold flex-2 font-playfair'>Discrover More</h1>
         <p className='flex-1'>This implementation maintains both animation behaviors while keeping them separate and organized. The feature cards will animate first as you scroll, followed by the testimonial cards animation.</p>
@@ -308,7 +308,7 @@ const images: ImageData[] = [
     width={300}
     className="w-full h-full object-cover rounded-xl transition-transform duration-500 ease-in-out hover:scale-110"
   />
-                    <div className='bg-a rounded-xl px-1.5 md:px-6 py-1 lg:py-2 mt-1 md:mt-2 space-y-1 text-white'>
+                    <div className='bg-secondary rounded-xl px-1.5 md:px-6 py-1 lg:py-2 mt-1 md:mt-2 space-y-1 text-white'>
                     <p className="font-bold font-playfair text-sm md:text-base">{images[imageIndex].name}</p>
                     <div className='flex gap-1'>
 <StarRating rating={images[imageIndex].rating}/>
@@ -341,7 +341,7 @@ const images: ImageData[] = [
     <div ref={containerRef} className="relative">
   
      
-      <section className="relative box-border overflow-hidden bg-accent hidden md:block py-32">
+      <section className="relative box-border overflow-hidden bg-a hidden md:block py-32">
          
 {/**<div className='h-96 flex gap-20 flex-wrap lg:flex-nowrap bg-secondary px-72 py-20 text-white'>
    <h1 className='text-6xl font-bold flex-2 font-playfair'>Discrover More</h1>
@@ -365,7 +365,7 @@ const images: ImageData[] = [
     width={300}
     className="w-full h-full object-cover rounded-xl transition-transform duration-500 ease-in-out hover:scale-110"
   />
-                    <div className='bg-a rounded-xl px-1.5 md:px-6 py-1 lg:py-2 mt-1 md:mt-2 space-y-1 text-white'>
+                    <div className='bg-secondary rounded-xl px-1.5 md:px-6 py-1 lg:py-2 mt-1 md:mt-2 space-y-1 text-white'>
                     <p className="font-bold font-playfair text-sm md:text-base">{images[imageIndex].name}</p>
                     <div className='flex gap-1'>
 <StarRating rating={images[imageIndex].rating}/>

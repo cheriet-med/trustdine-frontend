@@ -25,6 +25,7 @@ import useFetchListingImages from '../requests/fetchListingImages';
 import StarRating from '../starsComponent';
 import useFetchReviews from '../requests/fetchReviews';
 import { useRouter } from "next/navigation";
+import useWishlistCheck from '../requests/fetchWishlistCheck';
 
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 
@@ -94,9 +95,43 @@ const Idcomponent = (dat:any) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const userid = dat.data.user
-  const { Users, isLoading, mutate } = useFetchUser(userid);
+  const { Users, isLoading } = useFetchUser(userid);
   const {productimage} = useFetchListingImages(dat.data.id)
   const {Review} = useFetchReviews(dat.data.id)
+
+
+
+const { wishlistStatus ,error, mutate } = useWishlistCheck(dat.data.id, userid);
+
+
+
+
+const toggle = async () => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}wishlist/${dat.data.id}/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${process.env.NEXT_PUBLIC_TOKEN}`,
+      },
+      body: JSON.stringify({ user_id: session?.user?.id }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+     // Trigger SWR revalidation to refresh the data
+      if (mutate) {
+        await mutate();
+      }
+
+    return (await response.json());
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw new Error("Failed to fetch data. Please try again later.");
+  } 
+};
+
 
   // Create combined images array with main image first
   const allImages = [
@@ -240,12 +275,12 @@ could improve pricing</p>
                           status === "authenticated" ?
                         
                (
-                            isInWishlist ?    
-                            <button onClick={handleWishlistToggle} className='border border-1 border-black px-4 py-1 rounded-3xl flex gap-2 items-center' >
+                             wishlistStatus?.is_in_wishlist == true ?
+                            <button onClick={toggle} className='border border-1 border-black px-4 py-1 rounded-3xl flex gap-2 items-center' >
                              <FaHeart size={18} className="text-secondary" />
                               <p className='text-bold'>Save</p>
                           </button> : 
-                           <button onClick={handleWishlistToggle} className='border border-1 border-black px-4 py-1 rounded-3xl flex gap-2 items-center' >
+                           <button onClick={toggle} className='border border-1 border-black px-4 py-1 rounded-3xl flex gap-2 items-center' >
                               <FaRegHeart size={18} className="text-gray-600 group-hover:text-accent transition-colors" />
                               <p className='text-bold'>Save</p>
                          </button>

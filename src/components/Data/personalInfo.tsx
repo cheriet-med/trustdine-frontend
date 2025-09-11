@@ -80,46 +80,32 @@ export default function PersonalInformation() {
   const handleDelete = () => {
     setIsOpenDelete(true);
   };
+const handleDeleteConfirm = async () => {
+  setIsSaving(true);
+  setError(null);
 
-  const handleDeleteConfirm = async () => {
-    setIsSaving(true);
-    setError(null);
-    setSuccessMessage(null);
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}infoid/${userId}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+        "Content-Type": "application/json",
+      },
+    });
 
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}infoid/${userId}`, {
-        method: "DELETE",
-        headers: {
-          "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`Failed to cancel reservation: ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      
-      // Show success message
-     // setSuccessMessage("Reservation successfully canceled!");
-      
-      // Trigger SWR revalidation to refresh the data
-      if (mutate) {
-        await mutate();
-      }
-      signOut({ callbackUrl: `/en/login` })
-      // Close the dialog after a short delay
-      setTimeout(() => {
-        setIsOpenDelete(false);
-        setIsSaving(false);
-      }, 1500);
-      
-    } catch (err) {
-      setError("An error occurred while Deleting Account");
-      setIsSaving(false);
+    if (!response.ok) {
+      throw new Error(`Failed to delete account: ${response.statusText}`);
     }
-  };
+
+    // No need to revalidate if account is gone
+    // Just sign out immediately
+    await signOut({ callbackUrl: "/en/login" });
+
+  } catch (err) {
+    setError("An error occurred while deleting account");
+    setIsSaving(false);
+  }
+};
 
   const handleCloseDialog = () => {
     if (!isSaving) {

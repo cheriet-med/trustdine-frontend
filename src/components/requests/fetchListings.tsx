@@ -56,6 +56,7 @@ interface Listing {
   latitude: string | null;
   longtitude: any; // Note: typo in original (should be longitude)
   location: any;
+  is_inwishlist:boolean;
   created_at_meta: string | null;
   updated_at_meta: string | null;
 }

@@ -12,7 +12,9 @@ import Link from "next/link";
 import { Search } from 'lucide-react';
 import useFetchReviews from "../requests/fetchReviews";
 import { CiForkAndKnife } from "react-icons/ci";
-
+import useWishlistCheck from "../requests/fetchWishlistCheck";
+import useFetchWishlist from "../requests/fetchWishlist";
+import useFetchListing from "../requests/fetchListings";
 
 interface PropertyCardProps {
   id: string | number | any;
@@ -22,6 +24,8 @@ interface PropertyCardProps {
   averageRating: number ;
   lengtReviews: string | number;
   location:string;
+  category:string;
+  onUpdate?: () => Promise<void>;
 }
 
 const PropertyCard: React.FC<PropertyCardProps> = ({
@@ -32,6 +36,8 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   imageUrl,
   lengtReviews,
   location,
+  category,
+  onUpdate
 }) => {
 
   const roundFirstDecimalDigit = (num: number) => {
@@ -53,6 +59,39 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
   const {Review} = useFetchReviews(id)
   const totalReviews = Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.rating_global, 0) / Review.length: 0
+  const { wishlistStatus, isLoading, error, mutate } = useWishlistCheck(id, session?.user?.id);
+
+
+
+
+const toggle = async () => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}wishlist/${id}/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${process.env.NEXT_PUBLIC_TOKEN}`,
+      },
+      body: JSON.stringify({ user_id: session?.user?.id }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+     // Trigger SWR revalidation to refresh the data
+     if (onUpdate) {
+      await onUpdate();
+    }
+    return (await response.json());
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw new Error("Failed to fetch data. Please try again later.");
+  } 
+};
+
+
+
+
 
   // Handle heart icon click
   const handleWishlistToggle = (e: React.MouseEvent) => {
@@ -85,7 +124,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
   return (
     <div className="block rounded-lg p-2 shadow-xs shadow-black border border-1  font-montserrat text-secondary bg-white">
       <div className="relative">
-        <Link href="/en/id">
+        <Link href={`/en/booking/${id}`}>
        <button
           className="absolute left-4 top-4 z-10 py-1 px-3 rounded-3xl bg-secondary hover:bg-accent transition-colors group">
                <p className='text-sm text-white'>Book Now</p>
@@ -97,22 +136,19 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
             
           
  (
-              isInWishlist ?   <button 
-          onClick={handleWishlistToggle}
-          className="absolute right-4 top-4 z-10 p-1 rounded-full bg-white/80 hover:bg-white transition-colors group"
-        >
-               <FaHeart size={24} className="text-secondary" />
-            </button> : 
-             <button 
-          onClick={handleWishlistToggle}
-          className="absolute right-4 top-4 z-10 p-1 rounded-full bg-white/80 hover:bg-white transition-colors group"
-        >
-           
-
-               <FaRegHeart size={24} className="text-gray-600 group-hover:text-accent transition-colors" />
-                
-             
-           </button>
+  
+               wishlistStatus?.is_in_wishlist == true ? <button 
+            onClick={toggle}
+            className="absolute right-4 top-4 z-10 p-1 rounded-full bg-white/80 hover:bg-white transition-colors group"
+          >
+                 <FaHeart size={24} className="text-secondary" />
+              </button> : 
+               <button 
+            onClick={toggle}
+            className="absolute right-4 top-4 z-10 p-1 rounded-full bg-white/80 hover:bg-white transition-colors group"
+          >
+                  <FaRegHeart size={24} className="text-gray-600 group-hover:text-accent transition-colors" />
+             </button>
            
           )   
          :
@@ -140,7 +176,10 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
         </div>
          <div className="flex gap-1 text-sm items-center">
            {price?.includes("Averege Price") && <CiForkAndKnife size={14} />}
-          <dd className="text-sm text-gray-500">{price}</dd>
+          {category == "Hotel"? 
+           <dd className="text-sm text-gray-500">{"From $"+price + " per night"}</dd>:
+          <dd className="text-sm text-gray-500">{"Averege Price $"+price +" -$$" }</dd>
+          }
          </div>
       </div>
       </Link>
@@ -149,16 +188,26 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 };
 
 export default function WishlistView() {
+ const { data: session, status } = useSession();
+ //const { wishlist, addItemToWishlist, removeItemFromWishlist, isItemInWishlist } = useWishlist();
 
- const { wishlist, addItemToWishlist, removeItemFromWishlist, isItemInWishlist } = useWishlist();
+const { Wishlist, mutate: wishlistMutate } = useFetchWishlist();
+const { listings, mutate: listingMutate } = useFetchListing();
+
+
+const wishlist = Wishlist?.filter(x => +x.user === +session?.user?.id);
+// get product ids
+const wishlistProductIds = wishlist?.map(w => Number(w.product));
+
+
+// match listings with wishlist product ids
+  const lis = listings?.filter(x => wishlistProductIds?.includes(Number(x.id))) || [];
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
-
-  const totalPages = Math.ceil(wishlist.length / itemsPerPage);
+  const totalPages = Math.ceil(lis.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentItems = wishlist.slice(startIndex, endIndex);
-
+  const currentItems = lis.slice(startIndex, endIndex);
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleNext = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
   const handlePrevious = () => currentPage > 1 && setCurrentPage(currentPage - 1);
@@ -191,13 +240,17 @@ export default function WishlistView() {
         {currentItems.map((res, index) => (
           <div key={index}>
             <PropertyCard
-              id={res.id || `${index}`} // Use restaurant ID or fallback
+              id={res.id } // Use restaurant ID or fallback
               location={res.location}
-              price={res.price || ''}
-              address={res.name}
-              imageUrl={res.image}
-              averageRating={res.rating}
+              price={res.price_per_night || res.price_range || res.average_cost || ""}
+              category={res.category ?? ""}
+              address={res.name ?? ""}
+              imageUrl={`${process.env.NEXT_PUBLIC_IMAGE}/${res.image}` }
+              averageRating={Number(res.rating) || 0}
               lengtReviews={85}
+              onUpdate={async () => {
+              await Promise.all([wishlistMutate(), listingMutate()]);
+              }}
             />
           </div>
         ))}

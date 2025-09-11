@@ -678,7 +678,7 @@ const PartnerRegistrationCheckout: React.FC = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen ">
-      <div className="flex items-center justify-center mb-10 lg:mb-14 h-56 pt-16 rounded-b-3xl bg-[url('/profile.avif')] bg-no-repeat bg-center bg-cover">
+      <div className="flex items-center justify-center mb-10 lg:mb-14 h-56 pt-28 rounded-b-3xl bg-[url('/profile.avif')] bg-no-repeat bg-center bg-cover">
         <div className="text-2xl font-bold md:text-3xl md:leading-tight text-white dark:text-neutral-200 font-playfair uppercase">
           <h2>Partner Registration</h2> 
         </div>
