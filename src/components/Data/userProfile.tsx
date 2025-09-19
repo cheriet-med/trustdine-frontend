@@ -396,6 +396,7 @@ const cleantotal = parseFloat((
 
   return (
     <>  
+  
       <div className="rounded-2xl m-1 sm:m-2 md:m-3 relative">
         <Map
           center={

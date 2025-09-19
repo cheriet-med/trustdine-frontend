@@ -36,7 +36,7 @@ const plans: Plan[] = [
   {
     name: 'Premium',
     id: 'tier-premium',
-    href: '/en/checkout-partner-free-plan',
+    href: '/en/checkout-partner',
     priceMonthly: '$29',
     description: 'Advanced features for professionals and businesses.',
     features: [

@@ -3,8 +3,14 @@ import React, { useState,useRef, useEffect } from 'react';
 import { ChevronRight, Check, Mail, Lock, User, MapPin, Phone, Building, CreditCard, Calendar, Shield, Eye, EyeOff, ArrowDown , ChevronDown, Check as CheckIcon} from 'lucide-react';
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import moment from 'moment';
+import MailChecker from "mailchecker";
+import validator from "validator";
+import { getStripe, SUBSCRIPTION_PRICE_ID } from '@/lib/stripe-client';
+import type { SubscriptionData } from '@/types/subscription';
 
-// Country data with phone codes
+// Country data with phone codes (unchanged)
+
 const countries = [
   { name: 'Afghanistan', code: 'AF', phoneCode: '+93' },
   { name: 'Albania', code: 'AL', phoneCode: '+355' },
@@ -248,6 +254,7 @@ const countries = [
   { name: 'Zimbabwe', code: 'ZW', phoneCode: '+263' }
 ];
 
+
 interface FormData {
   // Step 1: Auth
   email: string;
@@ -283,10 +290,10 @@ const PartnerRegistrationCheckout: React.FC = () => {
     address: '',
     city: '',
     zipCode: '',
-    country: 'United States',
+    country: '',
     phoneNumber: '',
-    phoneCode: '+1',
-    businessType: 'hotel',
+    phoneCode: '',
+    businessType: '',
     cardNumber: '',
     expiryDate: '',
     cvv: '',
@@ -295,114 +302,247 @@ const PartnerRegistrationCheckout: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [error1, setError1] = useState("");
+  const [error2, setError2] = useState("");
+  const [emailExists, setEmailExists] = useState<boolean | null>(null);
+  const [emailDebounce, setEmailDebounce] = useState<NodeJS.Timeout | null>(null);
 
+  const isValidEmail = async (email: string): Promise<{ valid: boolean; message?: string }> => {
+    if (!email || email.trim() === "") {
+      return { valid: false, message: 'Email is required' };
+    }
 
-const CustomSelect = ({ 
-  value, 
-  onChange, 
-  options, 
-  placeholder,
-  className = ""
-}: {
-  value: string;
-  onChange: (value: string) => void;
-  options: { value: string; label: string }[];
-  placeholder: string;
-  className?: string;
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const selectRef = useRef<HTMLDivElement>(null);
-  const selectedLabel = options.find(opt => opt.value === value)?.label || placeholder;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return { valid: false, message: 'Invalid email format' };
+    }
 
-  // Close dropdown when clicking outside
+    if (!validator.isEmail(email)) {
+      return { valid: false, message: 'Invalid email format'};
+    }
+
+    if (!MailChecker.isValid(email)) {
+      return { valid: false, message: 'Disposable emails are not allowed' };
+    }
+
+    return { valid: true };
+  };
+
+  const validatePassword = (password: string): string | null => {
+    if (!password) {
+      return 'Password is required';
+    }
+
+    if (password.length < 8) {
+      return 'Password must be at least 8 characters long';
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      return 'Password must contain at least one uppercase letter';
+    }
+
+    if (!/[a-z]/.test(password)) {
+      return 'Password must contain at least one lowercase letter';
+    }
+
+    if (!/[0-9]/.test(password)) {
+      return 'Password must contain at least one digit';
+    }
+
+    if (!/[!@#$%^&*]/.test(password)) {
+      return 'Password must contain at least one special character (!@#$%^&*)';
+    }
+
+    return null;
+  };
+
+  const checkEmailExists = async (email: string): Promise<boolean> => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}infoglobal/?email=${email}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      return Array.isArray(data) && data.length > 0;
+    } catch (error) {
+      console.error('Error checking email:', error);
+      return false;
+    }
+  };
+
+  // Real-time email validation with debounce
+  const handleEmailChange = (email: string) => {
+    handleInputChange('email', email);
+    
+    // Clear previous debounce
+    if (emailDebounce) {
+      clearTimeout(emailDebounce);
+    }
+
+    // Clear error if email is empty
+    if (!email.trim()) {
+      setError1("");
+      setEmailExists(null);
+      return;
+    }
+
+    // Set new debounce for email validation
+    const timeout = setTimeout(async () => {
+      const validation = await isValidEmail(email);
+      if (!validation.valid) {
+        setError1(validation.message || 'Invalid email');
+        setEmailExists(null);
+      } else {
+        setError1("");
+        // Check if email exists only after format is valid
+        const exists = await checkEmailExists(email);
+        setEmailExists(exists);
+      }
+    }, 500);
+
+    setEmailDebounce(timeout);
+  };
+
+  // Real-time password validation
+  const handlePasswordChange = (password: string) => {
+    handleInputChange('password', password);
+    
+    if (!password) {
+      setError2("");
+      return;
+    }
+
+    const passwordError = validatePassword(password);
+    setError2(passwordError || "");
+  };
+
+  // Clear validation errors when component unmounts
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
+    return () => {
+      if (emailDebounce) {
+        clearTimeout(emailDebounce);
       }
     };
+  }, [emailDebounce]);
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  const CustomSelect = ({ 
+    value, 
+    onChange, 
+    options, 
+    placeholder,
+    className = ""
+  }: {
+    value: string;
+    onChange: (value: string) => void;
+    options: { value: string; label: string }[];
+    placeholder: string;
+    className?: string;
+  }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const selectRef = useRef<HTMLDivElement>(null);
+    const selectedLabel = options.find(opt => opt.value === value)?.label || placeholder;
 
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+          setIsOpen(false);
+        }
+      };
 
-  return (
-    <div className={`relative ${className}`} ref={selectRef}>
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsOpen(!isOpen);
-        }}
-        className={`flex h-12 w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-4 py-3 text-left text-sm transition-all hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-accent ${
-          isOpen ? 'ring-2 ring-accent' : ''
-        }`}
-      >
-        <span className="truncate text-left">{selectedLabel}</span>
-        <ChevronDown
-          className={`h-4 w-4 text-gray-500 transition-transform ${
-            isOpen ? 'rotate-180' : ''
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
+
+    return (
+      <div className={`relative ${className}`} ref={selectRef}>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsOpen(!isOpen);
+          }}
+          className={`flex h-12 w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-4 py-3 text-left text-sm transition-all hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-accent ${
+            isOpen ? 'ring-2 ring-accent' : ''
           }`}
-        />
-      </button>
-
-      {isOpen && (
-        <div 
-          className="absolute z-50 mt-1 w-full overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg"
-          onClick={(e) => e.stopPropagation()}
         >
+          <span className="truncate text-left">{selectedLabel}</span>
+          <ChevronDown
+            className={`h-4 w-4 text-gray-500 transition-transform ${
+              isOpen ? 'rotate-180' : ''
+            }`}
+          />
+        </button>
+
+        {isOpen && (
           <div 
-            className="max-h-60 overflow-y-auto"
-            onWheel={(e) => {
-              // Prevent scroll propagation to parent elements
-              e.stopPropagation();
-              const { currentTarget } = e;
-              if (
-                e.deltaY < 0 && currentTarget.scrollTop <= 0 ||
-                e.deltaY > 0 && currentTarget.scrollHeight - currentTarget.clientHeight <= currentTarget.scrollTop
-              ) {
-                e.preventDefault();
-              }
-            }}
+            className="absolute z-50 mt-1 w-full overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg"
+            onClick={(e) => e.stopPropagation()}
           >
-            {options.map((option) => (
-              <button
-                key={option.value}
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onChange(option.value);
-                  setIsOpen(false);
-                }}
-                className={`relative flex w-full cursor-pointer select-none items-center px-4 py-2 text-sm text-left ${
-                  value === option.value
-                    ? 'bg-accent text-white'
-                    : 'text-gray-900 hover:bg-gray-100'
-                }`}
-              >
-                <span className="flex-1 truncate text-left">{option.label}</span>
-                {value === option.value && (
-                  <CheckIcon className="ml-2 h-4 w-4 flex-shrink-0" />
-                )}
-              </button>
-            ))}
+            <div 
+              className="max-h-60 overflow-y-auto"
+              onWheel={(e) => {
+                e.stopPropagation();
+                const { currentTarget } = e;
+                if (
+                  e.deltaY < 0 && currentTarget.scrollTop <= 0 ||
+                  e.deltaY > 0 && currentTarget.scrollHeight - currentTarget.clientHeight <= currentTarget.scrollTop
+                ) {
+                  e.preventDefault();
+                }
+              }}
+            >
+              {options.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onChange(option.value);
+                    setIsOpen(false);
+                  }}
+                  className={`relative flex w-full cursor-pointer select-none items-center px-4 py-2 text-sm text-left ${
+                    value === option.value
+                      ? 'bg-accent text-white'
+                      : 'text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  <span className="flex-1 truncate text-left">{option.label}</span>
+                  {value === option.value && (
+                    <CheckIcon className="ml-2 h-4 w-4 flex-shrink-0" />
+                  )}
+                </button>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
-};
+        )}
+      </div>
+    );
+  };
 
   const steps = [
     { id: 1, title: 'Account Setup', icon: User },
     { id: 2, title: 'Business Information', icon: Building },
-    { id: 3, title: 'Payment Details', icon: CreditCard }
+    { id: 3, title: 'Payment', icon: CreditCard }
   ];
+  
   const router = useRouter();
   
+
+
+
+
+
   const handleInputChange = (field: keyof FormData, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
@@ -430,15 +570,88 @@ const CustomSelect = ({
     }
   };
 
+
+
+
+  const handleSubscribe = async (email: string) => {
+    
+    try {
+      const response = await fetch('/api/create-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          priceId: SUBSCRIPTION_PRICE_ID,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        const stripe = await getStripe();
+        const { error } = await stripe!.redirectToCheckout({
+          sessionId: data.sessionId,
+        });
+
+        if (error) {
+          console.error('Stripe error:', error);
+          alert('Error redirecting to checkout');
+        }
+      } else {
+        alert(`Error: ${data.error}`);
+      }
+    } catch (error) {
+      console.error('Error creating subscription:', error);
+      alert('Error creating subscription');
+    } 
+  };
+
+
+
+
+
+
+
   const handleSubmit = async () => {
-    if (currentStep < 3) {
-      handleNextStep(); // Just move to next step if not on final step
+    if (currentStep < 2) {
+      handleNextStep();
       return;
     }
 
     setIsLoading(true);
+    setError(null);
+
+    const email = formData.email;
+    const password = formData.password;
+
+    // Final validation before submission
+    const emailValidation = await isValidEmail(email);
+    if (!emailValidation.valid) {
+      setError1(emailValidation.message || 'Invalid email');
+      setIsLoading(false);
+      return;
+    }
+
+    // Check email existence one more time before submission
+    const exists = await checkEmailExists(email);
+    if (exists) {
+      setError1("This email is already registered");
+      setEmailExists(true);
+      setIsLoading(false);
+      return;
+    }
+
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      setError2(passwordError);
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      // Final submission logic only runs on step 3
+      // Final submission logic
       const userResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}auth/users/`, {
         method: "POST",
         headers: {
@@ -446,8 +659,8 @@ const CustomSelect = ({
           "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
         },
         body: JSON.stringify({ 
-          email: formData.email, 
-          password: formData.password, 
+          email: email, 
+          password: password, 
           register_as: 'partner'
         }),
       });
@@ -483,19 +696,20 @@ const CustomSelect = ({
           countryCode: formData.country,
           phoneNumber: `${formData.phoneCode}${formData.phoneNumber}`,
           plan: "free",
-          joined: "Aug 2025"
-          // ... other fields
+          joined: moment().format('ll')
         }),
       });
 
       if (!partnerResponse.ok) {
         throw new Error('Partner info update failed');
       }
-
-      // Registration successful
-      router.push('/en/account/profile'); // Uncomment to redirect after success
+      
+      
+      handleSubscribe(email)
+      //router.push('/en/account/profile');  
       
     } catch (err) {
+      setError('Registration error please verify your data');
       console.error('Registration error:', err);
     } finally {
       setIsLoading(false);
@@ -505,23 +719,25 @@ const CustomSelect = ({
   const isStepValid = (step: number): boolean => {
     switch (step) {
       case 1:
-        return !!(formData.email && formData.password && formData.confirmPassword && formData.password === formData.confirmPassword);
+        return !!(formData.email && formData.password && formData.confirmPassword && 
+                 formData.password === formData.confirmPassword && !error1 && !error2 && 
+                 emailExists === false);
       case 2:
-        return !!(formData.businessName && formData.contactName && formData.address && formData.city && formData.phoneNumber);
-      case 3:
-        return !!(formData.cardNumber && formData.expiryDate && formData.cvv && formData.cardholderName);
+        return !!(formData.businessName && formData.contactName && formData.address && 
+                 formData.city && formData.phoneNumber && formData.businessType);
       default:
         return false;
     }
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-       <div className="flex items-center justify-center mb-10 lg:mb-14 h-56 pt-16 rounded-b-3xl bg-[url('/profile.avif')] bg-no-repeat bg-center bg-cover">
+    <div className="bg-gray-50 min-h-screen ">
+      <div className="flex items-center justify-center mb-10 lg:mb-14 h-56 pt-28 rounded-b-3xl bg-[url('/profile.avif')] bg-no-repeat bg-center bg-cover">
         <div className="text-2xl font-bold md:text-3xl md:leading-tight text-white dark:text-neutral-200 font-playfair uppercase">
-         <h2>Partner Registration</h2> 
+          <h2>Partner Registration</h2> 
         </div>
       </div>
+      
       <div className="max-w-7xl mx-auto mb-8 px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-8">
@@ -539,17 +755,17 @@ const CustomSelect = ({
               return (
                 <div key={step.id} className="flex items-center">
                   <div className="flex flex-col items-center">
-                    <div className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all ${
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-all ${
                       isCompleted 
                         ? 'bg-accent border-accent text-white' 
                         : isActive 
                         ? 'bg-black border-black text-white' 
                         : 'bg-white border-gray-300 text-gray-400'
                     }`}>
-                      {isCompleted ? <Check className="w-6 h-6" /> : <Icon className="w-6 h-6" />}
+                      {isCompleted ? <Check className="w-4 h-4" /> : <Icon className="w-4 h-4" />}
                     </div>
                     <div className="mt-2 text-center">
-                      <p className={`text-sm font-medium ${isActive ? 'text-black' : 'text-gray-500'}`}>
+                      <p className={`text-xs font-medium ${isActive ? 'text-black' : 'text-gray-500'}`}>
                         {step.title}
                       </p>
                     </div>
@@ -584,11 +800,20 @@ const CustomSelect = ({
                         <input
                           type="email"
                           value={formData.email}
-                          onChange={(e) => handleInputChange('email', e.target.value)}
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                          onChange={(e) => handleEmailChange(e.target.value)}
+                          className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition ${
+                            error1 || emailExists ? 'border-secondary' : 'border-gray-300'
+                          }`}
                           placeholder="Enter your email"
                         />
                       </div>
+                      {error1 && <p className="text-secondary text-sm mt-1">{error1}</p>}
+                      {emailExists === true && (
+                        <p className="mt-1 text-sm text-secondary">This email is already registered. Please use another.</p>
+                      )}
+                      {emailExists === false && (
+                        <p className="mt-1 text-sm text-green-600">Email is available</p>
+                      )}
                     </div>
                     
                     <div>
@@ -598,8 +823,10 @@ const CustomSelect = ({
                         <input
                           type={showPassword ? "text" : "password"}
                           value={formData.password}
-                          onChange={(e) => handleInputChange('password', e.target.value)}
-                          className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                          onChange={(e) => handlePasswordChange(e.target.value)}
+                          className={`w-full pl-10 pr-10 py-3 border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition ${
+                            error2 ? 'border-secondary' : 'border-gray-300'
+                          }`}
                           placeholder="Create a password"
                         />
                         <button
@@ -610,6 +837,7 @@ const CustomSelect = ({
                           {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                         </button>
                       </div>
+                      {error2 && <p className="text-secondary text-sm mt-1">{error2}</p>}
                     </div>
                     
                     <div>
@@ -620,7 +848,11 @@ const CustomSelect = ({
                           type={showConfirmPassword ? "text" : "password"}
                           value={formData.confirmPassword}
                           onChange={(e) => handleInputChange('confirmPassword', e.target.value)}
-                          className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                          className={`w-full pl-10 pr-10 py-3 border rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition ${
+                            formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword 
+                              ? 'border-secondary' 
+                              : 'border-gray-300'
+                          }`}
                           placeholder="Confirm your password"
                         />
                         <button
@@ -632,7 +864,7 @@ const CustomSelect = ({
                         </button>
                       </div>
                       {formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword && (
-                        <p className="mt-1 text-sm text-red-600">Passwords do not match</p>
+                        <p className="mt-1 mb-2 text-sm text-secondary">Passwords do not match</p>
                       )}
                     </div>
                   </div>
@@ -641,63 +873,61 @@ const CustomSelect = ({
 
               {/* Step 2: Business Information */}
               {currentStep === 2 && (
-                <div className="space-y-6">
+                <div className="space-y-6 relative">
                   <div className="bg-black text-white p-4 rounded-lg">
                     <h2 className="text-xl font-bold mb-2 font-playfair">2. Business Information</h2>
                     <p className="text-gray-200">Tell us about your business</p>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full pb-6">
                     <div className="md:col-span-2">
                       <label className="block text-sm font-medium text-gray-700 mb-2">Business Type</label>
-                   <CustomSelect
-                      value={formData.businessType}
-                      onChange={(value) => handleInputChange('businessType', value)}
-                      placeholder="Select business type"
-                      options={[
-                        { value: 'hotel', label: 'Hotel' },
-                        { value: 'restaurant', label: 'Restaurant' },
-                        { value: 'restaurant-hotel', label: 'Hotel & Restaurant' },
-                        { value: 'cafe', label: 'Cafe' },
-                        { value: 'bar', label: 'Bar' },
-                        { value: 'cafe-restaurant', label: 'Cafe & Restaurant' },
-                      ]}
-                    />
-                  </div>
-
-
-                
+                      <CustomSelect
+                        value={formData.businessType}
+                        onChange={(value) => handleInputChange('businessType', value)}
+                        placeholder="Select business type"
+                        options={[
+                          { value: 'hotel', label: 'Hotel' },
+                          { value: 'restaurant', label: 'Restaurant' },
+                          { value: 'restaurant-hotel', label: 'Hotel & Restaurant' },
+                          { value: 'cafe', label: 'Cafe' },
+                          { value: 'bar', label: 'Bar' },
+                          { value: 'cafe-restaurant', label: 'Cafe & Restaurant' },
+                        ]}
+                      />
                     </div>
-                      <div className='flex gap-2 w-full'>
-                    <div className="md:col-span-2 w-full">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Business Name</label>
-                      <div className="relative">
-                        <Building className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                        <input
-                          type="text"
-                          value={formData.businessName}
-                          onChange={(e) => handleInputChange('businessName', e.target.value)}
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
-                          placeholder="Enter business name"
-                        />
+
+                    <div className='md:flex gap-2 w-full space-y-6 md:space-y-0 md:col-span-2'>
+                      <div className="md:col-span-2 w-full">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Business Name</label>
+                        <div className="relative">
+                          <Building className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                          <input
+                            type="text"
+                            value={formData.businessName}
+                            onChange={(e) => handleInputChange('businessName', e.target.value)}
+                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                            placeholder="Enter business name"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="md:col-span-2 w-full">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Contact Name</label>
+                        <div className="relative">
+                          <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                          <input
+                            type="text"
+                            value={formData.contactName}
+                            onChange={(e) => handleInputChange('contactName', e.target.value)}
+                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                            placeholder="Enter contact person name"
+                          />
+                        </div>
                       </div>
                     </div>
                     
                     <div className="md:col-span-2 w-full">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Contact Name</label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                        <input
-                          type="text"
-                          value={formData.contactName}
-                          onChange={(e) => handleInputChange('contactName', e.target.value)}
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
-                          placeholder="Enter contact person name"
-                        />
-                      </div>
-                    </div>
-                     </div>
-                    <div className="md:col-span-2">
                       <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
                       <div className="relative">
                         <MapPin className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
@@ -710,165 +940,94 @@ const CustomSelect = ({
                         />
                       </div>
                     </div>
-                    <div className='flex gap-2 w-full'>
-                    <div className='w-full'>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
-                      <input
-                        type="text"
-                        value={formData.city}
-                        onChange={(e) => handleInputChange('city', e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
-                        placeholder="City"
-                      />
-                    </div>
                     
-                    <div  className='w-full'>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">ZIP Code</label>
-                      <input
-                        type="text"
-                        value={formData.zipCode}
-                        onChange={(e) => handleInputChange('zipCode', e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
-                        placeholder="ZIP Code"
-                      />
-                    </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Country</label>
-                    <CustomSelect
-                      value={formData.country}
-                      onChange={(value) => {
-                        handleInputChange('country', value);
-                        const selectedCountry = countries.find(c => c.name === value);
-                        if (selectedCountry) {
-                          handleInputChange('phoneCode', selectedCountry.phoneCode);
-                        }
-                      }}
-                      placeholder="Select country"
-                      options={countries.map(country => ({
-                        value: country.name,
-                        label: country.name
-                      }))}
-                    />
-                    </div>
-                    
-                    <div >
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
-                      <div className='flex gap-2'>
-                          <div className="flex">
-                          <CustomSelect
-                          value={formData.phoneCode}
-                          onChange={(value) => handleInputChange('phoneCode', value)}
-                          placeholder="Code"
-                          options={countries.map(country => ({
-                            value: country.phoneCode,
-                            label: country.phoneCode
-                          }))}
+                    <div className='md:flex gap-2 w-full space-y-6 md:space-y-0'>
+                      <div className='w-full mb:2'>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
+                        <input
+                          type="text"
+                          value={formData.city}
+                          onChange={(e) => handleInputChange('city', e.target.value)}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                          placeholder="City"
                         />
                       </div>
-                      <div className="flex-1">
-                        <div className="relative">
-                          
+                      
+                   
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Country</label>
+                      <CustomSelect
+                        value={formData.country}
+                        onChange={(value) => {
+                          handleInputChange('country', value);
+                          const selectedCountry = countries.find(c => c.name === value);
+                          if (selectedCountry) {
+                            handleInputChange('phoneCode', selectedCountry.phoneCode);
+                          }
+                        }}
+                        placeholder="Select country"
+                        options={countries.map(country => ({
+                          value: country.name,
+                          label: country.name
+                        }))}
+                      />
+                    </div>
+
+                    <div className='flex flex-col md:flex-row w-full md:col-span-2 gap-3 '>
+                       <div className='w-1/2 md:w-1/3 '>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">ZIP Code</label>
+                        <input
+                          type="text"
+                          value={formData.zipCode}
+                          onChange={(e) => handleInputChange('zipCode', e.target.value)}
+                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                          placeholder="ZIP Code"
+                        />
+                      </div>
+                    <div className='pb-6 w-full'>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                      <div className='flex gap-2 w-full'>
+                          <div className="h-12 px-4 py-3 border border-gray-300 rounded-lg select-none flex items-center justify-center min-w-[80px]">
+                            <span className="text-gray-700 font-medium">{formData.phoneCode || '+1'}</span>
+                          </div>
+                        <div className="flex-1">
                           <input
                             type="tel"
                             value={formData.phoneNumber}
                             onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
-                            className="w-full pl-4 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
+                            className="w-full pl-4 pr-4 py-3 h-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
                             placeholder="(415) 123-4567"
                           />
                         </div>
                       </div>
-                    
-                      </div>
                     </div>
+                    </div>
+                    {error && <p className="text-secondary text-sm mb-4">{error}</p>}
                   </div>
-               
-              )}
-
-              {/* Step 3: Payment Details */}
-              {currentStep === 3 && (
-                <div className="space-y-6">
-                  <div className="bg-black text-white p-4 rounded-lg">
-                    <h2 className="text-xl font-bold mb-2">3. Payment Details</h2>
-                    <p className="text-gray-200">Secure payment information</p>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Cardholder Name</label>
-                      <input
-                        type="text"
-                        value={formData.cardholderName}
-                        onChange={(e) => handleInputChange('cardholderName', e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
-                        placeholder="Name on card"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Card Number</label>
-                      <div className="relative">
-                        <CreditCard className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                        <input
-                          type="text"
-                          value={formData.cardNumber}
-                          onChange={(e) => handleInputChange('cardNumber', e.target.value)}
-                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
-                          placeholder="1234 5678 9012 3456"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Expiry Date</label>
-                        <div className="relative">
-                          <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                          <input
-                            type="text"
-                            value={formData.expiryDate}
-                            onChange={(e) => handleInputChange('expiryDate', e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
-                            placeholder="MM/YY"
-                          />
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">CVV</label>
-                        <div className="relative">
-                          <Shield className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                          <input
-                            type="text"
-                            value={formData.cvv}
-                            onChange={(e) => handleInputChange('cvv', e.target.value)}
-                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-transparent transition"
-                            placeholder="123"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                   <hr/>
                 </div>
               )}
 
               {/* Navigation Buttons */}
-              <div className="flex justify-between pt-6 border-t">
+              <div className="flex justify-between mt-6 ">
+              
                 {currentStep > 1 && (
                   <button
                     onClick={handlePrevStep}
-                    className="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+                    className="sm:px-6 py-1.5 px-4 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
                   >
                     Previous
                   </button>
                 )}
                 
                 <div className="ml-auto">
-                  {currentStep < 3 ? (
+                  {currentStep < 2 ? (
                     <button
                       onClick={handleSubmit}
                       disabled={!isStepValid(currentStep)}
-                      className="px-6 py-3 bg-black text-white rounded-lg hover:bg-accent disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                      className="sm:px-6 sm:py-2 text-sm sm:text-base py-2 px-2 bg-black text-white rounded-lg hover:bg-accent disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
                     >
                       Continue
                       <ChevronRight className="w-4 h-4" />
@@ -877,7 +1036,7 @@ const CustomSelect = ({
                     <button
                       onClick={handleSubmit}
                       disabled={!isStepValid(currentStep) || isLoading}
-                      className="px-6 py-3 bg-black text-white rounded-lg hover:bg-accent disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center min-w-40"
+                      className="sm:px-6 sm:py-2 py-3 text-sm sm:text-base px-2 bg-black text-white rounded-lg hover:bg-accent disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center min-w-40"
                     >
                       {isLoading ? (
                         <>
@@ -896,7 +1055,7 @@ const CustomSelect = ({
               </div>
             </div>
 
-            {/* Summary Section */}
+            {/* Summary Section (unchanged) */}
             <div className="bg-gray-50 p-8 border-l">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 font-playfair">Registration Summary</h3>
               
@@ -904,7 +1063,7 @@ const CustomSelect = ({
                 <div className="bg-white p-4 rounded-lg shadow-sm">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-medium text-gray-900 font-playfair">Partner Registration</span>
-                    <span className="text-sm font-semibold text-gray-900">$99.00</span>
+                    <span className="text-sm font-semibold text-gray-900">$0.00</span>
                   </div>
                   <p className="text-xs text-gray-600">One-time setup fee</p>
                 </div>
@@ -912,7 +1071,7 @@ const CustomSelect = ({
                 <div className="bg-white p-4 rounded-lg shadow-sm">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-sm font-medium text-gray-900 font-playfair">Monthly Subscription</span>
-                    <span className="text-sm font-semibold text-gray-900">$29.99</span>
+                    <span className="text-sm font-semibold text-gray-900">$29.00</span>
                   </div>
                   <p className="text-xs text-gray-600">First month included</p>
                 </div>
@@ -920,7 +1079,7 @@ const CustomSelect = ({
                 <div className="border-t pt-4">
                   <div className="flex justify-between items-center">
                     <span className="font-semibold text-gray-900">Total</span>
-                    <span className="font-bold text-lg text-gray-900">$99.00</span>
+                    <span className="font-bold text-lg text-gray-900">$29.00</span>
                   </div>
                 </div>
               </div>

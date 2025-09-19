@@ -214,7 +214,7 @@ const handleSuggestionClick = (suggestion: SearchSuggestion) => {
 
   return (
     <div className="flex justify-center">
-    <div className="relative mx-2 lg:w-[700px]">
+    <div className="relative mx-4 lg:w-[700px]">
       <form onSubmit={handleSearch} className="relative">
         <input
           ref={inputRef}

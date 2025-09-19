@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import VerifiedBadge from '@/components/verified';
 import { MdOutlineTravelExplore } from "react-icons/md";
 import { CiLocationOn } from "react-icons/ci";
@@ -20,7 +20,8 @@ import AmenitiesSelector from '@/components/requests/amenities';
 import useFetchUser from '@/components/requests/fetchUser';
 import useFetchAllReviews from '../requests/fetchAllReviews';
 import StarRating from '../starsComponent';
-
+import { getStripe, SUBSCRIPTION_PRICE_ID } from '@/lib/stripe-client';
+import type { SubscriptionData } from '@/types/subscription';
 
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 const Chart = dynamic(() => import('react-apexcharts'), {
@@ -34,6 +35,14 @@ import EditAboutPopup from '@/components/requests/editeAbout';
 import EditNameTitle from '@/components/requests/editeInfoProfile';
 import EditLocationPopup from '@/components/requests/editeLocation';
 
+
+interface Subscription {
+  cancelAtPeriodEnd: boolean;
+  customerId: string;
+  id: string;
+  priceId: string;
+  status: string;
+}
 
 
 interface ProfileData {
@@ -59,12 +68,16 @@ interface ProfileData {
   countryCode?: string;
   latitude?: string;
   longtitude?: string;
+  premium_plan?:boolean;
+  is_staff?:boolean
 }
 
 const PartnerProfile: React.FC = () => {
   const [profileImage, setProfileImage] = useState("/profile.webp");
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+   const [subscriptions, setSubscriptions] = useState<SubscriptionData[]>([]);
+    const [fetchingSubscriptions, setFetchingSubscriptions] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
    const { data: session, status } = useSession({ required: true });
 
@@ -76,6 +89,102 @@ const PartnerProfile: React.FC = () => {
 const alluserproducts = listings?.filter((user) => user.user === +userId)
 const {AllReview} = useFetchAllReviews()
 
+
+
+
+  useEffect(() => {
+    fetchSubscriptions();
+  }, []);
+
+
+  
+const fetchSubscriptions = async () => {
+  try {
+    const response = await fetch(`/api/get-subscriptions?email=${session?.user.email}`);
+    const data = await response.json();
+    
+    if (response.ok) {
+      setSubscriptions(data.subscriptions);
+      
+      // Check if any subscription has active status
+      const hasActiveSubscription = data.subscriptions.some((subscription: Subscription) => 
+        subscription.status === 'active'
+      );
+      
+      // Make PUT request based on subscription status
+      try {
+        const putResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}infoid/${session?.user.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            premium_plan: hasActiveSubscription
+          })
+        });
+        
+        if (putResponse.ok) {
+          console.log(`Premium plan ${hasActiveSubscription ? 'activated' : 'deactivated'} successfully`);
+        } else {
+          console.error('Failed to update premium plan:', await putResponse.text());
+        }
+      } catch (putError) {
+        console.error('Error making PUT request:', putError);
+      }
+      
+    } else {
+      console.error('Error fetching subscriptions:', data.error);
+    }
+  } catch (error) {
+    console.error('Error fetching subscriptions:', error);
+  } finally {
+    setFetchingSubscriptions(false);
+  }
+};
+
+
+
+
+  const handleSubscribe = async () => {
+   
+    
+    try {
+      const response = await fetch('/api/create-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: session?.user?.email,
+          priceId: SUBSCRIPTION_PRICE_ID,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+
+
+
+        const stripe = await getStripe();
+        const { error } = await stripe!.redirectToCheckout({
+          sessionId: data.sessionId,
+        });
+
+        if (error) {
+          console.error('Stripe error:', error);
+          alert('Error redirecting to checkout');
+        }
+      } else {
+        alert(`Error: ${data.error}`);
+      }
+    } catch (error) {
+      console.error('Error creating subscription:', error);
+      alert('Error creating subscription');
+    } finally {
+   
+    }
+  };
 
 const userProductIds = alluserproducts?.map((p) => p.id);
 const Review = AllReview?.filter((review) =>
@@ -359,6 +468,7 @@ const initialAmenities = [
   if (isLoading) {
     return (
       <>
+    
         {/* Map Skeleton */}
         <div className="rounded-2xl m-1 sm:m-2 md:m-3 relative">
           <div className="h-[300px] bg-gray-200 animate-pulse rounded-2xl"></div>
@@ -478,6 +588,15 @@ const initialAmenities = [
 
   return (
     <>  
+    {profileData.premium_plan == false ? 
+      <div  className="rounded-lg m-1 sm:m-2 md:m-3 relative bg-accent p-2 flex gap-4 flex-wrap justify-center">
+        <p className='text-white font-playfair'>
+          Upgrade to our Premium plan for $29/month to unlock all features.
+        </p>
+       <p className='text-secondary font-extrabold underline hover:text-white cursor-pointer font-playfair' onClick={handleSubscribe}>
+         Upgrade
+        </p>
+    </div> : "" }
     <div className="rounded-2xl m-1 sm:m-2 md:m-3 relative">
      <Map
     center={
