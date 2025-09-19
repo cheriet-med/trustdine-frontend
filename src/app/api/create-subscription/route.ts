@@ -38,8 +38,8 @@ export async function POST(req: NextRequest) {
         },
       ],
       mode: 'subscription',
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/en/account/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/en/account/cancel`,
+      success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/en/account/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/en/account/cancel`,
       allow_promotion_codes: true,
     });
 
