@@ -50,7 +50,8 @@ interface AlUsers {
   countryCode?: string;
   latitude?: string;
   longtitude?: string;
-  is_staff?:boolean
+  is_staff?:boolean;
+  hotel_stars:string
 }
 
 const useFetchAllUser = () => {

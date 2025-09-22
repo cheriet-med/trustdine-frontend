@@ -69,13 +69,18 @@ interface ProfileData {
   latitude?: string;
   longtitude?: string;
   premium_plan?:boolean;
-  is_staff?:boolean
+  is_staff?:boolean;
+  is_email_verified?:boolean;
+  hotel_stars?:string | undefined;
+  is_phone_number_verified?:boolean;
 }
 
 const PartnerProfile: React.FC = () => {
   const [profileImage, setProfileImage] = useState("/profile.webp");
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+    const [emailsendvalidation, setEmailsendvalidation] = useState(false);
+  const [emailsenderrorvalidation, setEmailsenderrorvalidation] = useState(false);
    const [subscriptions, setSubscriptions] = useState<SubscriptionData[]>([]);
     const [fetchingSubscriptions, setFetchingSubscriptions] = useState(true);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -88,6 +93,8 @@ const PartnerProfile: React.FC = () => {
 
 const alluserproducts = listings?.filter((user) => user.user === +userId)
 const {AllReview} = useFetchAllReviews()
+
+
 
 
 
@@ -145,9 +152,31 @@ const fetchSubscriptions = async () => {
 
 
 
+const sendVerificationEmail = async () => {
+  try {
+    await fetch(`${process.env.NEXT_PUBLIC_URL}send-verification-email/`, {
+
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `JWT ${session?.accessToken}`,
+      },
+      body: JSON.stringify({
+        email: session?.user.email,
+      }),
+    });
+
+    console.log("Verification email request sent successfully");
+     setEmailsendvalidation(true);
+  } catch (err) {
+    console.error("Failed to send verification email:", err);
+     setEmailsenderrorvalidation(true);
+  }
+};
+
+
+
   const handleSubscribe = async () => {
-   
-    
     try {
       const response = await fetch('/api/create-subscription', {
         method: 'POST',
@@ -597,6 +626,17 @@ const initialAmenities = [
          Upgrade
         </p>
     </div> : "" }
+     {profileData.is_email_verified == false ? 
+      <div  className="rounded-lg m-1 sm:m-2 md:m-3 relative bg-secondary p-2 flex gap-4 flex-wrap justify-center items-center">
+        <p className='text-white font-playfair'>
+          Please click Verify to receive an email with your verification link.
+        </p>
+         {emailsendvalidation && <p className="text-white text-sm">Verification email sent, please check your inbox or spam folder.</p>}
+                {emailsenderrorvalidation && <p className="text-white text-sm ">We couldn’t send the verification email. Please try again.</p>}
+       <p className='text-white font-extrabold underline hover:text-accent cursor-pointer font-playfair' onClick={sendVerificationEmail}>
+         Verify
+        </p>
+    </div> : "" }
     <div className="rounded-2xl m-1 sm:m-2 md:m-3 relative">
      <Map
     center={
@@ -710,11 +750,18 @@ const initialAmenities = [
               {profileData.full_name || " "}
             </h1>
             <div className='mt-2'>
-                          {profileData.identity_verified == true ?  <VerifiedBadge text='Account verified'/> : 
-            <div className='flex gap-1 items-center'>
-              <GoUnverified size={18} className='text-gray-400'/>
-              <p className='text-gray-400 text-lg font-medium'>Unverified</p>
-            </div> }
+                          {profileData.identity_verified == true && profileData.is_email_verified == true && profileData.is_phone_number_verified == true?  
+                             <div className="relative h-8 w-8 ">
+                                                                           <Image
+                                                                             src="/guarantee.png" // or "/logo.webp" if using an webp
+                                                                             alt="logo"
+                                                                             fill
+                                                                             sizes='100%'
+                                                                             style={{ objectFit: 'contain' }} // Maintain aspect ratio
+                                                                             priority // Ensures it loads faster
+                                                                           />
+                                              </div>: ""
+}
             </div>
 
            
@@ -729,6 +776,16 @@ const initialAmenities = [
           >
             Joined in {profileData.joined}
           </a>
+<div className='mt-2'>
+<div className="flex">
+  {Array.from({ length: Number(profileData?.hotel_stars) || 0 }).map((_, i) => (
+    <Star key={i} className="w-5 h-5 fill-accent text-accent" />
+  ))}
+</div>
+
+
+</div>
+          
         </div>
       </div>
       {/* End Profile */}
@@ -862,3 +919,15 @@ const initialAmenities = [
 };
 
 export default PartnerProfile;
+
+
+
+
+
+
+
+
+/** <div className='flex gap-1 items-center'>
+              <GoUnverified size={18} className='text-gray-400'/>
+              <p className='text-gray-400 text-lg font-medium'>Unverified</p>
+            </div>  */

@@ -376,15 +376,27 @@ const hotelMarkers = [{
               </div>
 
               <div className="grow mt-6">
-                <div className="flex gap-4 flex-wrap items-center">
-                  <h1 className="text-3xl font-bold text-gray-800 dark:text-neutral-200 font-playfair">
-                    {idu.full_name || " "}
-                  </h1>
-                  <div className="mt-2">
-                   
+          <div className='flex gap-4 flex-wrap items-center'>
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-neutral-200 font-playfair">
+              {idu.full_name || " "}
+            </h1>
+            <div className='mt-2'>
+                       {idu.identity_verified == true && idu.is_email_verified == true && idu.is_phone_number_verified == true?  
+                                                    <div className="relative h-8 w-8 ">
+                                                                                                  <Image
+                                                                                                    src="/guarantee.png" // or "/logo.webp" if using an webp
+                                                                                                    alt="logo"
+                                                                                                    fill
+                                                                                                    sizes='100%'
+                                                                                                    style={{ objectFit: 'contain' }} // Maintain aspect ratio
+                                                                                                    priority // Ensures it loads faster
+                                                                                                  />
+                                                                     </div>: ""
+                       }
+            </div>
+
            
-                  </div>
-                </div>
+          </div>
                
                 <p className="text-lg text-gray-500 mt-2 font-medium">
                   {idu.title || " "}
@@ -394,7 +406,15 @@ const hotelMarkers = [{
                 >
                   Joined in {idu.joined}
                 </a>
+<div className='mt-2'>
+<div className="flex">
+  {Array.from({ length: Number(idu?.hotel_stars) || 0 }).map((_, i) => (
+    <Star key={i} className="w-5 h-5 fill-accent text-accent" />
+  ))}
+</div>
 
+
+</div>
 
   {
      status === "authenticated" ? 

@@ -37,6 +37,7 @@ const EditPhone = ({
         },
         body: JSON.stringify({ 
           phoneNumber: fullName,
+          is_phone_number_verified: false
         }),
       });
 

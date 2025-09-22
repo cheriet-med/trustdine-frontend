@@ -1,7 +1,27 @@
 'use client'
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { GoPencil } from 'react-icons/go';
+import moment from 'moment';
+import { 
+  Search, 
+  User, 
+  Building2, 
+  Shield, 
+  MessageCircle, 
+  ChevronDown, 
+  ChevronUp,
+  Star,
+  MapPin,
+  CreditCard,
+  Mail,
+  HelpCircle,
+  Plus,
+  TrendingUp,
+  Loader2,
+  X,
+  CheckIcon
+} from 'lucide-react';
 
 interface IdentityVerificationProps {
   initialData?: {
@@ -44,6 +64,110 @@ const IdentityVerification = ({
     });
   }, [initialData]);
 
+  const CustomSelect = ({ 
+    value, 
+    onChange, 
+    options, 
+    placeholder,
+    className = ""
+  }: {
+    value: string;
+    onChange: (value: string) => void;
+    options: { value: string; label: string }[];
+    placeholder: string;
+    className?: string;
+  }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const selectRef = useRef<HTMLDivElement>(null);
+    const selectedLabel = options.find(opt => opt.value === value)?.label || placeholder;
+
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+          setIsOpen(false);
+        }
+      };
+
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, []);
+
+    return (
+      <div className={`relative ${className}`} ref={selectRef}>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsOpen(!isOpen);
+          }}
+          className={`flex h-12 w-full items-center justify-between rounded-lg border border-gray-300 bg-white px-4 py-3 text-left text-sm transition-all hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-accent ${
+            isOpen ? 'ring-2 ring-accent' : ''
+          }`}
+        >
+          <span className="truncate text-left">{selectedLabel}</span>
+          <ChevronDown
+            className={`h-4 w-4 text-gray-500 transition-transform ${
+              isOpen ? 'rotate-180' : ''
+            }`}
+          />
+        </button>
+
+        {isOpen && (
+          <div 
+            className="absolute z-50 mt-1 w-full overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div 
+              className="max-h-60 overflow-y-auto"
+              onWheel={(e) => {
+                e.stopPropagation();
+                const { currentTarget } = e;
+                if (
+                  e.deltaY < 0 && currentTarget.scrollTop <= 0 ||
+                  e.deltaY > 0 && currentTarget.scrollHeight - currentTarget.clientHeight <= currentTarget.scrollTop
+                ) {
+                  e.preventDefault();
+                }
+              }}
+            >
+              {options.map((option) => (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onChange(option.value);
+                    setIsOpen(false);
+                  }}
+                  className={`relative flex w-full cursor-pointer select-none items-center px-4 py-2 text-sm text-left ${
+                    value === option.value
+                      ? 'bg-accent text-white'
+                      : 'text-gray-900 hover:bg-gray-100'
+                  }`}
+                >
+                  <span className="flex-1 truncate text-left">{option.label}</span>
+                  {value === option.value && (
+                    <CheckIcon className="ml-2 h-4 w-4 flex-shrink-0" />
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // Fixed: This should update documentType, not category
+  const handleDocumentTypeChange = (value: string) => {
+    setFormData(prev => ({
+      ...prev,
+      documentType: value
+    }));
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -69,13 +193,16 @@ const IdentityVerification = ({
     try {
       // Create FormData for file upload
       const formDataToSend = new FormData();
-      formDataToSend.append('fullName', formData.fullName);
-      formDataToSend.append('idNumber', formData.idNumber);
-      formDataToSend.append('documentType', formData.documentType);
-      if (documentImage) formDataToSend.append('documentImage', documentImage);
-      if (selfieImage) formDataToSend.append('selfieImage', selfieImage);
+      formDataToSend.append('user', infoId)
+      formDataToSend.append('full_name', formData.fullName);
+      formDataToSend.append('document_number', formData.idNumber);
+      formDataToSend.append('document_type', formData.documentType);
+      formDataToSend.append('date', moment().format('MMMM Do YYYY'));
+      formDataToSend.append('time', moment().format('LTS'));
+      if (documentImage) formDataToSend.append('document_photo', documentImage);
+      if (selfieImage) formDataToSend.append('selfie_document', selfieImage);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}infoid/${infoId}/verify`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}verify/`, {
         method: "POST",
         headers: {
           "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
@@ -86,6 +213,21 @@ const IdentityVerification = ({
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+      }
+
+      // Second API call - update status to pending (only if verification was successful)
+      const updateStatusResponse = await fetch(`${process.env.NEXT_PUBLIC_URL}infoid/${infoId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+        },
+        body: JSON.stringify({ status: "pending" }),
+      });
+
+      if (!updateStatusResponse.ok) {
+        const errorData = await updateStatusResponse.json();
+        throw new Error(errorData.message || `Failed to update status: ${updateStatusResponse.status}`);
       }
       
       setIsOpen(false);
@@ -143,17 +285,16 @@ const IdentityVerification = ({
                 <label htmlFor="documentType" className="block text-sm font-medium text-secondary mb-1">
                   Document Type
                 </label>
-                <select
-                  id="documentType"
-                  name="documentType"
-                  className="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-seondary focus:border-transparent rounded-xl"
+                <CustomSelect
                   value={formData.documentType}
-                  onChange={handleChange}
-                >
-                  <option value="national_id">National ID</option>
-                  <option value="passport">Passport</option>
-                  <option value="drivers_license">Driver's License</option>
-                </select>
+                  onChange={handleDocumentTypeChange} // Fixed: Use the correct handler
+                  placeholder="Select a document type"
+                  options={[
+                    { value: 'national_id', label: 'National ID' },
+                    { value: 'passport', label: 'Passport' },
+                    { value: 'drivers_license', label: "Driver's License" },
+                  ]}
+                />
               </div>
 
               <div>

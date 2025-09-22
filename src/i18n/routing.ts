@@ -12,6 +12,7 @@ export const routing = defineRouting({
     "/profile":"/profile",
     "/chat":"/chat",
     "/success":"/success",
+    "/verify/[uid]/[token]":"/verify/[uid]/[token]",
     "/cancel":"/cancel",
     "/profile/[id]":"/profile/[id]",
     "/profile-partner":"/profile-partner",

@@ -6,8 +6,11 @@ import { MdEmail } from "react-icons/md";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaClock } from "react-icons/fa6";
 import { LuHotel } from "react-icons/lu";
-
-
+import { RiChatSmileAiLine } from "react-icons/ri";
+import { useRouter } from 'next/navigation';
+import LoginButtonLiveChat from '@/components/header/loginButtonLiveChatContactPage';
+import { useSession } from 'next-auth/react';
+import moment from 'moment';
 interface ContactInfo {
   icon: any;
   title: string;
@@ -33,7 +36,10 @@ const ContactPage: React.FC = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const router = useRouter();
+  const { data: session, status } = useSession();
+  
   const contactInfo: ContactInfo[] = [
     {
       icon: <FaPhone size={54} className='text-highlights'/>,
@@ -64,26 +70,77 @@ const ContactPage: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    // Clear any previous messages when user starts typing
+    if (submitMessage) {
+      setSubmitMessage(null);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitMessage(null);
 
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      // Prepare the data to send
+      const dataToSend = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        company: formData.phone, // Note: your form uses 'phone' field for company name
+        message: formData.message,
+        // Add any additional fields your API expects
+        //timestamp: new Date().toISOString(),
+        date:moment().format('MMMM Do YYYY'),
+        time:moment().format('LTS'),
+      };
 
-  
+      const response = await fetch(`${process.env.NEXT_PUBLIC_URL}emailletterpost/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          // Add any additional headers your API requires
+          // 'Authorization': `Bearer ${token}`, // if authentication is needed
+        },
+        body: JSON.stringify(dataToSend),
+      });
 
-    setFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      message: '',
-    });
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Form submitted successfully:', result);
+        
+        // Show success message
+        setSubmitMessage({
+          type: 'success',
+          text: 'Your message has been sent successfully! We\'ll get back to you soon.'
+        });
 
-    setIsSubmitting(false);
+        // Reset form
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          message: '',
+        });
+      } else {
+        const errorData = await response.json();
+        console.error('Form submission failed:', errorData);
+        
+        setSubmitMessage({
+          type: 'error',
+          text: errorData.message || 'Failed to send message. Please try again.'
+        });
+      }
+    } catch (error) {
+      console.error('Network error:', error);
+      setSubmitMessage({
+        type: 'error',
+        text: 'Network error. Please check your connection and try again.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -126,6 +183,22 @@ const ContactPage: React.FC = () => {
                 </div>
               ))}
             </div>
+
+
+            { status === "authenticated" ?       
+                        
+                          <button
+                            
+                            onClick={()=>router.push(`/en/account/messages/?id=10`)}
+                            className="p-1 flex gap-4 justify-center items-center bg-a w-full h-16 text-yel rounded-lg shadow-lg hover:bg-highlights transition-all bg-opacity-80 border border-spacing-1 border-white"
+                          >
+                            <RiChatSmileAiLine size={32} className='text-white '/>
+                           <p className='text-white font-bold'>Live Chat</p>
+                           
+                          </button>
+                       
+                      :  <LoginButtonLiveChat/> }
+            
           </div>
 
           {/* Contact Form */}
@@ -133,11 +206,22 @@ const ContactPage: React.FC = () => {
             <div className="bg-highlights backdrop-blur-sm rounded-xl p-8">
               <h2 className="text-3xl font-bold text-white mb-6 font-playfair">Send Us a Message</h2>
               
+              {/* Success/Error Message */}
+              {submitMessage && (
+                <div className={`mb-4 ${
+                  submitMessage.type === 'success' 
+                    ? 'text-white' 
+                    : 'text-background'
+                }`}>
+                  <p className="text-sm font-medium">{submitMessage.text}</p>
+                </div>
+              )}
+              
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label htmlFor="firstName" className="text-sm font-medium text-white">
-                      First Name *
+                      First Name
                     </label>
                     <div className="relative">
                       <User className="absolute left-3 top-3 h-4 w-4 text-muted-white" />
@@ -145,13 +229,13 @@ const ContactPage: React.FC = () => {
                         id="firstName"
                         name="firstName"
                         type="text"
-                        required
                         value={formData.firstName}
                         onChange={handleInputChange}
                         className="pl-10 h-12 w-full rounded-lg"
                         placeholder="Enter your first name"
                       />
                     </div>
+                    <p className="text-xs text-white">Please provide your first name for personalized communication</p>
                   </div>
                   
                   <div className="space-y-2">
@@ -170,6 +254,7 @@ const ContactPage: React.FC = () => {
                         placeholder="Enter your last name"
                       />
                     </div>
+                    <p className="text-xs text-white">Optional: Your last name helps us address you properly</p>
                   </div>
                 </div>
 
@@ -184,18 +269,18 @@ const ContactPage: React.FC = () => {
                         id="phone"
                         name="phone"
                         type="text"
-                        //required
                         value={formData.phone}
                         onChange={handleInputChange}
                         className="pl-10 h-12 w-full rounded-lg"
                         placeholder="Enter your company name"
                       />
                     </div>
+                    <p className="text-xs text-white">Optional: Let us know your organization for better assistance</p>
                   </div>
                   
                   <div className="space-y-2">
                     <label htmlFor="email" className="text-sm font-medium text-white">
-                      Email Address *
+                      Email Address
                     </label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-white" />
@@ -203,26 +288,25 @@ const ContactPage: React.FC = () => {
                         id="email"
                         name="email"
                         type="email"
-                        required
                         value={formData.email}
                         onChange={handleInputChange}
                         className="pl-10 h-12 w-full rounded-lg"
                         placeholder="Enter your email address"
                       />
                     </div>
+                    <p className="text-xs text-white">Your email address helps us respond to your inquiry</p>
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <label htmlFor="message" className="text-sm font-medium text-white">
-                    Message *
+                    Message
                   </label>
                   <div className="relative">
                     <MessageSquare className="absolute left-3 top-3 h-4 w-4 text-muted-white" />
                     <textarea
                       id="message"
                       name="message"
-                      required
                       rows={6}
                       value={formData.message}
                       onChange={handleInputChange}
@@ -230,12 +314,13 @@ const ContactPage: React.FC = () => {
                       placeholder="Tell us about your project or ask us anything..."
                     />
                   </div>
+                  <p className="text-xs text-white">Share your thoughts, questions, or project details with us</p>
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full h-12 text-lg font-semibold bg-primary hover:bg-secondary transition-colors duration-200 text-gray-200 flex text-center justify-center items-center"
+                  className="w-full h-12 text-lg font-semibold bg-primary hover:bg-secondary transition-colors duration-200 text-gray-200 flex text-center justify-center items-center disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <div className="flex items-center space-x-2">
@@ -251,8 +336,8 @@ const ContactPage: React.FC = () => {
                 </button>
               </form>
 
-              <p className="text-xs text-white mt-4 text-center ">
-                * Required fields. We respect your privacy and will never share your information.
+              <p className="text-xs text-white mt-4 text-center opacity-80">
+                All fields are optional. We respect your privacy and will never share your information.
               </p>
             </div>
           </div>

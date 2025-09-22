@@ -1,12 +1,12 @@
 "use client";
 
 import { useSession} from "next-auth/react";
-import DashboardAdmin from "@/components/admin-dashboard/dashboard";
+
 import DashboardUser from "@/components/user-dashboard/dashboarduser";
 import DashboardPartner from "@/components/partner-dashboard/partner-dashboard";
 import MessagesUser from "@/components/user-dashboard/messagesPage";
 import MessagesPartnerDashboard from "@/components/partner-dashboard/messages";
-
+import DashboardAdmin from "@/components/admin-dashboard/messagesPage";
 export default function ProtectedPage() {
   const { data: session, status } = useSession({ required: true });
 

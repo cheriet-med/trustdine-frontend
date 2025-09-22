@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { GoPencil } from 'react-icons/go';
+import {FaStar } from "react-icons/fa"; 
 
 interface EditNameTitleProps {
   initialFullName?: string;
@@ -21,7 +22,8 @@ const EditNameTitle = ({
   const [title, setTitle] = useState<string>(initialTitle || '');
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
   // Update local state when initial values change
   useEffect(() => {
     setFullName(initialFullName || '');
@@ -41,7 +43,8 @@ const EditNameTitle = ({
         },
         body: JSON.stringify({ 
           full_name: fullName,
-          title: title 
+          title: title ,
+          hotel_stars:rating
         }),
       });
 
@@ -112,6 +115,28 @@ const EditNameTitle = ({
               </div>
             </div>
             
+                  <div className=" my-4 ">
+                  <label htmlFor="title" className="block text-sm font-medium text-secondary mb-1">
+                  Classification 
+                </label>
+                    
+                    <div className="flex">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <FaStar
+                          key={star}
+                          className={`cursor-pointer text-2xl ${
+                            star <= (hoverRating || rating)
+                              ? 'text-accent'
+                              : 'text-gray-300'
+                          }`}
+                          onMouseEnter={() => setHoverRating(star)}
+                          onMouseLeave={() => setHoverRating(0)}
+                          onClick={() => setRating(star)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
             {error && (
               <div className="mt-4 p-2 bg-red-100 text-red-700 rounded text-sm">
                 {error}
@@ -127,7 +152,7 @@ const EditNameTitle = ({
                 Cancel
               </button>
               <button
-                className="px-3 py-1 bg-secondary text-white rounded hover:bg-accent transition-colors disabled:bg-blue-300 disabled:cursor-not-allowed rounded-lg"
+                className="px-3 py-1 bg-secondary text-white rounded hover:bg-accent transition-colors disabled:bg-accent disabled:cursor-not-allowed rounded-lg"
                 onClick={handleSave}
                 disabled={isSaving || (!fullName.trim() && !title.trim())}
               >

@@ -308,9 +308,9 @@ const AmenitiesSelector: React.FC<AmenitiesSelectorProps> = ({ initialAmenities,
   }
 
   return (
-    <div className='flex flex-col justify-between '>
+    <div className='flex flex-col justify-between'>
       <div className='min-h-60'>
-      <div className='flex justify-between items-center gap-4 flex-wrap'>
+      <div className='flex justify-between items-center gap-4 flex-wrap '>
         <div>
           <p className="text-gray-600 text-sm">Pick some interests you enjoy that you want to show on your profile.</p>
 
@@ -426,7 +426,7 @@ const AmenitiesSelector: React.FC<AmenitiesSelectorProps> = ({ initialAmenities,
         </div>
       )}</div>
 <div>
-  <hr />
+  <hr className='mt-4'/>
   <h1 className="mt-4 mb-4 font-medium font-playfair text-lg">Languages</h1>
    <p className="text-gray-600 text-sm">Boost your visibility, add available languages to your profile now!</p>
    <LanguageKeywords user={user}/>

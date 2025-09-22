@@ -50,7 +50,10 @@ interface Users {
   countryCode?: string;
   latitude?: string;
   longtitude?: string;
-  is_staff?:boolean
+  is_staff?:boolean;
+  hotel_stars:string;
+  is_email_verified?:boolean;
+  is_phone_number_verified?:boolean;
 }
 
 const useFetchUser = (id: any) => {

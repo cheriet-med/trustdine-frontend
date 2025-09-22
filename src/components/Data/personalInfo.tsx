@@ -15,9 +15,12 @@ import { AiOutlineUserDelete } from "react-icons/ai";
 import { RiCloseLargeLine } from "react-icons/ri";
 import { signOut } from "next-auth/react";
 import { FcPlanner } from "react-icons/fc";
-  
+import { MdOutlineVerified } from "react-icons/md";
+import Image from "next/image";
 import { getStripe, SUBSCRIPTION_PRICE_ID } from '@/lib/stripe-client';
 import type { SubscriptionData } from '@/types/subscription';
+import VerifyPhoneOTP from "../requests/verifyPhoneNumber";
+
 
 interface ProfileData {
   id?: number;
@@ -50,6 +53,9 @@ interface ProfileData {
   obsessed?: string;
   language?: string;
   is_staff?:Boolean;
+  is_email_verified?:Boolean;
+  status?:string;
+  is_phone_number_verified?:Boolean;
 }
 
 interface PersonalInfo {
@@ -86,6 +92,8 @@ interface Subscription {
 export default function PersonalInformation() {
   const [emailsend, setEmailsend] = useState(false);
   const [emailsenderror, setEmailsenderror] = useState(false);
+  const [emailsendvalidation, setEmailsendvalidation] = useState(false);
+  const [emailsenderrorvalidation, setEmailsenderrorvalidation] = useState(false);
   const [passwordsend, setPasswordsend] = useState(false);
   const [passwordsenderror, setPasswordsenderror] = useState(false);
   const { data: session, status } = useSession({ required: true });
@@ -108,6 +116,35 @@ export default function PersonalInformation() {
     title: '',
     message: '',
   });
+
+
+
+
+
+const sendVerificationEmail = async () => {
+  try {
+    await fetch(`${process.env.NEXT_PUBLIC_URL}send-verification-email/`, {
+
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `JWT ${session?.accessToken}`,
+      },
+      body: JSON.stringify({
+        email: session?.user.email,
+      }),
+    });
+
+    console.log("Verification email request sent successfully");
+     setEmailsendvalidation(true);
+  } catch (err) {
+    console.error("Failed to send verification email:", err);
+    setEmailsenderrorvalidation(true);
+  }
+};
+
+
+
 
   // Custom popup functions
   const showPopup = (type: 'success' | 'error' | 'confirm', title: string, message: string, onConfirm?: () => void, confirmText?: string, cancelText?: string) => {
@@ -374,14 +411,41 @@ const fetchSubscriptions = async () => {
             <dt className="font-medium text-gray-900 font-playfair">Email address</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 flex justify-between items-center">
               <div>
-                <span>{profileData.email}</span>
-                {emailsend && <p className="text-accent text-sm text-center">email send for edite email with success</p>}
-                {emailsenderror && <p className="text-accent text-sm text-center">email send for edite email failed</p>}
+                <div className="flex gap-4 items-center">
+                  <span>{profileData.email}</span>
+                   {profileData.is_email_verified == false ? "" :
+                    <div className="relative h-7 w-7 ">
+                                                 <Image
+                                                   src="/verified.png" // or "/logo.webp" if using an webp
+                                                   alt="logo"
+                                                   fill
+                                                   sizes='100%'
+                                                   style={{ objectFit: 'contain' }} // Maintain aspect ratio
+                                                   priority // Ensures it loads faster
+                                                 />
+                    </div>
+                   
+                   
+                 }
+                </div>
+                
+                {emailsendvalidation && <p className="text-accent text-sm text-center">Verification email sent, please check your inbox or spam folder.</p>}
+                {emailsenderrorvalidation && <p className="text-accent text-sm text-center">We couldn’t send the verification email. Please try again.</p>}
+                {emailsend && <p className="text-accent text-sm text-center">Email update confirmation has been sent successfully.</p>}
+                {emailsenderror && <p className="text-accent text-sm text-center">Email could not be sent. Kindly retry.</p>}
               </div>
-              <button className="text-sm font-medium text-accent hover:text-secondary flex items-center"  onClick={resetEmail}>
+              <div className="flex gap-4">
+               {profileData.is_email_verified == false ? 
+              <button className="text-sm font-medium text-accent hover:text-secondary flex items-center"  onClick={sendVerificationEmail}>
+                <MdOutlineVerified className="h-5 w-5 mr-1" />
+                Verify
+              </button>: ""}
+                  <button className="text-sm font-medium text-accent hover:text-secondary flex items-center"  onClick={resetEmail}>
                 <GoPencil className="h-4 w-4 mr-1" />
                 Edit
               </button>
+              </div>
+            
             </dd>
           </div>
 
@@ -407,11 +471,43 @@ const fetchSubscriptions = async () => {
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0">
               <div className="flex justify-between items-start">
                 <div>
-                  <p className="text-gray-700">{profileData.phoneNumber}</p>
-                  <p className="text-gray-500 mt-1">
-                    Add a number so confirmed guests and trustdine can get in touch. You can add other numbers and choose how they're used.
-                  </p>
+                  
+                  {profileData.phoneNumber == null ?  <p className="text-gray-500 mt-1">
+                    Add a number so confirmed guests and Goamico can get in touch. You can add other numbers and choose how they're used.
+                  </p>: 
+                  (profileData.is_phone_number_verified == false ?
+                  <p className="text-gray-700">{profileData.phoneNumber}</p> :  
+                  <div className="flex gap-4 items-center">
+                  <span>{profileData.phoneNumber}</span>
+                  
+                    <div className="relative h-7 w-7 ">
+                      <Image
+                        src="/verified.png" // or "/logo.webp" if using an webp
+                        alt="logo"
+                        fill
+                        sizes='100%'
+                        style={{ objectFit: 'contain' }} // Maintain aspect ratio
+                        priority // Ensures it loads faster
+                      />
+                    </div>
+                   
+                   
+                
                 </div>
+                  )
+                  }
+                 
+                </div>
+<div className="flex gap-4">
+  {profileData.is_phone_number_verified == false ?
+<VerifyPhoneOTP 
+  initialPhoneNumber={profileData.phoneNumber}
+  infoId={userId}
+  onVerificationSuccess={(phoneNumber) => {
+    console.log('Phone verified:', phoneNumber);
+  }}
+  mutate={mutate}
+/>:""}
                 <EditPhone
                   initialFullName={profileData.phoneNumber}
                   infoId={userId}
@@ -420,6 +516,8 @@ const fetchSubscriptions = async () => {
                   }}
                   mutate={mutate}
                 />
+</div>
+
               </div>
             </dd>
           </div>
@@ -429,7 +527,27 @@ const fetchSubscriptions = async () => {
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="font-medium text-gray-900 font-playfair">Identity verification</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 flex justify-between items-center">
-              <span>{profileData.identity_verified == true ? "Verified": "Unverified"}</span>
+              {profileData.identity_verified == true ? 
+              
+            
+               <div className="flex gap-4 items-center">
+                  <span className="text-green-500">Verified</span>
+                   {profileData.is_email_verified == false ? "" :
+                    <div className="relative h-7 w-7 ">
+                      <Image
+                        src="/verified.png" // or "/logo.webp" if using an webp
+                        alt="logo"
+                        fill
+                        sizes='100%'
+                        style={{ objectFit: 'contain' }} // Maintain aspect ratio
+                        priority // Ensures it loads faster
+                      />
+                    </div>       
+                 }
+                </div>
+              
+              : (profileData.status == "pending" ? <p className="text-orange-700">Pending Verification</p>:<p>Unverified</p>)}
+               {profileData.status == "pending" || profileData.identity_verified == true ? "" : 
               <IdentityVerification 
                 initialData={{
                   fullName: "",
@@ -441,7 +559,7 @@ const fetchSubscriptions = async () => {
                   console.log('Updated address:');
                 }}
                 mutate={mutate}
-              />
+              />}
             </dd>
           </div>:""}
 
@@ -471,7 +589,14 @@ const fetchSubscriptions = async () => {
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="font-medium text-gray-900 font-playfair">Website</dt>
             <dd className="mt-1 text-sm text-gray-700 sm:col-span-2 sm:mt-0 flex justify-between items-center">
-              <span>{profileData.website == null ? "Not Provided" : profileData.website}</span>
+             {profileData.website == null ? <span>Not Provided</span> :   <Link 
+    href={profileData.website.startsWith("http") ? profileData.website : `https://${profileData.website}`} 
+    target="_blank" 
+    rel="noopener noreferrer"
+    className="underline text-secondary"
+  >
+    {profileData.website}
+  </Link>}
               <EditWebsite
                 initialFullName={profileData.website}
                 infoId={userId}

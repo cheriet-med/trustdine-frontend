@@ -576,7 +576,18 @@ const Index = ({info}:any) => {
                         <div >
                           <p className="font-semibold font-playfair hover:underline text-2xl">{Users?.full_name}</p>
                            <p className="text-sm font-medium text-gray-500 hover:underline mb-2">{Users?.title}</p>
-                            {Users?.identity_verified ? <VerifiedBadge text=' verified'/> :""}
+                             {Users?.identity_verified && Users?.is_email_verified && Users?.is_phone_number_verified ? (
+                                    <div className="relative h-8 w-8">
+                                      <Image
+                                        src="/guarantee.png"
+                                        alt="logo"
+                                        fill
+                                        sizes="100%"
+                                        style={{ objectFit: 'contain' }}
+                                        priority
+                                      />
+                                    </div>
+                            ) : null}
                         </div>
                       </div>
                       </Link>
@@ -585,10 +596,11 @@ const Index = ({info}:any) => {
                     <div>
                       <h4 className="font-semibold mb-2 font-playfair">Hotel Class</h4>
                       <div className="flex">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-accent text-accent" />
+                        {Array.from({ length: Number(Users?.hotel_stars) || 0 }).map((_, i) => (
+                          <Star key={i} className="w-5 h-5 fill-accent text-accent" />
                         ))}
                       </div>
+                      
                     </div>
                     <div> 
                       <h4 className="font-semibold mb-2 font-playfair">Languages Spoken</h4>

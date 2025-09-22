@@ -33,8 +33,8 @@ import { useSession } from 'next-auth/react';
 import useFetchUser from '../requests/fetchUser';
 import ProfileCard from '../Data/userProfile';
 import AnalyticsAdmin from '../Data/analyticsAdmin';
-import SocialMediaForm from '../Data/socialMediaForm';
-
+import EmailClient from '../Data/emailBox';
+import MessagesComponent from '../Data/chat';
 interface MenuItem {
   id: string;
   label: string;
@@ -69,7 +69,7 @@ interface Conversation {
 
 
 
-export default function DashboardUser() {
+export default function DashboardAdmin() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -364,7 +364,7 @@ const menuItems: MenuItem[] = [
       pt-16 lg:pt-0
     `}>
       <main className="flex-grow p-4 md:p-6">
-        <SocialMediaForm/>
+        <MessagesComponent/>
       </main>
       
       {/* Footer */}

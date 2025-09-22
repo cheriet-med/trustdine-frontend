@@ -5,18 +5,19 @@ import { useTranslations } from 'next-intl';
 import { useLocale } from "next-intl";
 import { useState , useEffect} from 'react';
 import Image from "next/image";
-//import CircularMenuWrapper from "../CircularMenuWrapper";
+import CircularMenuWrapper from "../CircularMenuWrapper";
+
 import { Link } from "@/i18n/routing";
 import dynamic from 'next/dynamic';
 //const CircularMenuWrapper = dynamic(() => import("../CircularMenuWrapper"), {
 //  ssr: false,
 //});
-const CircularMenu = dynamic(
-  () => import("../CircularMenu"),
-  { 
-    ssr: false,
-  }
-);
+//const CircularMenu = dynamic(
+//  () => import("../CircularMenu"),
+//  { 
+//    ssr: false,
+//  }
+//);
 
 export default function HomeNav() {
   const te = useTranslations('tophero');
@@ -81,7 +82,7 @@ export default function HomeNav() {
        </Link>
        </div>
       
-       <CircularMenu/>
+       <CircularMenuWrapper/>
       
         </nav>
       </div>

@@ -65,12 +65,13 @@ export default function ReservationChart() {
   const { data: session, status } = useSession({ required: true });
   const { AllBookings } = useFetchAllBookings();
 
+
   const Owner = useMemo(() => {
     return AllBookings.filter((user) => user.user_owner === session?.user?.id);
   }, [AllBookings, session?.user?.id]);
 
   // Revenue totals
-const todayBookings = AllBookings.filter(item =>
+const todayBookings = Owner.filter(item =>
   item.created_at && moment(item.created_at).isSame(moment(), "day")
 );
 
@@ -79,12 +80,17 @@ const totalPerDay =
     ? todayBookings.reduce((sum, r) => sum + Number(r.total_price || 0), 0)
     : 0;
     
-  const month = AllBookings.filter(item =>
-    item.created_at && moment(item.created_at, ["MMMM Do YYYY", moment.ISO_8601]).isSame(moment(), "month")
-  );
-  const totalPerMonth = month.length > 0 ? month.reduce((sum, r) => sum + +r.total_price, 0) : 0;
 
-  const year = AllBookings.filter(item =>
+const month = Owner.filter(item =>
+  item.created_at &&
+  moment(item.created_at, ["MMMM Do YYYY", moment.ISO_8601], true).isSame(moment(), "month")
+);
+
+const totalPerMonth =
+  month.length > 0 ? month.reduce((sum, r) => sum + Number(r.total_price), 0) : 0;
+
+
+  const year = Owner.filter(item =>
     item.created_at && moment(item.created_at, ["MMMM Do YYYY", moment.ISO_8601]).isSame(moment(), "year")
   );
   const totalPerYear = year.length > 0 ? year.reduce((sum, r) => sum + +r.total_price, 0) : 0;

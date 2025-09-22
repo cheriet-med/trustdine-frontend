@@ -68,6 +68,7 @@ interface ProfileData {
   pets?: string;
   obsessed?: string;
   language?: string;
+  is_email_verified?:boolean;
 }
 
 // Skeleton Components
@@ -212,7 +213,8 @@ const ProfileCard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { data: session, status } = useSession({ required: true });
-
+  const [emailsendvalidation, setEmailsendvalidation] = useState(false);
+  const [emailsenderrorvalidation, setEmailsenderrorvalidation] = useState(false);
   const userId = session?.user?.id;
   const { Users, isLoading, mutate } = useFetchUser(userId);
 
@@ -243,6 +245,34 @@ const cleantotal = parseFloat((
   * Math.pow(Math.max(0, 1 - cleanBlur), 1.5) 
   * Math.pow(Math.max(0, 1 - cleanFake), 3.0)
 ).toFixed(2));
+
+
+
+
+
+const sendVerificationEmail = async () => {
+  try {
+    await fetch(`${process.env.NEXT_PUBLIC_URL}send-verification-email/`, {
+
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `JWT ${session?.accessToken}`,
+      },
+      body: JSON.stringify({
+        email: session?.user.email,
+      }),
+    });
+
+    console.log("Verification email request sent successfully");
+     setEmailsendvalidation(true);
+  } catch (err) {
+    console.error("Failed to send verification email:", err);
+     setEmailsenderrorvalidation(true);
+  }
+};
+
+
 
 
   const profileData: ProfileData = Users || {};
@@ -396,7 +426,17 @@ const cleantotal = parseFloat((
 
   return (
     <>  
-  
+         {profileData.is_email_verified == false ? 
+      <div  className="rounded-lg m-1 sm:m-2 md:m-3 relative bg-secondary p-2 flex gap-4 flex-wrap justify-center items-center">
+        <p className='text-white font-playfair'>
+          Please click Verify to receive an email with your verification link.
+        </p>
+         {emailsendvalidation && <p className="text-white text-sm">Verification email sent, please check your inbox or spam folder.</p>}
+                {emailsenderrorvalidation && <p className="text-white text-sm ">We couldn’t send the verification email. Please try again.</p>}
+       <p className='text-white font-extrabold underline hover:text-accent cursor-pointer font-playfair' onClick={sendVerificationEmail}>
+         Verify
+        </p>
+    </div> : "" }
       <div className="rounded-2xl m-1 sm:m-2 md:m-3 relative">
         <Map
           center={
