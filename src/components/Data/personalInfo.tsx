@@ -503,7 +503,7 @@ const fetchSubscriptions = async () => {
 <VerifyPhoneOTP 
   initialPhoneNumber={profileData.phoneNumber}
   infoId={userId}
-  onVerificationSuccess={(phoneNumber) => {
+  onVerificationSuccess={(phoneNumber:any) => {
     console.log('Phone verified:', phoneNumber);
   }}
   mutate={mutate}

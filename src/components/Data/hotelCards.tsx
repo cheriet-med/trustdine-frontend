@@ -98,7 +98,7 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 const totalReviews = Review && Review.length > 0? Review.reduce((sum, r) => sum + +r.rating_global, 0) / Review.length: 0
 
 const { wishlistStatus, isLoading, error, mutate } = useWishlistCheck(id, session?.user?.id);
-console.log(wishlistStatus)
+
 
 
 

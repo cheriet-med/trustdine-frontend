@@ -23,6 +23,7 @@ interface FormData {
   lastName: string;
   email: string;
   phone: string;
+  subject:string;
   message: string;
 }
 
@@ -32,6 +33,7 @@ const ContactPage: React.FC = () => {
     lastName: '',
     email: '',
     phone: '',
+    subject:'',
     message: '',
   });
 
@@ -84,11 +86,13 @@ const ContactPage: React.FC = () => {
     try {
       // Prepare the data to send
       const dataToSend = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
+       
+        full_name: formData.firstName,
         email: formData.email,
         company: formData.phone, // Note: your form uses 'phone' field for company name
         message: formData.message,
+        subject: formData.subject,
+        //category:"inbox",
         // Add any additional fields your API expects
         //timestamp: new Date().toISOString(),
         date:moment().format('MMMM Do YYYY'),
@@ -99,6 +103,7 @@ const ContactPage: React.FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
           // Add any additional headers your API requires
           // 'Authorization': `Bearer ${token}`, // if authentication is needed
         },
@@ -122,6 +127,7 @@ const ContactPage: React.FC = () => {
           email: '',
           phone: '',
           message: '',
+          subject:'',
         });
       } else {
         const errorData = await response.json();
@@ -219,82 +225,84 @@ const ContactPage: React.FC = () => {
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                  <div className="space-y-2 items-center">
                     <label htmlFor="firstName" className="text-sm font-medium text-white">
-                      First Name
+                      Full Name
                     </label>
                     <div className="relative">
-                      <User className="absolute left-3 top-3 h-4 w-4 text-muted-white" />
+                      
                       <input
                         id="firstName"
                         name="firstName"
                         type="text"
                         value={formData.firstName}
                         onChange={handleInputChange}
-                        className="pl-10 h-12 w-full rounded-lg"
+                        className="pl-4 h-12 w-full rounded-lg"
                         placeholder="Enter your first name"
                       />
                     </div>
-                    <p className="text-xs text-white">Please provide your first name for personalized communication</p>
+                    <p className="text-xs text-white">Please provide your full name for personalized communication</p>
                   </div>
                   
-                  <div className="space-y-2">
-                    <label htmlFor="lastName" className="text-sm font-medium text-white">
-                      Last Name
-                    </label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-3 h-4 w-4 text-muted-white" />
-                      <input
-                        id="lastName"
-                        name="lastName"
-                        type="text"
-                        value={formData.lastName}
-                        onChange={handleInputChange}
-                        className="pl-10 h-12 w-full rounded-lg"
-                        placeholder="Enter your last name"
-                      />
-                    </div>
-                    <p className="text-xs text-white">Optional: Your last name helps us address you properly</p>
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
+                 <div className="space-y-2">
                     <label htmlFor="phone" className="text-sm font-medium text-white">
                       Company
                     </label>
                     <div className="relative">
-                      <LuHotel className="absolute left-3 top-3 h-4 w-4 text-muted-white" />
+                      
                       <input
                         id="phone"
                         name="phone"
                         type="text"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className="pl-10 h-12 w-full rounded-lg"
+                        className="pl-4 h-12 w-full rounded-lg"
                         placeholder="Enter your company name"
                       />
                     </div>
                     <p className="text-xs text-white">Optional: Let us know your organization for better assistance</p>
                   </div>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                 
                   
                   <div className="space-y-2">
                     <label htmlFor="email" className="text-sm font-medium text-white">
                       Email Address
                     </label>
                     <div className="relative">
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-white" />
+                      
                       <input
                         id="email"
                         name="email"
                         type="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="pl-10 h-12 w-full rounded-lg"
+                        className="pl-4 h-12 w-full rounded-lg"
                         placeholder="Enter your email address"
                       />
                     </div>
                     <p className="text-xs text-white">Your email address helps us respond to your inquiry</p>
+                  </div>
+
+                                   <div className="space-y-2">
+                    <label htmlFor="subject" className="text-sm font-medium text-white">
+                     Subject
+                    </label>
+                    <div className="relative">
+                      
+                      <input
+                        id="subject"
+                        name="subject"
+                        type="text"
+                        value={formData.subject}
+                        onChange={handleInputChange}
+                        className="pl-4 h-12 w-full rounded-lg"
+                        placeholder="Enter the subject"
+                      />
+                    </div>
+                    <p className="text-xs text-white">Let us know your subject for better assistance</p>
                   </div>
                 </div>
 
@@ -303,14 +311,14 @@ const ContactPage: React.FC = () => {
                     Message
                   </label>
                   <div className="relative">
-                    <MessageSquare className="absolute left-3 top-3 h-4 w-4 text-muted-white" />
+                   
                     <textarea
                       id="message"
                       name="message"
                       rows={6}
                       value={formData.message}
                       onChange={handleInputChange}
-                      className="pl-10 pt-3 resize-none w-full rounded-lg"
+                      className="pl-4 pt-3 resize-none w-full rounded-lg"
                       placeholder="Tell us about your project or ask us anything..."
                     />
                   </div>

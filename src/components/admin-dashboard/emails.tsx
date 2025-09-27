@@ -116,8 +116,8 @@ const fetchConversations = async () => {
 const menuItems: MenuItem[] = [
   { id: 'Analytics', label: 'Analytics', icon: <TbBrandGoogleAnalytics size={24} className='text-white'/>, href: '/en/account' },
    { id: 'Emails', label: 'Emails', icon:  <MdOutlineAttachEmail size={24} className='text-white'/>, href: '/en/account/emails' },
-   { id: 'Pages', label: 'Pages', icon: <RiPageSeparator size={24} className='text-white'/>, href: '/en/account/pages' },
-   { id: 'Social', label: 'Social', icon: <TbSocial size={24} className='text-white'/>, href: '/en/account/social', },
+  // { id: 'Pages', label: 'Pages', icon: <RiPageSeparator size={24} className='text-white'/>, href: '/en/account/pages' },
+  // { id: 'Social', label: 'Social', icon: <TbSocial size={24} className='text-white'/>, href: '/en/account/social', },
   { id: 'Messages', label: 'Messages', 
     icon:   unread > 0 ? <div className='relative'>   
 

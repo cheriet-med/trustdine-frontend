@@ -1,24 +1,16 @@
 'use client'
 import React, { useState, useMemo, useEffect } from 'react';
 import { Search, Download } from 'lucide-react';
+import useFetchAllNewsLetterEmails from '../requests/fetchAllNewsletters';
+
 
 const NewsletterTable = () => {
   // Sample data - in a real app, this would come from your database
-  const [subscribers] = useState([
-    { email: 'john.doe@email.com', dateTime: '2024-07-18 10:30:00' },
-    { email: 'sarah.smith@company.com', dateTime: '2024-07-18 09:45:00' },
-    { email: 'mike.jones@startup.io', dateTime: '2024-07-17 16:20:00' },
-    { email: 'emma.wilson@tech.org', dateTime: '2024-07-17 14:15:00' },
-    { email: 'alex.brown@design.co', dateTime: '2024-07-17 11:30:00' },
-    { email: 'lisa.garcia@marketing.net', dateTime: '2024-07-16 15:45:00' },
-    { email: 'david.lee@innovation.com', dateTime: '2024-07-16 13:20:00' },
-    { email: 'jessica.taylor@creative.studio', dateTime: '2024-07-15 17:10:00' },
-    { email: 'ryan.anderson@business.pro', dateTime: '2024-07-15 12:55:00' },
-    { email: 'sophia.martinez@agency.digital', dateTime: '2024-07-14 10:15:00' }
-  ]);
+
 
   const [searchTerm, setSearchTerm] = useState('');
   const [lastUpdated, setLastUpdated] = useState('');
+  const {AllNewsLetters} = useFetchAllNewsLetterEmails()
 
   // Set timestamp on client side only to avoid hydration issues
   useEffect(() => {
@@ -27,19 +19,19 @@ const NewsletterTable = () => {
 
   // Filter subscribers based on search term
   const filteredSubscribers = useMemo(() => {
-    if (!searchTerm) return subscribers;
+    if (!searchTerm) return AllNewsLetters;
     
-    return subscribers.filter(subscriber =>
+    return AllNewsLetters.filter(subscriber =>
       subscriber.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      subscriber.dateTime.includes(searchTerm)
+      subscriber.date.includes(searchTerm)
     );
-  }, [subscribers, searchTerm]);
+  }, [AllNewsLetters, searchTerm]);
 
   // Export to CSV function
   const exportToCSV = () => {
     const csvContent = [
-      ['Email', 'Date & Time'], // Header
-      ...filteredSubscribers.map(sub => [sub.email, sub.dateTime])
+      ['Email', 'Date', 'Time'], // Header
+      ...filteredSubscribers.map(sub => [sub.email, sub.date, sub.time])
     ];
 
     const csvString = csvContent
@@ -66,9 +58,7 @@ const NewsletterTable = () => {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
+      
     });
   };
 
@@ -86,13 +76,13 @@ const NewsletterTable = () => {
               placeholder="Search by email or date..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+              className="w-full pl-10 pr-4 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-transparent outline-none"
             />
           </div>
           
           <button
             onClick={exportToCSV}
-            className="flex items-center gap-2 px-4 py-1.5 bg-secondary text-white rounded-lg hover:bg-a transition-colors duration-200 font-medium text-sm"
+            className="flex items-center gap-2 px-4 py-1 bg-a text-white rounded-lg hover:bg-a transition-colors duration-200 font-medium text-sm"
           >
             <Download className="w-4 h-4" />
             Export CSV
@@ -127,7 +117,7 @@ const NewsletterTable = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-700">
-                      {formatDateTime(subscriber.dateTime)}
+                      {formatDateTime(subscriber.date)} - {subscriber.time}
                     </div>
                   </td>
                 </tr>

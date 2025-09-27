@@ -315,10 +315,7 @@ export default function CombatLanding() {
             <MdVerified className="text-white h-5 w-5 md:h-6 md:w-6" />
             <span className="text-white text:xs md:text-lg font-playfair md:font-bold">Verified by Receipt</span>
           </div>
-          <div className="flex items-center gap-2">
-            <MdVerifiedUser className="text-white h-5 w-5 md:h-6 md:w-6" />
-            <span className="text-white text:xs md:text-lg font-playfair md:font-bold">Real Guest Trusted</span>
-          </div>
+        
           <div className="flex items-center gap-2">
             <FaShieldHalved className="text-white h-5 w-5 md:h-6 md:w-6" />
             <span className="text-white text:xs md:text-lg font-playfair md:font-bold">No Fake Reviews</span>

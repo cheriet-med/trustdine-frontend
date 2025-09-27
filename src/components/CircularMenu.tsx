@@ -351,11 +351,11 @@ export default function VerticalMenu() {
           className="absolute top-0 w-screen px-6 flex justify-between items-center p-10 z-10"
         >
           <div className="flex gap-4">
-            <a href="#" aria-label="Facebook"><AiFillFacebook size={24} className="text-white hover:text-primary transition-colors" /></a>
-            <a href="#" aria-label="Twitter"><RiTwitterXFill size={24} className="text-white hover:text-primary transition-colors" /></a>
-            <a href="#" aria-label="Instagram"><LuInstagram size={24} className="text-white hover:text-primary transition-colors" /></a>
-            <a href="#" aria-label="YouTube"><IoLogoYoutube size={24} className="text-white hover:text-primary transition-colors" /></a>
-            <a href="#" aria-label="TikTok"><FaTiktok size={24} className="text-white hover:text-primary transition-colors" /></a>
+            <a href="https://web.facebook.com/?_rdc=1&_rdr" aria-label="Facebook"><AiFillFacebook size={24} className="text-white hover:text-primary transition-colors" /></a>
+            <a href="https://x.com/" aria-label="Twitter"><RiTwitterXFill size={24} className="text-white hover:text-primary transition-colors" /></a>
+            <a href="https://www.instagram.com/" aria-label="Instagram"><LuInstagram size={24} className="text-white hover:text-primary transition-colors" /></a>
+            <a href="https://www.youtube.com/" aria-label="YouTube"><IoLogoYoutube size={24} className="text-white hover:text-primary transition-colors" /></a>
+            <a href="https://www.tiktok.com/en/" aria-label="TikTok"><FaTiktok size={24} className="text-white hover:text-primary transition-colors" /></a>
           </div>
 
           <button 

@@ -7,7 +7,7 @@ import StarRating from '../starsComponent';
 import VerifiedBadge from '../verified';
 import Link from 'next/link';
 import Image from 'next/image';
-
+import useFetchListing from '../requests/fetchListings';
 interface ImageData {
   src: string;
   alt: string;
@@ -20,7 +20,7 @@ interface ImageData {
 
 const ScrollAnimationGallery = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  
+  const {listings} = useFetchListing()
    // Sample images - replace with your actual images
 const images: ImageData[] = [
   { 

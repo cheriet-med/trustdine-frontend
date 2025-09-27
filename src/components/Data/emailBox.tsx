@@ -1,7 +1,9 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Search, Send, Paperclip, Star, Trash2, Archive, Reply, ReplyAll, Forward, MoreHorizontal, ArrowLeft, Calendar, Clock, User, Mail, Inbox, FileText, Users, Settings, ChevronDown, Flag, AlertCircle } from 'lucide-react';
-
+import moment from 'moment';
+import useFetchAllEmails from '@/components/requests/fetchAllEmails';
+import TiptapEditor from '@/components/admin-dashboard/Tiptapeditor';
 interface Email {
   id: string;
   sender: string;
@@ -17,6 +19,25 @@ interface Email {
   attachments?: number;
   category: 'inbox' | 'sent' | 'drafts' | 'spam' | 'trash';
   fullContent?: string;
+  company:string;
+  type:string
+}
+
+interface ApiEmail {
+  id: number;
+  first_name?: string;
+  last_name?: string;
+  full_name?: string;
+  company?: string;
+  email: string;
+  subject?: string;
+  message: string;
+  message_type:string;
+  date: string;
+  time: string;
+  category?: string;
+  is_read: boolean;
+  language?: string;
 }
 
 interface Folder {
@@ -32,131 +53,186 @@ const EmailClient: React.FC = () => {
   const [selectedEmail, setSelectedEmail] = useState<string | null>(null);
   const [selectedFolder, setSelectedFolder] = useState('inbox');
   const [isComposing, setIsComposing] = useState(false);
-  const [newEmail, setNewEmail] = useState({ to: '', subject: '', content: '' });
+ const [replyEmailId, setReplyEmailId] = useState<string | null>(null);
   const [isMobileView, setIsMobileView] = useState(false);
+  // Import your existing hook
+  const { AllEmails, isLoading, mutate } = useFetchAllEmails();
+const [replyContent, setReplyContent] = useState<string>(""); // NEW
+const [isSending, setIsSending] = useState(false); // for compose
+const [isReplying, setIsReplying] = useState(false); // for reply
+
+
+
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsMobileView(false);
+       
+      } else {
+        setIsMobileView(true);
+      }
+    };
+
+    // Run once on mount
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+
+
+  // Transform API data to component format
+  const transformApiEmailsToEmails = (apiEmails: ApiEmail[] | undefined): Email[] => {
+    if (!apiEmails || !Array.isArray(apiEmails)) {
+      return [];
+    }
+    
+    return apiEmails.map((apiEmail) => ({
+      id: apiEmail.id.toString(),
+      sender: apiEmail.first_name || apiEmail.full_name || apiEmail.company || 'Unknown Sender',
+      company: apiEmail.company || "",
+      type: apiEmail.message_type || "general",
+      senderEmail: apiEmail.email,
+      avatar: '/asset/card-1.avif', // Default avatar, you can add logic to assign different avatars
+      subject: apiEmail.subject || 'No Subject',
+      preview: (apiEmail.message || '').substring(0, 100) + ((apiEmail.message || '').length > 100 ? '...' : ''),
+      timestamp: formatTimestamp(apiEmail.date, apiEmail.time),
+      isRead: apiEmail.is_read,
+      isStarred: false, // Default value, you can add this field to your API
+      isFlagged: false, // Default value, you can add this field to your API
+      isImportant: apiEmail.category === 'important', // Assuming you might have this category
+      attachments: 0, // Default value, you can add this field to your API
+      category: (apiEmail.category as 'inbox' | 'sent' | 'drafts' | 'spam' | 'trash') || 'inbox',
+      fullContent: apiEmail.message || 'No content available'
+    }));
+  };
+
+  // Format timestamp from API data
+  const formatTimestamp = (date: string, time: string): string => {
+    const emailDate = moment(`${date} ${time}`, 'MMMM Do YYYY h:mm:ss A');
+    const now = moment();
+    
+    if (emailDate.isSame(now, 'day')) {
+      return emailDate.format('h:mm A');
+    } else if (emailDate.isSame(now.subtract(1, 'day'), 'day')) {
+      return 'Yesterday';
+    } else {
+      return emailDate.format('MMM D');
+    }
+  };
+
+  // Transform API emails to component format
+  const emails: Email[] = transformApiEmailsToEmails(AllEmails);
+
+  // Calculate folder counts based on actual data
+  const folderCounts = {
+    inbox: emails.filter(email => email.category === 'inbox' || !email.category).length,
+    sent: emails.filter(email => email.category === 'sent').length,
+    trash: emails.filter(email => email.category === 'trash').length,
+  };
 
   const folders: Folder[] = [
-    { id: 'inbox', name: 'Inbox', icon: <Inbox className="w-5 h-5" />, count: 12, isActive: true },
-    { id: 'sent', name: 'Sent Mail', icon: <Send className="w-5 h-5" />, count: 5, isActive: false },
-    { id: 'drafts', name: 'Drafts', icon: <FileText className="w-5 h-5" />, count: 3, isActive: false },
-    { id: 'spam', name: 'Spam', icon: <AlertCircle className="w-5 h-5" />, count: 2, isActive: false },
-    { id: 'trash', name: 'Trash', icon: <Trash2 className="w-5 h-5" />, count: 1, isActive: false }
+    { id: 'inbox', name: 'Inbox', icon: <Inbox className="w-5 h-5" />, count: folderCounts.inbox, isActive: true },
+    { id: 'sent', name: 'Sent Mail', icon: <Send className="w-5 h-5" />, count: folderCounts.sent, isActive: false },
+    { id: 'trash', name: 'Trash', icon: <Trash2 className="w-5 h-5" />, count: folderCounts.trash, isActive: false }
   ];
 
-  const emails: Email[] = [
-    {
-      id: 'email-1',
-      sender: 'LinkedIn',
-      senderEmail: 'noreply@linkedin.com',
-      avatar: '/asset/card-1.avif',
-      subject: 'You have 3 new profile views',
-      preview: 'See who viewed your profile this week and connect with them to expand your network...',
-      timestamp: '2:34 PM',
-      isRead: false,
-      isStarred: false,
-      isFlagged: false,
-      isImportant: true,
-      attachments: 0,
-      category: 'inbox',
-      fullContent: 'Hello! You have 3 new profile views this week. Check out who viewed your profile and connect with them to expand your professional network. Best regards, LinkedIn Team'
-    },
-    {
-      id: 'email-2',
-      sender: 'GitHub',
-      senderEmail: 'noreply@github.com',
-      avatar: '/asset/card-2.avif',
-      subject: 'Your weekly digest',
-      preview: 'Here\'s what happened in your repositories this week...',
-      timestamp: '11:45 AM',
-      isRead: true,
-      isStarred: true,
-      isFlagged: false,
-      isImportant: false,
-      attachments: 1,
-      category: 'inbox',
-      fullContent: 'Weekly Repository Digest: 15 commits, 3 pull requests merged, 2 issues closed. Great work on maintaining your repositories!'
-    },
-    {
-      id: 'email-3',
-      sender: 'Design Team',
-      senderEmail: 'team@designco.com',
-      avatar: '/asset/card-3.avif',
-      subject: 'Project Update - Q4 Campaign',
-      preview: 'The latest mockups are ready for review. Please check the attached files...',
-      timestamp: '10:21 AM',
-      isRead: false,
-      isStarred: false,
-      isFlagged: true,
-      isImportant: true,
-      attachments: 3,
-      category: 'inbox',
-      fullContent: 'Hi team, The Q4 campaign mockups are ready for your review. Please find the attached files and let us know your feedback by end of week. Thanks!'
-    },
-    {
-      id: 'email-4',
-      sender: 'Marketing Newsletter',
-      senderEmail: 'news@marketing.com',
-      avatar: '/asset/card-4.avif',
-      subject: 'Latest Marketing Trends for 2024',
-      preview: 'Discover the top marketing strategies that will dominate next year...',
-      timestamp: '9:15 AM',
-      isRead: true,
-      isStarred: false,
-      isFlagged: false,
-      isImportant: false,
-      attachments: 0,
-      category: 'inbox',
-      fullContent: 'Marketing Trends 2024: AI-driven personalization, voice search optimization, and sustainability messaging are key trends to watch.'
-    },
-    {
-      id: 'email-5',
-      sender: 'Client Services',
-      senderEmail: 'support@client.com',
-      avatar: '/asset/card-5.avif',
-      subject: 'Meeting scheduled for tomorrow',
-      preview: 'Just confirming our meeting tomorrow at 2 PM. Please let me know if you need to reschedule...',
-      timestamp: '8:45 AM',
-      isRead: false,
-      isStarred: true,
-      isFlagged: false,
-      isImportant: false,
-      attachments: 0,
-      category: 'inbox',
-      fullContent: 'Hi! Just confirming our meeting tomorrow at 2 PM to discuss the project timeline. Please let me know if you need to reschedule. Best regards, Client Services'
-    },
-    {
-      id: 'email-6',
-      sender: 'John Doe',
-      senderEmail: 'john.doe@email.com',
-      avatar: '/asset/card-6.avif',
-      subject: 'Thanks for the collaboration',
-      preview: 'It was great working with you on the project. Looking forward to future opportunities...',
-      timestamp: 'Yesterday',
-      isRead: true,
-      isStarred: false,
-      isFlagged: false,
-      isImportant: false,
-      attachments: 0,
-      category: 'sent',
-      fullContent: 'Thank you for the excellent collaboration on the recent project. Your expertise and dedication made all the difference. Looking forward to working together again!'
-    }
-  ];
-
-  const filteredEmails = emails.filter(email => 
-    email.category === selectedFolder &&
-    (email.sender.toLowerCase().includes(searchTerm.toLowerCase()) ||
-     email.subject.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const filteredEmails = emails.filter(email => {
+    const emailCategory = email.category || 'inbox';
+    return emailCategory === selectedFolder &&
+      (email.sender.toLowerCase().includes(searchTerm.toLowerCase()) ||
+       email.subject.toLowerCase().includes(searchTerm.toLowerCase()));
+  });
 
   const currentEmail = emails.find(email => email.id === selectedEmail);
 
   const handleEmailClick = (emailId: string) => {
     setSelectedEmail(emailId);
     setIsMobileView(true);
+    setReplyEmailId(null); // reset reply
+    // You might want to update read status on the server
+    updateEmailReadStatus(emailId, true);
+  };
+
+
+// Update read status on server (optional)
+  const deleteemail = async (emailId: string) => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_URL}emailletterpostid/${emailId}`, {
+        method: 'DELETE',
+        headers: {
+          "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          "Content-Type": "application/json",
+        },
+        //body: JSON.stringify({ category: "trash" }),
+      });
+
+       // Trigger SWR revalidation to refresh the data
+      if (mutate) {
+        await mutate();
+      }
+
+      
+    } catch (error) {
+      console.error('Failed to update email read status:', error);
+    }
+  };
+
+
+
+// Update read status on server (optional)
+  const movetotrash = async (emailId: string) => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_URL}emailletterpostid/${emailId}`, {
+        method: 'PUT',
+        headers: {
+          "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ category: "trash" }),
+      });
+
+       // Trigger SWR revalidation to refresh the data
+      if (mutate) {
+        await mutate();
+      }
+
+      
+    } catch (error) {
+      console.error('Failed to update email read status:', error);
+    }
+  };
+
+
+
+  // Update read status on server (optional)
+  const updateEmailReadStatus = async (emailId: string, isRead: boolean) => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_URL}emailletterpostid/${emailId}`, {
+        method: 'PUT',
+        headers: {
+          "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ is_read: isRead }),
+      });
+
+       // Trigger SWR revalidation to refresh the data
+      if (mutate) {
+        await mutate();
+      }
+
+
+    } catch (error) {
+      console.error('Failed to update email read status:', error);
+    }
   };
 
   const handleBackToList = () => {
     setSelectedEmail(null);
+    setReplyEmailId(null);
     setIsMobileView(false);
   };
 
@@ -165,21 +241,12 @@ const EmailClient: React.FC = () => {
     setSelectedEmail(null);
   };
 
-  const handleSendEmail = () => {
-    if (newEmail.to && newEmail.subject && newEmail.content) {
-      console.log('Sending email:', newEmail);
-      setNewEmail({ to: '', subject: '', content: '' });
-      setIsComposing(false);
-    }
-  };
-
   // Mobile Email View Component
   const MobileEmailView = () => {
     if (!currentEmail) return null;
 
     return (
       <div className="fixed inset-0 bg-white z-50 flex flex-col md:hidden font-montserrat">
-        {/* Mobile Email Header */}
         <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <button onClick={handleBackToList} className="p-2 text-gray-600 hover:text-gray-800">
@@ -190,53 +257,120 @@ const EmailClient: React.FC = () => {
               <p className="text-sm text-gray-500 truncate">{currentEmail.sender}</p>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <button className="p-2 text-gray-600 hover:text-gray-800">
-              <Star className={`w-5 h-5 ${currentEmail.isStarred ? 'text-yellow-400 fill-current' : ''}`} />
-            </button>
-            <button className="p-2 text-gray-600 hover:text-gray-800">
-              <MoreHorizontal className="w-5 h-5" />
-            </button>
-          </div>
+          
+          
         </div>
 
-        {/* Mobile Email Content */}
         <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
           <div className="bg-white rounded-lg shadow-sm p-4 mb-4">
             <div className="flex items-center space-x-3 mb-4">
-              <img src={currentEmail.avatar} alt={currentEmail.sender} className="w-10 h-10 rounded-full object-cover" />
+            
               <div className="flex-1">
                 <h4 className="font-semibold text-gray-900">{currentEmail.sender}</h4>
-                <p className="text-sm text-gray-500">{currentEmail.senderEmail}</p>
+                  <p className="text-sm text-gray-600"><span className="text-gray-400">({currentEmail.senderEmail})</span> {currentEmail.company}</p>
+                         <p className="text-sm text-gray-600 mt-1">Type: <span className='font-playfair'>{currentEmail.type}</span>  </p>
               </div>
               <span className="text-sm text-gray-500">{currentEmail.timestamp}</span>
             </div>
             <div className="prose max-w-none">
-              <p className="text-gray-700 leading-relaxed">{currentEmail.fullContent}</p>
+                 {replyEmailId === currentEmail.id ? (
+  <div className="space-y-4">
+ <TiptapEditor
+  content={replyContent}
+  onChange={(value: string) => setReplyContent(value)}
+/>
+   
+    <div className="flex items-center space-x-2 justify-end gap-4">
+      <button onClick={()=>setReplyEmailId(null)} className='hover:text-a text-gray-700'>cancel</button>
+      <button
+        onClick={async () => {
+           setIsReplying(true);
+          try {
+            // Send reply
+            await fetch(`${process.env.NEXT_PUBLIC_URL}test-email-config/`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                email: currentEmail.senderEmail,
+                subject: `Re: ${currentEmail.subject}`,
+                message: replyContent,
+              }),
+            });
+
+            // Save to sent
+            await fetch(`${process.env.NEXT_PUBLIC_URL}emailletterpost/`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+              },
+              body: JSON.stringify({
+                full_name: "Goamico Team",
+                email: currentEmail.senderEmail,
+                subject: `Re: ${currentEmail.subject}`,
+                message: replyContent,
+                category: "sent",
+                date: moment().format("MMMM Do YYYY"),
+                time: moment().format("LTS"),
+              }),
+            });
+
+            if (mutate) await mutate();
+
+            setReplyContent(""); // clear content
+            setReplyEmailId(null); // close reply box
+          } catch (err) {
+            console.error("Reply failed:", err);
+          }
+          finally {
+      setIsReplying(false);
+    }
+        }}disabled={isReplying}
+  className={`px-6 py-1 rounded-md transition-colors ${
+    isReplying
+      ? "bg-a text-white cursor-not-allowed"
+      : "bg-secondary text-white hover:bg-a"
+  }`}
+>
+  {isReplying ? "Sending..." : "Send"}
+</button>
+    </div>
+  </div>
+) : (
+
+  <div className="prose max-w-none">
+    <div 
+   className="text-gray-500 leading-relaxed prose-inherit"
+   dangerouslySetInnerHTML={{ __html: currentEmail.fullContent || '' }}
+/>    
+    
+  </div>
+)}
             </div>
           </div>
         </div>
 
-        {/* Mobile Action Buttons */}
         <div className="bg-white border-t border-gray-200 p-4">
-          <div className="flex items-center justify-around">
-            <button className="flex flex-col items-center space-y-1 p-2 text-gray-600 hover:text-gray-800">
-              <Reply className="w-5 h-5" />
-              <span className="text-xs">Reply</span>
-            </button>
-            <button className="flex flex-col items-center space-y-1 p-2 text-gray-600 hover:text-gray-800">
-              <ReplyAll className="w-5 h-5" />
-              <span className="text-xs">Reply All</span>
-            </button>
-            <button className="flex flex-col items-center space-y-1 p-2 text-gray-600 hover:text-gray-800">
-              <Forward className="w-5 h-5" />
-              <span className="text-xs">Forward</span>
-            </button>
-            <button className="flex flex-col items-center space-y-1 p-2 text-gray-600 hover:text-gray-800">
-              <Trash2 className="w-5 h-5" />
-              <span className="text-xs">Delete</span>
-            </button>
-          </div>
+          <div className="flex items-center space-x-2 justify-center">
+                     <button
+  className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md" 
+  onClick={() => setReplyEmailId(currentEmail.id)}
+>
+  <Reply className="w-4 h-4" />
+  <span>Reply</span>
+</button>
+
+                        <button className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md" 
+                        onClick={()=>movetotrash(currentEmail.id)}>
+                        <Trash2 className="w-4 h-4" />
+                        <span>Trash</span>
+                      </button>
+                      <button className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md"  
+                      onClick={()=>deleteemail(currentEmail.id)}>
+                        <Trash2 className="w-4 h-4" />
+                        <span>Delete</span>
+                      </button>
+                    </div>
         </div>
       </div>
     );
@@ -244,7 +378,70 @@ const EmailClient: React.FC = () => {
 
   // Compose Email Component
   const ComposeEmail = () => {
-    if (!isComposing) return null;
+   
+ const [newEmail, setNewEmail] = useState({
+  to: "",
+  subject: "",
+  content: "",
+}); 
+
+
+  const handleSendEmail = async () => {
+    if (newEmail.to && newEmail.subject && newEmail.content) {
+      setIsSending(true);
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_URL}test-email-config/`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ 
+            email: newEmail.to,
+            subject: newEmail.subject,
+            message: newEmail.content
+          }),
+        });
+
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        const responses = await fetch(`${process.env.NEXT_PUBLIC_URL}emailletterpost/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            "Authorization": "Token " + process.env.NEXT_PUBLIC_TOKEN,
+          },
+          body: JSON.stringify({
+            full_name: "Goamico Team",
+            email: newEmail.to,
+            subject: newEmail.subject,
+            message: newEmail.content,
+            category: "sent",
+            date: moment().format('MMMM Do YYYY'),
+            time: moment().format('LTS'),
+          }),
+        });
+
+         // Trigger SWR revalidation to refresh the data
+        if (mutate) {
+        await mutate();
+        }
+
+        console.log('Sending email:', newEmail);
+        setNewEmail({ to: '', subject: '', content: '' });
+        setIsComposing(false);
+        
+        // Refresh emails after sending via your custom hook if needed
+      } catch (err) {
+        console.error("Failed to send email:", err);
+      } finally {
+      setIsSending(false);
+    }
+    }
+  };
+
+
+if (!isComposing) return null;
+
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -258,56 +455,58 @@ const EmailClient: React.FC = () => {
               </svg>
             </button>
           </div>
-          <div className="p-4 space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">To</label>
-              <input
-                type="email"
-                placeholder="recipient@example.com"
-                value={newEmail.to}
-                onChange={(e) => setNewEmail({ ...newEmail, to: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
-              <input
-                type="text"
-                placeholder="Enter subject"
-                value={newEmail.subject}
-                onChange={(e) => setNewEmail({ ...newEmail, subject: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
-              <textarea
-                placeholder="Type your message..."
-                value={newEmail.content}
-                onChange={(e) => setNewEmail({ ...newEmail, content: e.target.value })}
-                rows={8}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-              />
-            </div>
+ <div className="p-4 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">To</label>
+            <input
+              type="email"
+              placeholder="recipient@example.com"
+              value={newEmail.to}
+              onChange={(e) => setNewEmail((prev) => ({ ...prev, to: e.target.value }))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+            <input
+              type="text"
+              placeholder="Enter subject"
+              value={newEmail.subject}
+              onChange={(e) => setNewEmail((prev) => ({ ...prev, subject: e.target.value }))}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Message</label>
+          <TiptapEditor
+  content={newEmail.content}
+  onChange={(value: string) =>
+    setNewEmail((prev) => ({ ...prev, content: value }))
+  }
+/>
+
+          </div>
+        </div>
           <div className="bg-gray-50 border-t border-gray-200 p-4 flex items-center justify-between">
-            <button className="flex items-center space-x-2 text-gray-600 hover:text-gray-800">
-              <Paperclip className="w-5 h-5" />
-              <span className="text-sm">Attach file</span>
-            </button>
+            <div></div>
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setIsComposing(false)}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+                className="px-4 py-1 text-gray-600 hover:text-gray-800"
               >
                 Cancel
               </button>
-              <button
-                onClick={handleSendEmail}
-                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-              >
-                Send
-              </button>
+             <button
+  onClick={handleSendEmail}
+  disabled={isSending}
+  className={`px-6 py-1 rounded-md transition-colors ${
+    isSending
+      ? "bg-a text-white cursor-not-allowed"
+      : "bg-secondary text-white hover:bg-a"
+  }`}
+>
+  {isSending ? "Sending..." : "Send"}
+</button>
             </div>
           </div>
         </div>
@@ -315,11 +514,22 @@ const EmailClient: React.FC = () => {
     );
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading emails...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="flex h-screen bg-gray-50 font-montserrat">
         {/* Left Sidebar */}
-        <div className={`${isMobileView ? 'hidden md:block' : 'block'} w-full md:w-64 bg-white border-r border-gray-200 flex flex-col`}>
+        <div className={`${isMobileView ? 'hidden md:block' : 'block'}  w-24 sm:w-64 bg-white border-r border-gray-200 flex flex-col`}>
           {/* Header */}
           <div className="p-4 border-b border-gray-200">
             <h1 className="text-xl font-bold text-gray-900 mb-4 font-playfair">Mail</h1>
@@ -328,7 +538,7 @@ const EmailClient: React.FC = () => {
               className="w-full bg-highlights text-white px-4 py-2 rounded-md hover:bg-secondary transition-colors flex items-center justify-center space-x-2"
             >
               <Send className="w-4 h-4" />
-              <span>Compose</span>
+            <span className='hidden sm:block'>Compose</span>
             </button>
           </div>
 
@@ -346,10 +556,10 @@ const EmailClient: React.FC = () => {
               >
                 <div className="flex items-center space-x-3">
                   {folder.icon}
-                  <span className="font-medium">{folder.name}</span>
+                  <span className="font-medium hidden sm:block">{folder.name}</span>
                 </div>
                 {folder.count > 0 && (
-                  <span className="text-xs bg-accent text-white px-2 py-1 rounded-full">
+                  <span className="text-xs bg-background text-white px-2 py-1 rounded-full">
                     {folder.count}
                   </span>
                 )}
@@ -360,14 +570,12 @@ const EmailClient: React.FC = () => {
           {/* User Profile */}
           <div className="p-4 border-t border-gray-200">
             <div className="flex items-center space-x-3">
-              <img src="/asset/card-1.avif" alt="Profile" className="w-8 h-8 rounded-full object-cover" />
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-900 truncate">John Doe</p>
-                <p className="text-xs text-gray-500 truncate">john.doe@email.com</p>
+             
+              <div className="flex-1 min-w-0 hidden sm:block">
+                <p className="text-sm font-medium text-gray-900 truncate">Goamico Team</p>
+                <p className="text-xs text-gray-500 truncate">Contact@goamico.com</p>
               </div>
-              <button className="text-gray-400 hover:text-gray-600">
-                <Settings className="w-4 h-4" />
-              </button>
+             
             </div>
           </div>
         </div>
@@ -392,51 +600,45 @@ const EmailClient: React.FC = () => {
             {/* Email List */}
             <div className={`${selectedEmail ? 'hidden lg:block' : 'block'} w-full lg:w-96 bg-white border-r border-gray-200 flex flex-col`}>
               <div className="flex-1 overflow-y-auto">
-                {filteredEmails.map((email) => (
-                  <div
-                    key={email.id}
-                    onClick={() => handleEmailClick(email.id)}
-                    className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors ${
-                      selectedEmail === email.id ? 'bg-blue-50 border-r-2 border-r-blue-600' : ''
-                    } ${!email.isRead ? 'font-semibold' : ''}`}
-                  >
-                    <div className="flex items-start space-x-3">
-                      <img src={email.avatar} alt={email.sender} className="w-10 h-10 rounded-full object-cover flex-shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-1">
-                          <p className={`text-sm truncate ${!email.isRead ? 'font-medium text-gray-900 font-playfair' : 'text-gray-900 font-playfair'}`}>
-                            {email.sender}
+                {filteredEmails.length === 0 ? (
+                  <div className="p-8 text-center text-gray-500">
+                    <Mail className="w-12 h-12 mx-auto mb-4 text-gray-300" />
+                    <p>No emails found</p>
+                  </div>
+                ) : (
+                  filteredEmails.map((email) => (
+                    <div
+                      key={email.id}
+                      onClick={() => handleEmailClick(email.id)}
+                      className={`p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors ${
+                        selectedEmail === email.id ? 'bg-blue-50 border-r-2 border-r-blue-600' : ''
+                      } ${!email.isRead ? 'font-semibold' : ''}`}
+                    >
+                      <div className="flex items-start space-x-3">
+                       
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between mb-1">
+                            <p className={`text-sm truncate ${!email.isRead ? 'font-medium text-gray-900 font-playfair' : 'text-gray-900 font-playfair'}`}>
+                              {email.sender}
+                            </p>
+                            <div className="flex items-center space-x-1">
+                              <span className="text-xs text-gray-500">{email.timestamp}</span>
+                              {email.isStarred && <Star className="w-4 h-4 text-yellow-400 fill-current" />}
+                              {email.isFlagged && <Flag className="w-4 h-4 text-red-400 fill-current" />}
+                            </div>
+                          </div>
+                          <p className={`text-sm truncate mb-1 ${!email.isRead ? 'font-semibold text-gray-600' : 'text-gray-500'}`}>
+                            {email.subject}
                           </p>
-                          <div className="flex items-center space-x-1">
-                            <span className="text-xs text-gray-500">{email.timestamp}</span>
-                            {email.isStarred && <Star className="w-4 h-4 text-yellow-400 fill-current" />}
-                            {email.isFlagged && <Flag className="w-4 h-4 text-red-400 fill-current" />}
-                          </div>
-                        </div>
-                        <p className={`text-sm truncate mb-1 ${!email.isRead ? 'font-semibold text-gray-600' : 'text-gray-500'}`}>
-                          {email.subject}
-                        </p>
-                        <p className="text-xs text-gray-500 truncate">{email.preview}</p>
-                        <div className="flex items-center justify-between mt-2">
-                          <div className="flex items-center space-x-2">
-                            {email.isImportant && (
-                              <span className="text-xs bg-secondary  text-white px-2 py-1 rounded-full">Important</span>
-                            )}
-                            
-                              <div className="flex items-center space-x-1">
-                                <Paperclip className="w-3 h-3 text-gray-400" />
-                                <span className="text-xs text-gray-500">{email.attachments}</span>
-                              </div>
-                            
-                          </div>
-                          {!email.isRead && (
-                            <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                          )}
+                              <div 
+   className="text-gray-500 leading-relaxed prose-inherit"
+   dangerouslySetInnerHTML={{ __html: email.preview || '' }}
+/>          
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
 
@@ -448,40 +650,33 @@ const EmailClient: React.FC = () => {
                   <div className="bg-white border-b border-gray-200 p-6">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center space-x-3">
-                        <img src={currentEmail.avatar} alt={currentEmail.sender} className="w-12 h-12 rounded-full object-cover" />
+                      
                         <div>
                           <h2 className="text-xl font-semibold text-gray-900 font-playfair">{currentEmail.subject}</h2>
-                          <p className="text-sm text-gray-600">{currentEmail.sender} <span className="text-gray-400">({currentEmail.senderEmail})</span></p>
+                          <p className="text-sm text-gray-600">{currentEmail.sender}  <span className="text-gray-400">({currentEmail.senderEmail})</span> {currentEmail.company}</p>
+                         <p className="text-sm text-gray-600 mt-1">Type: <span className='font-playfair'>{currentEmail.type}</span>  </p>
                         </div>
                       </div>
                       <div className="flex items-center space-x-2">
                         <span className="text-sm text-gray-500">{currentEmail.timestamp}</span>
-                        <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full">
-                          <Star className={`w-5 h-5 ${currentEmail.isStarred ? 'text-yellow-400 fill-current' : ''}`} />
-                        </button>
-                        <button className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full">
-                          <MoreHorizontal className="w-5 h-5" />
-                        </button>
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <button className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md">
-                        <Reply className="w-4 h-4" />
-                        <span>Reply</span>
+                     <button
+  className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md" 
+  onClick={() => setReplyEmailId(currentEmail.id)}
+>
+  <Reply className="w-4 h-4" />
+  <span>Reply</span>
+</button>
+
+                        <button className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md" 
+                        onClick={()=>movetotrash(currentEmail.id)}>
+                        <Trash2 className="w-4 h-4" />
+                        <span>Trash</span>
                       </button>
-                      <button className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md">
-                        <ReplyAll className="w-4 h-4" />
-                        <span>Reply All</span>
-                      </button>
-                      <button className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md">
-                        <Forward className="w-4 h-4" />
-                        <span>Forward</span>
-                      </button>
-                      <button className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md">
-                        <Archive className="w-4 h-4" />
-                        <span>Archive</span>
-                      </button>
-                      <button className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md">
+                      <button className="flex items-center space-x-1 px-3 py-1 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-md"  
+                      onClick={()=>deleteemail(currentEmail.id)}>
                         <Trash2 className="w-4 h-4" />
                         <span>Delete</span>
                       </button>
@@ -491,9 +686,81 @@ const EmailClient: React.FC = () => {
                   {/* Email Body */}
                   <div className="flex-1 overflow-y-auto p-6 bg-gray-50">
                     <div className="bg-white rounded-lg shadow-sm p-6">
-                      <div className="prose max-w-none">
-                        <p className="text-gray-700 leading-relaxed">{currentEmail.fullContent}</p>
-                      </div>
+                    {replyEmailId === currentEmail.id ? (
+  <div className="space-y-4">
+ <TiptapEditor
+  content={replyContent}
+  onChange={(value: string) => setReplyContent(value)}
+/>
+   
+    <div className="flex items-center space-x-2 justify-end gap-4">
+      <button onClick={()=>setReplyEmailId(null)} className='hover:text-a text-gray-700'>cancel</button>
+      <button
+        onClick={async () => {
+           setIsReplying(true);
+          try {
+            // Send reply
+            await fetch(`${process.env.NEXT_PUBLIC_URL}test-email-config/`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                email: currentEmail.senderEmail,
+                subject: `Re: ${currentEmail.subject}`,
+                message: replyContent,
+              }),
+            });
+
+            // Save to sent
+            await fetch(`${process.env.NEXT_PUBLIC_URL}emailletterpost/`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Token " + process.env.NEXT_PUBLIC_TOKEN,
+              },
+              body: JSON.stringify({
+                full_name: "Goamico Team",
+                email: currentEmail.senderEmail,
+                subject: `Re: ${currentEmail.subject}`,
+                message: replyContent,
+                category: "sent",
+                date: moment().format("MMMM Do YYYY"),
+                time: moment().format("LTS"),
+              }),
+            });
+
+            if (mutate) await mutate();
+
+            setReplyContent(""); // clear content
+            setReplyEmailId(null); // close reply box
+          } catch (err) {
+            console.error("Reply failed:", err);
+          }
+          finally {
+      setIsReplying(false);
+    }
+        }}disabled={isReplying}
+  className={`px-6 py-1 rounded-md transition-colors ${
+    isReplying
+      ? "bg-a text-white cursor-not-allowed"
+      : "bg-secondary text-white hover:bg-a"
+  }`}
+>
+  {isReplying ? "Sending..." : "Send"}
+</button>
+    </div>
+  </div>
+) : (
+
+  <div className="prose max-w-none">
+    <div 
+   className="text-gray-500 leading-relaxed prose-inherit"
+   dangerouslySetInnerHTML={{ __html: currentEmail.fullContent || '' }}
+/>    
+    
+  </div>
+)}
+
+
                     </div>
                   </div>
                 </>

@@ -75,25 +75,29 @@ export default function FullscreenSlider() {
 
         {/* Tab Selector */}
         <div className="flex gap-4 md:gap-6 mb-4 md:mb-8 pt-8 md:pt-16 pb-4 max-w-full">
-          <div 
-            className={`flex gap-2 cursor-pointer transition-colors bg-highlights px-4 py-1 rounded-3xl opacity-85 ${
-              activeTab === "hotels" ? "border-b-2 border-white bg-secondary" : "opacity-80 hover:opacity-100"
-            }`}
-            onClick={() => handleTabChange("hotels")}
-          >
-            <MdOutlineHotel className="text-white" size={28}/>
-            <p className="max-w-5xl text-white sm:text-lg">Hotels</p>
-          </div>
-          
-          <div 
-            className={`flex gap-2 cursor-pointer transition-colors bg-highlights px-4 py-1 rounded-3xl opacity-85 ${
-              activeTab === "restaurants" ? "border-b-2 border-white bg-secondary" : "opacity-80 hover:opacity-100"
-            }`}
-            onClick={() => handleTabChange("restaurants")}
-          >
-            <IoRestaurantOutline className="text-white" size={22}/>
-            <p className="max-w-5xl text-white sm:text-lg">Restaurants</p>
-          </div>
+          <button
+  aria-label="Show Hotels"
+  aria-pressed={activeTab === "hotels"}
+  className={`flex gap-2 cursor-pointer transition-colors bg-highlights px-4 py-1 rounded-3xl opacity-85 ${
+    activeTab === "hotels" ? "border-b-2 border-white bg-secondary" : "opacity-80 hover:opacity-100"
+  }`}
+  onClick={() => handleTabChange("hotels")}
+>
+  <MdOutlineHotel className="text-white" size={28}/>
+  <p className="max-w-5xl text-white sm:text-lg">Hotels</p>
+</button>
+
+<button
+  aria-label="Show Restaurants"
+  aria-pressed={activeTab === "restaurants"}
+  className={`flex gap-2 cursor-pointer transition-colors bg-highlights px-4 py-1 rounded-3xl opacity-85 ${
+    activeTab === "restaurants" ? "border-b-2 border-white bg-secondary" : "opacity-80 hover:opacity-100"
+  }`}
+  onClick={() => handleTabChange("restaurants")}
+>
+  <IoRestaurantOutline className="text-white" size={22}/>
+  <p className="max-w-5xl text-white sm:text-lg">Restaurants</p>
+</button>
         </div>
         
         <div className='w-full md:pt-4 max-w-full'>
@@ -115,15 +119,17 @@ export default function FullscreenSlider() {
 
       {/* Slider dots */}
       <div className="absolute bottom-6 w-full flex justify-center gap-2">
-        {slides.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setIndex(i)}
-            className={`w-20 h-1 rounded-full ${
-              i === index ? "bg-white" : "bg-white/50"
-            }`}
-          />
-        ))}
+         {slides.map((slide, i) => (
+    <button
+      key={i}
+      onClick={() => setIndex(i)}
+      aria-label={`Go to slide ${i + 1}: ${slide.alt}`} 
+      title={`Go to slide ${i + 1}`} // optional tooltip
+      className={`w-20 h-1 rounded-full ${
+        i === index ? "bg-white" : "bg-white/50"
+      }`}
+    />
+  ))}
       </div>
     </div>
   );

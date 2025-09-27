@@ -1,23 +1,18 @@
 'use client'
-import { useRef, useEffect } from 'react';
+
 
 import CombatLanding from "@/components/home-page/hero"
 import ScrollAnimationGallery from "@/components/home-page/section3"
 import CombinedScrollAnimation from "@/components/home-page/section4"
 import ScrollAnimation from "@/components/home-page/section1"
 import FullscreenSlider from "@/components/home-page/sectionTop"
+import dynamic from 'next/dynamic'
+
+
+const VideoSection = dynamic(() => import('@/components/home-page/VideoSection'), { ssr: false })
 
 export default function Home () {
- const videoRef = useRef<HTMLVideoElement | null>(null);
-
-  // Ensure autoplay works (muted is required for most browsers)
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch((err) => {
-        console.warn('Autoplay prevented:', err);
-      });
-    }
-  }, []);
+ 
 
   return(
     <div>
@@ -44,21 +39,7 @@ We cut the noise — so you can nd real places people actually loved.
 </div> 
  
 <CombinedScrollAnimation/>
-
- <section className="relative h-screen">
-      {/* Video background */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover"
-        src="/footer.mp4" // ✅ replace with your video path
-        autoPlay
-        loop
-        muted
-        playsInline
-        preload="auto"
-        poster="/footer.jpg" // ✅ optional poster
-      />
-    </section>
+<VideoSection/>
 
     </div>
   )

@@ -300,7 +300,22 @@ export default async function RootLayout({
     type="application/ld+json"
     dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
   />
-
+ {/* Preload critical CSS files */}
+        <link
+          rel="preload"
+          href="/_next/static/css/c2e02cbcae6293ac.css"
+          as="style"
+        />
+        <link
+          rel="preload"
+          href="/_next/static/css/acb0161188d8dbc6.css"
+          as="style"
+        />
+        <link
+          rel="preload"
+          href="/_next/static/css/ce5ba40f507d3037.css"
+          as="style"
+        />
 
       </head>
       <body className=" bg-gray-50"> 

@@ -305,11 +305,12 @@ export default function CombinedScrollAnimation() {
       </section>
 
       {/* Second Section: Rotating Cards */}
-<section className="sticky-cards w-full h-screen  bg-accent relative">
+<section className="sticky-cards w-full h-screen bg-accent relative">
        {/** <div >
           <h1 className='text-center text-6xl text-white font-playfair px-72 pt-20'>Get More Trust</h1>
         </div> */}
-        <h1 className='text-end  uppercase text-3xl md:text-5xl custom:text-6xl text-white font-playfair lg:px-72 px-6 pt-20 font-bold'>Real Guests, Real Reviews, Real Trust</h1>
+        <h1 className='text-white text-3xl md:text-5xl px-8 font-extrabold font-playfair flex justify-center'>
+          Real Guests, Real Reviews, Real Trust</h1>
 
       <div className=" flex justify-end lg:px-72 px-6">
   <p className="text-white text-left pt-10 text-xl md:text-3xl w-[650px] font-playfair">

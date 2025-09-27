@@ -457,7 +457,20 @@ const TiptapEditor: React.FC<TiptapEditorProps> = ({ content, onChange }) => {
         </button> 
      
        
- 
+        {/* Link */}
+        <button
+          type="button"
+          onClick={() => {
+            const url = prompt('Enter the URL');
+            if (url) editor.chain().focus().setLink({ href: url }).run();
+          }}
+          className={`p-1 rounded ${editor.isActive('link') ? 'bg-gray-200' : ''}`}
+          title="Insert Link"
+        >
+          <FaLink size={18}/>
+        </button>
+
+
       
       </div>
 

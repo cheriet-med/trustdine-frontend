@@ -369,7 +369,7 @@ const handleCategoryChange = (value: string) => {
 };
 
   const submitTicket = async () => {
-    if (!ticketForm.name || !ticketForm.email || !ticketForm.subject || !ticketForm.description) {
+    if (!ticketForm.name || !ticketForm.email || !ticketForm.subject || !ticketForm.description ||  !ticketForm.category) {
       setSubmitMessage('Please fill in all required fields.');
       return;
     }
@@ -387,9 +387,10 @@ const handleCategoryChange = (value: string) => {
         body: JSON.stringify({
           first_name: ticketForm.name,
           email: ticketForm.email,
-          category: ticketForm.category || 'Other',
+          message_type: true,
           subject: ticketForm.subject,
           message: ticketForm.description,
+          category:"inbox",
           date:moment().format('MMMM Do YYYY'),
           time:moment().format('LTS'),
         }),
