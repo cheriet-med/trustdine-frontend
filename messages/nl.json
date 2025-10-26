@@ -1,0 +1,1218 @@
+{
+"TopNav": {
+  "newsletter": "Nieuwsbrief",
+  "search": "Zoeken",
+  "newsletter-title": "Ontvang de Laatste Padel-updates!",
+  "newsletter-description": "Blijf een stap voor! Abonneer je op onze nieuwsbrief voor het laatste Padel-nieuws, exclusieve aanbiedingen en pro-tips—rechtstreeks in je inbox!",
+  "newsletter-email-input": "Abonneer je met je e-mail",
+  "newsletter-subscribe-button": "Blijf Op de Hoogte",
+  "error-email": "Voer een geldig e-mailadres in.",
+  "success-title": "Succes! Je bent erbij!",
+  "success-description":"We zijn verheugd u te verwelkomen in onze gemeenschap! Door u aan te melden voor onze nieuwsbrief, heeft u de eerste stap gezet om op de hoogte te blijven van het laatste nieuws, exclusieve aanbiedingen en waardevolle inzichten die we graag met u delen.",
+  "success-description-1":"Uw inbox wordt een stuk spannender! Als u onze e-mails niet ziet, controleer dan uw spammap en markeer ons als 'Geen spam' om ervoor te zorgen dat u niets mist.",
+  "security-msg": "* Jouw gegevens zijn 100% veilig en worden nooit gedeeld."
+},
+"Menu":{
+"blog":"blog",
+"man":"man",
+"woman":"vrouw",
+"rackets":"rackets",
+"accessories":"accessoires",
+"bags":"tassen",
+"random":"willekeurig",
+"dress":"jurk",
+"visor":"vizier",
+"top":"top",
+"padel shoes":"padelschoenen",
+"T-shirt":"T-shirt",
+"sweatshirt":"sweatshirt",
+"sock":"sok",
+"short":"short",
+"polo shirt":"poloshirt",
+"long pants":"lange broek",
+"legging":"legging",
+"jacket":"jas",
+"cap":"pet",
+"beginner":"beginner",
+"intermediate":"gevorderd",
+"professional":"professioneel",
+"balls":"ballen",
+"grip":"grip",
+"overgrip":"overgrip",
+"racket protector":"racketbeschermer",
+"protective gear":"beschermende uitrusting",
+"sunglasses":"zonnebril",
+"towel":"handdoek",
+"resistance bands":"weerstandsbanden",
+"water bottle":"waterfles",
+"sweatbands":"zweetbanden",
+"follow us":"volg ons",
+"logo":"padel",
+"Junior":"Junior",
+ "home": "startpagina",
+  "menu": "menu"
+},
+"Hero": {
+  "title": "PAK NU JE GRATIS DIGITALE EXEMPLAAR VAN PADEL MASTER THE GAME!",
+  "Hurry": "Haast je",
+  "t1": "Slechts een beperkt aantal downloads beschikbaar!",
+  "t2": "Wat je krijgt:",
+  "t3": "* Een GRATIS digitaal exemplaar van Padel Master the Game ",
+  "t4": "* Een uitgebreide gids die je manier van kijken, begrijpen en spelen van padel zal transformeren.",
+  "t5": "Deze exclusieve aanbieding is slechts voor een beperkte tijd beschikbaar en komt mogelijk nooit meer terug. Mis deze kans niet om je padelspel te revolutioneren – ",
+  "button-title": "Download jouw gratis exemplaar vandaag nog!",
+  "valued": "(ter waarde van $19.99)!",
+  "for free": "gratis",
+  "dialog-title": "Waar moeten we jouw GRATIS exemplaar naartoe sturen?",
+  "dialog-t1": "Vul je naam en e-mailadres hieronder in om direct toegang te krijgen tot Padel Master the Game!",
+  "dialog-t2": "Door je aan te melden ontvang je:",
+  "dialog-t3": "* Je gratis eBook direct in je inbox.",
+  "dialog-t4": "* Exclusieve tips & updates van de Padlev-nieuwsbrief (je kunt je op elk moment uitschrijven).",
+  "dialog-t5": "Claim nu jouw gratis gids!",
+  "dialog-name-holder": "Wat is je naam?",
+  "dialog-email-holder": "Wat is je e-mailadres?",
+  "dialog-name-error": "Voer alstublieft je naam in.",
+  "dialog-email-error": "Voer alstublieft een geldig e-mailadres in.",
+  "dialog-success-title": "Bedankt! Jouw GRATIS gids is onderweg",
+  "dialog-success-t1": "We hebben je gratis exemplaar naar je e-mail gestuurd. Om ervoor te zorgen dat je het ontvangt, controleer je inbox en",
+  "dialog-success-t2": "bevestig je e-mailadres",
+  "dialog-success-t3": "door op de link in de bevestigingsmail te klikken.",
+  "dialog-success-t4": "Als je de e-mail niet binnen een paar minuten ziet, controleer dan je",
+  "dialog-success-t5": "spam",
+  "dialog-success-t6": "of",
+  "dialog-success-t7": "promoties",
+  "dialog-success-t8": "map.",
+  "dialog-success-t9": "We zijn blij je te verwelkomen in de Padlev-community!",
+  "security-msg": "* Je gegevens zijn 100% veilig en worden nooit gedeeld.",
+  "dialog-button":"Ontvang mijn gratis exemplaar nu",
+  "padel-image-alt": "zijaanzicht-van-een-net-op-een-padelveld",
+  "padel-book-alt": "padel-heers-het-spel-boek"
+},
+"NewsSection": {
+  "News": "Nieuws",
+  "view": "Alles bekijken"
+},
+"ShopSection": {
+  "Shop": "Winkel",
+  "view": "alles bekijken",
+  "title-0": "Padeltassen",
+  "description-0": "Ga stijlvol de baan op! Shop nu premium padeltassen!",
+  "tag-0": "meisje met een padeltas op het veld",
+  "title-1": "Junior padelkleding",
+  "description-1": "Speel in stijl! Shop junior padelkleding!",
+  "tag-1": "kind met padelracket op het veld",
+  "title-2": "Padelrackets",
+  "description-2": "Kracht, controle, prestatie! Vind jouw perfecte padelracket!",
+  "tag-2": "padelracket met ballen op het veld",
+  "title-3": "Prestatie-sportschoenen",
+  "description-3": "Til je spel naar een hoger niveau met de beste padelschoenen!",
+  "tag-3": "meisje strikt haar sportschoenen",
+  "title-4": "Beschermende & sportbrillen",
+  "description-4": "Zie helder, speel veilig! Bescherm je ogen op het veld!",
+  "tag-4": "meisje draagt een beschermbril",
+  "title-5": "Herenkleding",
+  "description-5": "Stijl ontmoet prestatie! Shop padelkleding voor heren!",
+  "tag-5": "padelspeler op het veld",
+  "title-6": "Drinkflessen",
+  "description-6": "Blijf gehydrateerd, speel krachtiger! Shop padel drinkflessen!",
+  "tag-6": "persoon met een waterfles",
+  "title-7": "Dameskleding",
+  "description-7": "Elegantie en prestatie! Shop padelkleding voor dames!",
+  "tag-7": "twee meisjes naast elkaar die naar de lucht kijken"
+},
+"BrandingStory": {  
+  "title": "ADIDAS: SPORTKLEDING, STIJL EN VELE VERHALEN SINDS 1949",  
+  "text-1": "We worden geïnspireerd door atleten. Vanaf de allereerste spikes die Adi Dassler in zijn werkplaats maakte, is het creëren van de beste uitrusting voor sporters wat ons drijft om technologische doorbraken en designinnovaties na te streven. Onze sneakers en kleding worden gedragen door wereldrecordhouders en medaillewinnaars, maar het is net zo belangrijk voor hardlopers, weekendwandelaars, recreatieve voetballers en fitnessliefhebbers. Van adidas Boost, de revolutionaire dempingstechnologie, tot het baanbrekende ontwerp van de Adizero Adios Pro hardloopschoenen, tot Terrex outdooruitrusting en voetbalschoenen met ongeëvenaarde balcontrole – we blijven itereren, innoveren en verbeteren met atleten in gedachten.",  
+  "text-2": "De 3-Stripes zijn verschenen op het erepodium over de hele wereld, maar hun invloed reikt veel verder dan het speelveld. adidas sneakers zijn gedragen door hiphopartiesten, skaters, kunstenaars en andere vernieuwers die de cultuur vooruit helpen met hun visie en compromisloze stijl. We hebben ons stempel gedrukt met legendarische lifestyle-schoenen zoals de adidas Superstar, de Stan Smith en de Samba, schoenen die begonnen als sportschoenen voordat ze de straat op gingen en een onuitwisbare indruk achterlieten in de cultuur.",  
+  "text-3": "adidas Originals-kleding is een stijlvolle aanvulling op onze lifestyle-schoenen. Onze streetwearcollecties halen inspiratie uit het archief en geven een moderne draai aan klassiekers zoals het Firebird-trainingspak en de Tiro-broek. Luxe materialen, verfijnde silhouetten en onverwachte details tillen onze streetwear naar een hoger niveau en overstijgen sport, terwijl we tegelijkertijd onze erfgoed nooit uit het oog verliezen. Want ons mantra is, en is altijd geweest, dat we door sport de kracht hebben om levens te veranderen."  
+},
+"ShopLetter": {
+  "title": "Meld je nu aan en krijg tot 25% korting!",
+  "button": "Meld je gratis aan",
+  "newsletter-title": "Meld je aan voor onze nieuwsbrief en ontvang tot 25% korting!",
+  "newsletter-description": "Schrijf je in voor onze nieuwsbrief en krijg exclusieve toegang tot promoties tot 25% korting! Wees als eerste op de hoogte van nieuwe collecties, speciale deals en meer.",
+  "newsletter-email-input": "Abonneer je met je e-mail",
+  "newsletter-subscribe-button": "Begin gratis",
+  "error-email": "Voer een geldig e-mailadres in.",
+  "success-title": "Gelukt! Je bent erbij!",
+  "success-description": "Bedankt voor je inschrijving! Een bevestigingsmail is onderweg naar je inbox. Klik op de verificatielink om je inschrijving te voltooien en als eerste de nieuwste updates, exclusieve content en spannend nieuws van ons te ontvangen.",
+  "security-msg": "* Je informatie is 100% veilig en wordt nooit gedeeld."
+},
+"Footer": {  
+  "Contact Us": "Neem contact met ons op",  
+  "Follow us": "Volg ons",  
+  "Support & Info": "Ondersteuning & Informatie",  
+  "PRODUCTS": "PRODUCTEN",  
+  "Contact Us text": "Hulp nodig of heeft u vragen?",  
+  "Contact Us text 1": "Wij staan voor u klaar; neem op elk moment contact met ons op!",  
+  "Follow us text": "Blijf op de hoogte van het laatste padlev-nieuws en exclusieve aanbiedingen!",  
+  "help": "Hulp",  
+  "about us": "Over ons",  
+  "Charity": "Liefdadigheid",  
+  "Returns and Refunds": "Retourneringen en terugbetalingen",  
+  "rackets": "Rackets",  
+  "shoes": "Schoenen",   
+  "accessories": "Accessoires",  
+  "bags": "Tassen",  
+  "man clothes": "Herenkleding",  
+  "woman clothes": "Dameskleding",  
+  "Privacy Policy": "Privacybeleid",  
+  "Terms and Conditions": "Algemene voorwaarden",  
+  "Cookies Policy": "Cookiesbeleid",  
+  "All rights reserved": "Alle rechten voorbehouden 2025."  
+},
+"Blog": {
+  "title": "Welkom bij de Padlev Blog!",
+  "description": "Blijf voorop in het spel met het laatste padelnieuws, deskundige tips, uitrustingsrecensies en exclusieve inzichten. Of je nu een beginner bent of een ervaren speler, onze blog brengt je alles van trainingstechnieken tot toernooihighlights. Word lid van onze community en til je padelervaring naar een hoger niveau!",
+  "previous": "vorige",
+  "next": "volgende",
+  "tag": "tennistas op de baan",
+  "Latest News": "Laatste nieuws"
+},
+"Blog-id": {  
+  "Published": "Gepubliceerd",  
+  "Explore More from Padelv": "Ontdek meer van Padlev",  
+  "Loved this post": "Dol op deze post? Deel de padelliefde! Verspreid het woord en laat je vrienden meegenieten van het spel."  
+},
+"Shop-id": {
+  "Percent": "korting",
+  "Vat": "De prijzen van producten op Padlev zijn inclusief btw. Het toepasselijke btw-tarief kan variëren afhankelijk van uw bezorgadres en wordt berekend bij het afrekenen.",
+  "Charity": "Wanneer u op Padlev winkelt, krijgt u niet alleen iets geweldigs—u maakt ook een verschil. Bij elke aankoop gaat 10% van uw totale bedrag direct naar een goed doel. Samen kunnen we een positieve impact creëren terwijl u geniet van de producten die u liefhebt. Shop nu en maak deel uit van iets groters!",
+  "Color": "Kleur",
+  "Size": "Maat",
+  "free shipping link": "Gratis verzending op alle bestellingen",
+  "free shipping title": "Geniet van gratis wereldwijde verzending op alle artikelen!",
+  "free shipping description 1": "Bij Padlev willen we uw winkelervaring zo soepel en belonend mogelijk maken. Daarom bieden we gratis verzending op alle artikelen, waar ter wereld u zich ook bevindt! Of u nu voor uzelf winkelt of een cadeau naar een geliefde stuurt, wij zorgen ervoor.",
+  "free shipping description 2": "Wacht niet langer—log vandaag nog in op uw Padlev-account en ontdek de beste producten met onverslaanbare aanbiedingen. Uw volgende favoriete item is slechts een klik verwijderd!",
+  "return link": "retourneren binnen 90 dagen na aankoop",
+  "return title": "Zorgeloze 90-dagen retourbeleid",
+  "return description 1": "Retourneren is mogelijk binnen 90 dagen na de aankoopdatum. Klanten zijn verantwoordelijk voor de retourverzendkosten. Zorg ervoor dat artikelen in originele staat verkeren, omdat terugbetalingen kunnen worden aangepast voor gebruikte, beschadigde of onvolledige retouren.",
+  "return description 2": "Lees het volledige retourbeleid",
+  "secure link": "Veilige betaalmethoden",
+  "secure title": "Veilige betaalmethoden",
+  "secure description": "We bieden uiterst veilige betaalopties om uw veiligheid te waarborgen. Uw privacy is onze prioriteit, uw persoonlijke informatie is altijd beschermd en wordt nooit verkocht. We gebruiken uw gegevens alleen om uw winkelervaring te verbeteren, in overeenstemming met ons strikte privacy- en cookiebeleid. Winkel met vertrouwen bij Padlev!",  "Reviews": "Beoordelingen",
+  "Description": "Beschrijving",
+  "share description": "Dol op dit product? Verspreid het woord! Deel het met uw vrienden en laat hen ook iets geweldigs ontdekken. Uw aanbeveling betekent de wereld voor ons!",
+  "suggestion title": "Ontdek uw interesses",
+  "quantity": "Hoeveelheid",
+"add to cart": "Toevoegen aan winkelwagen",
+"see cart": "Bekijk mijn winkelwagen",
+
+"size": "Maattabel",
+"view-cart": "Winkelwagen bekijken",
+"select-size": "Selecteer een maat voordat u doorgaat",
+"select-color": "Selecteer een kleur voordat u doorgaat",
+"select-color-size": "Selecteer een kleur en maat voordat u doorgaat",
+"title1": "Kledingmaat Conversietabel",
+"sub1-title1": "Herenkleding Maten",
+"sub2-title1": "Dameskleding Maten",
+"sub3-title1": "Kinderkleding Maten",
+"title2": "Schoenenmaat Conversietabel",
+"sub1-title2": "Herenschoenmaten",
+"sub2-title2": "Damesschoenmaten",
+"sub3-title2": "Kinderschoenmaten",
+"China": "China",
+"Japan": "Japan",
+"Chesti": "Borst (inches)",
+"Chestc": "Borst (cm)",
+"Waisti": "Taille (inches)",
+"Waistc": "Taille (cm)",
+"Busti": "Borstomvang (inches)",
+"Bustc": "Borstomvang (cm)",
+"Hipsi": "Heupen (inches)",
+"Hipsc": "Heupen (cm)",
+"Heighti": "Lengte (inches)",
+"Heightc": "Lengte (cm)",
+"Foot-Length-i": "Voetlengte (inches)",
+"Foot-Length-c": "Voetlengte (cm)",
+"Age": "Leeftijd",
+
+"instock": "Helaas is dit product niet op voorraad. Probeer het binnenkort opnieuw."
+
+}, 
+"Login": {
+  "text-1": "Ontgrendel vandaag nog exclusieve PadlevCLUB-voordelen!",
+  "text-2": "Word lid van PadlevCLUB en verbeter je ervaring met voordelen die speciaal voor jou zijn ontworpen. Geniet van gratis verzending op elke bestelling, toegang tot exclusieve kortingscodes voor leden en vroege toegang tot exclusieve producten. Als PadlevCLUB-lid ben je altijd als eerste op de hoogte van speciale deals, limited edition releases en meer.",
+  "text-3": "Meld je nu aan of log in om te genieten van de beloningen die je verdient!",
+  "text-4": "Maak een sterk wachtwoord om je account te beveiligen: minimaal 8 tekens, inclusief hoofdletters, kleine letters, cijfers en speciale tekens. Vermijd veelgebruikte of gemakkelijk te raden wachtwoorden.",
+  "text-5": "Hier is een voorgesteld wachtwoord voor je registratie:",
+  "text-6": "Heb je al een account en ben je je wachtwoord vergeten?",
+  "text-7": "Stel het hier opnieuw in.",
+  "text-8": "PRIVACYVERKLARING",
+  "text-9": "Door je registratie te voltooien, worden je persoonlijke gegevens gedeeld met de gegevensbeheerders van PadlevCLUB (Padlev Inc. en zijn aangesloten entiteiten, hierna 'Padlev' genoemd) om je PadlevCLUB-lidmaatschap te creëren en te onderhouden. Je lidmaatschap kan niet worden behouden zonder deze gegevens. Als onderdeel van je PadlevCLUB-voordelen kan Padlev je gepersonaliseerde marketingcommunicatie sturen. Je kunt je hier op elk moment voor afmelden. Door je te registreren, bevestig je dat je onze Privacyverklaring hebt gelezen, begrepen en ermee akkoord gaat.",
+  "text-10": "Wij hechten waarde aan je privacy en keuzes. Je gegevens zijn altijd versleuteld en veilig.",
+  "Privacy Policy": "Privacybeleid",
+  "sign in": "inloggen",
+  "Email-is-required": "E-mail is verplicht.",
+  "Invalid-email-format": "Ongeldig e-mailformaat.",
+  "Disposable-emails": "Tijdelijke e-mails zijn niet toegestaan.",
+  "8-characters": "Wachtwoord moet minimaal 8 tekens lang zijn.",
+  "uppercase": "Wachtwoord moet minstens één hoofdletter (A-Z) bevatten.",
+  "lowercase": "Wachtwoord moet minstens één kleine letter (a-z) bevatten.",
+  "number": "Wachtwoord moet minstens één cijfer (0-9) bevatten.",
+  "character": "Wachtwoord moet minstens één speciaal teken bevatten (bijv. !@#$%^&*).",
+  "Failed-to-copy-password": "Kopiëren van wachtwoord mislukt.",
+  "email": "e-mail",
+  "password": "wachtwoord",
+  "Invalid-email": "Ongeldige e-mail.",
+  "Please-verify-your-email-or-password": "Controleer uw e-mail of wachtwoord.",
+  "An-error-occurred-during-sign-in": "Er is een fout opgetreden bij het inloggen. Probeer het opnieuw.",
+  "Sign-in-error:": "Fout bij inloggen:",
+  "Copied": "Gekopieerd!",
+  "Subscription-failed": "Abonnement mislukt",
+"Error-during-subscription": "Fout tijdens abonnement",
+"Network-error": "Netwerkfout",
+
+
+"emailsend": "We hebben een link voor het opnieuw instellen van uw wachtwoord naar uw e-mail gestuurd. Controleer uw inbox en volg de instructies om uw wachtwoord te verifiëren en opnieuw in te stellen.",
+"emailsenderror": "Er is iets misgegaan. Wacht een moment en probeer het opnieuw.",
+"enteremail": "Voer uw e-mailadres in het daarvoor bestemde veld in.",
+
+"log-tit": "Log in of registreer",
+"log-des": "Log in of maak een account aan met je e-mail en wachtwoord om je trackingnummer te krijgen, je bestelling in realtime te volgen, sneller af te rekenen en exclusieve aanbiedingen en speciale kortingen te ontgrendelen—meld je nu aan voor een naadloze winkelervaring!"
+
+},
+"Shop": {
+  "title": "Betreed de Wereld van Padel bij Padlev Shop!",
+  "description": "Ontdek onze premium selectie padeluitrusting, inclusief hoogwaardige rackets, ballen, kleding en accessoires. Verhoog je spel met topmerken en de nieuwste uitrusting. Shop nu en speel als een pro!",
+  "Latest": "Nieuwste Producten",
+  "Filter": "Filter op",
+  "None": "Geen",
+  "Lower": "Lagere Prijs",
+  "Higher": "Hogere Prijs",
+  "Reductions": "Kortingen",
+      "tag":"padel tennis ball",
+      "previous": "Vorige",
+"next": "Volgende"
+
+},
+"Search": {
+  "Found": "Gevonden",
+  "articles": "artikelen over",
+  "products": "producten voor"
+},
+"cart-c": {
+  "empty-title": "Je winkelwagen is leeg",
+  "empty-description": "Voeg je eerste artikel toe aan de winkelwagen en bekijk het hier. Begin nu met winkelen!",
+  "empty-button": "Laten we winkelen!",
+
+  "title-cart": "Je winkelwagen",
+  "description-cart": "Deze artikelen zijn niet gereserveerd! Voltooi je bestelling voordat ze uitverkocht zijn.",
+  "Color": "Kleur",
+  "Size": "Maat",
+  "Quantity": "Aantal",
+
+  "Subtotal": "Subtotaal",
+  "Shipping": "Verzending",
+  "Discount": "Korting",
+  "Total": "Totaal (incl. BTW)",
+  "copon": "Heb je een promotiecode?",
+  "copon-palce-holder": "Voer de kortingscode in",
+  "copon-button": "Kortingscode toepassen",
+  "copon-error": "Oeps! Die code lijkt niet te werken. Controleer hem of probeer een andere!",
+  "checkout-button": "Ga naar de kassa",
+  "continu-button": "Verder winkelen",
+  "payment-icon-description": "Beveiligde betaalmethoden die we accepteren",
+
+  "Your-order": "Je bestelling",
+  "Edite": "Bewerken",
+  "payment-methods": "Betaalmethoden",
+  "payment-methods-description": "Geniet van een snelle en veilige betaalervaring! Kies de methode die het beste bij je past—PayPal of betaalkaarten—en voltooi je aankoop in slechts een paar klikken. Snel, eenvoudig en 100% veilig. Klik nu op de knop en winkel met vertrouwen!",
+
+
+
+  "error": "Kan winkelwagenitems niet laden. Probeer het opnieuw.",
+  "logincheckout": "Heb je al een account? Log in voor een snellere checkout.",
+  "summary": "Besteloverzicht",
+  "verifypassword": "Verifieer alstublieft uw wachtwoord",
+  "address-and-contact-title": "Adres- en contactgegevens",
+  "constactinfo": "Contactgegevens",
+  "have-account-1": "Het lijkt erop dat je al een account hebt!",
+  "have-account-2": "Log nu in om te genieten van een snellere checkout, je bestellingen in realtime te volgen en gemakkelijk toegang te krijgen tot je bestelgeschiedenis. Bovendien ontvang je als gewaardeerd lid exclusieve aanbiedingen en speciale deals!",
+  "have-account-3": "Voer gewoon je wachtwoord in om je aankoop soepel af te ronden.",
+  "login": "Inloggen",
+  "forgot-password": "Wachtwoord vergeten?",
+  "click-here": "Klik hier om het te resetten.",
+  "email-send": "We hebben een link voor het opnieuw instellen van je wachtwoord naar je e-mail gestuurd. Controleer je inbox en volg de instructies om je wachtwoord te verifiëren en opnieuw in te stellen.",
+  "email-send-error": "Er is iets misgegaan. Wacht een moment en probeer het opnieuw.",
+  "email": "E-mail *",
+  "password": "Wachtwoord *",
+  "full-name": "Volledige naam",
+  "enter-name": "Vul je naam in *",
+  "exp": "Exp: +1*",
+  "enter-code": "Voer je landcode in.",
+  "phone": "Telefoonnummer *",
+  "enter-phone": "Voer een geldig telefoonnummer in.",
+  "adress-1": "Straat, huis/appartement/unit *",
+  "enter-address": "Vul je volledige adres in.",
+  "adress-2": "Apt, suite, unit, etc. (optioneel)",
+  "city": "Stad *",
+  "enter-city": "Vul je stad in",
+  "state": "Staat/Provincie *",
+  "enter-state": "Vul je staat of regio in.",
+  "country": "Land *",
+  "enter-country": "Vul je land in",
+  "zip": "Postcode *",
+  "enter-zip": "Vul je postcode in.",
+  "continue": "Doorgaan",
+  "someting-wrong": "Er is iets misgegaan. Probeer het opnieuw.",
+  "login-or-try-with-new-email": "Je hebt al een account. Log in of probeer het opnieuw met een ander e-mailadres.",
+  "payment-and-shipping": "Betaling en Verzending",
+   "delivery-estimation": "Verwachte levertijd",
+  "delivery-estimation-text-1": "Houd er rekening mee dat de geschatte levertijd voor standaardverzending vanuit China doorgaans 10 tot 15 werkdagen bedraagt. De levertijd kan enigszins variëren, afhankelijk van douaneafhandeling en lokale postdiensten in uw regio.",
+  "delivery-estimation-text-2": "We zullen u een trackingnummer verstrekken zodra uw bestelling is verzonden, zodat u de voortgang kunt volgen. Mocht u vragen hebben of verdere assistentie nodig hebben, neem dan gerust contact met ons op.",
+
+  "use-my-address": "Gebruik mijn adres voor de bezorging van het pakket",
+  "Card-Number": "Kaartnummer",
+  "Expiration-Date": "Vervaldatum",
+  "CVV": "CVV",
+  "Pay": "Betalen",
+  "Secure-Payment-Processing": "Veilige betalingsverwerking",
+  "Secure-Payment-Processing-description": "Je betalingsgegevens zijn volledig beschermd met toonaangevende beveiligingsmaatregelen. Transacties worden versleuteld en veilig verwerkt, zodat je kaartgegevens nooit worden opgeslagen of blootgesteld.",
+
+  "shipping-address":"Verzendadres & Bezorginformatie",
+"shipping-details":"Verzendtijden & Leveringsupdates",
+"shipping-details-text":"Je bestelling wordt verzonden via standaardverzending vanuit ons magazijn in China, met een geschatte levertijd van 10–15 werkdagen. De levering kan iets variëren door douane of lokale postvertragingen. Je ontvangt een trackingnummer zodra het pakket is verzonden. Neem gerust contact met ons op bij vragen."
+
+
+
+
+},
+"orders": {
+  "in": "in",
+  "on": "op",
+  "purchased": "aangekocht",
+  "filed": "Fout bij het kopiëren van wachtwoord",
+  "pending": "in afwachting",
+  "shipped": "verzonden",
+  "completed": "voltooid",
+  "no-order": "Geen bestellingen in dit account",
+  "status": "status",
+  "order-info": "bestellingsinformatie",
+  "address": "adres",
+  "order-ID": "bestel-ID",
+  "Order-placed-on": "Bestelling geplaatst op",
+  "Order-completed-on": "Bestelling voltooid op",
+  "Payment-method": "Betaalmethode",
+  "tracking-number": "trackingsnummer",
+  "copied": "gekopieerd",
+  "view-product": "bekijk product",
+  "Received": "Ontvangen",
+  "Delete": "Verwijderen",
+  "write-rating-error": "Selecteer een beoordeling om verder te gaan.",
+  "write-review-error": "Laat alstublieft een beoordeling achter.",
+  "Write-a-Review": "Schrijf een beoordeling",
+  "description-leave-feedback": "Laat feedback achter in het Engels of uw moedertaal.",
+  "Rating": "Beoordeling",
+  "write-review-placeholder": "Schrijf hier uw beoordeling...",
+  "Submit-review": "Beoordeling indienen",
+  "small-description": "U kunt uw beoordeling op elk moment bewerken. Vind uw beoordeling op de productpagina en klik op het bewerkpictogram.",
+  "country-code-error": "Voer uw landcode in.",
+  "Edite-a-review": "Bewerk een beoordeling",
+  "country-code-palceholder": "Voer je landcode in (bijv. US).",
+  "return": "Terug"
+},
+"user-dashboard": {
+  "My-Account": "Mijn Account",
+  "Account-information": "Accountinformatie",
+  "Orders": "Bestellingen",
+  "address": "Adres",
+  "My-Information": "Mijn Informatie",
+  "info-description": "Zorg ervoor dat de onderstaande informatie juist en up-to-date is.",
+  "Full-Name": "Volledige Naam",
+  "Login-details": "Inloggegevens",
+  "E-mail": "E-mail",
+  "Edite": "Bewerken",
+  "email-send": "We hebben een e-mail gestuurd met instructies om je e-mailadres bij te werken.",
+  "Password": "Wachtwoord",
+  "logout-description": "Log uit op alle apparaten",
+  "logout-description-1": "Je wordt uitgelogd op alle apparaten waarmee je toegang hebt gehad tot de Padlev-website. Om opnieuw in te loggen, voer je je wachtwoord opnieuw in.",
+  "logout": "Uitloggen",
+  "edite-full-name": "Bewerk Volledige Naam",
+  "edite-address": "Bewerk Adres",
+  "phone-number": "Telefoonnummer",
+  "percent-of-40": "40% KORTING op alle producten",
+  "total-number": "TOTAAL AANTAL PUNTEN",
+  "percent-of-20": "20% KORTING op alle producten",
+  "vip-title": "Bedankt, VIP!",
+  "vip-text-1": "We zijn enorm dankbaar dat je een van onze meest gewaardeerde klanten bent.",
+  "vip-text-2": "Je voortdurende vertrouwen, loyaliteit en steun betekenen alles voor ons.",
+  "vip-text-3": "Als VIP-lid ben je niet alleen een klant, je bent een deel van onze reis, en we zijn vereerd je te bedienen met exclusieve voordelen en premium aanbiedingen.",
+  "vip-text-4": "Bedankt dat je zo geweldig bent. We kijken ernaar uit om je ervaring nog waardevoller te maken!",
+  "vip-text-5": "Met waardering,",
+  "vip-text-6": "Het Padlev Team",
+  "level-title": "Upgrade je account en ontgrendel grotere beloningen!",
+  "lev-1": "Je hebt momenteel een",
+  "lev-2": "Goud",
+  "lev-3": "Standaard",
+  "lev-4": "Account met",
+  "lev-5": "Verdien punten bij elke aankoop, 1$ uitgegeven = 1 punt! Hoe meer je winkelt, hoe hoger je stijgt, en ontgrendel je grotere besparingen en exclusieve voordelen.",
+  "lev-6": "Wil je meer voordelen? Zo kun je upgraden:",
+  "lev-7": "Gouden Account",
+  "lev-8": "Verdien",
+  "lev-9": "punten",
+  "lev-10": "Platina Account",
+  "lev-11": "Verdien",
+  "lev-12": "punten",
+  "lev-13": "Voorbeeld",
+  "lev-14": "Koop een product van $50 → Krijg 50 punten",
+  "lev-15": "Waarom upgraden? De beloningen worden beter!",
+  "lev-16": "Gouden Account Voordelen",
+  "lev-17": "20% KORTING op alle producten",
+  "lev-18": "Exclusieve bonuscoupons",
+  "lev-19": "Bestellingen",
+  "lev-20": "Bestellingen",
+  "lev-21": "Platina Account Voordelen",
+  "lev-22": "40% KORTING op alle producten (ENORME besparingen!)",
+  "lev-23": "Exclusieve bonuscoupons",
+  "lev-24": "Begin vandaag met het verdienen van punten — elke aankoop brengt je dichter bij VIP-status! Bereik je Goud of ga je helemaal naar Platina?",
+  "reset-email": "Geef je nieuwe e-mailadres op",
+  "reset-password": "Stel je nieuwe wachtwoord in",
+
+  "Feedback": "Feedback",
+  "return-refound": "retour / terugbetaling",
+  "delivery-status": "leveringsstatus *",
+  "choose": "Kies een optie hieronder...",
+  "items-received": "ontvangen items",
+  "package-not-received": "pakket niet ontvangen",
+  "application-type": "toepassingstype *",
+  "Return-and-refund": "Retour en terugbetaling",
+  "refund-only": "alleen terugbetaling",
+  "describe-issue": "beschrijf het probleem *",
+  "description": "Ons team zal uw aanvraag zorgvuldig beoordelen, en u ontvangt een e-mail van een van onze agents als aanvullende informatie vereist is, zoals afbeeldingen of een video van het item. We zullen u ook op de hoogte stellen zodra er een beslissing is genomen over uw terugbetaling.",
+  "description-1": "Houd uw inbox in de gaten voor verdere updates. We waarderen uw geduld en samenwerking.",
+  "submit": "Indienen",
+  "text-palceholder": "u kunt meer tekstbeschrijving toevoegen over uw itemprobleem",
+  "add-feddback-title": "Geef ons feedback",
+  "add-feedback-description": "We zijn toegewijd om de beste service en gebruikerservaring te leveren. Uw feedback betekent veel voor ons, het helpt ons groeien, verbeteren en u nog beter van dienst te zijn. We zouden het zeer op prijs stellen als u een moment zou nemen om uw gedachten met ons te delen!",
+  "add-feddback-text-placeholder": "laat hier uw feedback achter",
+  "feedback-title": "Heel erg bedankt voor uw feedback, we waarderen het echt!",
+  "Rating": "Beoordeling",
+  "edite-feedback-title": "U kunt uw feedback altijd bewerken."
+
+
+},
+"Not-found":{
+  "Page-not-found":"Pagina niet gevonden",
+  "Page-not-found-description":"De pagina die je zoekt bestaat niet"
+},
+
+"FAQPage": {
+    "title": "Veelgestelde Vragen (FAQ)",
+    "1-question": "1. Hoe kan ik mijn bestelling volgen?",
+    "1-answer-p1": "Zodra je bestelling is verzonden, kun je deze eenvoudig volgen via je Padlev-account. Dit is hoe:",
+    "1-list-1": "Log in op je account op onze website.",
+    "1-list-2": "Ga naar het gedeelte \"Bestellingen\" in je accountdashboard.",
+    "1-list-3": "Selecteer de bestelling die je wilt volgen. Je ziet de huidige status van je bestelling, samen met het trackingnummer en de gebruikte vervoerder.",
+    "1-answer-p2": "Als je nog geen account hebt, wordt er automatisch een account voor je aangemaakt na je eerste bestelling. Je ontvangt een e-mail met je inloggegevens (gebruikersnaam en wachtwoord) om toegang te krijgen tot je account en je bestellingen te volgen.",
+
+    "2-question": "2. Heb ik een account nodig om een bestelling te plaatsen?",
+    "2-answer-p1": "Nee, je hebt geen account nodig om een aankoop te doen bij Padlev. Het aanmaken van een account biedt echter verschillende voordelen:",
+    "2-list-1": "Snellere afrekening door het opslaan van je verzendadres en betalingsgegevens.",
+    "2-list-2": "Bestellingen volgen en statusupdates ontvangen.",
+    "2-list-3": "Exclusieve aanbiedingen en promoties.",
+    "2-answer-p2": "Als je geen account hebt, wordt er automatisch een voor je aangemaakt na je eerste bestelling en ontvang je je inloggegevens per e-mail.",
+
+    "3-question": "3. Ik heb mijn eerste bestelling geplaatst, maar ik zie geen account voor me aangemaakt. Wat moet ik doen?",
+    "3-answer-p1": "Geen zorgen - als dit je eerste bestelling is, wordt er automatisch een account voor je aangemaakt zodra je betaling is voltooid. Je ontvangt een e-mail met de inloggegevens voor je nieuwe account.",
+    "3-answer-p2": "Controleer je spam-/ongewenste mail-map als je de e-mail niet in je inbox ziet.",
+    "3-answer-p3": "Als je hulp nodig hebt bij het toegang krijgen tot je account, neem dan gerust contact met ons op via support@padlev.com.",
+
+    "4-question": "4. Welke verzendopties bieden jullie aan?",
+    "4-answer-p1": "Wij bieden gratis verzending aan voor al onze producten om je winkelervaring zo gemakkelijk en betaalbaar mogelijk te maken. Ongeacht de grootte van je bestelling, wij dragen de verzendkosten.",
+    "4-list-1": "Standaardverzending: Binnen een paar werkdagen geleverd, afhankelijk van je locatie.",
+    "4-list-2": "Internationale verzending: Beschikbaar voor klanten buiten ons thuisland. De levertijden variëren per regio.",
+    "4-answer-p2": "Trackinginformatie wordt verstrekt zodra je bestelling is verzonden, zodat je altijd weet waar je producten zijn.",
+
+    "5-question": "5. Bieden jullie internationale verzending aan?",
+    "5-answer-p1": "Ja, wij bieden internationale verzending aan naar een groot aantal landen. Controleer de verzendopties bij het afrekenen om te zien of je locatie wordt ondersteund.",
+    "5-answer-p2": "De verzendkosten en levertijden variëren afhankelijk van het land. Je kunt je bestelling volgen zodra deze is verzonden, zodat je weet wanneer je je levering kunt verwachten.",
+
+    "6-question": "6. Wat is jullie retour- en refundbeleid?",
+    "6-answer-p1": "Bij Padlev willen we dat je volledig tevreden bent met je aankoop. Als je een artikel wilt retourneren, accepteren we retouren en geven we refunds tot 90 dagen na voltooiing van je betaling.",
+    "6-answer-p2": "Dit is hoe het retourproces werkt:",
+    "6-list-1": "Retourformulier: Log in op je Padlev-account, ga naar het gedeelte \"Retouren\" en vul het retourformulier in voor het product dat je wilt retourneren.",
+    "6-list-2": "Beoordelingsproces: Zodra je formulier is ingediend, beoordeelt ons team je verzoek. Als er aanvullende details of vragen zijn, nemen we contact met je op via e-mail.",
+    "6-list-3": "Retourbevestiging: Als je retour is goedgekeurd, geven we een volledige refund voor je bestelling zodra het product is ontvangen in ons magazijn.",
+    "6-list-4": "Refundproces: Refunds worden verwerkt naar de oorspronkelijke betaalmethode. Afhankelijk van je bank of betalingsdienst kan het een paar werkdagen duren voordat de refund op je account verschijnt.",
+    "6-answer-p3": "Voorwaarden voor retouren: Producten moeten ongebruikt en in originele staat zijn. Alle retouren moeten binnen 90 dagen na de oorspronkelijke aankoopdatum worden gedaan.",
+    "6-answer-p4": "Als je vragen hebt over het retour- of refundproces, neem dan contact met ons op via support@padlev.com.",
+
+    "7-question": "7. Wat moet ik doen als ik een beschadigd of verkeerd artikel ontvang?",
+    "7-answer-p1": "Onze excuses voor het ongemak als je bestelling beschadigd of incorrect aankomt. Volg deze stappen:",
+    "7-list-1": "Neem direct contact met ons op: Laat het ons weten binnen 7 dagen na ontvangst van je bestelling door een e-mail te sturen naar support@padlev.com.",
+    "7-list-2": "Stuur foto's: Stuur ons duidelijke foto's van het beschadigde of verkeerde artikel en de verpakking waarin het is aangekomen.",
+    "7-list-3": "Retourinstructies: Als het artikel moet worden teruggestuurd, sturen we je een gratis retourlabel.",
+    "7-list-4": "Oplossing: Zodra we het geretourneerde product hebben ontvangen, sturen we je het juiste artikel of geven we een refund, afhankelijk van je voorkeur.",
+    "7-answer-p2": "We streven ernaar problemen snel en efficiënt op te lossen om ervoor te zorgen dat je volledig tevreden bent met je aankoop.",
+
+    "8-question": "8. Kan ik mijn bestelling wijzigen of annuleren nadat deze is geplaatst?",
+    "8-answer-p1": "Zodra je bestelling is geplaatst, wordt deze snel verwerkt om een snelle levering te garanderen. Als je je bestelling wilt wijzigen of annuleren, neem dan direct contact met ons op via support@padlev.com.",
+    "8-answer-p2": "Als je bestelling nog niet is verwerkt, helpen we je graag met de wijzigingen. Als je bestelling al is verzonden, kun je ons retourbeleid volgen om het product te retourneren zodra het is aangekomen.",
+
+    "9-question": "9. Hoe kan ik het wachtwoord van mijn account opnieuw instellen?",
+    "9-answer-p1": "Als je je wachtwoord bent vergeten of het om welke reden dan ook opnieuw wilt instellen, volg dan deze eenvoudige stappen:",
+    "9-list-1": "Ga naar de inlogpagina op onze website.",
+    "9-list-2": "Klik op de link \"Wachtwoord vergeten?\".",
+    "9-list-3": "Voer je geregistreerde e-mailadres in en we sturen je instructies om je wachtwoord opnieuw in te stellen.",
+    "9-list-4": "Volg de instructies in de e-mail om een nieuw wachtwoord in te stellen en weer toegang te krijgen tot je account.",
+    "9-answer-p2": "Als je verdere hulp nodig hebt, aarzel dan niet om contact met ons op te nemen.",
+
+    "10-question": "10. Hoe kan ik de klantenservice bereiken?",
+    "10-answer-p1": "Als je andere vragen hebt of hulp nodig hebt, staat ons klantenserviceteam voor je klaar!",
+    "10-list-1": "E-mail: support@padlev.com",
+    "10-answer-p2": "We zijn er om je de beste winkelervaring bij Padlev te bieden!"
+},
+
+
+
+"AboutPage": {
+  "title": "Over Ons – Padlev",
+  "section-1-p1": "In de snelle wereld van vandaag, waar de druk en afleidingen van het leven ons constant omringen, is het gemakkelijk om de focus te verliezen op wat echt belangrijk is: ons welzijn.",
+  "section-2-title": "Jouw gezondheid telt",
+  "section-2-p1": "Bij Padlev begrijpen we de uitdagingen waar je voor staat. Wij geloven dat gezondheid niet alleen de afwezigheid van ziekte is – het is een staat van volledige vitaliteit, energie en vreugde. Of je nu probeert om weer fit te worden, te ontsnappen aan de dagelijkse stress of gewoon weer in contact te komen met een gezondere versie van jezelf, jouw reis doet ertoe.",
+  "section-3-title": "Ontdek het plezier van padel",
+  "section-3-p1": "Daar komen wij om de hoek kijken. Padel is meer dan alleen een sport – het is een leuke, dynamische en sociale manier om fit te worden, actief te blijven en betekenisvolle verbindingen op te bouwen.",
+  "section-3-p2": "In tegenstelling tot andere fitnessroutines die aanvoelen als een verplichting, is padel gemakkelijk te leren, zeer verslavend (op de goede manier) en perfect voor spelers van alle niveaus. Het brengt plezier terug in beweging, en dat is wat het zo krachtig maakt.",
+  "section-4-title": "Jouw reis van beginner tot pro",
+  "section-4-p1": "Bij Padlev bieden we niet alleen padelspullen aan. We zijn je metgezel op een transformatieve reis – vanaf je allereerste slag totdat je de speler wordt die je wilt zijn.",
+  "section-4-p2": "We selecteren zorgvuldig producten die elke fase van je padelontwikkeling ondersteunen: van basisuitrusting voor beginners tot geavanceerde materialen, trainingstips en prestatiebegeleiding. Je loopt nooit alleen – we staan bij elke stap aan je zijde.",
+  "section-5-title": "De resultaten spreken voor zich",
+  "section-5-p1": "Als je je inzet voor je gezondheidsreis met padel, zijn de resultaten duidelijk: betere conditie, scherpere focus, sterkere relaties en een hernieuwde levenslust.",
+  "section-5-p2": "Duizenden hebben padel al onderdeel gemaakt van hun wellness-lifestyle – en hun succesverhalen inspireren alles wat we doen. Met de juiste uitrusting, mindset en ondersteuning kun je je leven veranderen – op en buiten de baan.",
+  "section-6-title": "Padlev: Jouw gids en sponsor",
+  "section-6-p1": "We verkopen niet alleen producten – we sponsoren jouw levensstijl. Bij Padlev positioneren we jou als de held van je eigen wellness-reis. Onze rol is om je te begeleiden, uit te rusten en te motiveren. Of je nu traint voor je eerste wedstrijd of je grenzen verlegt op competitief niveau, Padlev is er om je te helpen meer te bereiken dan je ooit had gedacht.",
+  "section-7-title": "Doe vandaag nog mee",
+  "section-7-p1": "Word de held van je eigen wellness-verhaal. Laat Padlev je vertrouwde gids zijn naar een gezonder, gelukkiger en sterker leven – beginnend vanaf nu.",
+  "section-7-p2": "Laten we samen je volledige potentieel ontgrendelen – wedstrijd na wedstrijd.",
+  "tag": "Padelspeler die een medaille en racket vasthoudt"
+},
+
+  
+   "CharityPage": {
+  "title": "Ons Charitatief Initiatief",
+  "intro": {
+    "p1": "Bij Padlev geloven we in de kracht van sport om levens te veranderen.",
+    "p2": "We verkopen niet alleen producten van hoge kwaliteit voor padel – we zijn gepassioneerd over het teruggeven aan onze gemeenschap en het ondersteunen van degenen die het het hardst nodig hebben. Daarom besteden we 10% van onze winst aan goede doelen die zich richten op gezondheid, welzijn en het versterken van individuen om gezonder en actiever te leven."
+  },
+  "section1": {
+    "title": "Een Verschil Maken – Samen",
+    "p1": "Wanneer je bij Padlev koopt, investeer je niet alleen in hoogwaardige sportuitrusting, maar maak je ook een verschil. Elke aankoop die je doet, draagt direct bij aan onze missie om mensen, vooral kinderen en achtergestelde gemeenschappen, de voordelen van sport te laten ervaren.",
+    "p2": "We willen gezondere gemeenschappen zien, waar iedereen de kans krijgt om te spelen, te bewegen en te bloeien. Van het verstrekken van toegang tot sportuitrusting en faciliteiten tot het ondersteunen van sportprogramma's en gezondheidsinitiatieven, we zetten ons in om een betere toekomst te creëren door middel van sport."
+  },
+  "section2": {
+    "title": "Onze Charitatieve Partners",
+    "p1": "We werken samen met vertrouwde goede doelen die zich richten op het verbeteren van de toegang tot sport voor iedereen, ongeacht hun achtergrond of financiële situatie. Jouw steun helpt op verschillende manieren, waaronder:",
+    "list": {
+      "0": "Het verstrekken van sportuitrusting voor kinderen en volwassenen die zich dit misschien niet kunnen veroorloven.",
+      "1": "Fondsenwervingen voor lokale sportclubs die lichamelijke activiteit en welzijn bevorderen in achtergestelde gebieden.",
+      "2": "Het ondersteunen van gezondheidseducatie-initiatieven die het belang van lichaamsbeweging en een actieve levensstijl onderwijzen.",
+      "3": "Het creëren van kansen voor jongeren om deel te nemen aan georganiseerde sportprogramma's, waarmee ze discipline, teamwork en zelfvertrouwen opbouwen."
+    },
+    "p2": "We zijn trots op de samenwerking met organisaties die zich richten op deze belangrijke gebieden, zodat jouw bijdrage een tastbare en positieve impact heeft."
+  },
+  "section3": {
+    "title": "10% van Elke Aankoop Gaat naar Liefdadigheid",
+    "p1": "We zijn vastbesloten om iets terug te geven, en daarom wordt 10% van onze winst gedoneerd aan goede doelen. Of het nu gaat om het financieren van lokale sportprogramma's of het verstrekken van noodzakelijke uitrusting aan gemeenschappen in nood, jouw aankoop speelt een cruciale rol in het verbeteren van levens.",
+    "howItWorks": {
+      "title": "Hoe Werkt Het?",
+      "list": {
+        "0": "Je koopt een van onze hoogwaardige producten van Padlev.",
+        "1": "We besteden 10% van onze winst van jouw aankoop aan goede doelen die zich richten op sport en gezondheid.",
+        "2": "Je helpt een verschil te maken en geeft meer mensen de kans om actief, gezond en betrokken bij sport te zijn."
+      }
+    },
+    "p2": "Elke keer dat je bij ons koopt, krijg je niet alleen het beste in padeluitrusting – je helpt de wereld een gezondere, actievere plek te maken."
+  },
+  "section4": {
+    "title": "Waarom We Om Gezondheid en Sport Geven",
+    "p1": "We begrijpen dat sport niet alleen een leuke manier is om fit te blijven, maar ook een belangrijk aspect van het opbouwen van zelfvertrouwen, discipline en teamwork. Via ons charitatief initiatief willen we sport toegankelijk maken voor iedereen, ongeacht hun economische situatie. We geloven dat gezondheid een universeel recht is, en onze missie is om een inclusieve omgeving te creëren waar iedereen kan deelnemen aan lichamelijke activiteiten die hun welzijn bevorderen.",
+    "p2": "Sport speelt ook een belangrijke rol in de ontwikkeling van kinderen en jongeren. Door sportprogramma's te ondersteunen, bieden we jongeren de kans om actief te blijven, positieve relaties op te bouwen en vaardigheden te ontwikkelen die hen zullen helpen zowel op als buiten het veld succesvol te zijn."
+  },
+  "section5": {
+    "title": "Sluit Je Bij Ons Aan om Een Verschil te Maken",
+    "p1": "Je bent niet zomaar een klant – je bent een partner in onze missie om levens te verbeteren door middel van sport. Door te kiezen voor een aankoop bij Padlev, draag je bij aan het welzijn van individuen en gemeenschappen die het het hardst nodig hebben.",
+    "howWeCan": {
+      "title": "Samen kunnen we:",
+      "list": {
+        "0": "Kinderen helpen gezond en actief op te groeien.",
+        "1": "Sportuitrusting verstrekken aan gemeenschappen in nood.",
+        "2": "Gezondheidsprogramma's financieren die het belang van lichaamsbeweging onderwijzen."
+      }
+    },
+    "p2": "We nodigen je uit om deel uit te maken van deze betekenisvolle reis. Jouw steun stelt ons in staat om onze charitatieve inspanningen uit te breiden en een nog grotere impact te maken op de gezondheid van mensen wereldwijd."
+  },
+  "section6": {
+    "title": "Hoe Je Je Kunt Betrekken",
+    "p1": "Je kunt op verschillende manieren helpen:",
+    "list": {
+      "0": "Doe een Aankoop: Elke keer dat je bij ons koopt, ondersteun je onze goede doelen.",
+      "1": "Verspreid het Woord: Deel onze missie met vrienden en familie en moedig hen aan om de zaak te steunen.",
+      "2": "Blijf Verbonden: Volg ons op sociale media en blijf op de hoogte van de vooruitgang die we samen boeken.",
+      "3": "Steun Goede Doelen Direct: Als je verder wilt bijdragen, geven we je informatie over hoe je kunt doneren aan onze charitatieve partners."
+    }
+  },
+  "section7": {
+    "title": "Onze Verbintenis Tot Transparantie",
+    "p1": "We geloven in transparantie naar onze klanten. Je zult precies kunnen zien waar jouw bijdragen naartoe gaan en hoe ze het verschil maken. We zullen regelmatig updates verstrekken over de projecten die we ondersteunen en de impact van jouw donaties.",
+    "p2": "We zullen ook verhalen, foto's en rapporten delen over onze charitatieve initiatieven, zodat je persoonlijk kunt zien welk verschil jouw aankoop maakt."
+  },
+  "closing": {
+    "title": "Laten We Samen een Gezondere Toekomst Bouwen",
+    "p1": "Elke padelracket, elke bal, elke aankoop die je doet heeft een positieve impact. Bedankt dat je onze missie steunt en ons helpt een wereld te creëren waarin iedereen toegang heeft tot de voordelen van sport en een gezond leven. Laten we samen werken om mensen te inspireren en te versterken om beter en gezonder te leven.",
+    "p2": "Padlev – Speel voor Gezondheid, Speel voor een Oorzaak."
+  }
+}
+,
+
+
+
+
+"ReturnPolicy": {
+    "title": "Retour- & Terugbetalingsbeleid",
+    "intro": "Bij Padlev is uw tevredenheid onze prioriteit. Als u niet volledig tevreden bent met uw aankoop, kunt u binnen 90 dagen na de betaaldatum een retour en terugbetaling aanvragen, onder voorbehoud van onderstaande voorwaarden.",
+    "eligibility": {
+        "title": "1. In aanmerking komen",
+        "list": [
+            "Uw aanvraag wordt binnen 90 dagen na betaling gedaan.",
+            "Het artikel is ongebruikt, in originele staat en niet beschadigd.",
+            "U dient het retourverzoek in via het retourformulier in uw Padlev-account.",
+            "Het verzoek wordt door ons goedgekeurd na controle."
+        ]
+    },
+    "howToSubmit": {
+        "title": "2. Hoe een Retouraanvraag Indienen",
+        "steps": [
+            "Log in op www.padlev.com",
+            "Ga naar Bestellingen en selecteer de bestelling.",
+            "Klik op retour / terugbetaling.",
+            "Vul het retourformulier in met reden en eventueel afbeeldingen."
+        ],
+        "note": "Na indiening ontvangt u een bevestigingsmail en beginnen we met de beoordeling."
+    },
+    "reviewAndApproval": {
+        "title": "3. Beoordeling & Goedkeuring",
+        "content": "Ons team beoordeelt uw aanvraag binnen 3–5 werkdagen. We kunnen contact opnemen voor extra details.",
+        "list": [
+            "Bij goedkeuring ontvangt u instructies voor retour.",
+            "Bij afwijzing krijgt u een e-mail met de reden."
+        ]
+    },
+    "returnShipping": {
+        "title": "4. Retourverzending",
+        "content": "Tenzij anders vermeld, bent u verantwoordelijk voor de retourkosten. Wij raden een traceerbare verzending aan. Padlev is niet aansprakelijk voor verloren retouren."
+    },
+    "refunds": {
+        "title": "5. Terugbetalingen",
+        "content": "Zodra uw retour is ontvangen en goedgekeurd:",
+        "list": [
+            "Betalen wij terug naar de oorspronkelijke betaalmethode.",
+            "Terugbetaling duurt 5–10 werkdagen afhankelijk van uw provider.",
+            "U ontvangt een e-mail zodra dit is verwerkt."
+        ]
+    },
+    "itemsNotEligible": {
+        "title": "6. Niet in aanmerking komende artikelen",
+        "list": [
+            "Artikelen geretourneerd na 90 dagen.",
+            "Gebruikte of beschadigde artikelen niet door onze fout.",
+            "Uitverkoop of niet-retourneerbare producten.",
+            "Gepersonaliseerde artikelen."
+        ]
+    },
+    "exchanges": {
+        "title": "7. Omruilen",
+        "content": "Momenteel bieden wij geen directe omruiling aan. Wilt u een ander artikel, vraag dan een retour aan en plaats een nieuwe bestelling."
+    },
+    "contactUs": {
+        "title": "8. Neem Contact Op",
+        "content": "Voor hulp of vragen over retouren of terugbetalingen, neem contact op:",
+        "address": {
+            "company": "Padlev",
+            "email": "contact@padlev.com",
+            "supportHours": "Maandag–Vrijdag, 9:00–18:00 (CET)"
+        }
+    },
+    "changes": {
+        "title": "9. Wijzigingen in Dit Beleid",
+        "content": "Wij kunnen dit beleid updaten. Wijzigingen worden hier gepubliceerd met de datum. Controleer het regelmatig."
+    }
+},
+
+
+
+    
+      "PrivacyPolicy": {
+        "title": "Privacybeleid",
+        "effectiveDate": "Ingangsdatum: 01-01-2025",
+        "lastUpdated": "Laatst bijgewerkt: 01-01-2025",
+        "intro": "Bij Padlev (\"wij\", \"ons\" of \"onze\") waarderen we je privacy en zetten we ons in om de persoonlijke informatie van onze gebruikers te beschermen. Dit Privacybeleid legt uit hoe we informatie verzamelen, gebruiken, opslaan, openbaar maken en beveiligen wanneer je onze website www.padlev.com bezoekt, met onze inhoud interacteert of producten koopt. Door onze website te gebruiken, ga je akkoord met de verzameling en het gebruik van informatie in overeenstemming met dit Privacybeleid.",
+        "informationWeCollect": {
+          "title": "1. Informatie die we verzamelen",
+          "description": "We kunnen de volgende categorieën persoonlijke informatie verzamelen en verwerken:",
+          "list": [
+            "Accountinformatie: Naam, e-mailadres, telefoonnummer, wachtwoord, facturatie-/verzendadres",
+            "Aankoopinformatie: Bestelgegevens, betaalmethode (we slaan geen gevoelige financiële gegevens op)",
+            "Klantenservicecommunicatie: Berichten, beoordelingen of verzoeken",
+            "Apparaatinformatie: IP-adres, browsertype, besturingssysteem, schermresolutie",
+            "Gebruiksgegevens: Bezochte pagina's, tijd op de site, verwijzingsbronnen",
+            "Cookies: Sessietracking, analyse, advertenties"
+          ]
+        },
+        "howWeUse": {
+          "title": "2. Hoe we je informatie gebruiken",
+          "list": [
+            "Om bestellingen te verwerken en klantenservice te bieden",
+            "Om je account te maken en te beheren",
+            "Om transactie- of promotionele e-mails te sturen (indien je je hebt aangemeld)",
+            "Om de prestaties van de website en de gebruikerservaring te verbeteren",
+            "Om fraude te voorkomen en de veiligheid te waarborgen",
+            "Om te voldoen aan wettelijke verplichtingen"
+          ]
+        },
+        "legalBasis": {
+          "title": "3. Wettelijke basis voor verwerking (GDPR)",
+          "list": [
+            "Toestemming: Wanneer je expliciet instemt",
+            "Contract: Om contractuele verplichtingen na te komen",
+            "Wettelijke verplichting: Naleving van wetten",
+            "Gerechtvaardigde belangen: Verbeteren van onze service, fraude voorkomen"
+          ]
+        },
+        "sharingInformation": {
+          "title": "4. Delen van persoonlijke informatie",
+          "description": "We verkopen je persoonlijke informatie niet. We kunnen gegevens delen met:",
+          "list": [
+            "Betalingsverwerkers (bijv. PayPal, Stripe)",
+            "Verzend- en logistieke providers",
+            "Analyse- en cloudservices (bijv. Google Analytics)",
+            "Wettelijke autoriteiten wanneer dat nodig is",
+            "In geval van een fusie of overname"
+          ]
+        },
+        "dataRetention": {
+          "title": "5. Gegevensbewaring",
+          "content": "We bewaren persoonlijke informatie alleen zolang dit nodig is om onze verplichtingen na te komen en te voldoen aan wettelijke vereisten. Zodra de gegevens niet meer nodig zijn, worden ze veilig verwijderd of geanonimiseerd."
+        },
+        "yourRights": {
+          "title": "6. Jouw rechten",
+          "description": "Afhankelijk van je locatie heb je mogelijk de volgende rechten:",
+          "list": [
+            "Toegang tot, correctie of verwijdering van je persoonlijke gegevens",
+            "Beperking van of bezwaar tegen gegevensverwerking",
+            "Toestemming op elk moment intrekken",
+            "Verzoek om gegevensoverdraagbaarheid"
+          ],
+          "contact": "Om je rechten uit te oefenen, neem contact met ons op via: contact@padlev.com"
+        },
+        "dataSecurity": {
+          "title": "7. Gegevensbeveiliging",
+          "content": "We maken gebruik van veilige servers, versleuteling en toegangsbeperkingen om je gegevens te beschermen. Hoewel we ons inspannen om commerciële, redelijke maatregelen te nemen om je persoonlijke gegevens te beschermen, is geen enkele methode van overdracht via internet 100% veilig."
+        },
+        "internationalTransfers": {
+          "title": "8. Internationale overdrachten",
+          "content": "Je gegevens kunnen worden overgedragen naar en verwerkt in landen buiten je eigen land. We zorgen ervoor dat er passende waarborgen zijn om je gegevens over grenzen heen te beschermen."
+        },
+        "thirdPartyLinks": {
+          "title": "9. Externe links",
+          "content": "Onze website kan links bevatten naar externe websites. We zijn niet verantwoordelijk voor hun privacypraktijken. Lees hun privacybeleid voordat je persoonlijke gegevens verstrekt."
+        },
+        "cookies": {
+          "title": "10. Cookies en trackingtechnologieën",
+          "description": "We maken gebruik van cookies om je ervaring te verbeteren. Je kunt cookies beheren of uitschakelen via de instellingen van je browser. De soorten cookies omvatten:",
+          "list": [
+            "Essentiële: Vereist voor de werking van de site",
+            "Analytics: Meten van gebruik en prestaties",
+            "Marketing: Gepersonaliseerde advertenties en aanbiedingen"
+          ]
+        },
+        "children": {
+          "title": "11. Privacy van kinderen",
+          "content": "Onze site is niet bedoeld voor kinderen onder de 13 jaar. We verzamelen bewust geen persoonlijke gegevens van kinderen. Als we ontdekken dat we gegevens van kinderen hebben verzameld, zullen we deze onmiddellijk verwijderen."
+        },
+        "changes": {
+          "title": "12. Wijzigingen in dit beleid",
+          "content": "We kunnen dit beleid van tijd tot tijd bijwerken. Wijzigingen worden op deze pagina geplaatst. Je voortdurende gebruik van de site betekent akkoord met het bijgewerkte beleid."
+        },
+        "contactUs": {
+          "title": "13. Neem contact met ons op",
+          "description": "Als je vragen hebt over dit Privacybeleid, neem dan contact met ons op via:",
+          "address": {
+            "company": "Padlev",
+            "email": "contact@padlev.com",
+            "website": "https://www.padlev.com"
+          }
+        }
+      },
+
+     "CookiePolicy": {
+  "title": "Cookiebeleid",
+  "intro": "Dit Cookiebeleid legt uit hoe Padlev ('wij', 'ons' of 'onze') cookies en vergelijkbare technologieën gebruikt wanneer je onze website www.padlev.com (de 'Website') bezoekt. Het beschrijft wat deze technologieën zijn, waarom we ze gebruiken en jouw rechten om ze te controleren.",
+  "effectiveDate": "01-01-2025",
+  "lastUpdated": "01-01-2025",
+  "sections": {
+    "0": {
+      "title": "1. Wat zijn cookies?",
+      "content": "Cookies zijn kleine tekstbestanden die door de websites die je bezoekt, op je browser of apparaat worden opgeslagen. Ze helpen je apparaat te herkennen en voorkeuren of acties in de loop van de tijd te onthouden. Cookies kunnen zijn:",
+      "list": [
+        "First-party cookies: Geplaatst door de website die je bezoekt.",
+        "Third-party cookies: Geplaatst door derden zoals analyseproviders of adverteerders."
+      ]
+    },
+    "1": {
+      "title": "2. Waarom gebruiken wij cookies?",
+      "content": "We gebruiken cookies voor de volgende doeleinden:",
+      "table": {
+        "headers": ["Type", "Doel"],
+        "rows": [
+          ["Essentiële cookies", "Nodig voor de basisfunctionaliteit en beveiliging van de site."],
+          ["Functionele cookies", "Onthouden voorkeuren zoals taal en regio."],
+          ["Analytische cookies", "Meten van verkeer en gebruikspatronen ter verbetering van de prestaties."],
+          ["Marketingcookies", "Volgen van gedrag op verschillende websites om gerichte advertenties aan te bieden."]
+        ]
+      }
+    },
+    "2": {
+      "title": "3. Cookies die we gebruiken",
+      "list": [
+        "_ga, _gid: Google Analytics-cookies voor het volgen van het gedrag van bezoekers (verloopt over 2 jaar).",
+        "_fbp: Facebook Pixel-cookie voor retargeting (verloopt over 3 maanden).",
+        "session_id: Gebruikt om gebruikerssessies tijdens het browsen te behouden."
+      ]
+    },
+    "3": {
+      "title": "4. Beheer je cookievoorkeuren",
+      "content": "Je kunt cookies beheren of uitschakelen door:",
+      "list": [
+        "De instellingen van je browser aan te passen (cookies blokkeren of verwijderen).",
+        "Onze cookiebanner te gebruiken (indien beschikbaar) om in te schakelen of uit te schakelen voor cookiecategorieën.",
+        "Bezoek industriële opt-out websites zoals:"
+      ],
+      "subList": [
+        {"name": "Your Online Choices", "url": "https://www.youronlinechoices.com/"},
+        {"name": "Network Advertising Initiative", "url": "https://optout.networkadvertising.org/"},
+        {"name": "Google Ads Settings", "url": "https://adssettings.google.com/"},
+        {"name": "Facebook Ad Preferences", "url": "https://www.facebook.com/adpreferences/"}
+      ]
+    },
+    "4": {
+      "title": "5. Cookies van derden",
+      "content": "Sommige inhoud op onze website kan worden geleverd door derden. Deze derden kunnen cookies gebruiken waarover wij geen controle hebben. Het gebruik van cookies door deze derden wordt beheerst door hun eigen beleid."
+    },
+    "5": {
+      "title": "6. Updates van dit beleid",
+      "content": "We kunnen dit Cookiebeleid van tijd tot tijd bijwerken om veranderingen in ons gebruik van cookies of om juridische redenen weer te geven. Wijzigingen worden op deze pagina gepost."
+    },
+    "6": {
+      "title": "7. Neem contact met ons op",
+      "content": "Als je vragen hebt over ons gebruik van cookies of dit Cookiebeleid, neem dan contact met ons op via:",
+      "address": {
+        "company": "Padlev",
+        "email": "contact@padlev.com",
+        "website": "https://www.padlev.com"
+      }
+    }
+  }
+},
+
+
+  "TermsAndConditions": {
+    "title": "Algemene Voorwaarden",
+    "intro": "Welkom bij Padlev, jouw betrouwbare bron voor padelproducten, uitrusting en deskundige inhoud. Lees deze Algemene Voorwaarden zorgvuldig door voordat je onze website op www.padlev.com gebruikt. Deze wordt beheerd door Padlev.",
+    "acceptance": {
+      "title": "1. Aanvaarding van de Voorwaarden",
+      "content": "Door onze website te bezoeken of te gebruiken, ga je akkoord met deze voorwaarden. Als je niet akkoord gaat met alle voorwaarden op deze pagina, mag je onze website of diensten niet gebruiken."
+    },
+    "service": {
+      "title": "2. Dienstverlening",
+      "content": "Padlev is een digitaal platform dat producten, inhoud en community-interactie aanbiedt met betrekking tot padel. Door gebruik te maken van onze dienst, ga je akkoord met deze Voorwaarden en eventuele aanvullende bepalingen."
+    },
+    "eligibility": {
+      "title": "3. Geschiktheid",
+      "content": "Om deze website te gebruiken, moet je minstens 18 jaar oud zijn of toestemming hebben van een ouder of wettelijke voogd. Door onze website te gebruiken, verklaar en garandeer je dat je aan deze eis voldoet."
+    },
+    "accountRegistration": {
+      "title": "4. Accountregistratie",
+      "content": "Om toegang te krijgen tot bepaalde functies van de website of om aankopen te doen, kan het nodig zijn om een account aan te maken. Je bent verantwoordelijk voor het geheimhouden van je accountgegevens en wachtwoord.",
+      "list": [
+        "Geef correcte, actuele en volledige informatie op.",
+        "Houd je accountgegevens en wachtwoord vertrouwelijk.",
+        "Neem verantwoordelijkheid voor alle activiteiten onder jouw account."
+      ]
+    },
+    "productListingsAndOrders": {
+      "title": "5. Productvermeldingen en Bestellingen",
+      "content": "Alle producten op de website zijn afhankelijk van beschikbaarheid. We doen ons best om correcte beschrijvingen, afbeeldingen en prijzen te tonen, maar we garanderen niet dat alle informatie foutloos is.",
+      "ordering": {
+        "title": "Bestellen",
+        "list": [
+          "Bestellingen worden beschouwd als een aanbod tot aankoop en zijn onderhevig aan onze goedkeuring.",
+          "Na het plaatsen van je bestelling ontvang je een bevestigingsmail.",
+          "We behouden ons het recht voor om een bestelling te weigeren of annuleren om redenen zoals beschikbaarheid, prijsfouten of vermoeden van fraude."
+        ]
+      },
+      "pricing": {
+        "title": "Prijzen",
+        "content": "Alle prijzen worden weergegeven in [valuta invoegen] en zijn inclusief/exclusief btw, indien van toepassing. We behouden ons het recht voor om prijzen op elk moment te wijzigen zonder voorafgaande kennisgeving."
+      }
+    },
+    "payment": {
+      "title": "6. Betaling",
+      "content": "Wij accepteren betalingen via veilige en betrouwbare betalingsgateways, waaronder creditcards/debetkaarten en cryptovaluta. Je betalingsgegevens worden veilig verwerkt.",
+      "list": [
+        "Creditcards/debetkaarten",
+        "Cryptovaluta"
+      ]
+    },
+    "shippingAndDelivery": {
+      "title": "7. Verzending en Levering",
+      "content": "Wij verzenden naar de meeste internationale bestemmingen. Levertijden en verzendkosten variëren afhankelijk van je locatie en de gekozen verzendmethode.",
+      "list": [
+        "Geschatte leverdata worden enkel ter indicatie gegeven en zijn niet gegarandeerd.",
+        "Vertragingen door douane of lokale postdiensten vallen buiten onze controle.",
+        "Zodra je bestelling is verzonden, ontvang je een trackingnummer per e-mail."
+      ]
+    },
+    "returnsRefundsAndExchanges": {
+      "title": "8. Retouren, Terugbetalingen en Omruilingen",
+      "returnEligibility": {
+        "title": "Retourvoorwaarden",
+        "list": [
+          "Artikelen moeten binnen 90 dagen na levering worden geretourneerd.",
+          "Artikelen moeten ongebruikt, onbeschadigd en in originele verpakking zijn.",
+          "Sommige producten (bijv. ondergoed, gepersonaliseerde items) komen mogelijk niet in aanmerking voor retour."
+        ]
+      },
+      "howToSubmitReturn": {
+        "title": "Hoe een retouraanvraag indienen",
+        "steps": [
+          "Log in op je account op www.padlev.com",
+          "Ga naar Bestellingen en selecteer de betreffende bestelling.",
+          "Klik op retourneren/terugbetaling.",
+          "Vul het retourformulier in met reden en eventueel afbeeldingen."
+        ],
+        "note": "Na verzending van de aanvraag ontvang je een bevestiging per e-mail en starten wij met de beoordeling."
+      },
+      "refunds": {
+        "title": "Terugbetalingen",
+        "content": "Zodra het geretourneerde artikel is ontvangen en goedgekeurd, wordt de terugbetaling verwerkt naar je oorspronkelijke betaalmethode binnen 5–10 werkdagen. Verzendkosten worden niet terugbetaald, tenzij het artikel defect was of foutief werd verzonden."
+      }
+    },
+    "intellectualProperty": {
+      "title": "9. Intellectueel Eigendom",
+      "content": "Alle inhoud op deze website, inclusief logo’s, afbeeldingen, video’s, artikelen, ontwerpen, teksten, grafische elementen en software, is eigendom van of in licentie bij Padlev. Je mag geen inhoud kopiëren, reproduceren, publiceren, verspreiden of exploiteren zonder onze schriftelijke toestemming."
+    },
+    "userGeneratedContent": {
+      "title": "10. Blog en Gebruikersinhoud",
+      "content": "Gebruikers kunnen beoordelingen, reacties en andere inhoud plaatsen. Door inhoud in te dienen, verleen je Padlev een niet-exclusieve, royaltyvrije licentie om je inhoud op onze platformen te gebruiken, weer te geven en te reproduceren."
+    },
+    "thirdPartyLinks": {
+      "title": "11. Links naar Derden",
+      "content": "Onze website kan links bevatten naar websites van derden. Wij zijn niet verantwoordelijk voor de inhoud, het beleid of de praktijken van die websites. Lees hun algemene voorwaarden en privacybeleid zorgvuldig."
+    },
+    "disclaimerOfWarranties": {
+      "title": "12. Vrijwaring van Garanties",
+      "content": "Alle producten en diensten aangeboden via Padlev worden geleverd 'zoals ze zijn' en 'zoals beschikbaar', zonder enige expliciete of impliciete garantie."
+    },
+    "limitationOfLiability": {
+      "title": "13. Aansprakelijkheidsbeperking",
+      "content": "Voor zover toegestaan door de wet is Padlev niet aansprakelijk voor directe, indirecte, incidentele, punitieve of gevolgschade voortvloeiend uit jouw gebruik van de website, gekochte producten of vertrouwen op de verstrekte inhoud."
+    },
+    "indemnification": {
+      "title": "14. Schadeloosstelling",
+      "content": "Je stemt ermee in Padlev, haar partners en medewerkers te vrijwaren en verdedigen tegen alle claims die voortvloeien uit jouw schending van deze voorwaarden."
+    },
+    "modificationsToTerms": {
+      "title": "15. Wijzigingen in de Voorwaarden",
+      "content": "Wij behouden ons het recht voor om deze Voorwaarden op elk moment aan te passen of te actualiseren. De ‘Laatst bijgewerkt’-datum bovenaan deze pagina zal dan worden aangepast."
+    },
+    "termination": {
+      "title": "16. Beëindiging",
+      "content": "Wij behouden ons het recht voor om de toegang tot onze website of diensten op elk moment te beëindigen of op te schorten bij gedrag dat deze Voorwaarden schendt."
+    },
+    "contactInformation": {
+      "title": "17. Contactinformatie",
+      "content": "Als je vragen hebt over deze Algemene Voorwaarden, neem dan contact met ons op via:",
+      "address": {
+        "company": "Padlev",
+        "email": "contact@padlev.com",
+        "website": "https://www.padlev.com"
+      }
+    }
+  },
+
+
+
+  "Layout": {
+  "keywords": "padel, padel tennis, beste padel racket, padel veld, padel regels, padel sport",
+  "global-title": "Padlev | Padelapparatuur en Expertgidsen – Winkel Nu!",
+  "globale-description": "Padlev helpt je van beginner tot pro met topmateriaal, gidsen en tips. Shop nu kwaliteitsrackets, ballen en accessoires!" ,
+  "global-og-title": "Padlev: Premium Padelapparatuur & Expertgidsen ⚡ Koop Nu!",
+  "global-og-description": "Van beginners tot professionals 🔥 – Verhoog je padelniveau met premium apparatuur en expertadvies. Koop nu en speel beter!",
+  "global-name": "Padlev",
+  "global-name-description": "Padlev biedt hoogwaardige padelproducten, apparatuur en deskundige gidsen om je spel te verbeteren.",
+
+  "terms-title": "Padlev Algemene Voorwaarden | Aankopen en Garantie van Apparatuur",
+  "terms-description": "Lees de Algemene Voorwaarden van Padlev over online aankopen, retouren en garanties. Altijd up-to-date voor jouw gemoedsrust.",
+  "terms-og-title": "Padlev Algemene Voorwaarden",
+  "terms-og-description": "Wettelijke voorwaarden voor aankopen, garanties en retouren van padelapparatuur bij Padlev.",
+  "terms-name": "Padlev Algemene Voorwaarden",
+  "terms-name-description": "Bekijk de bijgewerkte Algemene Voorwaarden van Padlev voor aankopen, retouren en garanties.",
+
+  "search-title": "Zoek Padelapparatuur Padlev | Vind Rackets, Ballen en Accessoires",
+  "search-description": "Zoek naar alle padelapparatuur van Padlev. Vind het perfecte racket, ballen, tassen en accessoires met onze instant zoektool.",
+  "search-og-title": "Zoek Padelapparatuur Padlev",
+  "search-og-description": "Vind de perfecte padelapparatuur met de zoekfunctie van Padlev.",
+  "search-name": "Padlev Product Zoeken",
+  "search-name-description": "Verken alle Padlev apparatuur — rackets, ballen, tassen en meer — direct met onze zoekfunctie.",
+
+  "Return-title": "Padlev Retour- en Terugbetalingsbeleid | Gemakkelijke Retouren",
+  "Return-description": "Padlev retourbeleid: gemakkelijke terugbetalingen en omruilingen voor padelapparatuur. Ontdek de tijdlijnen, voorwaarden en hoe je een retour kunt starten.",
+  "Return-og-title": "Padlev Retourbeleid | Gemakkelijke Terugbetalingen",
+  "Return-og-description": "Hoe je producten van Padlev kunt retourneren: voorwaarden, tijdlijnen en terugbetalingsprocessen.",
+  "Return-name": "Padlev Retour- en Terugbetalingsbeleid",
+  "Return-name-description": "Officieel retourbeleid voor padelapparatuur van Padlev.",
+
+  "Reset-password-title": "Reset je Padlev Wachtwoord | Veilige Herstelopties",
+  "Reset-password-description": "Je padlev wachtwoord vergeten? Reset het veilig om toegang te krijgen tot je account en bestelgeschiedenis.",
+  "Reset-password-og-title": "Padlev Wachtwoord Reset",
+  "Reset-password-og-description": "Veilig wachtwoordherstel voor je Padlev account.",
+  "Reset-password-name": "Wachtwoord Reset",
+  "Reset-password-name-description": "Veilige wachtwoordherstelpagina",
+
+  "update-title": "Heb je je Padlev Email willen Wijzigen? Doe het Hier",
+  "update-description": "Werk eenvoudig je email bij die aan je Padlev account is gekoppeld. Houd je gegevens up-to-date om bestellingen, meldingen en exclusieve inhoud te ontvangen.",
+  "update-og-title": "Update je Padlev Email | Veilig Proces",
+  "update-og-description": "Verander je emailadres voor je Padlev account veilig om continuïteit van toegang te garanderen.",
+  "update-name": "Email Update",
+  "update-name-description": "Veilig proces om je emailadres te wijzigen",
+
+  "product-title": "Koop Padelapparatuur | Officiële Padlev Winkel",
+  "product-description": "Ontdek het volledige assortiment premium padelapparatuur van Padlev — van rackets tot kleding. Ontworpen voor spelers van alle niveaus.",
+  "product-og-title": "Padlev Padelapparatuur Collectie | Rackets, Tassen en Meer",
+  "product-og-description": "Ontdek de selectie padelapparatuur en accessoires van Padlev. Prestaties en stijl.",
+  "product-og-title-twetter": "Padlev Padelapparatuur Collectie | Koop Padelproducten",
+  "product-og-title-description": "Premium padelapparatuur voor spelers die hun spel willen verbeteren. Ontdek onze volledige collectie.",
+  "name": "Padlev Productcatalogus",
+  "description": "Koop de nieuwste padelrackets, accessoires en kleding van Padlev.",
+
+  "Privacy-title": "Padlev Privacybeleid | Gegevensverzameling en -gebruik",
+  "Privacy-description": "Ontdek hoe Padlev jouw gegevens verzamelt, gebruikt en beschermt in ons privacybeleid. Bekijk de meest recente update hier.",
+  "Privacy-og-title": "Padlev Privacybeleid",
+  "Privacy-og-description": "Hoe Padlev je gegevens, cookies en privacyrechten beheert.",
+  "Privacy-name": "Padlev Privacybeleid",
+  "Privacy-name-description": "Lees hoe Padlev je persoonlijke gegevens beheert. Bijgewerkt.",
+
+  "p-title": "Koop Padelapparatuur Online | Rackets, Tassen en Kleding – Padlev Winkel",
+  "p-description": "Bereid je voor met de eersteklas padelapparatuur van Padlev — rackets, kleding en meer, ontworpen voor prestaties en comfort.",
+  "p-og-title": "Verbeter je Spel | Ontdek de Padelapparatuur van Padlev",
+  "p-og-description": "Ontdek de selectie premium padelapparatuur en accessoires van Padlev — ontworpen om prestaties en moderne stijl te maximaliseren.",
+  "p-og-title-twetter": "Padlev Winkel | Ontdek Premium Padelapparatuur",
+  "p-og-title-description": "Premium padelapparatuur voor spelers die hun spel naar het volgende niveau willen tillen. Ontdek onze collectie.",
+  "p-name": "Padlev Producten",
+  "p-sec-description": "Ontdek de nieuwste rackets, accessoires en kleding van Padlev.",
+
+  "Login-title": "Veilig Inloggen | Toegang tot je Padlev Account",
+  "Login-description": "Log veilig in op je Padlev account om je bestellingen, garanties en voorkeuren te beheren.",
+  "Login-og-title": "Padlev Account Inloggen",
+  "Login-og-description": "Log in op je Padlev account om je padelbestellingen te beheren.",
+  "Login-name": "Padlev Inloggen",
+  "Login-name-description": "Veilige inlogpagina voor Padlev klanten.",
+
+  "Help-title": "Padlev Helpcentrum: Hulp, FAQ's en Oplossingen",
+  "Help-description": "Hulp nodig met je Padlev-uitrusting? Bekijk handleidingen, FAQ’s, garantie-info en krijg deskundige ondersteuning. We staan voor je klaar!",
+  "Help-og-title": "Padlev Helpcentrum: Hulp, FAQ's en Oplossingen",
+  "Help-og-description": "Directe oplossingen voor je Padlev padelapparatuur! Stap-voor-stap handleidingen, FAQ's en deskundige ondersteuning.",
+  "Help-name": "Padlev Helpcentrum",
+  "Help-name-description": "Officiële helpdesk voor Padlev padelapparatuur",
+
+  "Cookie-title": "Cookiebeleid | Hoe Padlev Cookies Gebruikt en je Opties",
+  "Cookie-description": "Gedetailleerde informatie over cookies en trackingtechnologieën die door Padlev worden gebruikt. Beheer je voorkeuren en ontdek onze praktijken.",
+  "Cookie-og-title": "Padlev Cookiebeleid - Transparantie en Controle",
+  "Cookie-og-description": "Begrijp en beheer hoe wij cookies gebruiken om je ervaring te verbeteren.",
+  "Cookie-name": "Cookiebeleid",
+  "Cookie-name-description": "Wettelijke informatie over het gebruik van cookies",
+
+  "charity-title": "Padlev Steunt | Padel Gemeenschappen Wereldwijd",
+  "charity-description": "Lees hoe Padlev een deel van de winst besteedt aan sportprogramma's voor jongeren en de donatie van apparatuur. Doe mee aan onze missie.",
+  "charity-og-title": "Padlev Goededoelen Initiatieven",
+  "charity-og-description": "Empower gemeenschappen door middel van padel. Doneer of neem vandaag deel.",
+  "charity-name": "Padlev Goededoelen",
+  "charity-name-description": "Non-profit afdeling van Padlev die zich richt op het vergroten van de toegang tot padel.",
+
+  "Cart-title": "Je Padlev Winkelwagentje | Voltooi je Padel Aankoop",
+  "Cart-description": "Bekijk de geselecteerde padelapparatuur en accessoires. Voltooi je bestelling met een veilige betaling en geniet van snelle verzending.",
+  "Cart-og-title": "Je Padlev Winkelwagentje - Klaar om te Voltooien?",
+  "Cart-og-description": "Mis je padelapparatuur niet! Voltooi je aankoop nu en profiteer van exclusieve voordelen.",
+  "Cart-og-title-twetter": "Je Padlev Padelproducten Wachten Op Je!",
+  "Cart-og-title-description": "Premium padelapparatuur voor spelers die hun spel naar het volgende niveau willen tillen. Je apparatuur staat klaar om gekocht te worden. Beperkte voorraad.",
+  "Cart-name": "Winkelwagentje",
+  "Cart-name-description": "Winkelwagentje met artikelen in afwachting",
+
+  "Checkout-title": "Veilige Betaling | Voltooi je Padlev Bestelling",
+  "Checkout-description": "Voltooi je padelapparatuur aankoop met SSL-encryptie. We accepteren verschillende betaalmethoden. Snelle verzending binnen de EU.",
+  "Checkout-og-title": "Padlev Veilige Betaling",
+  "Checkout-og-description": "Je padelapparatuur is bijna in je handen! Voltooi je aankoop veilig.",
+  "Checkout-name": "Veilige Betaling",
+  "Checkout-name-description": "Betalings- en orderverwerkingspagina",
+
+  "payment-title": "Veilig en Beschermd – Voltooi je Aankoop bij Padlev",
+  "payment-description": "Voltooi je padelapparatuur aankoop veilig met SSL-encryptie. We accepteren verschillende betaalmethoden.",
+  "payment-og-title": "Padlev Veilige Betaling",
+  "payment-og-description": "Je padelapparatuur is bijna in je handen! Voltooi je betaling veilig.",
+  "payment-name": "Veilige Betaling",
+  "payment-name-description": "Betalings- en orderverwerkingspagina",
+
+  "Blog-title": "Padlev Blog | Padel Tips, Apparatuur Gidsen en Verhalen",
+  "Blog-description": "Verken de Padlev Blog voor tips over padel, apparatuur gidsen, verhalen van spelers en het laatste nieuws uit de padelwereld.",
+  "Blog-og-title": "Padlev Blog | Je Bronnencentrum voor Padel",
+  "Blog-og-description": "Blijf op de hoogte met de Padlev blog: je bron voor tips, productreviews en nieuws uit de padelgemeenschap.",
+  "Blog-og-title-tw": "Padlev Blog | Tips en Apparatuur Gidsen",
+  "Blog-og-description-tw": "Krijg tips van experts en informatie over de padelwereld rechtstreeks van de Padlev Blog.",
+  "Blog-name": "Padlev Blog",
+  "Blog-name-description": "Je referentiebron voor padel tips, reviews en nieuws uit de gemeenschap.",
+
+  "Dashboard-title": "Mijn Padlev Dashboard | Beheer Bestellingen, Apparatuur en Account",
+  "Dashboard-description": "Je Padlev dashboard. Volg bestellingen, beheer apparatuur voorkeuren en werk je gegevens veilig bij.",
+  "Dashboard-og-title": "Padlev Gebruiker Dashboard",
+  "Dashboard-og-description": "Veilige toegang tot je Padlev account en bestelgeschiedenis.",
+  "Dashboard-name": "Padlev Gebruiker Dashboard",
+  "Dashboard-name-description": "Veilig dashboard om Padlev account en bestellingen te beheren.",
+
+  "About-title": "Over Ons Padlev: Onze Passie voor Padel en Innovatie",
+  "About-description": "Ontdek Padlev: geboren uit passie voor padel, met hoogwaardige gear om jouw spel te verbeteren. Leer het team achter je favorieten kennen!",
+  "About-og-title": "Over Ons Padlev: Onze Passie voor Padel en Innovatie",
+  "About-og-description": "Ontdek het verhaal, de missie en het team achter jouw favoriete padelproducten.",
+  "About-name": "Over Ons Padlev",
+  "About-name-description": "Het verhaal, de missie en het team achter Padlev padelapparatuur"
+},
+
+
+
+"tophero": {
+    "hero-title": "Verhoog je gezondheid met plezier",
+    "hero-title-1": "Professioneel groeien",
+    "hero-description": "We begeleiden padelspelers van beginner tot pro om de beste versie van zichzelf te worden.",
+    "hero-tag-desktop": "Een padelspeler met een waterfles, twee lachende kinderen op het veld en een andere speler met racket en ballen ernaast",
+    "hero-tag-mobile": "Een padelspeler met een waterfles en twee lachende kinderen op het veld",
+    "logo-padlev": "logo padlev",
+    "logo-padlev-yellow": "logo padlev standaard",
+    "logo-padlev-gold": "logo padlev goud",
+    "logo-padlev-platinum": "logo padlev platina",
+    "login-tag": "padelspeler met bal en racket op het veld"
+  },
+
+
+  "rss": {
+  "title-blog": "Padlev Blog",
+  "description-blog": "Padlev helpt padelspelers om van beginner naar professional te gaan met zorgvuldig geselecteerde uitrusting, trainingsgidsen en tips van experts.",
+  "title-product": "Padlev Producten",
+  "description-product": "Ontdek het volledige assortiment hoogwaardige padeluitrusting van Padlev, van rackets tot kleding. Ontworpen voor spelers van elk niveau.",
+  "title-b-p": "Padlev - Blog en Producten",
+  "description-b-p": "Laatste content van Padlev – Blogartikelen en producten"
+}
+
+
+
+
+}

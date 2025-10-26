@@ -1,0 +1,1227 @@
+{
+"TopNav": {
+  "newsletter": "Newsletter",
+  "search": "Cerca",
+  "newsletter-title": "Ricevi gli ultimi aggiornamenti sul Padel!",
+  "newsletter-description": "Rimani al passo con il gioco! Iscriviti alla nostra newsletter per le ultime notizie sul Padel, offerte esclusive e consigli dei professionisti, direttamente nella tua casella di posta!",
+  "newsletter-email-input": "Iscriviti con la tua email",
+  "newsletter-subscribe-button": "Rimani aggiornato",
+  "error-email": "Inserisci un indirizzo email valido.",
+  "success-title": "Successo! Sei dei nostri!",
+  "success-description": "Siamo entusiasti di darti il benvenuto nella nostra community! Iscrivendoti alla nostra newsletter, hai fatto il primo passo per rimanere aggiornato con le ultime novità, offerte esclusive e preziosi approfondimenti che non vediamo l'ora di condividere con te.",  
+  "success-description-1": "La tua casella di posta sta per diventare molto più interessante! Se non vedi le nostre email, controlla la cartella spam e contrassegnaci come 'Non spam' per assicurarti di non perdere nulla.",
+  "security-msg": "* Le tue informazioni sono al 100% sicure e non saranno mai condivise."
+},
+"Menu":{
+"blog":"blog",
+"man":"uomo",
+"woman":"donna",
+"rackets":"racchette",
+"accessories":"accessori",
+"bags":"borse",
+"random":"casuale",
+"dress":"vestito",
+"visor":"visiera",
+"top":"top",
+"padel shoes":"scarpe da padel",
+"T-shirt":"T-shirt",
+"sweatshirt":"felpa",
+"sock":"calzino",
+"short":"short",
+"polo shirt":"polo",
+"long pants":"pantaloni lunghi",
+"legging":"leggings",
+"jacket":"giacca",
+"cap":"cappello",
+"beginner":"principiante",
+"intermediate":"intermedio",
+"professional":"professionista",
+"balls":"palline",
+"grip":"grip",
+"overgrip":"overgrip",
+"racket protector":"protezione racchetta",
+"protective gear":"attrezzatura protettiva",
+"sunglasses":"occhiali da sole",
+"towel":"asciugamano",
+"resistance bands":"fasce di resistenza",
+"water bottle":"borraccia",
+"sweatbands":"polsini",
+"follow us":"seguici",
+"logo":"padel",
+"Junior":"Junior",
+"home": "home",
+  "menu": "menu"
+},
+"Hero": {
+  "title": "OTTIENI SUBITO LA TUA COPIA DIGITALE GRATUITA DI PADEL MASTER THE GAME!",
+  "Hurry": "Affrettati",
+  "t1": "Sono disponibili solo un numero limitato di download!",
+  "t2": "Cosa otterrai:",
+  "t3": "* Una copia digitale GRATUITA di Padel Master the Game ",
+  "t4": "* Una guida completa che trasformerà il tuo modo di vedere, capire e giocare a padel.",
+  "t5": "Questa offerta esclusiva è disponibile solo per un periodo limitato e potrebbe non essere mai più ripetuta. Non perdere l'opportunità di rivoluzionare il tuo gioco di padel – ",
+  "button-title": "Ottieni la tua copia gratuita oggi stesso!",
+  "valued": "(valutata $19.99)!",
+  "for free": "gratuitamente",
+  "dialog-title": "Dove dobbiamo inviare la tua COPIA GRATUITA?",
+  "dialog-t1": "Inserisci il tuo nome e la tua email qui sotto per ottenere l'accesso immediato a Padel Master the Game!",
+  "dialog-t2": "Iscrivendoti, riceverai:",
+  "dialog-t3": "* Il tuo eBook gratuito direttamente nella tua casella di posta.",
+  "dialog-t4": "* Consigli esclusivi e aggiornamenti dalla newsletter di Padlev (puoi annullare l'iscrizione in qualsiasi momento).",
+  "dialog-t5": "Richiedi subito la tua guida gratuita!",
+  "dialog-name-holder": "Qual è il tuo nome?",
+  "dialog-email-holder": "Qual è il tuo indirizzo email?",
+  "dialog-name-error": "Inserisci il tuo nome.",
+  "dialog-email-error": "Inserisci un indirizzo email valido.",
+  "dialog-success-title": "Grazie! La tua RISORSA GRATUITA è in arrivo",
+  "dialog-success-t1": "Abbiamo inviato la tua guida gratuita alla tua casella di posta elettronica. Per assicurarti di riceverla, controlla la tua email e",
+  "dialog-success-t2": "verifica il tuo indirizzo email",
+  "dialog-success-t3": "cliccando sul link nell'email di conferma.",
+  "dialog-success-t4": "Se non trovi l'email entro pochi minuti, controlla la cartella",
+  "dialog-success-t5": "spam",
+  "dialog-success-t6": "o",
+  "dialog-success-t7": "promozioni",
+  "dialog-success-t8": ".",
+  "dialog-success-t9": "Siamo entusiasti di averti nella community di Padlev!",
+  "security-msg": "* Le tue informazioni sono al 100% sicure e non verranno mai condivise.",
+  "dialog-button": "Ottieni la mia copia gratuita ora",
+"padel-image-alt": "vista-laterale-di-una-rete-su-un-campo-da-padel",
+  "padel-book-alt": "padel-diventa-maestro-del-gioco-libro"
+},
+"NewsSection": {
+  "News": "Notizie",
+  "view": "Vedi tutto"
+},
+"ShopSection": {
+  "Shop": "Negozio",
+  "view": "vedi tutto",
+  "title-0": "Borse da padel",
+  "description-0": "Preparati con stile! Acquista ora borse da padel di alta qualità!",
+  "tag-0": "ragazza con una borsa da padel in campo",
+  "title-1": "Abbigliamento padel junior",
+  "description-1": "Gioca con stile! Acquista abbigliamento padel per bambini!",
+  "tag-1": "bambino con racchetta da padel in campo",
+  "title-2": "Racchette da padel",
+  "description-2": "Potenza, controllo, prestazioni! Trova la racchetta perfetta per te!",
+  "tag-2": "racchetta da padel con palline in campo",
+  "title-3": "Scarpe da prestazione",
+  "description-3": "Migliora il tuo gioco con le migliori scarpe da padel!",
+  "tag-3": "ragazza che si allaccia le scarpe",
+  "title-4": "Occhiali sportivi e protettivi",
+  "description-4": "Vedi chiaramente, gioca in sicurezza! Proteggi i tuoi occhi in campo!",
+  "tag-4": "ragazza che indossa occhiali protettivi",
+  "title-5": "Abbigliamento uomo",
+  "description-5": "Stile e prestazioni! Acquista abbigliamento padel da uomo!",
+  "tag-5": "giocatore di padel in campo",
+  "title-6": "Borracce",
+  "description-6": "Rimani idratato, gioca più forte! Acquista borracce da padel!",
+  "tag-6": "persona che tiene una bottiglia d'acqua",
+  "title-7": "Abbigliamento donna",
+  "description-7": "Eleganza e prestazioni! Acquista abbigliamento padel da donna!",
+  "tag-7": "due ragazze fianco a fianco che guardano il cielo"
+},
+"BrandingStory": {
+  "title": "ADIDAS: ABBIGLIAMENTO SPORTIVO, STILE E NUMEROSE STORIE DAL 1949",
+  "text-1": "Siamo ispirati dagli atleti. Fin dai primi tacchetti da corsa realizzati da Adi Dassler nella sua officina, creare l'attrezzatura migliore per gli sportivi è ciò che ci spinge a perseguire innovazioni tecnologiche e di design. Le nostre sneaker e il nostro abbigliamento sono indossati da detentori di record mondiali e vincitori di medaglie, ma è altrettanto importante che siano apprezzati da runner su strada, escursionisti del fine settimana, giocatori di calcio amatoriali e appassionati di fitness. Dalla rivoluzionaria tecnologia di ammortizzazione adidas Boost, al design da record delle scarpe da corsa Adizero Adios Pro, fino all'attrezzatura outdoor Terrex e agli scarpini da calcio con un tocco imbattibile, innoviamo e miglioriamo costantemente con gli atleti in mente.",
+  "text-2": "Le 3-Stripes sono apparse sui podi di tutto il mondo, ma la loro influenza si estende ben oltre il campo da gioco. Le sneaker adidas sono state indossate da artisti hip-hop, skater, creativi e tutti quei pionieri che fanno avanzare la cultura con la loro visione e il loro stile inconfondibile. Abbiamo lasciato il segno con scarpe leggendarie come le adidas Superstar, le Stan Smith e le Samba, modelli che hanno avuto origine come calzature sportive prima di conquistare le strade e lasciare un'impronta indelebile nella cultura.",
+  "text-3": "L'abbigliamento adidas Originals è il complemento perfetto per le nostre scarpe lifestyle. Le nostre collezioni streetwear si ispirano agli archivi per dare un tocco moderno a classici come la tuta Firebird e i pantaloni Tiro. Materiali di lusso, silhouette sofisticate e dettagli inaspettati elevano il nostro streetwear, trascendendo lo sport senza mai perdere di vista la nostra eredità. Perché il nostro mantra è, ed è sempre stato, che attraverso lo sport abbiamo il potere di cambiare le vite."
+},
+"ShopLetter": {
+  "title": "Iscriviti ora e sblocca fino al 25% di sconto!",
+  "button": "Iscriviti gratis",
+  "newsletter-title": "Unisciti alla nostra newsletter per ottenere fino al 25% di sconto!",
+  "newsletter-description": "Iscriviti alla nostra newsletter e accedi in esclusiva a promozioni fino al 25% di sconto! Sii il primo a scoprire le nuove collezioni, offerte speciali e molto altro.",
+  "newsletter-email-input": "Iscriviti con la tua email",
+  "newsletter-subscribe-button": "Inizia Gratis",
+  "error-email": "Per favore, inserisci un indirizzo email valido.",
+  "success-title": "Successo! Sei dei nostri!",
+  "success-description": "Grazie per esserti iscritto! Un'email di conferma è in arrivo nella tua casella di posta. Clicca sul link di verifica per completare l'iscrizione e iniziare a ricevere gli ultimi aggiornamenti, contenuti esclusivi e novità direttamente da noi.",
+  "security-msg": "* Le tue informazioni sono al 100% sicure e non verranno mai condivise."
+},
+"Footer": {
+  "Contact Us": "Contattaci",
+  "Follow us": "Seguici",
+  "Support & Info": "Supporto e Informazioni",
+  "PRODUCTS": "PRODOTTI",
+  "Contact Us text": "Hai bisogno di aiuto o hai domande?",
+  "Contact Us text 1": "Siamo qui per te, contattaci in qualsiasi momento!",
+  "Follow us text": "Resta aggiornato con le ultime novità di Padlev e offerte esclusive!",
+  "help": "Aiuto",
+  "about us": "Chi siamo",
+  "Charity": "Beneficenza",
+  "Returns and Refunds": "Resi e Rimborsi",
+  "rackets": "Racchette",
+  "shoes": "Scarpe", 
+  "accessories": "Accessori",
+  "bags": "Borse",
+  "man clothes": "Abbigliamento Uomo",
+  "woman clothes": "Abbigliamento Donna",
+  "Privacy Policy": "Informativa sulla Privacy",
+  "Terms and Conditions": "Termini e Condizioni",
+  "Cookies Policy": "Politica sui Cookie",
+  "All rights reserved": "Tutti i diritti riservati 2025."
+},
+"Blog": {
+  "title": "Benvenuti nel Blog di Padlev!",
+  "description": "Rimani al passo con le ultime novità sul padel, consigli degli esperti, recensioni sull'attrezzatura e approfondimenti esclusivi. Che tu sia un principiante o un giocatore esperto, il nostro blog ti offre tutto, dalle tecniche di allenamento ai momenti salienti dei tornei. Unisciti alla nostra community e porta la tua esperienza nel padel a un livello superiore!",
+  "previous": "precedente",
+  "next": "successivo",
+  "tag": "borsa da tennis sul campo",
+  "Latest News": "Ultime Notizie"
+},
+"Blog-id": {  
+  "Published": "Pubblicato",  
+  "Explore More from Padelv": "Esplora di più da Padlev",  
+  "Loved this post": "Ti è piaciuto questo post? Condividi la passione per il padel! Fai sapere ai tuoi amici e diffondi il gioco."  
+},
+"Shop-id": {
+  "Percent": "di sconto",
+  "Vat": "I prezzi dei prodotti su Padlev includono l'IVA. L'aliquota IVA applicabile può variare in base al tuo indirizzo di consegna e verrà calcolata al momento del pagamento.",
+  "Charity": "Quando fai acquisti su Padlev, non stai solo ottenendo qualcosa di fantastico, ma stai anche facendo la differenza. Con ogni acquisto, il 10% del totale viene donato direttamente in beneficenza. Insieme, possiamo creare un impatto positivo mentre ti godi i prodotti che ami. Acquista ora e fai parte di qualcosa di più grande!",
+  "Color": "Colore",
+  "Size": "Taglia",
+  "free shipping link": "Spedizione gratuita su tutti gli ordini",
+  "free shipping title": "Goditi la Spedizione Gratuita in Tutto il Mondo su Tutti gli Articoli!",
+  "free shipping description 1": "Su Padlev, crediamo in un’esperienza di shopping semplice e gratificante. Per questo offriamo la spedizione gratuita su tutti gli articoli, ovunque tu sia nel mondo! Che tu stia acquistando per te stesso o per un regalo, ci pensiamo noi.",
+  "free shipping description 2": "Non aspettare—accedi al tuo account Padlev oggi stesso ed esplora i migliori prodotti con offerte imperdibili. Il tuo prossimo articolo preferito è a portata di clic!",
+  "return link": "Resi entro 90 giorni dall'acquisto",
+  "return title": "Politica di Reso Senza Problemi di 90 Giorni",
+  "return description 1": "I resi sono accettati entro 90 giorni dalla data di acquisto. I clienti sono responsabili dei costi di spedizione per il reso. Assicurati che gli articoli siano nelle loro condizioni originali, poiché i rimborsi potrebbero essere adeguati in caso di resi usati, danneggiati o incompleti.",
+  "return description 2": "Leggi la politica di reso completa",
+  "secure link": "Metodi di pagamento sicuri",
+  "secure title": "Metodi di Pagamento Sicuri",
+  "secure description": "Offriamo opzioni di pagamento altamente sicure per garantire la tua sicurezza. La tua privacy è la nostra priorità: le tue informazioni personali sono sempre protette e mai vendute. Utilizziamo i tuoi dati solo per migliorare la tua esperienza di acquisto, in conformità con le nostre rigorose politiche sulla privacy e sui cookie. Acquista con fiducia su Padlev!",
+  "Reviews": "Recensioni",
+  "Description": "Descrizione",
+  "share description": "Ti piace questo prodotto? Condividilo! Fai sapere ai tuoi amici e lascia che scoprano qualcosa di straordinario. Il tuo supporto significa molto per noi!",
+  "suggestion title": "Esplora i tuoi interessi",
+  "quantity": "Quantità",
+"add to cart": "Aggiungi al carrello",
+"see cart": "Vedi il mio carrello",
+
+"size": "Guida alle taglie",
+  "view-cart": "Visualizza carrello",
+  "select-size": "Seleziona una taglia prima di procedere",
+  "select-color": "Seleziona un colore prima di procedere",
+  "select-color-size": "Seleziona un colore e una taglia prima di procedere",
+  "title1": "Tabella di conversione delle taglie di abbigliamento",
+  "sub1-title1": "Taglie abbigliamento uomo",
+  "sub2-title1": "Taglie abbigliamento donna",
+  "sub3-title1": "Taglie abbigliamento bambini",
+  "title2": "Tabella di conversione delle taglie di calzature",
+  "sub1-title2": "Taglie calzature uomo",
+  "sub2-title2": "Taglie calzature donna",
+  "sub3-title2": "Taglie calzature bambini",
+  "China": "Cina",
+  "Japan": "Giappone",
+  "Chesti": "Petto (pollici)",
+  "Chestc": "Petto (cm)",
+  "Waisti": "Vita (pollici)",
+  "Waistc": "Vita (cm)",
+  "Busti": "Seno (pollici)",
+  "Bustc": "Seno (cm)",
+  "Hipsi": "Fianchi (pollici)",
+  "Hipsc": "Fianchi (cm)",
+  "Heighti": "Altezza (pollici)",
+  "Heightc": "Altezza (cm)",
+  "Foot-Length-i": "Lunghezza del piede (pollici)",
+  "Foot-Length-c": "Lunghezza del piede (cm)",
+  "Age": "Età",
+
+  "instock": "Purtroppo, questo prodotto non è disponibile. Ti invitiamo a riprovare presto."
+
+
+},
+"Login": {
+  "text-1": "Sblocca i vantaggi esclusivi di PadlevCLUB oggi stesso!",
+  "text-2": "Unisciti a PadlevCLUB e migliora la tua esperienza con vantaggi pensati per te. Goditi la spedizione gratuita su ogni ordine, accesso a codici promozionali riservati ai membri e anteprime esclusive sui nuovi prodotti. Come membro di PadlevCLUB, sarai sempre il primo a conoscere offerte speciali, edizioni limitate e molto altro.",
+  "text-3": "Registrati o accedi ora per iniziare a godere dei vantaggi che meriti!",
+  "text-4": "Crea una password sicura per proteggere il tuo account: almeno 8 caratteri, includendo lettere maiuscole, minuscole, numeri e caratteri speciali. Evita password comuni o facili da indovinare.",
+  "text-5": "Ecco una password suggerita per la tua registrazione:",
+  "text-6": "Hai già un account ma hai dimenticato la password?",
+  "text-7": "Reimpostala qui.",
+  "text-8": "INFORMATIVA SULLA PRIVACY",
+  "text-9": "Completando la registrazione, i tuoi dati personali saranno condivisi con i Titolari del trattamento di PadlevCLUB (Padlev Inc. e le sue entità affiliate, di seguito 'Padlev') per creare e mantenere la tua iscrizione a PadlevCLUB. Senza questi dati, l'iscrizione non può essere mantenuta. Come parte dei vantaggi di PadlevCLUB, Padlev potrebbe inviarti comunicazioni di marketing personalizzate. Puoi disattivare queste comunicazioni in qualsiasi momento. Registrandoti, confermi di aver letto, compreso e accettato la nostra Informativa sulla privacy.",
+  "text-10": "Rispettiamo la tua privacy e le tue scelte. I tuoi dati sono sempre criptati e protetti.",
+  "Privacy Policy": "Informativa sulla privacy",
+  "sign in": "Accedi",
+  "Email-is-required": "L'email è obbligatoria.",
+  "Invalid-email-format": "Formato email non valido.",
+  "Disposable-emails": "Le email temporanee non sono consentite.",
+  "8-characters": "La password deve essere lunga almeno 8 caratteri.",
+  "uppercase": "La password deve contenere almeno una lettera maiuscola (A-Z).",
+  "lowercase": "La password deve contenere almeno una lettera minuscola (a-z).",
+  "number": "La password deve contenere almeno un numero (0-9).",
+  "character": "La password deve contenere almeno un carattere speciale (es. !@#$%^&*).",
+  "Failed-to-copy-password": "Impossibile copiare la password.",
+  "email": "email",
+  "password": "password",
+  "Invalid-email": "Email non valida.",
+  "Please-verify-your-email-or-password": "Verifica la tua email o password.",
+  "An-error-occurred-during-sign-in": "Si è verificato un errore durante l'accesso. Riprova.",
+  "Sign-in-error:": "Errore di accesso:",
+  "Copied": "Copiato!",
+  "Subscription-failed": "Abbonamento fallito",
+"Error-during-subscription": "Errore durante l'abbonamento",
+"Network-error": "Errore di rete",
+
+"emailsend": "Abbiamo inviato un link per reimpostare la password al tuo indirizzo email. Controlla la tua casella di posta e segui le istruzioni per verificare e reimpostare la password.",
+"emailsenderror": "Si è verificato un errore. Attendi un momento e riprova.",
+"enteremail": "Inserisci il tuo indirizzo email nel campo designato.",
+
+"log-tit": "Accedi o Registrati",
+"log-des": "Accedi o crea un account con la tua email e password per ottenere il numero di tracciamento, seguire il tuo ordine in tempo reale, godere di un checkout più veloce e sbloccare offerte esclusive e sconti speciali—registrati ora per un'esperienza di acquisto senza interruzioni!"
+
+},
+"Shop": {
+  "title": "Entra nel mondo del padel con Padlev Shop!",
+  "description": "Esplora la nostra selezione premium di attrezzatura da padel, tra cui racchette ad alte prestazioni, palline, abbigliamento e accessori. Migliora il tuo gioco con i migliori marchi e le ultime novità. Acquista ora e gioca come un professionista!",
+  "Latest": "Ultimi Prodotti",
+  "Filter": "Filtra per",
+  "None": "Nessuno",
+  "Lower": "Prezzo più basso",
+  "Higher": "Prezzo più alto",
+  "Reductions": "Sconti",
+      "tag":"padel tennis ball",
+      "previous": "Precedente",
+"next": "Successivo"
+
+},
+"Search": {
+  "Found": "Trovato",
+  "articles": "articoli su",
+  "products": "prodotti per"
+},
+"cart-c": {
+  "empty-title": "Il tuo carrello è vuoto",
+  "empty-description": "Aggiungi il tuo primo articolo al carrello e lo vedrai qui. Inizia a fare shopping ora!",
+  "empty-button": "Facciamo shopping!",
+
+  "title-cart": "Il tuo carrello",
+  "description-cart": "Questi articoli non sono riservati! Completa il tuo ordine prima che vadano esauriti.",
+  "Color": "Colore",
+  "Size": "Taglia",
+  "Quantity": "Quantità",
+
+  "Subtotal": "Subtotale",
+  "Shipping": "Spedizione",
+  "Discount": "Sconto",
+  "Total": "Totale (IVA incl.)",
+  "copon": "Hai un codice promozionale?",
+  "copon-palce-holder": "Inserisci il codice sconto",
+  "copon-button": "Applica coupon",
+  "copon-error": "Oops! Questo codice non sembra funzionare. Controllalo bene o provane un altro!",
+  "checkout-button": "Procedi al pagamento",
+  "continu-button": "Continua lo shopping",
+  "payment-icon-description": "Metodi di pagamento sicuri accettati",
+
+  "Your-order": "Il tuo ordine",
+  "Edite": "Modifica",
+  "payment-methods": "Metodi di pagamento",
+  "payment-methods-description": "Goditi un'esperienza di pagamento fluida e sicura! Scegli il metodo che preferisci—PayPal o carte di pagamento—e completa il tuo acquisto in pochi clic. Veloce, facile e 100% sicuro. Clicca sul pulsante ora e acquista con fiducia!",
+
+
+
+  "error": "Impossibile caricare gli articoli nel carrello. Per favore, riprova.",
+  "logincheckout": "Hai già un account? Accedi per un checkout più veloce.",
+  "summary": "Riepilogo Ordine",
+  "verifypassword": "Per favore, verifica la tua password.",
+  "address-and-contact-title": "Indirizzo e Informazioni di Contatto",
+  "constactinfo": "Informazioni di Contatto",
+  "have-account-1": "Sembra che tu abbia già un account!",
+  "have-account-2": "Accedi ora per un'esperienza di checkout più veloce, tracciare i tuoi ordini in tempo reale e accedere facilmente alla tua cronologia ordini. Inoltre, come membro, riceverai offerte esclusive e promozioni speciali!",
+  "have-account-3": "Inserisci semplicemente la tua password per completare l'acquisto senza problemi.",
+  "login": "Accedi",
+  "forgot-password": "Hai dimenticato la password?",
+  "click-here": "Clicca qui per reimpostarla.",
+  "email-send": "Abbiamo inviato un link per reimpostare la password al tuo indirizzo email. Controlla la tua casella di posta e segui le istruzioni per verificare e reimpostare la password.",
+  "email-send-error": "Qualcosa è andato storto. Attendi un momento e riprova.",
+  "email": "Email *",
+  "password": "Password *",
+  "full-name": "Nome Completo",
+  "enter-name": "Per favore, inserisci il tuo nome *",
+  "exp": "Scadenza: +1*",
+  "enter-code": "Inserisci il prefisso del tuo paese.",
+  "phone": "Numero di Telefono *",
+  "enter-phone": "Per favore, inserisci un numero di telefono valido.",
+  "adress-1": "Via, casa/appartamento/unità *",
+  "enter-address": "Per favore, inserisci il tuo indirizzo completo.",
+  "adress-2": "Appartamento, suite, unità, ecc. (opzionale)",
+  "city": "Città *",
+  "enter-city": "Per favore, inserisci la tua città.",
+  "state": "Stato/Provincia *",
+  "enter-state": "Per favore, inserisci il tuo stato o regione.",
+  "country": "Paese *",
+  "enter-country": "Per favore, inserisci il tuo paese.",
+  "zip": "Codice Postale *",
+  "enter-zip": "Per favore, inserisci il tuo codice postale.",
+  "continue": "Continua",
+  "someting-wrong": "Qualcosa è andato storto. Per favore, riprova.",
+  "login-or-try-with-new-email": "Hai già un account. Accedi oppure prova con una nuova email.",
+  "payment-and-shipping": "Pagamento e Spedizione",
+  "delivery-estimation": "Stima di Consegna",
+  "delivery-estimation-text-1": "Tieni presente che il tempo di consegna stimato per la spedizione standard dalla Cina è generalmente di 10-15 giorni lavorativi. I tempi di consegna possono variare leggermente a seconda dello sdoganamento e dei servizi postali locali nella tua regione.",
+  "delivery-estimation-text-2": "Ti forniremo un numero di tracciamento non appena il tuo ordine verrà spedito, così potrai monitorarne il progresso. Se hai domande o hai bisogno di ulteriore assistenza, non esitare a contattarci.",
+
+  "use-my-address": "Usa il mio indirizzo per la consegna del pacco",
+  "Card-Number": "Numero della carta",
+  "Expiration-Date": "Data di scadenza",
+  "CVV": "CVV",
+  "Pay": "Paga",
+  "Secure-Payment-Processing": "Elaborazione sicura del pagamento",
+  "Secure-Payment-Processing-description": "I tuoi dati di pagamento sono completamente protetti con misure di sicurezza leader del settore. Le transazioni sono crittografate e processate in modo sicuro, garantendo che le informazioni della tua carta non vengano mai memorizzate o esposte.",
+
+  "shipping-address":"Indirizzo di spedizione e informazioni sulla consegna",
+"shipping-details":"Tempi di spedizione e aggiornamenti sulla consegna",
+"shipping-details-text":"Il tuo ordine sarà spedito con spedizione standard dal nostro magazzino in Cina, con un tempo di consegna stimato di 10–15 giorni lavorativi. La consegna potrebbe variare leggermente a causa della dogana o ritardi postali locali. Riceverai un numero di tracciamento una volta spedito. Per qualsiasi domanda, non esitare a contattarci."
+
+
+},
+"orders": {
+  "in": "in",
+  "on": "su",
+  "purchased": "acquistato",
+  "filed": "Errore nella copia della password",
+  "pending": "in attesa",
+  "shipped": "spedito",
+  "completed": "completato",
+  "no-order": "Nessun ordine in questo account",
+  "status": "stato",
+  "order-info": "informazioni sull'ordine",
+  "address": "indirizzo",
+  "order-ID": "ID ordine",
+  "Order-placed-on": "Ordine effettuato il",
+  "Order-completed-on": "Ordine completato il",
+  "Payment-method": "Metodo di pagamento",
+  "tracking-number": "numero di tracciamento",
+  "copied": "copiato",
+  "view-product": "visualizza prodotto",
+  "Received": "Ricevuto",
+  "Delete": "Elimina",
+  "write-rating-error": "Seleziona una valutazione per continuare.",
+  "write-review-error": "Lascia una recensione.",
+  "Write-a-Review": "Scrivi una recensione",
+  "description-leave-feedback": "Lascia un feedback in inglese o nella tua lingua madre.",
+  "Rating": "Valutazione",
+  "write-review-placeholder": "Scrivi la tua recensione qui...",
+  "Submit-review": "Invia recensione",
+  "small-description": "Puoi modificare la tua recensione in qualsiasi momento. Trova la tua recensione nella pagina del prodotto e clicca sull'icona di modifica.",
+  "country-code-error": "Inserisci il tuo prefisso internazionale.",
+  "Edite-a-review": "Modifica una recensione",
+  "country-code-palceholder": "Inserisci il codice del tuo paese (es. US).",
+  "return": "ritorna"
+},
+"user-dashboard": {
+  "My-Account": "Il mio account",
+  "Account-information": "Informazioni sull'account",
+  "Orders": "Ordini",
+  "address": "Indirizzo",
+  "My-Information": "Le mie informazioni",
+  "info-description": "Si prega di assicurarsi che le informazioni fornite di seguito siano accurate e aggiornate.",
+  "Full-Name": "Nome completo",
+  "Login-details": "Dettagli di accesso",
+  "E-mail": "E-mail",
+  "Edite": "Modifica",
+  "email-send": "Abbiamo inviato un'email con le istruzioni per aggiornare il tuo indirizzo email.",
+  "Password": "Password",
+  "logout-description": "Esci da tutti i dispositivi",
+  "logout-description-1": "Verrai disconnesso da tutti i dispositivi su cui hai accesso al sito web Padlev. Per accedere di nuovo, inserisci nuovamente la tua password.",
+  "logout": "Esci",
+  "edite-full-name": "Modifica il nome completo",
+  "edite-address": "Modifica indirizzo",
+  "phone-number": "Numero di telefono",
+  "percent-of-40": "40% di sconto su tutti i prodotti",
+  "total-number": "NUMERO TOTALE DI PUNTI",
+  "percent-of-20": "20% di sconto su tutti i prodotti",
+  "vip-title": "Grazie, VIP!",
+  "vip-text-1": "Siamo incredibilmente grati di averti come uno dei nostri clienti più apprezzati.",
+  "vip-text-2": "La tua continua fiducia, lealtà e supporto significano tutto per noi.",
+  "vip-text-3": "Come membro VIP, non sei solo un cliente, sei parte del nostro viaggio e siamo onorati di servirti con vantaggi esclusivi e offerte premium.",
+  "vip-text-4": "Grazie per essere straordinario. Non vediamo l'ora di rendere la tua esperienza ancora più gratificante!",
+  "vip-text-5": "Con apprezzamento,",
+  "vip-text-6": "Il team Padlev",
+  "level-title": "Aggiorna il tuo account e sblocca ricompense più grandi!",
+  "lev-1": "Attualmente sei su un",
+  "lev-2": "Oro",
+  "lev-3": "Standard",
+  "lev-4": "Account con",
+  "lev-5": "Guadagna punti con ogni acquisto 1$ speso = 1 punto! Più compri, più sali, sbloccando risparmi maggiori e vantaggi esclusivi.",
+  "lev-6": "Vuoi più vantaggi? Ecco come puoi salire di livello:",
+  "lev-7": "Account Gold",
+  "lev-8": "Guadagna",
+  "lev-9": "punti",
+  "lev-10": "Account Platinum",
+  "lev-11": "Guadagna",
+  "lev-12": "punti",
+  "lev-13": "Esempio",
+  "lev-14": "Compra un prodotto da 50$ → Ottieni 50 punti",
+  "lev-15": "Perché salire di livello? Le ricompense migliorano!",
+  "lev-16": "Vantaggi dell'account Gold",
+  "lev-17": "20% di sconto su tutti i prodotti",
+  "lev-18": "Coupon bonus esclusivi",
+  "lev-19": "Ordini",
+  "lev-20": "Ordini",
+  "lev-21": "Vantaggi dell'account Platinum",
+  "lev-22": "40% di sconto su tutti i prodotti (GRANDI risparmi!)",
+  "lev-23": "Coupon bonus esclusivi",
+  "lev-24": "Inizia a guadagnare punti oggi—ogni acquisto ti avvicina allo status VIP! Raggiungerai il Gold o arriverai fino al Platinum?",
+  "reset-email": "Fornisci il tuo nuovo indirizzo email",
+  "reset-password": "Imposta la tua nuova password",
+
+
+
+  "Feedback": "Feedback",
+  "return-refound": "resituzione / rimborso",
+  "delivery-status": "stato della consegna *",
+  "choose": "Scegli un'opzione qui sotto...",
+  "items-received": "articoli ricevuti",
+  "package-not-received": "pacchetto non ricevuto",
+  "application-type": "tipo di applicazione *",
+  "Return-and-refund": "Restituzione e rimborso",
+  "refund-only": "solo rimborso",
+  "describe-issue": "descrivi il problema *",
+  "description": "Il nostro team esaminerà attentamente la tua applicazione e riceverai un'email da uno dei nostri agenti se sono necessarie ulteriori informazioni, come immagini o video dell'articolo. Ti informeremo anche una volta che sarà stata presa una decisione riguardo al tuo rimborso.",
+  "description-1": "Tieni d'occhio la tua casella di posta per ulteriori aggiornamenti. Apprezziamo la tua pazienza e cooperazione.",
+  "submit": "Invia",
+  "text-palceholder": "puoi aggiungere una descrizione più dettagliata del problema con l'articolo",
+  "add-feddback-title": "Per favore, dacci il tuo feedback",
+  "add-feedback-description": "Siamo impegnati a offrire il miglior servizio e la migliore esperienza utente possibile. Il tuo feedback è molto importante per noi, ci aiuta a crescere, migliorare e servirti ancora meglio. Ti saremmo davvero grati se potessi prenderti un momento per condividere i tuoi pensieri!",
+  "add-feddback-text-placeholder": "lascia il tuo feedback qui",
+  "feedback-title": "Grazie mille per il tuo feedback, lo apprezziamo davvero!",
+  "Rating": "Valutazione",
+  "edite-feedback-title": "Puoi modificare il tuo feedback in qualsiasi momento."
+},
+ "Not-found":{
+  "Page-not-found":"Pagina non trovata",
+  "Page-not-found-description":"La pagina che stai cercando non esiste"
+},
+
+
+
+"FAQPage": {
+    "title": "Domande Frequenti (FAQ)",
+    "1-question": "1. Come posso tracciare il mio ordine?",
+    "1-answer-p1": "Una volta che il tuo ordine è stato spedito, puoi tracciarlo facilmente attraverso il tuo account Padlev. Ecco come fare:",
+    "1-list-1": "Accedi al tuo account sul nostro sito web.",
+    "1-list-2": "Vai alla sezione \"Ordini\" nel pannello di controllo del tuo account.",
+    "1-list-3": "Seleziona l'ordine che desideri tracciare. Vedrai lo stato attuale del tuo ordine, insieme al numero di tracciamento e al corriere utilizzato.",
+    "1-answer-p2": "Se non hai ancora un account, ne verrà creato uno automaticamente dopo il tuo primo ordine. Riceverai un'email con le tue credenziali di accesso (nome utente e password) per accedere al tuo account e tracciare i tuoi ordini.",
+
+    "2-question": "2. Ho bisogno di un account per effettuare un ordine?",
+    "2-answer-p1": "No, non è necessario un account per effettuare un acquisto su Padlev. Tuttavia, creare un account offre diversi vantaggi:",
+    "2-list-1": "Checkout più veloce grazie al salvataggio del tuo indirizzo di spedizione e dei dati di pagamento.",
+    "2-list-2": "Tracciamento degli ordini e aggiornamenti sullo stato.",
+    "2-list-3": "Offerte e promozioni esclusive.",
+    "2-answer-p2": "Se non hai un account, ne verrà creato uno automaticamente dopo il tuo primo ordine e riceverai i dettagli di accesso via email.",
+
+    "3-question": "3. Ho effettuato il mio primo ordine, ma non vedo alcun account creato per me. Cosa devo fare?",
+    "3-answer-p1": "Non preoccuparti: se questo è il tuo primo ordine, un account verrà creato automaticamente per te una volta completato il pagamento. Riceverai un'email con le credenziali di accesso al tuo nuovo account.",
+    "3-answer-p2": "Assicurati di controllare la cartella spam/post indesiderata se non trovi l'email nella tua casella di posta.",
+    "3-answer-p3": "Se hai bisogno di aiuto per accedere al tuo account, non esitare a contattarci a support@padlev.com.",
+
+    "4-question": "4. Quali opzioni di spedizione offrite?",
+    "4-answer-p1": "Offriamo la spedizione gratuita su tutti i nostri prodotti per garantire un'esperienza di acquisto comoda e conveniente. Indipendentemente dalle dimensioni del tuo ordine, copriremo noi i costi di spedizione.",
+    "4-list-1": "Spedizione standard: Consegnata in pochi giorni lavorativi, a seconda della tua posizione.",
+    "4-list-2": "Spedizione internazionale: Disponibile per i clienti al di fuori del nostro paese di origine. I tempi di consegna variano a seconda della regione.",
+    "4-answer-p2": "Le informazioni di tracciamento ti verranno fornite una volta che il tuo ordine sarà spedito, così saprai sempre dove si trovano i tuoi prodotti.",
+
+    "5-question": "5. Offrite la spedizione internazionale?",
+    "5-answer-p1": "Sì, offriamo la spedizione internazionale verso numerosi paesi. Verifica le opzioni di spedizione al checkout per vedere se la tua località è supportata.",
+    "5-answer-p2": "I costi e i tempi di spedizione variano a seconda del paese. Potrai tracciare il tuo ordine una volta spedito, così saprai quando aspettarti la consegna.",
+
+    "6-question": "6. Qual è la vostra politica di reso e rimborso?",
+    "6-answer-p1": "In Padlev vogliamo che tu sia completamente soddisfatto del tuo acquisto. Se hai bisogno di restituire un articolo, accettiamo resi e offriamo rimborsi fino a 90 giorni dopo il completamento del pagamento.",
+    "6-answer-p2": "Ecco come funziona il processo di reso:",
+    "6-list-1": "Modulo di reso: Accedi al tuo account Padlev, vai alla sezione \"Resi\" e compila il modulo di reso per il prodotto che desideri restituire.",
+    "6-list-2": "Revisione della richiesta: Una volta inviato il modulo, il nostro team esaminerà la tua richiesta. Se sono necessari ulteriori dettagli, ti contatteremo via email.",
+    "6-list-3": "Conferma del reso: Se il tuo reso viene approvato, emetteremo un rimborso completo una volta ricevuto il prodotto nel nostro magazzino.",
+    "6-list-4": "Processo di rimborso: I rimborsi vengono effettuati con il metodo di pagamento originale. A seconda della banca o del servizio di pagamento, potrebbero essere necessari alcuni giorni lavorativi per vedere il rimborso accreditato.",
+    "6-answer-p3": "Condizioni per i resi: I prodotti devono essere inutilizzati e nelle condizioni originali. Tutti i resi devono essere effettuati entro 90 giorni dalla data di acquisto originale.",
+    "6-answer-p4": "Se hai domande sul processo di reso o rimborso, contattaci a support@padlev.com.",
+
+    "7-question": "7. Cosa devo fare se ricevo un articolo danneggiato o errato?",
+    "7-answer-p1": "Ci scusiamo per l'inconveniente se il tuo ordine arriva danneggiato o errato. Segui questi passaggi:",
+    "7-list-1": "Contattaci immediatamente: Faccelo sapere entro 7 giorni dalla ricezione dell'ordine inviando un'email a support@padlev.com.",
+    "7-list-2": "Fornisci foto: Inviaci foto chiare dell'articolo danneggiato o errato e dell'imballaggio in cui è arrivato.",
+    "7-list-3": "Istruzioni per il reso: Se l'articolo deve essere restituito, ti forniremo un'etichetta di reso gratuita.",
+    "7-list-4": "Risoluzione: Una volta ricevuto il prodotto restituito, ti invieremo l'articolo corretto o emetteremo un rimborso, a tua scelta.",
+    "7-answer-p2": "Ci impegniamo a risolvere i problemi in modo rapido ed efficiente per garantire la tua completa soddisfazione.",
+
+    "8-question": "8. Posso modificare o annullare il mio ordine dopo averlo effettuato?",
+    "8-answer-p1": "Una volta effettuato l'ordine, viene elaborato rapidamente per garantire una consegna veloce. Tuttavia, se hai bisogno di modificare o annullare un ordine, contattaci immediatamente a support@padlev.com.",
+    "8-answer-p2": "Se l'ordine non è ancora stato elaborato, saremo lieti di apportare le modifiche richieste. Se l'ordine è già stato spedito, puoi seguire la nostra politica di reso una volta ricevuto il prodotto.",
+
+    "9-question": "9. Come posso reimpostare la password del mio account?",
+    "9-answer-p1": "Se hai dimenticato la password o vuoi reimpostarla per qualsiasi motivo, segui questi semplici passaggi:",
+    "9-list-1": "Vai alla pagina di accesso sul nostro sito web.",
+    "9-list-2": "Clicca sul link \"Password dimenticata?\".",
+    "9-list-3": "Inserisci il tuo indirizzo email registrato e ti invieremo le istruzioni per reimpostare la password.",
+    "9-list-4": "Segui le istruzioni nell'email per impostare una nuova password e riottenere l'accesso al tuo account.",
+    "9-answer-p2": "Se hai bisogno di ulteriore assistenza, non esitare a contattarci.",
+
+    "10-question": "10. Come posso contattare l'assistenza clienti?",
+    "10-answer-p1": "Se hai altre domande o hai bisogno di assistenza, il nostro team di supporto clienti è qui per aiutarti!",
+    "10-list-1": "Email: support@padlev.com",
+    "10-answer-p2": "Siamo qui per garantirti la migliore esperienza di acquisto su Padlev!"
+},
+
+
+
+"AboutPage": {
+  "title": "Chi Siamo – Padlev",
+  "section-1-p1": "Nel mondo frenetico di oggi, dove le pressioni e le distrazioni della vita ci circondano costantemente, è facile perdere di vista ciò che conta davvero: il nostro benessere.",
+  "section-2-title": "La tua salute è importante",
+  "section-2-p1": "A Padlev, comprendiamo le sfide che affronti. Crediamo che la salute non sia solo l'assenza di malattia, ma uno stato di piena vitalità, energia e gioia. Che tu stia cercando di ritrovare la forma fisica, sfuggire allo stress quotidiano o semplicemente riconnetterti con una versione più sana di te stesso, il tuo percorso è importante.",
+  "section-3-title": "Scopri la gioia del padel",
+  "section-3-p1": "Ed è qui che entriamo in gioco noi. Il padel non è solo uno sport: è un modo divertente, dinamico e sociale per rimettersi in forma, restare attivi e costruire connessioni significative.",
+  "section-3-p2": "A differenza di altre routine di fitness che sembrano un obbligo, il padel è facile da imparare, altamente coinvolgente (nel migliore dei modi) e perfetto per giocatori di tutti i livelli. Riporta la gioia nel movimento, ed è questo che lo rende potente.",
+  "section-4-title": "Il tuo viaggio da principiante a professionista",
+  "section-4-p1": "A Padlev, non offriamo solo attrezzature per il padel. Siamo il tuo compagno in un viaggio trasformativo, dal tuo primo colpo fino a diventare il giocatore che sogni di essere.",
+  "section-4-p2": "Selezioniamo con cura prodotti pensati per supportare ogni fase del tuo sviluppo nel padel: dalle attrezzature per principianti a quelle avanzate, dai consigli di allenamento alle guide sulle prestazioni. Non sarai mai solo nel tuo percorso: siamo con te ogni passo del cammino.",
+  "section-5-title": "I risultati parlano da soli",
+  "section-5-p1": "Quando ti impegni nel tuo percorso di salute con il padel, i risultati sono chiari: migliore forma fisica, maggiore concentrazione, relazioni più solide e un rinnovato entusiasmo per la vita.",
+  "section-5-p2": "Migliaia di persone hanno già fatto del padel parte del loro stile di vita wellness, e le loro storie di successo ispirano tutto ciò che facciamo. Con l'attrezzatura giusta, la mentalità corretta e il supporto adeguato, puoi trasformare la tua vita, dentro e fuori dal campo.",
+  "section-6-title": "Padlev: La tua guida e sponsor",
+  "section-6-p1": "Non vendiamo solo prodotti, sponsorizziamo il tuo stile di vita. A Padlev, ti posizioniamo come l'eroe del tuo viaggio verso il benessere. Il nostro ruolo è guidarti, equipaggiarti e motivarti. Che tu stia allenandoti per la tua prima partita o spingendo i tuoi limiti a livello competitivo, Padlev è qui per aiutarti a raggiungere più di quanto tu abbia mai immaginato.",
+  "section-7-title": "Unisciti a noi oggi",
+  "section-7-p1": "Diventa l'eroe della tua storia di benessere. Lascia che Padlev sia la tua guida affidabile verso una vita più sana, felice e forte, a partire da ora.",
+  "section-7-p2": "Insieme, sblocchiamo il tuo pieno potenziale, una partita alla volta.",
+  "tag": "Giocatore di padel che tiene una medaglia e una racchetta"
+},
+
+   "CharityPage": {
+  "title": "La Nostra Iniziativa Caritativa",
+  "intro": {
+    "p1": "In Padlev, crediamo nel potere dello sport per cambiare le vite.",
+    "p2": "Non vendiamo solo prodotti di alta qualità per il padel – siamo appassionati nel restituire alla nostra comunità e nel supportare coloro che ne hanno più bisogno. Ecco perché dedichiamo il 10% dei nostri profitti a cause caritative che si concentrano sulla salute, sul benessere e sull'empowerment degli individui per aiutarli a condurre una vita più sana e attiva."
+  },
+  "section1": {
+    "title": "Fare la Differenza – Insieme",
+    "p1": "Quando acquisti da Padlev, non stai solo investendo in attrezzature sportive di alta qualità, ma stai anche facendo la differenza. Ogni acquisto che fai contribuisce direttamente alla nostra missione di aiutare le persone, in particolare i bambini e le comunità svantaggiate, a sperimentare i benefici dello sport.",
+    "p2": "Vogliamo vedere comunità più sane, dove tutti abbiano l'opportunità di giocare, fare esercizio e prosperare. Dalla fornitura di attrezzature sportive e strutture all'assistenza a programmi sportivi e iniziative per la salute, ci impegniamo a costruire un futuro migliore attraverso lo sport."
+  },
+  "section2": {
+    "title": "I Nostri Partner Caritativi",
+    "p1": "Lavoriamo con organizzazioni caritative di fiducia che si concentrano sul miglioramento dell'accesso allo sport per tutti, indipendentemente dal loro background o dalla loro situazione finanziaria. Il tuo supporto aiuta in vari modi, tra cui:",
+    "list": {
+      "0": "Fornire attrezzature sportive a bambini e adulti che non possono permetterselo.",
+      "1": "Raccogliere fondi per i club sportivi locali che promuovono l'attività fisica e il benessere nelle aree svantaggiate.",
+      "2": "Supportare iniziative di educazione alla salute che insegnano l'importanza dell'esercizio fisico e di uno stile di vita attivo.",
+      "3": "Creare opportunità per i giovani di partecipare a programmi sportivi organizzati, aiutandoli a sviluppare disciplina, lavoro di squadra e fiducia in se stessi."
+    },
+    "p2": "Siamo orgogliosi di collaborare con organizzazioni che si concentrano su queste aree chiave, assicurandoci che il tuo contributo abbia un impatto positivo e tangibile."
+  },
+  "section3": {
+    "title": "Il 10% di Ogni Acquisto Va alla Carità",
+    "p1": "Siamo impegnati a restituire, ed è per questo che il 10% dei nostri profitti viene donato a organizzazioni benefiche. Che si tratti di finanziare programmi sportivi locali o di fornire attrezzature necessarie per le comunità bisognose, il tuo acquisto gioca un ruolo fondamentale nel migliorare le vite.",
+    "howItWorks": {
+      "title": "Come Funziona?",
+      "list": {
+        "0": "Acquisti uno dei nostri prodotti di alta qualità su Padlev.",
+        "1": "Destiniamo il 10% del nostro profitto dall'acquisto a organizzazioni benefiche che promuovono lo sport e la salute.",
+        "2": "Aiuti a fare la differenza e dai a più persone l'opportunità di essere attive, sane e coinvolte nello sport."
+      }
+    },
+    "p2": "Ogni volta che acquisti da noi, non stai solo ottenendo il meglio nell'attrezzatura da padel – stai contribuendo a rendere il mondo un posto più sano e attivo."
+  },
+  "section4": {
+    "title": "Perché Ci Preoccupiamo della Salute e dello Sport",
+    "p1": "Comprendiamo che lo sport non è solo un modo divertente per mantenersi in forma, ma anche un aspetto essenziale per costruire fiducia in se stessi, disciplina e lavoro di squadra. Attraverso la nostra iniziativa caritativa, vogliamo rendere lo sport accessibile a tutti, indipendentemente dalla loro situazione economica. Crediamo che la salute sia un diritto universale e la nostra missione è creare un ambiente inclusivo in cui tutti possano partecipare ad attività fisiche che migliorano il loro benessere.",
+    "p2": "Lo sport svolge anche un ruolo importante nello sviluppo di bambini e giovani. Supportando programmi sportivi, offriamo ai giovani l'opportunità di rimanere attivi, costruire relazioni positive e acquisire competenze che li aiuteranno a avere successo dentro e fuori dal campo."
+  },
+  "section5": {
+    "title": "Unisciti a Noi per Fare la Differenza",
+    "p1": "Non sei solo un cliente – sei un partner nella nostra missione di migliorare la vita attraverso lo sport. Scegliendo di acquistare da Padlev, stai contribuendo al benessere delle persone e delle comunità che ne hanno più bisogno.",
+    "howWeCan": {
+      "title": "Insieme, possiamo:",
+      "list": {
+        "0": "Aiutare i bambini a crescere sani e attivi.",
+        "1": "Fornire attrezzature sportive alle comunità bisognose.",
+        "2": "Finanziare programmi di salute che insegnano l'importanza dell'attività fisica."
+      }
+    },
+    "p2": "Ti invitiamo a far parte di questo viaggio significativo. Il tuo supporto ci permetterà di ampliare i nostri sforzi caritativi e avere un impatto ancora maggiore sulla salute delle persone in tutto il mondo."
+  },
+  "section6": {
+    "title": "Come Puoi Partecipare",
+    "p1": "Puoi aiutare in molti modi:",
+    "list": {
+      "0": "Fai un acquisto: ogni volta che acquisti da noi, stai supportando le nostre cause caritative.",
+      "1": "Diffondi la voce: condividi la nostra missione con amici e familiari, e incoraggiali a sostenere la causa.",
+      "2": "Rimani connesso: seguici sui social media e rimani aggiornato sui progressi che stiamo facendo insieme.",
+      "3": "Sostieni direttamente le organizzazioni benefiche: se desideri contribuire ulteriormente, ti forniremo informazioni su come fare una donazione ai nostri partner caritativi."
+    }
+  },
+  "section7": {
+    "title": "Il Nostro Impegno per la Trasparenza",
+    "p1": "Crediamo nella trasparenza con i nostri clienti. Sarai in grado di vedere esattamente dove vanno i tuoi contributi e come stanno facendo la differenza. Forniremo aggiornamenti regolari sui progetti che sosteniamo e sull'impatto delle tue donazioni.",
+    "p2": "Condivideremo anche storie, immagini e report sulle nostre iniziative caritative affinché tu possa vedere di persona la differenza che stai facendo con il tuo acquisto."
+  },
+  "closing": {
+    "title": "Costruiamo un Futuro più Sano – Insieme",
+    "p1": "Ogni racchetta da padel, ogni pallina, ogni acquisto che fai ha un effetto positivo. Grazie per supportare la nostra missione e per aiutarci a creare un mondo in cui tutti abbiano accesso ai benefici dello sport e a uno stile di vita sano. Lavoriamo insieme per ispirare e dare forza alle persone per vivere meglio e più sani.",
+    "p2": "Padlev – Gioca per la Salute, Gioca per una Causa."
+  }
+}
+,
+
+
+
+
+
+"ReturnPolicy": {
+    "title": "Politica di Reso e Rimborso",
+    "intro": "In Padlev, la tua soddisfazione è la nostra priorità. Se non sei completamente soddisfatto del tuo acquisto, puoi richiedere un reso e un rimborso entro 90 giorni dalla data di pagamento, secondo i termini seguenti.",
+    "eligibility": {
+        "title": "1. Requisiti",
+        "list": [
+            "La richiesta è effettuata entro 90 giorni dal pagamento.",
+            "L'articolo è nuovo, nelle condizioni originali e non danneggiato.",
+            "Invia la richiesta tramite il modulo nel tuo account Padlev.",
+            "La richiesta è approvata dopo la nostra verifica."
+        ]
+    },
+    "howToSubmit": {
+        "title": "2. Come Richiedere un Reso",
+        "steps": [
+            "Accedi su www.padlev.com",
+            "Vai a Ordini e seleziona l'ordine.",
+            "Clicca su reso / rimborso.",
+            "Compila il modulo con il motivo e eventuali immagini."
+        ],
+        "note": "Dopo l'invio, riceverai una conferma via e-mail e inizieremo a esaminare la tua richiesta."
+    },
+    "reviewAndApproval": {
+        "title": "3. Verifica e Approvazione",
+        "content": "Il nostro team valuterà la tua richiesta in 3–5 giorni lavorativi. Potremmo contattarti per ulteriori dettagli.",
+        "list": [
+            "Se approvata, riceverai istruzioni per il reso.",
+            "Se rifiutata, ti informeremo via e-mail con il motivo."
+        ]
+    },
+    "returnShipping": {
+        "title": "4. Spese di Reso",
+        "content": "Salvo diversa indicazione, le spese di reso sono a tuo carico. Consigliamo un servizio tracciabile. Padlev non è responsabile per resi persi."
+    },
+    "refunds": {
+        "title": "5. Rimborsi",
+        "content": "Una volta ricevuto e approvato l'articolo:",
+        "list": [
+            "Rimborseremo il metodo di pagamento originale.",
+            "Il rimborso richiede 5–10 giorni lavorativi a seconda del provider.",
+            "Riceverai un'e-mail una volta elaborato."
+        ]
+    },
+    "itemsNotEligible": {
+        "title": "6. Articoli Non Rimborsabili",
+        "list": [
+            "Articoli resi dopo 90 giorni.",
+            "Articoli usati o danneggiati non per nostra colpa.",
+            "Articoli in saldo o non rimborsabili.",
+            "Articoli personalizzati."
+        ]
+    },
+    "exchanges": {
+        "title": "7. Cambi",
+        "content": "Al momento non offriamo cambi diretti. Se desideri un articolo diverso, richiedi un reso e effettua un nuovo ordine separatamente."
+    },
+    "contactUs": {
+        "title": "8. Contattaci",
+        "content": "Per assistenza o domande su resi o rimborsi, contattaci:",
+        "address": {
+            "company": "Padlev",
+            "email": "contact@padlev.com",
+            "supportHours": "Lunedì–Venerdì, 9:00–18:00 (CET)"
+        }
+    },
+    "changes": {
+        "title": "9. Modifiche a Questa Politica",
+        "content": "Potremmo aggiornare questa politica. Le modifiche saranno indicate qui con la data. Si prega di verificarla periodicamente."
+    }
+},
+
+
+
+
+
+
+
+
+    
+      "PrivacyPolicy": {
+        "title": "Politica sulla Privacy",
+        "effectiveDate": "Data di entrata in vigore: 01-01-2025",
+        "lastUpdated": "Ultimo aggiornamento: 01-01-2025",
+        "intro": "Da Padlev (\"noi\", \"nostro\" o \"nostri\"), apprezziamo la tua privacy e ci impegniamo a proteggere le informazioni personali dei nostri utenti. Questa Politica sulla Privacy spiega come raccogliamo, usiamo, conserviamo, divulghiamo e proteggiamo le tue informazioni quando visiti il nostro sito web www.padlev.com, interagisci con i nostri contenuti o effettui un acquisto. Utilizzando il nostro sito, accetti la raccolta e l'uso delle tue informazioni in conformità con questa Politica sulla Privacy.",
+        "informationWeCollect": {
+          "title": "1. Informazioni che Raccogliamo",
+          "description": "Potremmo raccogliere e trattare le seguenti categorie di informazioni personali:",
+          "list": [
+            "Informazioni sul conto: Nome, indirizzo e-mail, numero di telefono, password, indirizzo di fatturazione/spedizione",
+            "Informazioni sugli acquisti: Dettagli dell'ordine, metodo di pagamento (non conserviamo dati finanziari sensibili)",
+            "Comunicazioni con il servizio clienti: Messaggi, recensioni o richieste",
+            "Informazioni sul dispositivo: Indirizzo IP, tipo di browser, sistema operativo, risoluzione dello schermo",
+            "Dati di utilizzo: Pagine visitate, tempo trascorso sul sito, fonti di riferimento",
+            "Cookie: Tracciamento della sessione, analisi, pubblicità"
+          ]
+        },
+        "howWeUse": {
+          "title": "2. Come Usiamo le Tue Informazioni",
+          "list": [
+            "Per evadere gli ordini e fornire assistenza clienti",
+            "Per creare e gestire il tuo account",
+            "Per inviare e-mail transazionali o promozionali (se ti sei iscritto)",
+            "Per migliorare le prestazioni del sito e l'esperienza dell'utente",
+            "Per prevenire le frodi e garantire la sicurezza",
+            "Per adempiere agli obblighi legali"
+          ]
+        },
+        "legalBasis": {
+          "title": "3. Base Legale per il Trattamento (GDPR)",
+          "list": [
+            "Consenso: Quando acconsenti esplicitamente",
+            "Contratto: Per adempiere agli obblighi contrattuali",
+            "Obbligo legale: Conformità con la legge",
+            "Interessi legittimi: Migliorare il nostro servizio, prevenire frodi"
+          ]
+        },
+        "sharingInformation": {
+          "title": "4. Condivisione delle Informazioni Personali",
+          "description": "Non vendiamo le tue informazioni personali. Potremmo condividere i dati con i seguenti soggetti:",
+          "list": [
+            "Elaboratori di pagamento (ad esempio, PayPal, Stripe)",
+            "Fornitori di servizi di spedizione e logistica",
+            "Servizi di analisi e cloud (ad esempio, Google Analytics)",
+            "Autorità legali quando necessario",
+            "In caso di fusione o acquisizione"
+          ]
+        },
+        "dataRetention": {
+          "title": "5. Conservazione dei Dati",
+          "content": "Conserviamo le informazioni personali solo per il tempo necessario a soddisfare i nostri obblighi e rispettare i requisiti legali. Una volta che i dati non sono più necessari, vengono eliminati o anonimizzati in modo sicuro."
+        },
+        "yourRights": {
+          "title": "6. I Tuoi Diritti",
+          "description": "In base alla tua posizione, potresti avere i seguenti diritti:",
+          "list": [
+            "Accedere, correggere o eliminare i tuoi dati personali",
+            "Limitare o opporti al trattamento dei dati",
+            "Revocare il consenso in qualsiasi momento",
+            "Richiedere la portabilità dei dati"
+          ],
+          "contact": "Per esercitare i tuoi diritti, contattaci a: contact@padlev.com"
+        },
+        "dataSecurity": {
+          "title": "7. Sicurezza dei Dati",
+          "content": "Utilizziamo server sicuri, crittografia e controlli di accesso per proteggere i tuoi dati. Sebbene ci impegniamo a utilizzare mezzi commercialmente accettabili per proteggere le tue informazioni personali, nessun metodo di trasmissione su Internet è completamente sicuro al 100%."
+        },
+        "internationalTransfers": {
+          "title": "8. Trasferimenti Internazionali",
+          "content": "I tuoi dati possono essere trasferiti e trattati in paesi al di fuori del tuo. Garantiamo che siano in atto le opportune misure di protezione per proteggere i tuoi dati attraverso i confini."
+        },
+        "thirdPartyLinks": {
+          "title": "9. Link di Terze Parti",
+          "content": "Il nostro sito può contenere link a siti web esterni. Non siamo responsabili per le loro pratiche sulla privacy. Ti consigliamo di leggere le loro politiche sulla privacy prima di fornire dati personali."
+        },
+        "cookies": {
+          "title": "10. Cookie e Tecnologie di Tracciamento",
+          "description": "Utilizziamo i cookie per migliorare la tua esperienza. Puoi controllare o disabilitare i cookie tramite le impostazioni del tuo browser. I tipi di cookie includono:",
+          "list": [
+            "Essenziali: Necessari per il funzionamento del sito",
+            "Analitici: Misurare l'uso e le prestazioni",
+            "Pubblicitari: Annunci personalizzati e offerte"
+          ]
+        },
+        "children": {
+          "title": "11. Privacy dei Bambini",
+          "content": "Il nostro sito non è destinato ai bambini di età inferiore ai 13 anni. Non raccogliamo consapevolmente dati personali da bambini. Se veniamo a conoscenza di aver raccolto dati da bambini, li elimineremo prontamente."
+        },
+        "changes": {
+          "title": "12. Modifiche a Questa Politica",
+          "content": "Possiamo aggiornare questa politica di tanto in tanto. Le modifiche saranno pubblicate su questa pagina. Il tuo uso continuato del sito costituisce l'accettazione della politica aggiornata."
+        },
+        "contactUs": {
+          "title": "13. Contattaci",
+          "description": "Se hai domande su questa Politica sulla Privacy, contattaci a:",
+          "address": {
+            "company": "Padlev",
+            "email": "contact@padlev.com",
+            "website": "https://www.padlev.com"
+          }
+        }
+      },
+
+
+    "CookiePolicy": {
+  "title": "Politica sui Cookie",
+  "intro": "Questa Politica sui Cookie spiega come Padlev ('noi', 'ci', o 'nostro') utilizza i cookie e tecnologie simili quando visiti il nostro sito web www.padlev.com (il 'Sito Web'). Descrive cosa sono queste tecnologie, perché le utilizziamo e i tuoi diritti per controllarne l'uso.",
+  "effectiveDate": "01-01-2025",
+  "lastUpdated": "01-01-2025",
+  "sections": {
+    "0": {
+      "title": "1. Cosa sono i cookie?",
+      "content": "I cookie sono piccoli file di testo memorizzati sul tuo browser o dispositivo dai siti web che visiti. Aiutano a riconoscere il tuo dispositivo e a ricordare preferenze o azioni nel tempo. I cookie possono essere:",
+      "list": [
+        "Cookie di prima parte: impostati dal sito web che stai visitando.",
+        "Cookie di terze parti: impostati da terzi come fornitori di analisi o inserzionisti."
+      ]
+    },
+    "1": {
+      "title": "2. Perché usiamo i cookie?",
+      "content": "Utilizziamo i cookie per i seguenti scopi:",
+      "table": {
+        "headers": ["Tipo", "Scopo"],
+        "rows": [
+          ["Cookie essenziali", "Necessari per il funzionamento di base del sito e per la sicurezza."],
+          ["Cookie funzionali", "Ricordano preferenze come lingua e regione."],
+          ["Cookie analitici", "Misurano il traffico e i modelli di utilizzo per migliorare le prestazioni."],
+          ["Cookie pubblicitari", "Tracciano il comportamento su vari siti web per fornire pubblicità mirata."]
+        ]
+      }
+    },
+    "2": {
+      "title": "3. Cookie che utilizziamo",
+      "list": [
+        "_ga, _gid: cookie di Google Analytics per tracciare il comportamento dei visitatori (scadenza dopo 2 anni).",
+        "_fbp: cookie di Facebook Pixel per il retargeting (scadenza dopo 3 mesi).",
+        "session_id: utilizzato per mantenere le sessioni degli utenti durante la navigazione."
+      ]
+    },
+    "3": {
+      "title": "4. Gestione delle tue preferenze sui cookie",
+      "content": "Puoi gestire o disabilitare i cookie nel seguente modo:",
+      "list": [
+        "Regolando le impostazioni del tuo browser (bloccare o eliminare i cookie).",
+        "Usando il nostro banner dei cookie (se disponibile) per attivare o disattivare le categorie di cookie.",
+        "Visitando i siti di opt-out dell'industria come:"
+      ],
+      "subList": [
+        {"name": "Your Online Choices", "url": "https://www.youronlinechoices.com/"},
+        {"name": "Network Advertising Initiative", "url": "https://optout.networkadvertising.org/"},
+        {"name": "Google Ads Settings", "url": "https://adssettings.google.com/"},
+        {"name": "Facebook Ad Preferences", "url": "https://www.facebook.com/adpreferences/"}
+      ]
+    },
+    "4": {
+      "title": "5. Cookie di terze parti",
+      "content": "Alcuni contenuti sul nostro sito web possono essere forniti da terzi. Questi terzi possono utilizzare cookie sui quali non abbiamo alcun controllo. L'uso di cookie da parte di questi terzi è regolato dalle loro politiche."
+    },
+    "5": {
+      "title": "6. Aggiornamenti di questa politica",
+      "content": "Possiamo aggiornare questa Politica sui Cookie di tanto in tanto per riflettere cambiamenti nel nostro utilizzo dei cookie o per motivi legali. Le modifiche saranno pubblicate su questa pagina."
+    },
+    "6": {
+      "title": "7. Contattaci",
+      "content": "Se hai domande sull'uso dei cookie o su questa Politica sui Cookie, contattaci a:",
+      "address": {
+        "company": "Padlev",
+        "email": "contact@padlev.com",
+        "website": "https://www.padlev.com"
+      }
+    }
+  }
+},
+
+
+
+  "TermsAndConditions": {
+    "title": "Termini e Condizioni",
+    "intro": "Benvenuto su Padlev, la tua fonte affidabile per prodotti, attrezzature e contenuti esperti sul padel. Ti invitiamo a leggere attentamente questi Termini e Condizioni prima di utilizzare il nostro sito web all’indirizzo www.padlev.com, gestito da Padlev.",
+    "acceptance": {
+      "title": "1. Accettazione dei Termini",
+      "content": "Accedendo o utilizzando il nostro sito web, accetti di essere vincolato da questi Termini. Se non accetti tutti i termini e le condizioni riportati in questa pagina, non puoi utilizzare il nostro sito o i nostri servizi."
+    },
+    "service": {
+      "title": "2. Servizio",
+      "content": "Padlev è una piattaforma digitale che offre prodotti, contenuti e interazioni con la community legati al padel. Utilizzando il nostro servizio, accetti questi Termini e gli eventuali termini aggiuntivi citati."
+    },
+    "eligibility": {
+      "title": "3. Idoneità",
+      "content": "Per utilizzare questo sito, devi avere almeno 18 anni o l’autorizzazione di un genitore o tutore legale. Utilizzando il nostro sito, dichiari e garantisci di soddisfare questo requisito."
+    },
+    "accountRegistration": {
+      "title": "4. Registrazione dell’Account",
+      "content": "Per accedere a determinate funzionalità del sito o effettuare acquisti, potrebbe essere necessario registrare un account. Sei responsabile della riservatezza del tuo account e della tua password.",
+      "list": [
+        "Fornire informazioni accurate, aggiornate e complete.",
+        "Mantenere la riservatezza del tuo account e della password.",
+        "Assumerti la responsabilità di tutte le attività effettuate tramite il tuo account."
+      ]
+    },
+    "productListingsAndOrders": {
+      "title": "5. Prodotti e Ordini",
+      "content": "Tutti i prodotti mostrati sul sito sono soggetti a disponibilità. Facciamo del nostro meglio per fornire descrizioni, immagini e prezzi accurati, ma non garantiamo che tutte le informazioni siano prive di errori.",
+      "ordering": {
+        "title": "Ordini",
+        "list": [
+          "Gli ordini sono considerati un’offerta di acquisto e sono soggetti alla nostra accettazione.",
+          "Una volta effettuato l’ordine, riceverai un'email di conferma.",
+          "Ci riserviamo il diritto di rifiutare o annullare qualsiasi ordine in qualsiasi momento per motivi come disponibilità, errori di prezzo o sospetta frode."
+        ]
+      },
+      "pricing": {
+        "title": "Prezzi",
+        "content": "Tutti i prezzi sono espressi in [inserire valuta] e includono/escludono l’IVA, se applicabile. Ci riserviamo il diritto di modificare i prezzi in qualsiasi momento senza preavviso."
+      }
+    },
+    "payment": {
+      "title": "6. Pagamento",
+      "content": "Accettiamo pagamenti tramite gateway sicuri e affidabili, inclusi carte di credito/debito e criptovalute. I tuoi dati di pagamento sono elaborati in modo sicuro.",
+      "list": [
+        "Carte di Credito/Debito",
+        "Criptovalute"
+      ]
+    },
+    "shippingAndDelivery": {
+      "title": "7. Spedizione e Consegna",
+      "content": "Spediamo nella maggior parte dei paesi del mondo. I tempi e i costi di spedizione variano in base alla tua posizione e al metodo selezionato.",
+      "list": [
+        "Le date di consegna stimate sono indicative e non garantite.",
+        "Eventuali ritardi doganali o postali non sono sotto il nostro controllo.",
+        "Una volta spedito l’ordine, riceverai un numero di tracciamento via email."
+      ]
+    },
+    "returnsRefundsAndExchanges": {
+      "title": "8. Resi, Rimborsi e Cambi",
+      "returnEligibility": {
+        "title": "Idoneità al Reso",
+        "list": [
+          "Gli articoli devono essere restituiti entro 90 giorni dalla consegna.",
+          "Gli articoli devono essere inutilizzati, non danneggiati e nella confezione originale.",
+          "Alcuni prodotti (es. biancheria intima, articoli personalizzati) potrebbero non essere idonei al reso."
+        ]
+      },
+      "howToSubmitReturn": {
+        "title": "Come Inviare una Richiesta di Reso",
+        "steps": [
+          "Accedi al tuo account su www.padlev.com",
+          "Vai su Ordini e seleziona l’ordine.",
+          "Clicca su reso/rimborso.",
+          "Compila il modulo di reso specificando il motivo e allega immagini se necessario."
+        ],
+        "note": "Una volta inviata la richiesta, riceverai un’email di conferma e inizieremo a esaminare la tua domanda."
+      },
+      "refunds": {
+        "title": "Rimborsi",
+        "content": "Una volta ricevuto e approvato l’articolo restituito, il rimborso verrà elaborato sul metodo di pagamento originale entro 5–10 giorni lavorativi. Le spese di spedizione non sono rimborsabili, salvo in caso di articoli difettosi o errori di spedizione."
+      }
+    },
+    "intellectualProperty": {
+      "title": "9. Proprietà Intellettuale",
+      "content": "Tutti i contenuti di questo sito, inclusi loghi, immagini, video, articoli, design, testi, grafica e software, sono proprietà intellettuale di Padlev o concessi in licenza. È vietato copiare, riprodurre, distribuire o utilizzare tali contenuti senza nostro consenso scritto."
+    },
+    "userGeneratedContent": {
+      "title": "10. Blog e Contenuti Generati dagli Utenti",
+      "content": "Potremmo consentire agli utenti di pubblicare recensioni, commenti e altri contenuti. Inviando contenuti, concedi a Padlev una licenza non esclusiva e gratuita per utilizzare, riprodurre e mostrare tali contenuti sulle nostre piattaforme."
+    },
+    "thirdPartyLinks": {
+      "title": "11. Link a Terze Parti",
+      "content": "Il nostro sito può contenere link a siti web di terze parti. Non siamo responsabili per il contenuto, le politiche o le pratiche di tali siti e ti invitiamo a leggere i loro termini e privacy policy."
+    },
+    "disclaimerOfWarranties": {
+      "title": "12. Esclusione di Garanzie",
+      "content": "Tutti i prodotti e servizi forniti tramite Padlev sono offerti 'così come sono' e 'come disponibili', senza alcuna garanzia espressa o implicita."
+    },
+    "limitationOfLiability": {
+      "title": "13. Limitazione di Responsabilità",
+      "content": "Nella misura massima consentita dalla legge, Padlev non sarà responsabile per danni diretti, indiretti, accidentali, punitivi o consequenziali derivanti dall’uso del sito, dai prodotti acquistati o dalla fiducia nei contenuti forniti."
+    },
+    "indemnification": {
+      "title": "14. Manleva",
+      "content": "Accetti di manlevare, difendere e tenere indenne Padlev, i suoi affiliati e dipendenti da qualsiasi reclamo derivante dalla violazione di questi Termini."
+    },
+    "modificationsToTerms": {
+      "title": "15. Modifiche ai Termini",
+      "content": "Ci riserviamo il diritto di modificare o aggiornare questi Termini in qualsiasi momento. In tal caso, aggiorneremo la data 'Ultimo aggiornamento' in cima a questa pagina."
+    },
+    "termination": {
+      "title": "16. Terminazione",
+      "content": "Ci riserviamo il diritto di sospendere o terminare l’accesso al nostro sito o servizi in qualsiasi momento in caso di violazione di questi Termini."
+    },
+    "contactInformation": {
+      "title": "17. Contatti",
+      "content": "Se hai domande riguardo questi Termini e Condizioni, contattaci a:",
+      "address": {
+        "company": "Padlev",
+        "email": "contact@padlev.com",
+        "website": "https://www.padlev.com"
+      }
+    }
+  },
+
+
+  "Layout": {
+  "keywords": "padel, tennis padel, miglior racchetta padel, campo padel, regole del padel, sport padel",
+  "global-title": "Padlev | Attrezzatura da Padel e Guide Esperte – Acquista Ora!",
+  "globale-description": "Padlev aiuta giocatori di padel a diventare professionisti! Attrezzatura selezionata, guide allenamento e consigli. Acquista racchette, palline e accessori premium.",
+  "global-og-title": "Padlev: Attrezzatura Padel Premium & Guide Esperte ⚡ Acquista Ora!",
+  "global-og-description": "Da principianti a professionisti 🔥 – Migliora il tuo livello di padel con attrezzatura premium e consigli esperti. Acquista ora e gioca meglio!",
+  "global-name": "Padlev",
+  "global-name-description": "Padlev offre prodotti di padel di alta qualità, attrezzatura e guide esperte per migliorare il tuo gioco.",
+
+  "terms-title": "Termini e Condizioni di Padlev | Acquisti e Garanzia dell'Attrezzatura",
+  "terms-description": "Scopri i Termini e Condizioni di Padlev: politiche per acquisti online, resi e garanzie. Informazioni aggiornate per una esperienza sicura.",
+  "terms-og-title": "Termini e Condizioni di Padlev",
+  "terms-og-description": "Termini legali per gli acquisti, garanzie e resi dell'attrezzatura da padel presso Padlev.",
+  "terms-name": "Termini e Condizioni di Padlev",
+  "terms-name-description": "Consulta i Termini e le Condizioni aggiornate di Padlev per acquisti, resi e garanzie.",
+
+  "search-title": "Cerca Attrezzatura Padel Padlev | Trova Racchette, Palline e Accessori",
+  "search-description": "Cerca tutta l'attrezzatura da padel di Padlev. Trova la racchetta, le palline, le borse e gli accessori perfetti con il nostro strumento di ricerca istantanea.",
+  "search-og-title": "Cerca Attrezzatura Padel Padlev",
+  "search-og-description": "Trova l'attrezzatura da padel ideale con lo strumento di ricerca di Padlev.",
+  "search-name": "Ricerca Prodotti Padlev",
+  "search-name-description": "Esplora tutta l'attrezzatura di Padlev—racchette, palline, borse e altro—istantaneamente con la nostra ricerca.",
+
+  "Return-title": "Politica di Resi e Rimborso di Padlev | Resi Facili",
+  "Return-description": "Politica di reso Padlev: rimborsi e scambi facili per le tue attrezzature da padel. Scopri tempi, condizioni e come richiedere un reso in pochi passi.",
+  "Return-og-title": "Politica di Resi di Padlev | Rimborsi Facili",
+  "Return-og-description": "Come restituire i prodotti di Padlev: condizioni, tempi e modalità di rimborso.",
+  "Return-name": "Politica di Resi e Rimborso di Padlev",
+  "Return-name-description": "Politica ufficiale di resi per acquisti di attrezzature da padel presso Padlev.",
+
+  "Reset-password-title": "Reimposta la tua Password Padlev | Recupero Sicuro",
+  "Reset-password-description": "Hai dimenticato la tua password Padlev? Reimpostala in modo sicuro per recuperare l'accesso al tuo account e alla tua cronologia degli ordini.",
+  "Reset-password-og-title": "Reimposta la Password Padlev",
+  "Reset-password-og-description": "Recupero sicuro della password per il tuo account Padlev.",
+  "Reset-password-name": "Reimposta la Password",
+  "Reset-password-name-description": "Pagina di recupero della password sicura",
+
+  "update-title": "Hai bisogno di Cambiare la tua Email Padlev? Fallo Qui",
+  "update-description": "Aggiorna facilmente l'email associata al tuo account Padlev. Mantieni le tue informazioni aggiornate per ricevere ordini, avvisi e contenuti esclusivi.",
+  "update-og-title": "Aggiorna l'Email del tuo Account Padlev | Processo Sicuro",
+  "update-og-description": "Cambia in sicurezza l'indirizzo email del tuo account Padlev per garantire l'accesso senza interruzioni.",
+  "update-name": "Aggiorna l'Email",
+  "update-name-description": "Processo sicuro per cambiare l'indirizzo email",
+
+  "product-title": "Acquista Attrezzatura Padel | Negozio Ufficiale Padlev",
+  "product-description": "Scopri la gamma premium di attrezzature da padel Padlev: racchette, abbigliamento e accessori. Progettati per giocatori di ogni livello, dal principiante al professionista.",
+  "product-og-title": "Collezione di Attrezzature Padlev | Racchette, Borse e Altro",
+  "product-og-description": "Esplora la selezione di attrezzature e accessori da padel di Padlev. Prestazioni e stile.",
+  "product-og-title-twetter": "Collezione di Attrezzature Padlev | Acquista Prodotti da Padel",
+  "product-og-title-description": "Attrezzatura da padel di alta qualità per i giocatori che cercano di migliorare il loro gioco. Scopri tutta la nostra gamma.",
+  "name": "Catalogo Prodotti Padlev",
+  "description": "Acquista le ultime racchette, accessori e abbigliamento da padel di Padlev.",
+
+  "Privacy-title": "Politica sulla Privacy di Padlev | Raccolta e Utilizzo dei Dati",
+  "Privacy-description": "Scopri come Padlev raccoglie e utilizza i tuoi dati personali. La nostra politica aggiornata garantisce la massima protezione delle tue informazioni.",
+  "Privacy-og-title": "Politica sulla Privacy di Padlev",
+  "Privacy-og-description": "Come Padlev gestisce i tuoi dati, i cookie e i diritti alla privacy.",
+  "Privacy-name": "Politica sulla Privacy di Padlev",
+  "Privacy-name-description": "Scopri come Padlev gestisce i tuoi dati personali. Aggiornato.",
+
+  "p-title": "Acquista Attrezzatura da Padel Online | Racchette, Borse e Abbigliamento – Negozio Padlev",
+  "p-description": "Preparati con l'attrezzatura da padel di prima classe di Padlev — racchette, abbigliamento e altro progettati per le prestazioni e il comfort.",
+  "p-og-title": "Migliora il Tuo Gioco | Esplora la Collezione di Attrezzature Padlev",
+  "p-og-description": "Scopri la selezione di attrezzamenti e accessori da padel premium di Padlev — progettati per massimizzare le prestazioni e lo stile moderno.",
+  "p-og-title-twetter": "Negozio di Attrezzatura Padlev | Scopri Attrezzature di Alta Qualità",
+  "p-og-title-description": "Attrezzatura da padel premium per i giocatori che vogliono portare il loro gioco al livello successivo. Esplora tutta la nostra collezione.",
+  "p-name": "Gamma di Prodotti Padlev",
+  "p-sec-description": "Scopri le ultime racchette, accessori e abbigliamento da padel da Padlev.",
+
+  "Login-title": "Accesso Sicuro | Accedi al Tuo Account Padlev",
+  "Login-description": "Accedi in modo sicuro al tuo account Padlev per gestire i tuoi ordini, garanzie e preferenze.",
+  "Login-og-title": "Accesso Account Padlev",
+  "Login-og-description": "Accedi al tuo account Padlev per gestire i tuoi acquisti di padel.",
+  "Login-name": "Accesso Padlev",
+  "Login-name-description": "Pagina di autenticazione sicura per i clienti di Padlev.",
+
+  "Help-title": "Centro Assistenza Padlev: Aiuto, Domande Frequenti e Soluzioni",
+  "Help-description": "Risolvi problemi tecnici con il tuo equipaggiamento Padlev! Guide pratiche, FAQ, info garanzia e supporto esperto. Contattaci per assistenza immediata!",
+  "Help-og-title": "Centro Assistenza Padlev: Aiuto, FAQ e Soluzioni",
+  "Help-og-description": "Soluzioni immediate per il tuo equipaggiamento padel Padlev! Guide passo-passo, FAQ e supporto esperto.",
+  "Help-name": "Centro Assistenza Padlev",
+  "Help-name-description": "Centro ufficiale di assistenza per l'attrezzatura da padel Padlev",
+
+  "Cookie-title": "Politica sui Cookie | Come Padlev Usa i Cookie e le Tue Opzioni",
+  "Cookie-description": "Scopri i cookie e le tecnologie di tracciamento di Padlev. Gestisci le tue preferenze e conosci le nostre pratiche sulla privacy in dettaglio.",
+  "Cookie-og-title": "Politica sui Cookie di Padlev - Trasparenza e Controllo",
+  "Cookie-og-description": "Comprendi e gestisci come usiamo i cookie per migliorare la tua esperienza.",
+  "Cookie-name": "Politica sui Cookie",
+  "Cookie-name-description": "Divulgazione legale sull'uso dei cookie",
+
+  "charity-title": "Padlev Sostiene | Comunità di Padel in Tutto il Mondo",
+  "charity-description": "Padlev destina parte dei profitti a programmi sportivi giovanili e donazioni di attrezzature. Unisciti alla nostra missione sociale!",
+  "charity-og-title": "Iniziative di Solidarietà di Padlev",
+  "charity-og-description": "Empower le comunità attraverso il padel. Dona o partecipa oggi stesso.",
+  "charity-name": "Padlev Solidale",
+  "charity-name-description": "Filiale senza scopo di lucro di Padlev dedicata ad ampliare l'accesso al padel.",
+
+  "Cart-title": "Il Tuo Carrello Padlev | Completa il Tuo Acquisto di Padel",
+  "Cart-description": "Verifica l'attrezzatura e gli accessori da padel selezionati. Completa il tuo ordine con pagamento sicuro e goditi una spedizione veloce.",
+  "Cart-og-title": "Il Tuo Carrello Padlev - Pronto a Completare?",
+  "Cart-og-description": "Non perdere la tua attrezzatura da padel! Completa il tuo acquisto ora e approfitta di vantaggi esclusivi.",
+  "Cart-og-title-twetter": "I Tuoi Prodotti da Padel Padlev Ti Aspettano!",
+  "Cart-og-title-description": "Attrezzatura da padel premium progettata per i giocatori che vogliono portare il loro gioco al livello successivo. Il tuo equipaggiamento è pronto per essere acquistato. Stock limitato.",
+  "Cart-name": "Carrello d'Acquisto",
+  "Cart-name-description": "Carrello degli acquisti con articoli in attesa",
+
+  "Checkout-title": "Pagamento Sicuro | Completa il Tuo Ordine Padlev",
+  "Checkout-description": "Completa il tuo acquisto di attrezzatura da padel con crittografia SSL. Accettiamo più metodi di pagamento. Spedizione veloce in UE.",
+  "Checkout-og-title": "Pagamento Sicuro Padlev",
+  "Checkout-og-description": "Il tuo equipaggiamento da padel è quasi nelle tue mani! Completa il tuo acquisto in modo sicuro.",
+  "Checkout-name": "Pagamento Sicuro",
+  "Checkout-name-description": "Pagina di elaborazione dell'ordine e del pagamento",
+
+  "payment-title": "Sicuro e Protetto – Completa il Tuo Acquisto con Padlev",
+  "payment-description": "Completa il tuo acquisto di attrezzatura da padel in modo sicuro con crittografia SSL. Accettiamo più metodi di pagamento.",
+  "payment-og-title": "Pagamento Sicuro Padlev",
+  "payment-og-description": "Il tuo equipaggiamento da padel è quasi nelle tue mani! Completa il tuo pagamento in modo sicuro.",
+  "payment-name": "Pagamento Sicuro",
+  "payment-name-description": "Pagina di elaborazione dell'ordine e del pagamento",
+
+  "Blog-title": "Blog Padlev | Consigli di Padel, Guide sull'Attrezzatura e Storie",
+  "Blog-description": "Scopri il Blog di Padlev: consigli sul padel, guide attrezzatura, storie di giocatori e ultime novità. Migliora il tuo gioco con noi!",
+  "Blog-og-title": "Blog Padlev | Il Tuo Centro Risorse per Padel",
+  "Blog-og-description": "Rimani aggiornato con il blog di Padlev: la tua fonte di consigli, recensioni sull'attrezzatura e novità dalla comunità.",
+  "Blog-og-title-tw": "Blog Padlev | Consigli e Guide sull'Attrezzatura",
+  "Blog-og-description-tw": "Ottieni consigli da esperti e informazioni sul mondo del padel, direttamente dal Blog di Padlev.",
+  "Blog-name": "Blog di Padlev",
+  "Blog-name-description": "La tua risorsa di riferimento per consigli di padel, recensioni e notizie dalla comunità.",
+
+  "Dashboard-title": "Il Mio Dashboard Padlev | Gestisci Ordini, Attrezzatura e Account",
+  "Dashboard-description": "Il tuo dashboard personalizzato Padlev. Tieni traccia degli ordini, gestisci le preferenze dell'attrezzatura e aggiorna i tuoi dati in sicurezza.",
+  "Dashboard-og-title": "Dashboard Utente Padlev",
+  "Dashboard-og-description": "Accesso sicuro al tuo account Padlev e alla cronologia degli ordini.",
+  "Dashboard-name": "Dashboard Utente Padlev",
+  "Dashboard-name-description": "Dashboard sicuro per gestire account e ordini Padlev.",
+
+  "About-title": "Chi Siamo Padlev: La Nostra Passione per il Padel e l'Innovazione",
+  "About-description": "Padlev: nata dall'amore per il padel. Creiamo attrezzature top per elevare il tuo livello. Scopri il team dietro i tuoi prodotti preferiti!",
+  "About-og-title": "Chi Siamo Padlev: La Nostra Passione per il Padel e l'Innovazione",
+  "About-og-description": "Scopri la storia, la missione e il team dietro il tuo attrezzamento preferito per il padel.",
+  "About-name": "Chi Siamo Padlev",
+  "About-name-description": "La storia, la missione e il team dietro l'attrezzatura da padel Padlev"
+},
+
+
+
+"tophero": {
+  "hero-title": "Migliora la tua salute divertendoti",
+  "hero-title-1": "Cresci professionalmente",
+  "hero-description": "Guidiamo i giocatori di padel dai principianti ai professionisti per aiutarli a diventare la miglior versione di sé stessi.",
+  "hero-tag-desktop": "Un giocatore di padel con una bottiglia d'acqua con due bambini sorridenti in campo e un altro giocatore con racchetta e palline accanto",
+  "hero-tag-mobile": "Un giocatore di padel con una bottiglia d'acqua con due bambini sorridenti in campo",
+  "logo-padlev": "logo padlev",
+  "logo-padlev-yellow": "logo padlev standard",
+  "logo-padlev-gold": "logo padlev oro",
+  "logo-padlev-platinum": "logo padlev platino",
+  "login-tag": "giocatore di padel con pallina e racchetta in campo"
+} ,
+
+"rss": {
+  "title-blog": "Blog di Padlev",
+  "description-blog": "Padlev aiuta i giocatori di padel a passare da principianti a professionisti con attrezzatura selezionata da esperti, guide all’allenamento e consigli professionali.",
+  "title-product": "Prodotti Padlev",
+  "description-product": "Esplora l’intera gamma di attrezzature da padel di alta qualità di Padlev, dalle racchette all’abbigliamento. Progettate per giocatori di tutti i livelli.",
+  "title-b-p": "Padlev - Blog e Prodotti",
+  "description-b-p": "Contenuti più recenti da Padlev - Articoli del blog e prodotti"
+}
+
+    
+  
+  
+
+
+
+}
