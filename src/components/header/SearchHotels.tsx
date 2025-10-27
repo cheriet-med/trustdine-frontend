@@ -196,7 +196,7 @@ export default function HotelSearch() {
 
   if (!mounted) {
     return (
-      <div className="relative mx-2 lg:w-[700px]">
+      <div className="relative mx-2 ">
         <form className="relative">
           <input
             type="text"

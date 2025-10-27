@@ -1,8 +1,8 @@
 "use client";
-
 import { cn } from "@/lib/utils";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Image from "next/image";
+
 export const InfiniteMovingCards = ({
   items,
   direction = "left",
@@ -22,17 +22,45 @@ export const InfiniteMovingCards = ({
 }) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const scrollerRef = React.useRef<HTMLUListElement>(null);
-useEffect(() => {
-  if (typeof window === "undefined") return;
-  addAnimation();
-}, []);
-  useEffect(() => {
-    addAnimation();
-  }, []);
   const [start, setStart] = useState(false);
-  function addAnimation() {
+
+  const getDirection = useCallback(() => {
+    if (containerRef.current) {
+      if (direction === "left") {
+        containerRef.current.style.setProperty(
+          "--animation-direction",
+          "forwards"
+        );
+      } else {
+        containerRef.current.style.setProperty(
+          "--animation-direction",
+          "reverse"
+        );
+      }
+    }
+  }, [direction]);
+
+  const getSpeed = useCallback(() => {
+    if (containerRef.current) {
+      if (speed === "fast") {
+        containerRef.current.style.setProperty("--animation-duration", "20s");
+      } else if (speed === "normal") {
+        containerRef.current.style.setProperty("--animation-duration", "40s");
+      } else {
+        containerRef.current.style.setProperty("--animation-duration", "80s");
+      }
+    }
+  }, [speed]);
+
+  const addAnimation = useCallback(() => {
     if (containerRef.current && scrollerRef.current) {
       const scrollerContent = Array.from(scrollerRef.current.children);
+      
+      // Clear any existing duplicates first
+      const itemCount = items.length;
+      while (scrollerRef.current.children.length > itemCount) {
+        scrollerRef.current.removeChild(scrollerRef.current.lastChild!);
+      }
 
       scrollerContent.forEach((item) => {
         const duplicatedItem = item.cloneNode(true);
@@ -45,39 +73,21 @@ useEffect(() => {
       getSpeed();
       setStart(true);
     }
-  }
-  const getDirection = () => {
-    if (containerRef.current) {
-      if (direction === "left") {
-        containerRef.current.style.setProperty(
-          "--animation-direction",
-          "forwards",
-        );
-      } else {
-        containerRef.current.style.setProperty(
-          "--animation-direction",
-          "reverse",
-        );
-      }
+  }, [items.length, getDirection, getSpeed]);
+
+  useEffect(() => {
+    // Only run on client side
+    if (typeof window !== "undefined") {
+      addAnimation();
     }
-  };
-  const getSpeed = () => {
-    if (containerRef.current) {
-      if (speed === "fast") {
-        containerRef.current.style.setProperty("--animation-duration", "20s");
-      } else if (speed === "normal") {
-        containerRef.current.style.setProperty("--animation-duration", "40s");
-      } else {
-        containerRef.current.style.setProperty("--animation-duration", "80s");
-      }
-    }
-  };
+  }, [addAnimation]);
+
   return (
     <div
       ref={containerRef}
       className={cn(
         "scroller relative z-20 max-w-7xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
-        className,
+        className
       )}
     >
       <ul
@@ -85,45 +95,40 @@ useEffect(() => {
         className={cn(
           "flex w-max min-w-full shrink-0 flex-nowrap gap-4 py-4",
           start && "animate-scroll",
-          pauseOnHover && "hover:[animation-play-state:paused]",
+          pauseOnHover && "hover:[animation-play-state:paused]"
         )}
       >
         {items.map((item, idx) => (
           <li
             className="relative w-[350px] max-w-full shrink-0 rounded-2xl border border-b-0 border-zinc-200 bg-secondary px-8 py-6 md:w-[450px] dark:border-zinc-700 dark:bg-secondary"
-            key={item.title}
+            key={`${item.title}-${idx}`}
           >
             <blockquote>
               <div
                 aria-hidden="true"
                 className="user-select-none pointer-events-none absolute -top-0.5 -left-0.5 -z-1 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"
-              ></div>       
+              ></div>
               <span className="flex flex-col gap-4">
                 {item.name ? (
-      <div className="relative h-24 w-24 rounded-full overflow-hidden">
-        <Image
-          src={item.name}
-          alt={item.title || "User image"}
-          fill
-          className="object-cover rounded-full"
-          sizes="128px"
-          priority
-        />
-      </div>
-    ) : null}
-
-               <span className="text-2xl leading-[1.6] font-bold font-playfair text-neutral-500 dark:text-white">
-                    {item.title}
-                  </span>
-           
+                  <div className="relative h-24 w-24 rounded-full overflow-hidden">
+                    <Image
+                      src={item.name}
+                      alt={item.title || "User image"}
+                      fill
+                      className="object-cover rounded-full"
+                      sizes="128px"
+                    />
+                  </div>
+                ) : null}
+                <span className="text-2xl leading-[1.6] font-bold font-playfair text-neutral-500 dark:text-white">
+                  {item.title}
                 </span>
-              <div className="relative z-20 mt-6 flex flex-row items-center">
-                    <span className="relative z-20  leading-[1.6] font-normal text-neutral-800 dark:text-gray-100">
-                {item.quote}
               </span>
-            
+              <div className="relative z-20 mt-6 flex flex-row items-center">
+                <span className="relative z-20 leading-[1.6] font-normal text-neutral-800 dark:text-gray-100">
+                  {item.quote}
+                </span>
               </div>
-          
             </blockquote>
           </li>
         ))}

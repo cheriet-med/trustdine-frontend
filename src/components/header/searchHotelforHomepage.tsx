@@ -302,7 +302,7 @@ const handleSearch = () => {
 
 
   return (
-    <div ref={containerRef} className="relative mx-2 lg:w-[900px] font-montserrat">
+    <div ref={containerRef} className="relative mx-2  font-montserrat">
       <div className="relative flex justify-center items-center gap-2 flex-wrap">
         {/* Search Input */}
         <div className="relative">

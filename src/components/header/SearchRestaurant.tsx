@@ -214,7 +214,7 @@ const handleSuggestionClick = (suggestion: SearchSuggestion) => {
 
   return (
     <div className="flex justify-center">
-    <div className="relative mx-4 lg:w-[700px]">
+    <div className="relative mx-2">
       <form onSubmit={handleSearch} className="relative">
         <input
           ref={inputRef}
@@ -230,7 +230,7 @@ const handleSuggestionClick = (suggestion: SearchSuggestion) => {
         <IoSearch className="absolute left-4 top-4 text-gray-400" size={28} />
         <button 
           type="submit" 
-          className="absolute right-4 lg:right-0 top-3 bg-secondary hover:bg-accent text-white px-4 py-2 rounded-3xl font-medium transition-colors"
+          className="absolute right-4  top-3 bg-secondary hover:bg-accent text-white px-4 py-2 rounded-3xl font-medium transition-colors"
           aria-label={t('search')}
         >
           Search

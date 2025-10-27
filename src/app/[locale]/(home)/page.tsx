@@ -80,18 +80,18 @@ export default function Home () {
 
 <div>
 
-    <div className=" pt-8 rounded-md flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+    <div className=" pt-8  flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
       <InfiniteMovingCards
         items={testimonials}
         direction="right"
-        speed="slow"
+        speed="normal"
       />
     </div>
-  <div className="pb-8  rounded-md flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+  <div className="pb-8   flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
       <InfiniteMovingCards
         items={testimonials1}
         direction="left"
-        speed="slow"
+        speed="normal"
       />
     </div>
 
@@ -151,19 +151,19 @@ export default function Home () {
 <div>
 
     
-    <div className=" pt-8 rounded-md flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+    <div className=" pt-8  flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
  
       <InfiniteMovingCardsItems
         items={restaurants}
         direction="right"
-        speed="fast"
+        speed="normal"
       />
     </div>
-  <div className="pb-8  rounded-md flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+  <div className="pb-8   flex flex-col antialiased bg-white dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
       <InfiniteMovingCardsItems
         items={hotels}
         direction="left"
-        speed="fast"
+        speed="normal"
       />
     </div>
 
