@@ -318,7 +318,7 @@ const menuItems: MenuItem[] = [
 </div>
 
   <div className="flex-1">
-                <p className=" font-medium text-gray-700 font-playfair text-white text-sm">{session?.user?.full_name}</p>
+                <p className=" font-medium text-gray-700 font-playfair  text-sm">{session?.user?.full_name}</p>
                 
               </div>
            

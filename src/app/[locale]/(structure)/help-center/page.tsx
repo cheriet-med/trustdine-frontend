@@ -175,12 +175,12 @@ const HelpCenter: React.FC = () => {
         { 
           title: 'How to book a restaurant or hotel', 
           id: 'booking',
-          content: 'To book a restaurant or hotel on TrustDine, simply browse our listings, select your preferred venue, choose your date and time, and complete the reservation process. You can filter by location, cuisine type, price range, and availability to find the perfect match for your needs.'
+          content: 'To book a restaurant or hotel, first search by location or name using the search bar. Select the one you like to view all details and booking options. For hotels, choose your stay dates and the number of guests or children. For restaurants, select your arrival date and time, then confirm your booking,  no payment required.'
         },
         { 
           title: 'How review verification works', 
           id: 'verification',
-          content: 'Our review verification system ensures authenticity by requiring proof of visit through receipt uploads, reservation confirmations, or location verification. Verified reviews are marked with a special badge and carry more weight in our Trust Score calculations.'
+          content: 'Our review verification system ensures authenticity by requiring proof of visit through receipt uploads, reservation confirmations, or location verification. Verified reviews are marked with a special badge and carry more weight in our Trust Score calculations.In addition, we use a strict AI-based verification system with deep analysis. Please make sure to upload the correct bill for the restaurant or hotel you reviewed. If the bill doesn’t match, you won’t be able to access the review form.'
         },
         { 
           title: 'What is a Trust Score and how is it calculated?', 
@@ -196,11 +196,6 @@ const HelpCenter: React.FC = () => {
           title: 'How to change or cancel a reservation', 
           id: 'cancel-reservation',
           content: 'You can modify or cancel reservations through your account dashboard up to 2 hours before your booking time. For last-minute changes, contact the venue directly or our customer support team for assistance.'
-        },
-        { 
-          title: 'Refund policy for bookings', 
-          id: 'refund-policy',
-          content: 'Refunds are available for cancellations made at least 24 hours in advance. For cancellations within 24 hours, a 50% fee may apply. Emergency cancellations are reviewed case-by-case. Processing time is typically 3-5 business days.'
         }
       ]
     },
@@ -210,9 +205,14 @@ const HelpCenter: React.FC = () => {
       icon: <Building2 className="w-6 h-6" />,
       articles: [
         { 
-          title: 'How to join TrustDine as a partner', 
+          title: 'How to join Goamico as a partner', 
           id: 'join-partner',
-          content: 'Join TrustDine by completing our partner application form, providing business verification documents, and setting up your profile. Our team reviews applications within 2-3 business days and provides onboarding support to get you started.'
+          content: 'Join Goamico by completing our partner application form, providing business verification documents, and setting up your profile. Our team reviews applications within 2-3 business days and provides onboarding support to get you started.'
+        },
+        { 
+          title: "How to add you listing hotel or restaurant?", 
+          id: 'add-listing',
+          content: 'To add your hotel or restaurant listing, go to your dashboard and open the ‘Listing’ section. At the top, select ‘Add Restaurant’ or ‘Add Hotel’, then complete the form with your listing details. Please note that an image of the bill is required, you must upload the same bill you provide to your clients. This helps us verify authenticity and allows users to add verified reviews, ensuring a trusted score system for all listings.'
         },
         { 
           title: "What's included in the Partner Dashboard", 
@@ -220,17 +220,12 @@ const HelpCenter: React.FC = () => {
           content: 'The Partner Dashboard includes reservation management, review monitoring and response tools, analytics and insights, promotional features, customer communication tools, and billing management. You can track performance metrics and optimize your listing in real-time.'
         },
         { 
-          title: 'How to respond to reviews', 
-          id: 'respond-reviews',
-          content: 'Respond to reviews through your Partner Dashboard within 48 hours for best results. Keep responses professional, address specific concerns, and thank customers for feedback. Public responses show potential customers that you care about service quality.'
-        },
-        { 
-          title: 'How to get featured on TrustDine', 
+          title: 'How to get featured on Goamico', 
           id: 'get-featured',
           content: 'Featured listings are selected based on Trust Score, customer feedback quality, photo quality, complete profile information, and promotional partnerships. Maintain excellent service standards and engage actively with the platform to increase featuring opportunities.'
         },
         { 
-          title: 'How TrustDine verifies your location', 
+          title: 'How Goamico verifies your location', 
           id: 'verify-location',
           content: 'Location verification involves document review (business license, lease agreement), phone verification, and sometimes an on-site visit. This process ensures listing accuracy and builds customer trust in our platform.'
         },
@@ -249,22 +244,17 @@ const HelpCenter: React.FC = () => {
         { 
           title: 'How to create an account', 
           id: 'create-account',
-          content: 'Creating an account is simple: click "Sign Up", provide your email and password, verify your email address, and complete your profile. You can also sign up using Google or Facebook for faster registration.'
+          content: 'Creating an account is simple: click ‘Sign in’ at the top-right menu, enter your email and password, verify your email address, and complete your profile. You can also sign up with Google for a faster experience. Please note that to save items to your wishlist, make bookings, or add reviews, you must have an account, just sign up through the pop-up window'
         },
         { 
           title: 'How to delete your account', 
           id: 'delete-account',
-          content: 'To delete your account, go to Settings > Account > Delete Account. This action is permanent and will remove all your data including reviews, reservations, and preferences. Download your data first if needed.'
+          content: 'To delete your account, go to Settings > Delete Account. This action is permanent and will remove all your data including reviews, reservations, and preferences. Download your data first if needed.'
         },
         { 
           title: 'How we protect your data', 
           id: 'data-protection',
-          content: 'We use industry-standard encryption, secure servers, and strict access controls to protect your personal information. We never sell your data to third parties and only use it to improve your TrustDine experience as outlined in our Privacy Policy.'
-        },
-        { 
-          title: 'Two-factor authentication', 
-          id: '2fa',
-          content: 'Enable 2FA in your Security Settings for added account protection. We support SMS, authenticator apps, and email verification. This extra layer of security helps protect your account even if your password is compromised.'
+          content: 'We use industry-standard encryption, secure servers, and strict access controls to protect your personal information. We never sell your data to third parties and only use it to improve your Goamico experience as outlined in our Privacy Policy.'
         },
         { 
           title: 'Forgot password / email reset', 
@@ -281,23 +271,18 @@ const HelpCenter: React.FC = () => {
         { 
           title: 'Live Chat Support (coming soon)', 
           id: 'live-chat',
-          content: 'Live chat support is currently in development and will be available 24/7 to assist with urgent issues. In the meantime, please use our email support or submit a ticket for fastest response.'
+          content: 'You can use live chat with our team on this page or from the Contact page. Just click the ‘Live Chat’ button to start a conversation. If you’re not logged in or don’t have an account, a sign-in or sign-up pop-up will appear before you can continue. Once connected, your chat is permanent,  you can return and continue it anytime.'
         },
         { 
           title: 'Email Support', 
           id: 'email-support',
-          content: 'Email us at support@trustdine.com for non-urgent inquiries. Our team responds within 24 hours on weekdays and 48 hours on weekends. Please include relevant details to help us assist you faster.'
+          content: 'Email us at support@Goamico.com for non-urgent inquiries. Our team responds within 24 hours on weekdays and 48 hours on weekends. Please include relevant details to help us assist you faster.'
         },
         { 
           title: 'Trust & Safety Escalations', 
           id: 'safety-escalations',
-          content: 'For serious safety concerns, fake reviews, or policy violations, contact our Trust & Safety team at safety@trustdine.com. These issues receive priority handling with response within 2-4 hours during business hours.'
+          content: 'For serious safety concerns, fake reviews, or policy violations, contact our Trust & Safety team at safety@Goamico.com. These issues receive priority handling with response within 2-4 hours during business hours.'
         },
-        { 
-          title: 'Feedback Form', 
-          id: 'feedback-form',
-          content: 'We value your input! Use our feedback form to suggest new features, report bugs, or share ideas for improvement. While we can\'t respond to all feedback individually, we review every submission for product development.'
-        }
       ]
     }
   ];
@@ -305,15 +290,15 @@ const HelpCenter: React.FC = () => {
   const topFAQs = [
     {
       question: "How can I edit a review?",
-      answer: "You can edit your reviews within 48 hours of posting by going to your profile, finding the review, and clicking 'Edit'. After 48 hours, reviews become permanent to maintain authenticity and prevent manipulation."
+      answer: "You can edit your review from the details page of a restaurant or hotel. Go to the reviews section, find your review, and click edit (you must be logged in first). Alternatively, you can access your account from the profile page, open your review history, and make edits there."
     },
     {
       question: "Do I need to upload a receipt to leave a review?",
-      answer: "While not required, uploading a receipt or proof of visit helps verify your review and increases its credibility. Verified reviews are given more weight in our Trust Score calculations and are marked with a special badge."
+      answer: "While not required, uploading a receipt or proof of visit helps verify your review and increases its credibility. Verified reviews are given more weight in our Trust Score calculations and are marked with a special badge.To ensure trusted and verified reviews on GoAmico, we require users to upload a receipt or bill when submitting a review. Verified reviews earn you a trusted score on your profile."
     },
     {
       question: "Where can I see my saved restaurants?",
-      answer: "Your saved restaurants can be found in your account dashboard under the 'Favorites' or 'Saved' section. You can also access them quickly from the heart icon in the main navigation menu."
+      answer: "You can view your saved restaurants or hotels on your Wishlist page by logging into your account. Simply click the menu at the top right and choose ‘Wishlist’. (Login required.)"
     }
   ];
 
@@ -440,8 +425,8 @@ const handleCategoryChange = (value: string) => {
           Welcome to the Goamico Help Center
         </h2>
         <p className='my-8 text-white lg:text-xl font-playfair w-max-5xl'>
-          We're here to help you get the most out of TrustDine. <br /> Whether you're looking to book a table, leave
-          a review, or get support as a business partner — this is the place to start.
+          We're here to help you get the most out of Goamico. <br /> Whether you're looking to book a table, leave
+          a review, or get support as a business partner, this is the place to start.
         </p>
       </div>
 

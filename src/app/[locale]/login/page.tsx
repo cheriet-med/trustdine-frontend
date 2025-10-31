@@ -272,7 +272,7 @@ const handleFacebookleLogin = () => {
             
           </div>
 
-          <p className="text-white py-2 text-center">Or</p>
+          <p className="text-white py-2 text-center"></p>
           <div className="flex flex-col gap-3">
            <Link href="/signin">
             <button  className="w-full py-3 rounded-lg font-medium transition-colors text-white border border-white hover:bg-accent">
@@ -295,7 +295,7 @@ const handleFacebookleLogin = () => {
 </div>
           </div>
           
-          <p className="text-xs text-white mt-4">By continuing you indicate that you agree to trustdine <span className="font-bold underline"><Link href="/terms-and-conditions">Terms of Service</Link> </span> and <span className="font-bold underline"><Link href="/privacy-policy">Privacy Policy.</Link></span></p>
+          <p className="text-xs text-white mt-4">By continuing you indicate that you agree to Goamico <span className="font-bold underline"><Link href="/terms-and-conditions">Terms of Service</Link> </span> and <span className="font-bold underline"><Link href="/privacy-policy">Privacy Policy.</Link></span></p>
         </form>
       </div>
     </div>

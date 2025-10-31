@@ -631,7 +631,7 @@ const fetchSubscriptions = async () => {
           ) : (
             <div className="flex gap-2 flex-wrap">
              <h3 className="font-medium text-gray-900 font-playfair ">Free Plan</h3>
-             <p className='text-secondary font-extrabold underline hover:text-white cursor-pointer font-playfair' onClick={handleSubscribe}>
+             <p className='text-secondary font-extrabold underline hover:text-accent cursor-pointer font-playfair' onClick={handleSubscribe}>
                Upgrade to Premium       
              </p>
             </div>
@@ -678,14 +678,14 @@ const fetchSubscriptions = async () => {
 
             <div className="flex justify-end gap-3 mt-6">
               <button
-                className="px-3 py-1 border border-gray-300 rounded hover:bg-accent transition-colors disabled:opacity-50 rounded-lg text-white"
+                className="px-3 py-1 border border-gray-300 hover:bg-accent transition-colors disabled:opacity-50 rounded-lg text-white"
                 onClick={handleCloseDialog}
                 disabled={isSaving}
               >
                 Cancel
               </button>
               <button
-                className="px-3 py-1 bg-secondary text-white rounded hover:bg-accent transition-colors disabled:bg-accent disabled:cursor-not-allowed rounded-lg"
+                className="px-3 py-1 bg-secondary text-white hover:bg-accent transition-colors disabled:bg-accent disabled:cursor-not-allowed rounded-lg"
                 onClick={handleDeleteConfirm}
                 disabled={isSaving }
               >

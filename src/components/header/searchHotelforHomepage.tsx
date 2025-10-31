@@ -362,7 +362,7 @@ const handleSearch = () => {
       {showSuggestions && searchQuery && (
         <div
           ref={suggestionsRef}
-          className="absolute top-16 left-0  lg:left-4 right-0 mx-2 lg:w-[345px] bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-96 overflow-y-auto"
+          className="absolute top-16 left-0  lg:left-20 right-0 mx-2 lg:w-[345px] bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-96 overflow-y-auto"
         >
           {suggestions.length === 0 ? (
             <div className="p-4 text-gray-500 text-center">
