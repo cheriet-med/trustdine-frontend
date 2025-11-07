@@ -1,12 +1,11 @@
 'use client'
 import dynamic from 'next/dynamic';
-import SearchHotelHero from "@/components/Data/searchHotelHero";
-import HotelSearchCards from "@/components/Data/hotehlSearchCards";
+
 import useFetchListing from "@/components/requests/fetchListings";
 import RestaurantSearchCards from '@/components/Data/restaurantSearchCard';
 import useFetchAllReviews from '@/components/requests/fetchAllReviews';
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
-
+import SearchRestaurantHero from '@/components/Data/searchRestaurantHero';
 export default function Booking() {
   // Filter hotels that have valid coordinates
   const { listings, isLoading, error } = useFetchListing();
@@ -46,7 +45,7 @@ const hotelMarkers = hotelsWithLocations?.map(hotel => ({
     : [51.505, -0.09] as [number, number];
   return (
     <div className="flex flex-col gap-4">
-      <SearchHotelHero/>
+      <SearchRestaurantHero/>
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 px-1 lg:px-6 mb-4">
 

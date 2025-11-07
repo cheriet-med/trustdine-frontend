@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import useFetchListing from "../requests/fetchListings";
-export default function SearchHotelHero() {
+export default function SearchRestaurantHero() {
   const [activeTab, setActiveTab] = useState("hotels");
   const searchParams = useSearchParams();
 
@@ -13,7 +13,7 @@ export default function SearchHotelHero() {
   const { listings, isLoading, error } = useFetchListing();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const userListing = listings?.filter(post => post.category == 'Hotel').length;
+  const userListing = listings?.filter(post => post.category == 'Restaurant').length;
   const handleTabChange = (tab: any) => {
     setActiveTab(tab);
   };

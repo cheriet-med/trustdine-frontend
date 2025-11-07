@@ -272,7 +272,7 @@ const handleFacebookleLogin = () => {
       {/* Button to open the dialog */}
 
       <div 
- className="absolute right-4 top-4 z-10 p-1 rounded-full bg-white/80 hover:bg-white transition-colors group"
+ className="absolute right-4 top-4 z-10 p-2 rounded-full bg-white/80 hover:bg-white transition-colors group"
   onClick={() => setIsOpen(true)}
 >
 <FaRegHeart size={24} className="text-gray-600 group-hover:text-accent transition-colors" />

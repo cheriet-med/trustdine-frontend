@@ -14,7 +14,7 @@ const StarRating: React.FC<StarRatingProps> = ({
   rating,
   maxRating = 5,
   showText = true,
-  size = 14,
+  size = 16,
 }) => {
   // Validate rating
   const validatedRating = Math.min(Math.max(0, rating), maxRating);
@@ -22,7 +22,7 @@ const StarRating: React.FC<StarRatingProps> = ({
   return (
     <div className="flex items-center gap-1">
       {/* Stars */}
-      <div className="flex text-accent">
+      <div className="flex text-secondary">
         {[...Array(maxRating)].map((_, index) => {
           const starValue = index + 1;
           

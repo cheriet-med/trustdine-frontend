@@ -63,7 +63,7 @@ export default function Home () {
       
 <FullscreenSlider/>
 <div className='bg-black py-16 md:py-32'>
-    <p className=' max-w-7xl mx-6 xl:mx-auto md:text-lg  lg:text-2xl xl:text-3xl text-white font-montserrat text-center font-thin'>
+    <p className=' max-w-7xl mx-6 xl:mx-auto md:text-lg  lg:text-2xl xl:text-3xl text-white font-montserrat text-center font-light'>
       Welcome to GoAmico, your trusted guide to unforgettable restaurants, hotels, and travel experiences. Discover authentic, verified reviews from real travellers and foodies like you. 
        <Link href="/en/account"><span className='font-bold text-highlights cursor-pointer'> Join our community for free </span></Link> to unlock exclusive deals, personalised recommendations, and a seamless way to plan your next adventure!</p>
 </div>
@@ -170,7 +170,7 @@ export default function Home () {
 </div>
 
 <div className='relative flex justify-center py-16 bg-accent'>
- <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black"></div>  
+ <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-gray-700"></div>  
   <Link href="/en/be-partner">
   
   <button

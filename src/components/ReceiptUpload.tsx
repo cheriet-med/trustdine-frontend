@@ -429,7 +429,7 @@ useEffect(() => {
             id="receipt-upload"
             ref={fileInputRef}
             type="file"
-            accept="image/*"
+            accept="image/avif,image/png,image/jpeg,image/webp"
             onChange={handleFileChange}
             className="hidden"
           />

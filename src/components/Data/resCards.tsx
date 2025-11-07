@@ -158,20 +158,20 @@ const toggle = async () => {
   };
 
   return (
-    <div className="block rounded-lg p-2 shadow-xs shadow-black border border-1  font-montserrat text-secondary bg-white">
-      <div className="relative">
+    <div className="relative block rounded-lg p-2 shadow-xs shadow-black border-2  font-montserrat text-secondary bg-white">
+      <div className="relative hover:bg-white group">
           {
             status === "authenticated" ?         
   (
               wishlistStatus?.is_in_wishlist == true ? <button 
            onClick={toggle}
-           className="absolute right-4 top-4 z-10 p-1 rounded-full bg-white/80 hover:bg-white transition-colors group"
+           className="absolute right-4 top-4 z-10 p-2 rounded-full bg-white/80 hover:bg-white transition-colors group"
          >
                 <FaHeart size={24} className="text-secondary" />
              </button> : 
               <button 
            onClick={toggle}
-           className="absolute right-4 top-4 z-10 p-1 rounded-full bg-white/80 hover:bg-white transition-colors group"
+           className="absolute right-4 top-4 z-10 p-2 rounded-full bg-white/80 hover:bg-white transition-colors group"
          >
                  <FaRegHeart size={24} className="text-gray-600 group-hover:text-accent transition-colors" />
             </button>
@@ -186,7 +186,8 @@ const toggle = async () => {
       src={imageUrl}
       width={400} // Set appropriate width
       height={320} // Set appropriate height (maintaining 5:4 aspect ratio)
-      className="h-80 w-full rounded-md object-cover"
+      className="h-60 w-full rounded-md object-cover transition-all duration-300 ease-out
+           group-hover:scale-95 group-hover:brightness-90"
       placeholder="blur" // Optional: add blur placeholder
       blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaUMk9SQ2Tv6JauWg===" // Optional: small base64 placeholder
     />
@@ -195,19 +196,22 @@ const toggle = async () => {
  <Link href={`/en/booking/${id}`}>
       <div className="mt-2 flex flex-col gap-1">
         <div>
-          <dd className="font-medium font-playfair">{name}</dd>
+          <dd className="font-bold text-lg text-gray-800 font-montserrat">{name?.slice(0,45)}</dd>
         </div>  
         <div className='flex gap-1'>
-         {totalReviews == 0 ? "" : <p className="text-sm">{totalReviews}</p>} 
+       
           <StarRating rating={totalReviews} />      
          {totalReviews == 0 ? "" : <p className=' text-sm'>{"("}{Review.length}{")"}</p>} 
         </div>
         <div className="flex gap-1 text-sm items-center">
-          <CiForkAndKnife size={14}/>
-          <dd className="text-sm text-gray-500">{price}</dd>
+          <CiForkAndKnife size={18}/>
+          <dd className="text-sm text-gray-800">{price}</dd>
         </div>
       </div>
       </Link>
+        <div className="absolute bottom-3 right-3 p-1 bg-background rounded-full text-white">
+         {totalReviews == 0 ? <p className="font-bold w-6 ">0.0</p> : <p className="font-bold w-6 ">{totalReviews}</p>} 
+      </div>
     </div>
   );
 };
@@ -233,22 +237,22 @@ export default function ResCards() {
   // Show error state
   if (error) {
     return (
-      <div className="flex flex-col gap-4 mx-2 custom:mx-40">
+    <div className="flex flex-col gap-4 px-2 custom:px-40 bg-background">
         <h1 className="text-4xl font-playfair">Restaurants</h1>
         <div className="text-center py-8">
-          <p className="text-red-500">Error loading restaurants. Please try again later.</p>
+          <p className="text-secondary">Error loading restaurants. Please try again later.</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-4 mx-2 custom:mx-40">
-      <h1 className="text-4xl font-playfair">
+    <div className="flex flex-col gap-4 px-2 custom:px-40 bg-accent">
+      <h1 className="text-4xl font-playfair font-bold text-white pt-8">
         Restaurants
       </h1>
         
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 ">
         {isLoading ? (
           // Show skeleton loading cards
           [...Array(itemsPerPage)].map((_, index) => (
@@ -274,11 +278,11 @@ export default function ResCards() {
       
       {/* Pagination - only show if not loading and has items */}
       {!isLoading && currentItems.length > 0 && totalPages > 1 && (
-        <div className="flex justify-end items-center gap-1 flex-wrap">
-          <button disabled={currentPage === 1} onClick={handlePrevious} className="text-gray-500 hover:text-accent flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
+        <div className="flex justify-end items-center gap-1 flex-wrap pb-8">
+          <button disabled={currentPage === 1} onClick={handlePrevious} className="text-gray-500 hover:text-background flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
             <CiCircleChevRight size={40} className="rotate-180 "/>
           </button>
-          <button disabled={currentPage === totalPages} onClick={handleNext} className="text-gray-500 hover:text-accent flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
+          <button disabled={currentPage === totalPages} onClick={handleNext} className="text-gray-500 hover:text-background flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
             <CiCircleChevRight size={40} />
           </button>
         </div>

@@ -147,7 +147,7 @@ export default function Partner () {
 
 </div>
 <div className='bg-black py-16 md:py-32'>
-    <p className=' max-w-7xl mx-6 xl:mx-auto md:text-lg  lg:text-2xl xl:text-3xl text-white font-montserrat text-center font-thin'>GoAmico is your partner in growing your restaurant, hotel, or leisure business. Unlike TripAdvisor or Booking.com, we focus on verified reviews from real guests, fair exposure based on quality, and powerful AI tools to help you shine. 
+    <p className=' max-w-7xl mx-6 xl:mx-auto md:text-lg  lg:text-2xl xl:text-3xl text-white font-montserrat text-center font-light'>GoAmico is your partner in growing your restaurant, hotel, or leisure business. Unlike TripAdvisor or Booking.com, we focus on verified reviews from real guests, fair exposure based on quality, and powerful AI tools to help you shine. 
         <span className='font-bold text-highlights cursor-pointer'  onClick={() => {
     const section = document.getElementById("plan");
     if (section) {

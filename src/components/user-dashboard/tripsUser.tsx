@@ -312,17 +312,18 @@ const menuItems: MenuItem[] = [
 </div>
 
   <div className="flex-1">
-                <p className=" font-medium text-gray-700 font-playfair text-white text-sm">{session?.user?.full_name}</p>
+                <p className=" font-medium  font-playfair text-white text-sm">{session?.user?.full_name}</p>
                 
               </div>
            
             </div>
            
             <div className='flex gap-2 py-4 px-3 ml-6'>
-    <div className='hover:bg-accent p-1 rounded-lg' onClick={() => signOut({ callbackUrl: `/en/login` })}>
+    <div className='hover:bg-accent p-1 rounded-lg cursor-pointer' onClick={() => signOut({ callbackUrl: `/en/login` })}>
                 <FiLogOut size={24} className='text-white' />
-            </div>  
+           
           <p className='text-white font-medium'>Log out</p>
+           </div>  
 </div>
 </div>
             

@@ -58,7 +58,7 @@ const hotelMarkers = hotelsWithLocations?.map(hotel => ({
       </h1>
       
       {hotels.length > 0 ? (
-        <div className="rounded-2xl mx-2 custom:mx-40 mb-6">
+        <div className="rounded-2xl m-2 ">
           <Map
             center={centerPosition}
             zoom={5}

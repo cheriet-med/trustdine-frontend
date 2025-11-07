@@ -18,7 +18,7 @@ export default function SearchHero() {
   };
 
   return (
-    <div>
+    <div className="bg-a">
       {/* Hero Section */}
       <div className="h-[550px] sm:col-span-1 relative flex items-center bg-secondary rounded-2xl m-1 sm:m-2 md:m-5">
         <Image 
@@ -30,7 +30,7 @@ export default function SearchHero() {
           quality={85}  
           priority 
         />
-         <div className="absolute inset-0 bg-a bg-opacity-50 rounded-2xl"></div>
+         <div className="absolute inset-0 bg-gray-700 bg-opacity-50 rounded-2xl"></div>
         {/* Centered Content Container */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center mx-2">
           <h1 className="text-3xl md:text-4xl custom:text-6xl font-bold font-playfair text-white mb-4 md:mb-8">

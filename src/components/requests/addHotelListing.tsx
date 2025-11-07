@@ -646,7 +646,7 @@ export default function HotelForm() {
                           {errorimage && <p className="text-sm mt-2 text-accent">{errorimage}</p>}
                           <input
                             type="file"
-                            accept="image/*"
+                            accept="image/avif,image/png,image/jpeg,image/webp"
                             onChange={handleMainImageChange}
                             className="hidden"
                           />
@@ -677,7 +677,7 @@ export default function HotelForm() {
                               Change Image
                               <input
                                 type="file"
-                                accept="image/*"
+                                accept="image/avif,image/png,image/jpeg,image/webp"
                                 onChange={handleMainImageChange}
                                 className="hidden"
                               />
@@ -714,7 +714,7 @@ export default function HotelForm() {
                       <input
                         type="file"
                         multiple
-                        accept="image/*"
+                        accept="image/avif,image/png,image/jpeg,image/webp"
                         onChange={handleImageChange}
                         className="hidden"
                       />
@@ -744,7 +744,7 @@ export default function HotelForm() {
                           {errorreciept && <p className="text-sm mt-2 text-accent">{errorreciept}</p>}
                           <input
                             type="file"
-                            accept="image/*"
+                            accept="image/avif,image/png,image/jpeg,image/webp"
                             onChange={handleReciepChange}
                             className="hidden"
                           />
@@ -775,7 +775,7 @@ export default function HotelForm() {
                               Change Image
                               <input
                                 type="file"
-                                accept="image/*"
+                                accept="image/avif,image/png,image/jpeg,image/webp"
                                 onChange={removeRecieptImage}
                                 className="hidden"
                               />

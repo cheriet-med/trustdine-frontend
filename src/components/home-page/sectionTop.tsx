@@ -88,7 +88,7 @@ export default function FullscreenSlider() {
   `}</style>
 </div>
 
-   <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black"></div>
+   <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-gray-700"></div>
       {/* Overlay content */}
       <div className="absolute mt-6 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full max-w-5xl px-4 flex flex-col justify-center items-center space-y-2 z-30">
         {/* Title */}

@@ -162,8 +162,8 @@ const toggle = async () => {
   };
 
   return (
-    <div className="block rounded-lg p-2 shadow-xs shadow-black border border-1  font-montserrat text-secondary bg-white">
-      <div className="relative">
+    <div className="relative block rounded-lg p-2 shadow-xs shadow-black  border-2  font-montserrat text-secondary bg-white">
+      <div className="relative hover:bg-white group">
           {
             status === "authenticated" ?    
  (
@@ -190,7 +190,8 @@ const toggle = async () => {
       src={imageUrl}
       width={400} // Set appropriate width
       height={320} // Set appropriate height (maintaining 5:4 aspect ratio)
-      className="h-80 w-full rounded-md object-cover"
+      className="h-60 w-full rounded-md object-cover transition-all duration-300 ease-out
+           group-hover:scale-95 group-hover:brightness-90"
       placeholder="blur" // Optional: add blur placeholder
       blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaUMk9SQ2Tv6JauWg===" // Optional: small base64 placeholder
     />
@@ -199,19 +200,23 @@ const toggle = async () => {
  <Link href={`/en/booking/${id}`}>
       <div className="mt-2 flex flex-col gap-1">   
      <div className="flex">
-  <p className="text-sm bg-gray-100 rounded-xl font-medium py-1 px-2 w-fit">{location}</p>
+  <p className="text-sm bg-gray-800 text-white rounded-md font-medium  px-2 w-fit">{location}</p>
 </div>
         <div>
-          <dd className="font-medium font-playfair">{address}</dd>
+          <dd className="font-bold text-lg text-gray-800 font-montserrat">{address?.slice(0,45)}</dd>
         </div>  
         <div className='flex gap-1'>
-          {totalReviews == 0 ? "" : <p className="text-sm">{totalReviews}</p>} 
+         
           <StarRating rating={totalReviews} />      
          {totalReviews == 0 ? "" : <p className=' text-sm'>{"("}{Review.length}{")"}</p>} 
         </div>
-          <dd className="text-sm text-gray-500">{price}</dd>
+          <dd className="text-sm text-gray-800">{price}</dd>
       </div>
       </Link>
+      <div className="absolute bottom-3 right-3 p-1 bg-accent rounded-full text-white">
+         {totalReviews == 0 ? <p className="font-bold w-6 ">0.0</p> : <p className="font-bold w-6 ">{totalReviews}</p>} 
+      </div>
+      
     </div>
   );
 };
@@ -235,7 +240,7 @@ export default function HotelCards() {
   if (error) {
     return (
       <div className="flex flex-col gap-4 mx-2 custom:mx-40">
-        <h1 className="text-4xl font-playfair">Hotels</h1>
+        <h1 className="text-4xl font-playfair font-bold">Hotels</h1>
         <div className="text-center py-8">
           <p className="text-red-500">Error loading hotels. Please try again later.</p>
         </div>
@@ -245,11 +250,11 @@ export default function HotelCards() {
 
   return (
     <div className="flex flex-col gap-4 mx-2 custom:mx-40">
-      <h1 className="text-4xl font-playfair">
+      <h1 className="text-4xl font-playfair font-bold">
         Hotels
       </h1>
         
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 ">
         {isLoading ? (
           // Show skeleton loading cards
           [...Array(itemsPerPage)].map((_, index) => (

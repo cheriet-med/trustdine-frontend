@@ -23,7 +23,7 @@ import { LuCalendarCheck } from "react-icons/lu";
 import { MdCalendarMonth } from "react-icons/md";
 import { FaRegCalendar } from "react-icons/fa";
 import { Search } from 'lucide-react';
-
+import { useSession } from 'next-auth/react';
 
 
 interface PropertyCardProps {
@@ -294,14 +294,14 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
             <div className="flex justify-end gap-3 mt-6">
               <button
-                className="px-3 py-1 border border-gray-300 rounded hover:bg-accent transition-colors disabled:opacity-50 rounded-lg text-white"
+                className="px-3 py-1 border border-gray-300  hover:bg-accent transition-colors disabled:opacity-50 rounded-lg text-white"
                 onClick={handleCloseDialog}
                 disabled={isSaving}
               >
                 Cancel
               </button>
               <button
-                className="px-3 py-1 bg-secondary text-white rounded hover:bg-accent transition-colors disabled:bg-accent disabled:cursor-not-allowed rounded-lg"
+                className="px-3 py-1 bg-secondary text-white  hover:bg-accent transition-colors disabled:bg-accent disabled:cursor-not-allowed rounded-lg"
                 onClick={handleConfirmRequest}
                 disabled={isSaving || status === "confirmed"}
               >
@@ -357,14 +357,14 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 
             <div className="flex justify-end gap-3 mt-6">
               <button
-                className="px-3 py-1 border border-gray-300 rounded hover:bg-accent transition-colors disabled:opacity-50 rounded-lg text-white"
+                className="px-3 py-1 border border-gray-300  hover:bg-accent transition-colors disabled:opacity-50 rounded-lg text-white"
                 onClick={handleCloseDialog}
                 disabled={isSaving}
               >
                 Cancel
               </button>
               <button
-                className="px-3 py-1 bg-secondary text-white rounded hover:bg-accent transition-colors disabled:bg-accent disabled:cursor-not-allowed rounded-lg"
+                className="px-3 py-1 bg-secondary text-white  hover:bg-accent transition-colors disabled:bg-accent disabled:cursor-not-allowed rounded-lg"
                 onClick={handleDeleteConfirm}
                 disabled={isSaving || status === "canceled"}
               >
@@ -395,11 +395,13 @@ const PropertyCard: React.FC<PropertyCardProps> = ({
 export default function TripsCards() {
   const { AllBookings, mutate } = useFetchAllBookings();
   const [currentPage, setCurrentPage] = useState(1);
-
+    const { data: session, status } = useSession({ required: true });
+    const userId = session?.user?.id;
+ const user = AllBookings.filter(r => r.id === userId);
 
   const itemsPerPage = 8;
   const [currentCategory, setCurrentCategory] = useState("confirmed");
-  const toggle = AllBookings.filter(r => r.status === currentCategory);
+  const toggle = user.filter(r => r.status === currentCategory);
 
   const totalPages = Math.ceil(toggle?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
